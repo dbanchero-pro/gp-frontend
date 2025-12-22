@@ -2,7 +2,7 @@
 
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular'; //NOSONAR
-import { KeycloakLoginOptions } from 'keycloak-js';
+import { KeycloakLoginOptions, KeycloakProfile } from 'keycloak-js';
 
 @Injectable({ providedIn: 'root' })
 export class AuthRawService {
@@ -35,7 +35,7 @@ export class AuthRawService {
         return this.keycloakService.updateToken(minValidity);
     }
 
-    loadUserProfile(): Promise<Keycloak.KeycloakProfile> {
+    loadUserProfile(): Promise<KeycloakProfile> {
         return this.keycloakService.loadUserProfile();
     }
 }
