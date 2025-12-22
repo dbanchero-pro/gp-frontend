@@ -1,0 +1,22 @@
+.resultado-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+}
+
+.espacio-titulo-opcion {
+    gap: 50px;
+}
+
+.espacio-titulo {
+    gap: 10px;
+}
+
+.options {
+    text-align: right;
+}
+
+@media screen and (max-width: 991px) {
+    .options {
+        text-align: left;
+    }
+}

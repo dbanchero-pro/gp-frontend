@@ -1,0 +1,30 @@
+﻿@media (width <= 991px) {
+    .table-responsive{
+        overflow: auto !important;
+        max-height: clamp(300px, calc(50svh - 50px), 350px);
+    }
+}
+
+@media (992px <= width <= 1200px) {
+    .table-responsive{
+        overflow: auto !important;
+        max-height: clamp(350px, calc(50svh - 50px), 400px);
+    }
+}
+
+@media (width >= 1201px) {
+    .table-responsive{
+        overflow: auto !important;
+        max-height: clamp(350px, calc(40vh - 50px), 400px);
+    }
+}
+
+.table-responsive {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.col{
+    min-width: 50% !important;
+    max-width: 50% !important;
+}

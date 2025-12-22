@@ -1,0 +1,14 @@
+{
+    "apiUrl": "http://localhost:8080",
+    "keycloak": {
+        "url": "https://test2.comprasestatales.gub.uy/auth",
+        "realm": "pac-noprod",
+        "clientId": "gp-beta"
+    },
+    "extensionesPermitidas": ".pdf, .xls",
+    "urlBaseFrontEnd": "",
+    "loggingLevel": "DEBUG",
+    "archivosTamanoMaxBytes": 10485760,
+    "archivosCantidadMax": 10,
+    "contenidoInicio": "<h1 class='Page-title'>Gestión de Contratos</h1><p class='Page-description'>La gestión de los contratos comprende el registro, estandarización electrónica y seguimiento de todo acto realizado con posterioridad a la adjudicación del procedimiento de contratación que realicen las Administraciones Públicas Estatales hasta la finalización del contrato.</p><h2>Descripción</h2><p>El sistema cuenta con un módulo de administración para la gestión de usuarios y puntos de recepción y otro módulo de seguimiento que permite el ingreso de la recepción, conformidad y seguimiento de las entregas, ajustes a las órdenes de compra y auditorías. </p>"
+}

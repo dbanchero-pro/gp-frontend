@@ -1,0 +1,18 @@
+<alert
+    *ngIf="showMsg"
+    [ngClass]="typeMsg"
+    [type]="typeMsg"
+    [isOpen]="showMsg"
+    (onClose)="onClose()"
+    [dismissible]="true"
+>
+    <div _ngcontent-isp-c91="" class="dialog-icon">
+        <span
+            _ngcontent-isp-c91=""
+            class="icn icn-circle-{{ typeMsg }}-lg"
+        ></span>
+    </div>
+    <div class="flex-wrap">
+        <div *ngFor="let message of messages">{{ message }}</div>
+    </div>
+</alert>

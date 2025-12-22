@@ -1,0 +1,156 @@
+<div class="row">
+    <div [ngClass]="colFiltro" class="sidebar">
+        <app-filtro titleBtn="Buscar" (evFilter)="actualizarFiltrosYBuscar()" (evCollapse)="aplicarColapso()"
+            class="filter">
+            <div [formGroup]="form">
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="radio" id="modoFiltros" class="form-check-input" formControlName="modoBusqueda"
+                            [value]="MODO_FILTROS" />
+                        <label class="form-check-label" for="modoFiltros">
+                            Buscar por cualquier filtro
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input type="radio" id="modoTodosPuntos" class="form-check-input" formControlName="modoBusqueda"
+                            [value]="MODO_TODOS_PUNTOS" />
+                        <label class="form-check-label" for="modoTodosPuntos">
+                            Buscar solo con permiso todas las UC
+                        </label>
+                    </div>
+                </div>
+
+                <app-filtro-organismo formControlName="organismo" (cambioFiltro)="onFiltroOrganismo($event)"
+                    (limpiarFiltro)="onFiltroOrganismo(null)"></app-filtro-organismo>
+
+                <div class="row">
+                    <div class="form-group form-row col-12 m-0 pb-0 pt-0 mb-4">
+                        <label for="idZona" class="col-form-label col-12">Departamento</label>
+                        <select class="form-control col-12" id="idZona" formControlName="idZona">
+                            <option value="">Todos los departamentos</option>
+                            <option *ngFor="let item of opcionesDepartamento" [value]="item.id">
+                                {{ item.descripcionZona }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group form-row col-12 m-0 pb-0 pt-0 mb-4"
+                        [class.field-error]="!nombrePuntoRecepcionValido">
+                        <label for="nombrePuntoRecepcion" class="col-form-label">
+                            Nombre del punto de recepción
+                        </label>
+                        <input id="nombrePuntoRecepcion" class="form-control" type="text"
+                            formControlName="nombrePuntoRecepcion" (blur)="validarNombrePuntoRecepcion()" />
+                        <div *ngIf="!nombrePuntoRecepcionValido" class="texto-error">
+                            Debe ingresar al menos 3 caracteres
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group form-row col-12 m-0 pb-0 pt-0">
+                        <app-input-documento formControlName="nroDocumento" [esCedula]="true" [minLength]="7"
+                            label="Cédula de identidad">
+                        </app-input-documento>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="clean-filter col-12">
+                        <button type="button" class="btn btn-link" id="cleanFilterBtn" (click)="nuevaConsulta()"> Nueva
+                            consulta </button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class=" descargar-resultado  col-12">
+                        <button type="button" class="btn btn-link " id="exportarExcel" (click)="descargarExcel()"
+                            *ngIf="seguridad.tienePermiso('GC_GESTION_USU.IMPRESION')">
+                            <span class="fa fa-file-excel-o"></span> Descargar Excel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </app-filtro>
+    </div>
+
+    <div [ngClass]="colTabla">
+        <div class="row justify-content-end pr-2 mb-2">
+            <button class="btn btn-primary mr-2" *ngIf="seguridad.tienePermiso('GC_GESTION_USU.ALTA')"
+                (click)="abrirAgregarPermisoPorPunto()">
+                <em class="fa fa-user-plus mr-1"></em>
+                Agregar usuario punto de recepción
+            </button>
+            <button class="btn btn-primary mr-2" *ngIf="seguridad.tienePermiso('GC_GESTION_USU.ALTA')"
+                (click)="abrirNuevoUsuarioUcPopup()">
+                <em class="fa fa-user-plus mr-1"></em>
+                Agregar usuario por UC
+            </button>
+            <!-- TODO:  Revisar si hay que comprobar otro permiso-->
+            <button class="btn btn-primary mr-2" *ngIf="seguridad.tienePermiso('GC_GESTION_USU.ALTA')"
+                (click)="abrirAgregarUsuarioTodasLasUc()">
+                <em class="fa fa-user-plus mr-1"></em>
+                Agregar usuario a todas las UC
+            </button>
+        </div>
+
+        <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden" [columnaOrden]="parametros.sort"
+            [orden]="parametros.order" (orderChange)="cambioOrden($event)"
+            (sortChange)="cambioColumnaOrden($event)"></app-cabezal-consulta>
+
+        <div *ngFor="let usr of usuariosAgrupados; let i = index">
+            <div class="card mb-2 bg-transparent" [style.z-index]="200-i">
+                <div class="border-bottom d-flex py-2 bg-transparent pb-2">
+                    <div class="col-8 font-weight-bold py-1 pl-4 subtitle">
+                        <div class="float-left pr-3">CI {{ usr.id | formatoCi }}</div>
+                        <div class="float-left">{{ usr.nombre }}</div>
+                    </div>
+                    <div class="col-4 d-flex justify-content-end align-items-center">
+                        <app-boton-accion [acciones]="usr.acciones ?? []"
+                        [ariaLabelMasOpciones]="'Mas opciones del usuario '+ usr.id"
+                            (accionEjecutada)="ejecutarAccion($event)"></app-boton-accion>
+                    </div>
+                </div>
+
+                <div class="table-responsive m-0" *ngIf="usr.permisos.length > 0">
+                    <table class="table table-striped table-hover mb-0 align-middle"
+                        [attr.aria-label]="'Tabla de permisos del usuario ' + usr.nombre">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th aria-label="Eliminar"></th>
+                                <th class="col-4">Inciso</th>
+                                <th>Unidad ejecutora</th>
+                                <th>Unidad de compra</th>
+                                <th>Departamento</th>
+                                <th class="text-end">Punto de recepción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let permiso of usr.permisos">
+                                <td>
+                                    <button class="btn btn-link p-0" aria-label="Eliminar"
+                                        *ngIf="seguridad.tienePermiso('GC_GESTION_USU.BAJA')"
+                                        (click)="eliminarPerfilUsuarioEspecifico(permiso)">
+                                        <em class="fa fa-trash text-dark fa-lg"></em>
+                                    </button>
+                                </td>
+                                <td>{{ permiso.unidadCompra?.descInciso }}</td>
+                                <td>{{ permiso.unidadCompra?.descUnidadEjecutora }}</td>
+                                <td>{{ permiso.unidadCompra?.descUnidadCompra}}</td>
+                                <td>{{ permiso.puntoRecepcion?.zona?.descripcionZona}}</td>
+                                <td class="text-end">{{ permiso.puntoRecepcion?.nombre }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina"
+            [paginaActual]="parametros.pagina + 1" (cambioPagina)="cambioPagina($event)"
+            (cambioItemsPorPagina)="cambioPorPagina($event)"></app-paginado>
+
+    </div>
+</div>

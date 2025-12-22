@@ -1,0 +1,21 @@
+@use "../../../../../../../scss/portal-tipo/variables.scss";
+
+::ng-deep .modal-dialog {
+  max-width: 900px;
+  /* O el ancho que necesites */
+  width: 90%;
+}
+
+.btn-primary {
+  background-color: variables.$primary;
+  border-color: variables.$primary;
+}
+
+.buttonFilter {
+  display: flex;
+  align-self: center;
+  gap: 4px;
+  align-items: center;
+  justify-content: left;
+}
+

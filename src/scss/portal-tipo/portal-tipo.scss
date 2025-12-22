@@ -1,0 +1,13 @@
+// Import Bootstrap source files
+@use "../../../node_modules/bootstrap/dist/css/bootstrap.css";
+@forward "../../../node_modules/ngx-bootstrap/datepicker/bs-datepicker.scss";
+// -here webpack will automatically build a link css element out of this!?
+// Override Boostrap variables
+@use "variables";
+// from bootstrap node_modules
+
+@use "global";
+// If you want to add something do it here
+@use "custom";
+
+@forward "node_modules/font-awesome/scss/font-awesome.scss"

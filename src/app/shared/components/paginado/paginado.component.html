@@ -1,0 +1,16 @@
+<div class="row" *ngIf="totalItems > 0">
+    <div class="col-5 item-per-page">
+        <select id="itemsPorPagina" name="itemsPorPagina" aria-label="Resultados por página" ngDefaultControl [(ngModel)]="itemsPorPagina"
+            (change)="cambioPorPagina()">
+            <option *ngFor="let item of perPages">{{ item }}</option>
+        </select>
+        <span>Resultados por página</span>
+    </div>
+    <div class="col-7 item-pagination" *ngIf="totalItems > 0">
+        <pagination [boundaryLinks]="showBoundaryLinks" [maxSize]="7" [directionLinks]="showDirectionLinks"
+            [totalItems]="totalItems" [itemsPerPage]="itemsPorPagina" (pageChanged)="paginaCambiada($event)"
+            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" ngDefaultControl
+            [formControl]="currentPage">
+        </pagination>
+    </div>
+</div>

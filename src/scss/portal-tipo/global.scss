@@ -1,0 +1,318 @@
+/** App global styles  */
+@use 'variables';
+@use '../sidebar/vars';
+
+html {
+  min-height: 100vh;
+  height: 100vh;
+}
+
+body {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  position: absolute;
+  background-color: variables.$body-bg;
+}
+
+// IE10&11 Flexbox fix
+@media all and (-ms-high-contrast: none) {
+  html {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+// stylelint-disable selector-type-no-unknown, no-duplicate-selectors, selector-no-qualifying-type, selector-max-combinators
+// app-dashboard and app-root are Angular2+ selectors. You can add here your own selectors if you need.
+.app,
+app-root {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+app-page {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-x: hidden;
+
+  main {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+app-header,
+app-breadcrumbs {
+  background-color: vars.$white;
+}
+
+.Container {
+  height: 100%;
+}
+
+.alert-dismissible {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+// Alert
+alert {
+  margin-bottom: 0;
+
+  & .alert {
+    display: flex;
+    align-items: center;
+    border-left: 3px solid;
+
+    /*** Modifiers */
+    &.warning {
+      background-color: variables.$warning-bg;
+      border-color: variables.$warning-border;
+    }
+
+    &.notification {
+      background-color: #eaf2ff;
+      border-color: #2d5ca8;
+    }
+
+    &.success {
+      background-color: variables.$success-bg;
+      border-color: variables.$success-border;
+    }
+
+    &.error {
+      background-color: variables.$danger-bg;
+      border-color: variables.$danger-border;
+    }
+  }
+}
+
+.field-error {
+  color: variables.$danger-border;
+
+  & input,
+  & textarea,
+  & select {
+    border: 1px solid variables.$danger-border !important;
+  }
+
+  & span {
+    display: flex;
+    justify-content: left;
+  }
+
+}
+
+// Icons
+.icn {
+  display: inline-block;
+  width: 15px;
+  height: 25px;
+  padding: 0 10px;
+}
+
+.icn-edit-sm {
+  background: url(../../assets/icons/icn-edit-sm.png) no-repeat;
+  left: 2px;
+  position: relative;
+  top: 2px;
+}
+
+.icn-reload-sm {
+  background: url(../../assets/icons/icn-reload-sm.png) no-repeat;
+  left: 2px;
+  position: relative;
+  top: 2px;
+}
+
+.icn-search-sm {
+  background: url(../../assets/icons/icn-search.png) no-repeat;
+}
+
+.icn {
+  display: inline-block;
+  width: 15px;
+  height: 25px;
+  padding: 0 10px;
+}
+
+.icn[disabled] {
+
+  opacity: 30%;
+  filter: grayscale(100%);
+}
+
+.icn-error-sm {
+  background: url(../../assets/icons/icn-error-sm.png) no-repeat;
+  left: 2px;
+  position: relative;
+  top: 2px;
+}
+
+
+
+.icn-circle-error-lg,
+.icn-circle-danger-lg {
+
+
+  background: url(../../assets/icons/icn-circle-error-lg.png) no-repeat;
+  width: 46px;
+  height: 46px;
+
+}
+
+
+.icn-circle-success-lg {
+  background: url(../../assets/icons/icn-circle-success-lg.png) no-repeat;
+  width: 46px;
+  height: 46px;
+}
+
+.icn-circle-success {
+  background: url(../../assets/icons/icn-circle-success.png) no-repeat;
+}
+
+.icn-view-sm {
+  background: url(../../assets/icons/icn-view.png) no-repeat;
+}
+
+.icn-refresh-sm {
+  background: url(../../assets/icons/icn-reload.png) no-repeat;
+}
+
+.icn-download-sm {
+  background: url(../../assets/icons/icn-download.png) no-repeat;
+}
+
+.icn-adjustment-sm {
+  background: url(../../assets/icons/icn-letter-a.png) no-repeat;
+}
+
+.icn-star-sm {
+  background: url(../../assets/icons/icn-star-sm.png) no-repeat;
+}
+
+.icn-circle-noti-sm {
+  background: url(../../assets/icons/icn-circle-noti-sm.png) no-repeat;
+}
+
+.icn-circle-help-sm {
+  background: url(../../assets/icons/icn-circle-help-sm.png) no-repeat;
+}
+
+.icn-circle-noti {
+  background: url(../../assets/icons/icn-circle-noti.png) no-repeat;
+}
+
+.icn-star {
+  background: url(../../assets/icons/icn-star.png) no-repeat;
+}
+
+.icn-view {
+  background: url(../../assets/icons/icn-view.png) no-repeat;
+}
+
+.icn-warning {
+  background: url(../../assets/icons/icn-warning.png) no-repeat;
+}
+
+
+.icn-circle-help {
+  background: url(../../assets/icons/icn-circle-help.png) no-repeat;
+}
+
+.dialog-icon .icn {
+  width: 51px;
+  display: inline-block;
+  margin: 0 15px;
+}
+
+.dialog-title {
+  display: block;
+  font-weight: normal;
+  font-size: 1.25em;
+  margin-bottom: 5px;
+  line-height: 1.1;
+}
+
+.flex-center {
+  justify-content: center;
+}
+
+.flex-end {
+  justify-content: flex-end;
+}
+
+.flex-space-bt {
+  justify-content: space-between;
+}
+
+@media screen and (min-width: 768px) {
+
+  .campo-fecha,
+  .campo-corto {
+    width: 140px !important;
+  }
+}
+
+@media screen and (max-width: 767px) {
+
+  .campo-fecha,
+  .campo-corto {
+    width: 100%;
+  }
+}
+
+typeahead-container {
+
+  .dropdown-item.active,
+  .dropdown-item:active {
+    color: #080808 !important;
+    text-decoration: none !important;
+    background-color: #c1c1c1 !important;
+  }
+
+  .dropdown-menu {
+    background-color: #ffffff !important;
+  }
+
+  .dropdown-menu .dropdown-item:hover {
+    background-color: #c1c1c1 !important;
+    opacity: 0.8;
+  }
+
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: #f9f9f9 !important;
+  border: solid 1px #d5d5d5 !important;
+}
+
+.spanDisplay {
+  display: unset !important;
+}
+
+.datatable-body-row.active {
+  color: black !important;
+}
+
+.estilo-cambio {
+  background-color: #ffd15f;
+}
+
+.estilo-penaliza {
+  background-color: #FFFF00;
+}
+
+.btn-link {
+  color: #00487a;
+}
+
+.aviso-info-busqueda{
+  margin-right: 0px !important;
+}

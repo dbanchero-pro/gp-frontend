@@ -1,0 +1,16 @@
+.item-per-page {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    select {
+        width: 30%;
+        margin-right: 10px;
+    }
+}
+
+.item-pagination {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}

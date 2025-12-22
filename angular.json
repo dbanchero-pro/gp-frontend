@@ -1,0 +1,223 @@
+{
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "newProjectRoot": "projects",
+    "projects": {
+        "gp-frontend": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
+                },
+                "@schematics/angular:application": {
+                    "strict": true
+                }
+            },
+            "root": "",
+            "sourceRoot": "src",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:application",
+                    "options": {
+                        "outputPath": {
+                            "base": "dist/gp-frontend"
+                        },
+                        "index": "src/index.html",
+                        "polyfills": [
+                            "zone.js"
+                        ],
+                        "sourceMap": {
+                            "scripts": true,
+                            "styles": true,
+                            "vendor": true
+                        },
+                        "tsConfig": "tsconfig.app.json",
+                        "aot": true,
+                        "assets": [
+                            "src/favicon.ico",
+                            "src/assets"
+                        ],
+                        "styles": [
+                            "src/styles.scss"
+                        ],
+                        "scripts": [
+                            "node_modules/jquery/dist/jquery.min.js",
+                            "node_modules/bootstrap/dist/js/bootstrap.min.js"
+                        ],
+                        "allowedCommonJsDependencies": [
+                            "keycloak-js",
+                            "js-sha256",
+                            "base64-js",
+                            "dayjs",
+                            "dayjs/plugin/localeData",
+                            "dayjs/plugin/localizedFormat",
+                            "dayjs/plugin/isoWeek",
+                            "dayjs/plugin/weekOfYear",
+                            "dayjs/plugin/customParseFormat"
+                        ],
+                        "optimization": {
+                            "scripts": true,
+                            "styles": {
+                                "minify": true,
+                                "inlineCritical": false
+                            },
+                            "fonts": true
+                        },
+                        "browser": "src/main.ts",
+                        "stylePreprocessorOptions": {
+                            "includePaths": [
+                                "."
+                            ],
+                            "sass": {
+                                "silenceDeprecations": [
+                                    "import"
+                                ]
+                            }
+                        }
+                    },
+                    "configurations": {
+                        "local": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.local.ts"
+                                }
+                            ],
+                            "sourceMap": true,
+                            "optimization": false,
+                            "extractLicenses": false,
+                            "namedChunks": true
+                        },
+                        "beta": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.beta.ts"
+                                }
+                            ]
+                        },
+                        "arce-beta": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.arce-beta.ts"
+                                }
+                            ]
+                        },
+                        "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "500kb",
+                                    "maximumError": "2mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "2kb",
+                                    "maximumError": "4kb"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "buildTarget": "gp-frontend:build:local"
+                    },
+                    "configurations": {
+                        "production": {
+                            "buildTarget": "gp-frontend:build:production"
+                        },
+                        "local": {
+                            "buildTarget": "gp-frontend:build:local"
+                        },
+                        "beta": {
+                            "buildTarget": "gp-frontend:build:beta"
+                        },
+                        "arce-beta": {
+                            "buildTarget": "gp-frontend:build:arce-beta"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "buildTarget": "gp-frontend:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "polyfills": [
+                            "zone.js",
+                            "zone.js/testing"
+                        ],
+                        "tsConfig": "tsconfig.spec.json",
+                        "karmaConfig": "karma.conf.js",
+                        "codeCoverageExclude": [
+                            "**/*.module.ts",
+                            "**/environments/**"
+                        ],
+                        "inlineStyleLanguage": "scss",
+                        "assets": [
+                            "src/favicon.ico",
+                            "src/assets"
+                        ],
+                        "styles": [
+                            "src/styles.scss"
+                        ],
+                        "scripts": [],
+                        "codeCoverage": true
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "tsconfig.app.json",
+                            "tsconfig.spec.json",
+                            "e2e/tsconfig.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                },
+                "e2e": {
+                    "builder": "@angular-devkit/build-angular:protractor",
+                    "options": {
+                        "protractorConfig": "e2e/protractor.conf.js",
+                        "devServerTarget": "gp-frontend:serve"
+                    },
+                    "configurations": {
+                        "production": {
+                            "devServerTarget": "gp-frontend:serve:production"
+                        },
+                        "local": {
+                            "devServerTarget": "gp-frontend:serve:local"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "cli": {
+        "analytics": false,
+        "cache": {
+          "enabled": false
+        }
+    }
+}

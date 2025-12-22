@@ -1,0 +1,19 @@
+<div class="border d-flex bg-transparent py-3 mb-2" [ngClass]="containerClass" *ngIf="entregable">
+    <div class="col-12">
+        <div class="font-weight-bold mb-1 subtitle">{{ entregable | entregableResumen }}</div>
+        <div class="row col-12">
+            <span>{{ fechaLabel }}
+                <span class="font-weight-bold">{{ fechaMostrada | date:'dd/MM/yyyy' }}</span>
+            </span>
+            <span class="ml-4"> {{ cantidadLabel }}
+                <span class="font-weight-bold">{{ cantidadMostrada }}
+                    <span class="font-weight-bold" *ngIf="sufijoMostrado">{{ sufijoMostrado }}</span>
+                </span>
+            </span>
+        </div>
+        <div *ngIf="mostrarPendiente">
+            <span>{{ pendienteLabel }} </span>
+            <span class="font-weight-bold">{{ pendienteMostrada }}</span>
+        </div>
+    </div>
+</div>

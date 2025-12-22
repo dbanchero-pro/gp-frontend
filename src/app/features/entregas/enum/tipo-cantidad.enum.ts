@@ -1,0 +1,7 @@
+export enum TipoCantidad {
+    ITEM = 'ITEM',
+    ITEM_ENTREGA = 'ITEM_ENTREGA',
+    ITEM_ENTREGABLE = 'ITEM_ENTREGABLE',
+    ENTREGA = 'ENTREGA',
+    ENTREGABLE = 'ENTREGABLE'
+}

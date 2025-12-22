@@ -1,0 +1,35 @@
+<div class="modal-header d-flex justify-content-between align-items-center">
+    <h1 class="modal-title mb-0" id="tituloPopup">{{titulo}}</h1>
+    <button type="button" aria-label="Cerrar" class="close" (click)="cancelarConConfirmacion()">&times;</button>
+</div>
+
+<div class="modal-body justify-content-center">
+    <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
+    <form [formGroup]="form" class="col-12 justify-content-center" (submit)="guardar()">
+
+        <app-filtro-organismo formControlName="organismo" [requeridoInciso]="true" [requeridoUC]="true"
+            [requeridoUE]="true" (cambioFiltro)="onCambioFiltro($event)">
+        </app-filtro-organismo>
+
+        <div class="row">
+            <div class="form-group form-row col-12 mb-4" [class.field-error]="campoVacio('usuario')">
+                <label for="usuario">* Usuario</label>
+                <select class="form-control" [attr.disabled]="noSeEncontraronUsuarios ? 'disabled' : null"
+                    formControlName="usuario" id="usuario">
+                    <option *ngIf="!noSeEncontraronUsuarios" [value]="''">Seleccione un usuario</option>
+                    <option *ngIf="noSeEncontraronUsuarios" [value]="''">No se encontraron usuarios</option>
+                    <option *ngFor="let usr of usuarios" [value]="usr.id">{{'CI ' + (usr.nroDocumento | formatoCi) + ' - ' + usr.nombre }}</option>
+                </select>
+                <span class="texto-error" [style.visibility]="campoVacio('usuario') ? 'visible' : 'hidden'">
+                    El usuario no puede estar vacío
+                </span>
+            </div>
+        </div>
+    </form>
+    <div class="d-flex justify-content-end mt-3 pe-3">
+        <button type="submit" class="btn btn-primary" (click)="guardar()" [disabled]="validarPopUpInvalido()">
+            Guardar
+        </button>
+        <button type="button" class="Button btn-link" (click)="cancelarConConfirmacion()">Cancelar</button>
+    </div>
+</div>

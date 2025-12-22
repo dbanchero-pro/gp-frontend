@@ -1,0 +1,53 @@
+:host {
+    display: block;
+    font-size: .875em;
+    padding: .675em 0;
+}
+
+ol {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+
+    li {
+        display: inline-block;
+        list-style: none;
+
+        &:first-child {
+            padding-left: 0;
+            margin-left: 0;
+        }
+
+        &:not(:first-child):before {
+            padding: 12px;
+            color: #555;
+            content: "\00bb";
+        }
+    }
+}
+
+.btn-link-miga {
+    color: #024893;
+}
+
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1504px;
+}
+
+.container:after,
+.container:before {
+    display: table;
+    content: "";
+}
+
+.container:after {
+    clear: both;
+}
+
+@media screen and (max-width: 991px) {
+    .container {
+        display: none;
+    }
+}

@@ -1,0 +1,49 @@
+<div class="modal-header d-flex justify-content-between align-items-center">
+  <h1 class="modal-title mb-0" id="tituloPopup">
+    Vincular a {{this.datosIniciales?.nombre}} con otro proveedor
+  </h1>
+  <div class="d-flex align-items-center">
+    <small class="text-muted mr-3">Los campos con * son obligatorios</small>
+    <button type="button" aria-label="Cerrar" class="close" (click)="cancelarConConfirmacion()">&times;</button>
+  </div>
+</div>
+
+
+<div class="modal-body">
+  <div>
+    <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
+  </div>
+  <form [formGroup]="form" (submit)="guardar()">
+    <div class="form-row align-items-end">
+      <div class="form-group col-md-6">
+        <label for="proveedor">* Proveedor</label>
+        <select id="proveedor" class="form-control" formControlName="proveedor">
+          <option value="">Seleccionar un proveedor</option>
+          <option *ngFor="let proveedor of proveedores" [value]="proveedor.id">{{proveedor | proveedor}}</option>
+        </select>
+         <span class="texto-error m-0 position-absolute "
+            *ngIf="form.get('proveedor')?.hasError('required') && form.get('correo')?.touched">
+            El proveedor no puede estar vacío</span>
+      </div>
+    </div>
+    <div class="form-row align-items-end">
+      <div class="form-group col-md-6" [class.field-error]="campoVacio('correo')">
+        <label for="correo">* Correo electrónico</label>
+        <input id="correo" type="text" class="form-control" formControlName="correo" />    
+        <span class="texto-error m-0 position-absolute "
+            *ngIf="form.get('correo')?.hasError('required') && form.get('correo')?.touched">
+            El correo electrónico no puede estar vacío</span>
+        <span class="texto-error m-0 position-absolute"
+          [style.visibility]="form.get('correo')?.errors?.['pattern'] && form.get('correo')?.touched ? 'visible' : 'hidden'">
+          Correo electrónico es inválido</span>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end mt-3 pe-3">
+      <button type="submit" class="btn btn-primary" (click)="guardar()">
+        Guardar
+      </button>
+      <button type="button" class="Button btn-link" (click)="cancelarConConfirmacion()">Cancelar</button>
+    </div>
+  </form>
+</div>

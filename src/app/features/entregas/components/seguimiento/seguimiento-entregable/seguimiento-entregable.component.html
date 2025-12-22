@@ -1,0 +1,98 @@
+<div class="row px-0 pr-3" *ngIf="ordenCompra">
+    <app-orden-compra-cabezal [ordenCompra]="ordenCompra" class="col-12 px-0"></app-orden-compra-cabezal>
+</div>
+<div class="row px-0 pr-3" *ngIf="ordenCompra">
+    <app-item-orden-compra-cabezal [itemOrdenCompra]="itemOrdenCompra" [mostrarCantidadPendienteEntrega]="true" [esUsuarioProveedor]="this.tipoUsuario === TipoUsuario.PROVEEDOR"
+     [mostrarFechaComprometida]="false" class="col-12 px-0"></app-item-orden-compra-cabezal>
+</div>
+<div class="row">
+    <div [ngClass]="colFiltro" class="sidebar">
+       <app-filtro titleBtn="Buscar" (evFilter)="actualizarFiltrosYBuscar()" (evCollapse)="aplicarColapso()"
+            class="filter">
+            <div [formGroup]="form">
+                <div class="row mt-0">
+                    <div class="form-group col-12 mb-0">
+                        <label class="col-form-label" for="entregable">Entregable</label>
+                        <select id="entregable" class="form-control" formControlName="entregable">
+                            <option [ngValue]="null"> Todos los entregables </option>
+                            <option *ngFor="let e of entregablesItem" [ngValue]="e.codEntregable">{{ e.codEntregable }} - {{ e.descEntregable }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-0">
+                    <div class="form-group col-12 mb-0">
+                        <label class="col-form-label" for="estadoSelect">Estado</label>
+                        <select id="estadoSelect" class="form-control" formControlName="estado">
+                            <option *ngFor="let e of tiposEstado" [ngValue]="e.id">{{ e.nombre }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="clean-filter text-end mt-3">
+                    <button type="button" class="btn btn-link p-0"
+                        (click)="nuevaConsulta()">Nueva
+                        consulta</button>
+                </div>
+            </div>
+        </app-filtro>
+    </div>
+
+    <div [ngClass]="colTabla">
+        <div class="row px-0 pr-3 d-flex justify-content-end">
+            <span>
+                <button type="button" class="btn btn-primary ml-2 mb-1 btn-250" (click)="marcarDesmarcarEntregasTodos()"
+                    *ngIf="puedeRecepcionarEntregaMasivo() || puedeDarConformidadEntregaMasivo()">
+                    <em class="fa fa-check-square-o mr-1">
+                    </em>{{ this.marcarTodos ? 'Desmarcar todas las entregas': 'Seleccionar todas las entregas'}}
+                </button>
+            </span>
+            <span>
+                <button type="button" class="btn btn-primary ml-2 mb-1" (click)="abrirPopupRecepcionarSeleccionados()"
+                    [disabled]="!hayItemsSeleccionados" *ngIf="puedeRecepcionarEntregaMasivo()">
+                    <em class="fa fa-retweet mr-1">
+                    </em>
+                    Recepcionar entregas seleccionadas
+                </button>
+            </span>
+            <span>
+                <button type="button" class="btn btn-primary ml-2 mb-1" (click)="abrirPopupDarConformidadSeleccionados()"
+                    [disabled]="!hayItemsSeleccionados" *ngIf="puedeDarConformidadEntregaMasivo()">
+                    <em class="fa fa-check-circle mr-1">
+                    </em>
+                    Dar conformidad entregas seleccionadas
+                </button>
+            </span>
+        </div>
+        <div class="row justify-content-end pr-2">
+            <button type="button" class="btn btn-primary mr-2" (click)="abrirPopupAgregarEntregable()" *ngIf="puedeAgregarEntregable()">
+                <em class="fa fa-plus mr-1">
+                </em>
+                Agregar entregable
+            </button>
+        </div>
+        <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden" [columnaOrden]="parametros.sort"
+            [orden]="parametros.order" (orderChange)="cambioOrden($event)"
+            (sortChange)="cambioColumnaOrden($event)"></app-cabezal-consulta>
+
+        <div *ngFor="let entregable of entregables; let i = index" class="mb-2"  [style.z-index]="400-i">
+
+            <app-entregable [entregable]="entregable" [itemOrdenCompra]="itemOrdenCompra"
+                [ordenCompra]="ordenCompra" (seleccionado)="seleccionado($event)"
+                [usuarioLogueadoTienePermisosRecepcion]="tienePermisoRecepcion"
+                (actualizarEvento)="actualizarEventoEntregable()"
+                ></app-entregable>
+            
+        </div>
+
+        <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina"
+            [paginaActual]="parametros.pagina + 1" (cambioPagina)="cambioPagina($event)"
+            (cambioItemsPorPagina)="cambioPorPagina($event)"></app-paginado>
+
+        <div class="btn-back d-flex justify-content-end mt-auto">
+            <button class="btn btn-link" type="button" (click)="volver()">
+                <em class="fa fa-arrow-left"></em>
+                Volver
+            </button>
+        </div>
+    </div>
+</div>

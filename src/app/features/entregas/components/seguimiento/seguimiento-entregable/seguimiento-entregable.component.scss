@@ -1,0 +1,62 @@
+.btn-icon {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  line-height: 1;
+  color: inherit;          // usa el color del texto de la cabecera
+  font-size: 1.1rem;       // ajusta tamaño del chevron
+  cursor: pointer;
+}
+
+.card-collapsed {
+  cursor: pointer; //Tira clickeable
+}
+
+.card-border-remove {
+  border: none;
+}
+
+.card .card {
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-radius: 0;
+  margin-bottom: 0;
+  
+  border-top: 0;
+  
+  .card-header {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+
+.no-b-bottom { border-bottom: 0 !important; }
+
+.card .card + .card {
+  border-top: 1px solid #e0e3e7; 
+}
+
+.card > .card {
+  border-bottom: none !important;
+}
+
+.card > .card .card-header.card-collapsed {
+  border-bottom: 1px solid #e0e3e7 !important;
+}
+
+:host .card-collapsed {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+:host .card-body-collapse {
+    background-color: rgba(17, 115, 177, 0.05);
+}
+
+
+.card .card .card-header.no-b-bottom {
+  border-bottom: 0 !important;
+}
+
+

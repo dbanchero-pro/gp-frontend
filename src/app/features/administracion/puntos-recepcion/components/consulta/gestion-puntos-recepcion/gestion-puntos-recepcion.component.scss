@@ -1,0 +1,13 @@
+.boton-agregar {
+    display: flex;
+    justify-content: right;
+    
+    padding: 0;
+    & button {
+        text-decoration: none;
+        margin: 10px;
+    }
+}
+.options {
+    text-align: right;
+}

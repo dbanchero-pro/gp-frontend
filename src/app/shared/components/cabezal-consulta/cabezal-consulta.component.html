@@ -1,0 +1,25 @@
+<header>
+    <h3 *ngIf="titulo">{{ titulo }}
+    <br />
+    <span>{{ subtitulo }}</span>
+   </h3>
+
+    <div *ngIf="totalItems > 0">
+        <div class="form-group grid-order form-row">
+            <button type="button" aria-label="Orden ascendente o descendente" class="btn btn-link" (click)="orderChanged()">
+                <em *ngIf="orden === 'desc'" class="fa fa-sort-amount-desc fa-sort-amount-icon"></em>
+                <em *ngIf="orden === 'asc'" class="fa fa-sort-amount-asc fa-sort-amount-icon"></em>
+            </button>
+            <select class="form-select" aria-label="Criterio de orden" id="orderColunm" name="orderColunm" placeholder="Ordenear..."
+                ngDefaultControl [(ngModel)]="columnaOrden" (change)="sortChanged($event)" >
+                <option *ngFor="let item of listaOrden" [value]="item.id"> {{ item.nombre }} </option>
+            </select>
+        </div>
+        <div class="row option-add" *ngIf="mostrarBoton">
+            <button class="btn btn-primary" type="button" (click)="navBtn()">
+                <em class="fa fa-plus"></em>
+                {{ textoBoton }}
+            </button>
+        </div>
+    </div>
+</header>

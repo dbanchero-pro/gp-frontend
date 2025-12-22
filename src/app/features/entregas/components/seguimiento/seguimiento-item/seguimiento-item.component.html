@@ -1,0 +1,137 @@
+<div class="row px-0 pr-3" *ngIf="ordenCompra">
+    <app-orden-compra-cabezal [ordenCompra]="ordenCompra" class="col-12 px-0" [mostrarFechaComprometida]="mostrarFechaComprometidaOC()"></app-orden-compra-cabezal>
+</div>
+
+<div class="row">
+    <div [ngClass]="colFiltro" class="sidebar">
+        <app-filtro titleBtn="Buscar" (evFilter)="actualizarFiltrosYBuscar()" (evCollapse)="aplicarColapso()"
+            class="filter">
+            <div [formGroup]="form">
+                <app-filtro-items-articulos #filtroItems [idCompra]="ordenCompra ? ordenCompra.idOC : 0"
+                    [usarItemsOrdenCompra]="true" [filtroInicial]="filtroItem" (cambioFiltro)="onFiltroItemsCambio($event)">
+                </app-filtro-items-articulos>
+                <div class="row mt-3">
+                    <div class="form-group col-12">
+                        <label class="col-form-label" for="estadoSelect">Estado</label>
+                        <select id="estadoSelect" class="form-control" formControlName="estado">
+                            <option *ngFor="let e of tiposEstado" [ngValue]="e.id">{{ e.nombre }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="clean-filter text-end mt-3">
+                    <button type="button" class="btn btn-link p-0" (click)="nuevaConsulta()">Nueva consulta</button>
+                </div>
+                <div class="row">
+                    <div class="descargar-resultado col-12">
+                        <button *ngIf="this.seguridadService.obtenerTipoUsuario() === tipoUsuario || this.seguridadService.tieneAlgunPermiso(['GC_GESTION_RECEP.IMPRESION', 'GC_GESTION_CONF.IMPRESION'])"
+                            type="button" class="btn btn-link mr-1" id="exportarExcel" (click)="descargarExcel()">
+                            <span class="fa fa-file-excel-o"></span> Descargar Excel </button>
+                    </div>
+                </div>
+            </div>
+        </app-filtro>
+    </div>
+    
+   
+    <div [ngClass]="colTabla">
+        <div class="row px-0 pr-3 d-flex justify-content-end">
+            <span>
+                <button type="button" class="btn btn-primary ml-2 mb-1 btn-250" 
+                *ngIf="(puedeRecepcionarEntrega() || puedeDarConformidadEntrega() || puedeAjustarItems())"
+                 (click)="marcarDesmarcarItemsTodos()">
+                    <em class="fa fa-check-square-o mr-1"></em>{{ this.marcarTodos ? 'Desmarcar todos los ítems': 'Seleccionar todos los ítems'}}
+                </button>
+            </span>
+            <span>
+                <button type="button" class="btn btn-primary mb-1 ml-2" *ngIf="puedeRecepcionarEntrega() && this.seguridadService.tienePermiso('GC_GESTION_RECEP.ALTA')"
+                    (click)="abrirPopupRecepcionarSeleccionados()" [disabled]="!this.sePuedeRecepcionarTodos" >
+                    <em class="fa fa-server mr-1"></em>Recepcionar ítems seleccionados
+                </button>
+            </span>
+            <span>
+                <button type="button" class="btn btn-primary ml-2 mb-1 " *ngIf="puedeDarConformidadEntrega() && this.seguridadService.tienePermiso('GC_GESTION_CONF.ALTA')"
+                    (click)="abrirPopupDarConformidadSeleccionados()" [disabled]="!this.sePuedeDarConformidadTodos">
+                    <em class="fa fa-server mr-1"></em>Dar conformidad ítems seleccionados
+                </button>
+            </span>
+
+            <span>
+                <button type="button" class="btn btn-primary ml-2 mb-1 " *ngIf="puedeAjustarItems()"
+                    (click)="abrirPopupAjustarSeleccionados()" [disabled]="!this.sePuedeAjustarTodos">
+                    <em class="fa fa-cog mr-1"></em>Ajustar ítems seleccionados
+                </button>
+            </span>
+        </div>
+
+        <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden" [columnaOrden]="parametros.sort"
+            [orden]="parametros.order" (orderChange)="cambioOrden($event)"
+            (sortChange)="cambioColumnaOrden($event)"></app-cabezal-consulta>
+
+    
+        <div *ngFor="let item of items">
+            <div class="resultado-item border rounded mb-2">
+                
+                <div class="d-flex justify-content-between align-items-center bg-light border-bottom px-3 py-2">
+                    <strong>{{ item.estadoItem | itemEstado}}</strong>
+                </div>
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item p-0">
+                        <div class="row g-0 py-2 px-3 align-items-center subtitle">
+                            <div class="col-md-9 col-lg-8 col-10 font-weight-bold">
+                                <input aria-label="Seleccionar ítem para dar recepción o conformidad masiva" type="checkbox" class="mr-2" *ngIf="mostrarCheck(item)" 
+                                    [checked]="item.seleccionado === true" (change)="seleccionar(item, $any($event.target).checked)" />
+                                <span [innerHTML]="item | itemOrdenResumen"> </span>
+                            </div>
+                            <div class="col-md-3 col-lg-4 col-2 d-flex justify-content-end">
+                                <app-boton-accion [acciones]="obtenerAcciones(item)"
+                                 [ariaLabelMasOpciones]="'Mas opciones del item id '+ item.idItem +' variacion '+ item.idVariacion"></app-boton-accion>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item p-0"  *ngIf="item.fechaComprometida" >
+                        <div class="row g-0 py-2 px-3">
+                            <div class="col-5 col-xl-4 fw-semibold etiqueta">Fecha última entrega ítem</div>
+                            <div class="col-7 col-xl-8 font-weight-bold"
+                                [ngClass]="{ 'text-danger': fechaEntregaParaProveedor(item)}">
+                                {{ item.fechaComprometida| date:'dd/MM/yyyy' }}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item p-0">
+                        <div class="row g-0 py-2 px-3">
+                            <div class="col-5 col-xl-4 fw-semibold etiqueta">Cantidad pendiente de entrega</div>
+                            <div class="col-7 col-xl-8 font-weight-bold">
+                                {{ cantidadesPendienteEntrega(item) }}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item p-0">
+                        <div class="row g-0 py-2 px-3">
+                            <div class="col-5 col-xl-4 fw-semibold etiqueta">Cantidad pendiente de recepción</div>
+                            <div class="col-7 col-xl-8 font-weight-bold">
+                                {{ cantidadesPendienteRecepcion(item) }}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item p-0">
+                        <div class="row g-0 py-2 px-3">
+                            <div class="col-5 col-xl-4 fw-semibold etiqueta">Cantidad pendiente de conformidad</div>
+                            <div class="col-7 col-xl-8 font-weight-bold">
+                                {{ cantidadesPendienteConformidad(item) }}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina"
+            [paginaActual]="parametros.pagina + 1" (cambioPagina)="cambioPagina($event)"
+            (cambioItemsPorPagina)="cambioPorPagina($event)"></app-paginado>
+
+        <div class="btn-back d-flex justify-content-end">
+            <button class="btn btn-link" type="button" (click)="volver()"><em class="fa fa-arrow-left mr-1"></em>Volver</button>
+        </div>
+    </div>
+</div>

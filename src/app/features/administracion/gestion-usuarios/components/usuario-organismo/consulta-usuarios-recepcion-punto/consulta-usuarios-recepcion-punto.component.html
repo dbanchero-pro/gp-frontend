@@ -1,0 +1,81 @@
+<div class="row" *ngIf="usuario">
+    <div class="border bg-transparent py-2 mb-2 col-12">
+        <div class="subtitle float-left">Usuario seleccionado: </div>
+        <div class="pl-3 font-weight-bold subtitle float-left">CI {{ usuario.id | formatoCi}}</div>
+        <div class="pl-3 font-weight-bold subtitle float-left">{{usuario.nombre}}</div>
+    </div>
+</div>
+<div class="row">
+    <div [ngClass]="colFiltro" class="sidebar">
+        <app-filtro titleBtn="Buscar" (evFilter)="actualizarFiltrosYBuscar()" (evCollapse)="aplicarColapso()"
+            class="filter">
+            <div [formGroup]="form">
+                <app-filtro-organismo formControlName="organismo" (cambioFiltro)="onFiltroOrganismo($event)"
+                    [idUsuarioSeleccionado]="idUsuarioSeleccionado"
+                    (limpiarFiltro)="onFiltroOrganismo(null)"></app-filtro-organismo>
+
+                <div class="row">
+                    <div class="form-group form-row col-12 m-0 pb-0 pt-0 mb-4">
+                        <label for="idZona" class="col-form-label col-12">Departamento</label>
+                        <select class="form-control col-12" id="idZona" name="idZona" formControlName="idZona">
+                            <option value="">Todos los departamentos</option>
+                            <option *ngFor="let item of opcionesZona" [value]="item.id">{{ item.descripcionZona }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group form-row col-12 m-0 pb-0 pt-0" [class.field-error]="form.get('nombrePuntoRecepcion')?.touched && form.get('nombrePuntoRecepcion')?.errors?.['minlength']" >
+                        <label for="nombrePuntoRecepcion" class="col-form-label">Nombre del punto de recepción</label>
+                        <input id="nombrePuntoRecepcion" class="form-control" type="text" formControlName="nombrePuntoRecepcion"/>
+                        <div *ngIf="form.get('nombrePuntoRecepcion')?.touched && form.get('nombrePuntoRecepcion')?.errors?.['minlength']"
+                            class="texto-error">Debe ingresar al menos 3 caracteres</div>
+                    </div>
+                </div>
+
+                <div class="clean-filter">
+                    <button type="button" class="btn btn-link" (click)="nuevaConsulta()">Nueva consulta</button>
+                </div>
+            </div>
+        </app-filtro>
+    </div>
+
+    <div [ngClass]="[colTabla, 'd-flex', 'flex-column', 'min-vh-100']">
+        <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total===-1">
+            <div class="card-body py-sm-2 mb-sm-2 col-12 text-center  pt-sm-4 pb-sm-4">
+                <em class=" fa fa-search  fa-2x  d-block mb-4"></em>
+                <h6>Ingresa las opciones de búsqueda y presiona buscar para agregar el punto de al usuario</h6>
+        
+            </div>
+        </div>
+        <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden" [columnaOrden]="parametros.sort"
+            [orden]="parametros.order" (orderChange)="cambioOrden($event)"
+            (sortChange)="cambioColumnaOrden($event)"></app-cabezal-consulta>
+
+        <div class="card bg-transparent mb-1" *ngFor="let punto of puntosRecepcion; let i = index"  [style.z-index]="200-i">
+            <div class="row-record">
+                <div class="row align-items-center">
+                    <div class="col-9 subtitle">
+                        <div>{{ punto.unidadCompra | unidadCompraResumen }}</div>
+                        <div class="font-weight-bold">{{ punto | puntoRecepcionResumen}}</div>
+                    </div>
+                    <div class="col-3 d-flex justify-content-end align-items-center"
+                        *ngIf="!puntoInhabilitado(punto)">
+                        <app-boton-accion [acciones]="obtenerAccionesItem(punto)"
+                        
+                        [ariaLabelMasOpciones]="'Mas opciones del punto id '+ punto.id">
+                        </app-boton-accion>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina"
+            [paginaActual]="parametros.pagina + 1" (cambioPagina)="cambioPagina($event)"
+            (cambioItemsPorPagina)="cambioPorPagina($event)"></app-paginado>
+
+        <div class="btn-back d-flex justify-content-end">
+            <button class="btn btn-link" type="button" (click)="volver()"><em class="fa fa-arrow-left mr-1"></em>Volver</button>
+        </div>
+    </div>
+</div>

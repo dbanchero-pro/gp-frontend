@@ -1,0 +1,72 @@
+[
+    {
+      "id":1,
+      "nombre": "template1",
+      "asunto": "subject1",
+      "cuerpo": "<p>body1</p>",
+      "usoTemplateId": 1
+    },
+    {
+      "id":2,
+      "nombre": "template2",
+      "asunto": "subject2",
+      "cuerpo": "<p>body2</p>",
+      "usoTemplateId": 2
+    },
+    {
+      "id":3,
+      "nombre": "template3",
+      "asunto": "subject3",
+      "cuerpo": "<p>body3</p>",
+      "usoTemplateId": 3
+    },
+    {
+      "id":4,
+      "nombre": "template4",
+      "asunto": "subject4",
+      "cuerpo": "<p>body4</p>",
+      "usoTemplateId": 1
+    },
+    {
+      "id":5,
+      "nombre": "template5",
+      "asunto": "subject5",
+      "cuerpo": "<p>body5</p>",
+      "usoTemplateId": 2
+    },
+    {
+      "id":6,
+      "nombre": "template6",
+      "asunto": "subject6",
+      "cuerpo": "<p>body6</p>",
+      "usoTemplateId": 3
+    },
+    {
+      "id":7,
+      "nombre": "template7",
+      "asunto": "subject7",
+      "cuerpo": "<p>body7</p>",
+      "usoTemplateId": 1
+    },
+    {
+      "id":8,
+      "nombre": "template8",
+      "asunto": "subject8",
+      "cuerpo": "<p>body8</p>",
+      "usoTemplateId": 2
+    },
+    {
+      "id":9,
+      "nombre": "template9",
+      "asunto": "subject9",
+      "cuerpo": "<p>body9</p>",
+      "usoTemplateId": 3
+    },
+    {
+      "id":10,
+      "nombre": "template10",
+      "asunto": "subject10",
+      "cuerpo": "<p>body10</p>",
+      "usoTemplateId": 1
+    }
+  ]

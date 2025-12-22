@@ -1,0 +1,1 @@
+export type NumeroStringNulo = string | number | null

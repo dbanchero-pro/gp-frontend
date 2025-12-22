@@ -1,0 +1,120 @@
+<div class="card-body-collapse">
+    <div class="bg-white pt-1">
+        <div class="row col-md-12 pb-1">
+            <div class="col-md-3 col-xl-2 etiqueta">Fecha solicitud</div>
+            <div class="col-md-2 font-weight-bold"> {{ ajuste.fechaSolicitud | date: 'dd/MM/yyyy' }}</div>
+            <div class="col-md-6 etiqueta font-weight-bold">Identificador</div>
+            <div class="col-md-1 font-weight-bold">{{ ajuste.idAjuste }}</div>
+        </div>
+    </div>
+     <div class="bg-white pt-1">
+        <div class="row col-md-12 pb-1">
+            <div class="col-md-3 col-xl-2 etiqueta">Tipo</div>
+            <div class="col-md-9 font-weight-bold"> {{ ajuste.tipoAjuste | tipoAjusteResumen }}</div>
+        </div>
+    </div>
+    <div class="bg-white p-0" *ngIf="ajuste.itemOrdenCompra">
+        <div class="row col-md-12 pb-1 pt-1">
+            <div class="col-md-3 col-xl-2 etiqueta">Ítem</div>
+            <div class="col-md-9 col-xl-10 font-weight-bold"> <span [innerHTML]="ajuste.itemOrdenCompra | itemOrdenResumen"></span>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white p-0" *ngIf="debeMostrarValores(ajuste)">
+        <div class="row col-md-12 pb-1">
+            <div class="col-md-3 col-xl-2 etiqueta">Valor anterior</div>
+            <div class="col-md-5 font-weight-bold">{{ valorAnteriorDescripcion(ajuste) }}</div>
+        </div>
+        <div class="row col-md-12 pb-1">
+            <div class="col-md-2 etiqueta">Valor nuevo</div>
+            <div class="col-md-4 font-weight-bold">{{ valorNuevoDescripcion(ajuste) }}</div>
+        </div>
+    </div>
+    <div class="bg-white p-0">
+        <div class="row col-md-12 pb-1">
+            <div class="col-md-3 col-xl-2 etiqueta">Origen solicitud</div>
+            <div class="col-md-2 font-weight-bold"> {{ origenSolicitud(ajuste.tipoSolicitante) }}</div>
+            <div class="col-md-2 etiqueta">Fuerza mayor</div>
+            <div class="col-md-1 font-weight-bold">{{ ajuste.fuerzaMayor ? 'Sí' : 'No' }}</div>
+            <div class="col-md-3 etiqueta">Habilitado en el pliego</div>
+            <div class="col-md-1 font-weight-bold">{{ ajuste.permitidoEnPliego ? 'Sí' : 'No' }}</div>
+        </div>
+    </div>
+    <div class="bg-white p-0">
+        <div class="row col-md-12 pb-1" *ngIf="ajuste.comentario">
+            <div class="col-md-3 col-xl-2 etiqueta">Comentario</div>
+            <div class="col-md-9 font-weight-bold text-crop">{{ ajuste.comentario }}</div>
+        </div>
+    </div>
+    <div class="bg-white p-0">
+        <div class="row col-md-12 pb-1" *ngIf="ajuste.archivo">
+            <div class="col-md-3 col-xl-2 etiqueta">Documento</div>
+            <div class="col-md-9">
+                <ul class="list-inline mb-0 documentos-conformidad-lista">
+                    <li class="list-inline-item">
+                
+                        <button type="button" class="btn btn-link p-0 boton-link" [attr.id]="'doc-btn-' + guid"
+                            [attr.aria-labelledby]="'doc-extra-' + guid "
+                            (click)="descargarDocumento(ajuste.archivo)">
+                
+                            <span aria-hidden="true" [attr.id]="'doc-name-' + guid">
+                                {{ ajuste.archivo.nombre }}
+                            </span>
+                
+                        </button>
+                
+                        <span class="sr-only visually-hidden" [attr.id]="'doc-extra-' + guid">
+                            Descargar documento {{ ajuste.archivo.nombre }}
+                            del ajuste {{ ajuste.idAjuste }}
+                        </span>
+                
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white p-0" *ngIf=" ajuste.fechaResolucion">
+        <div class="row col-md-12 pb-1">
+            <div class="col-md-3 col-xl-2 etiqueta">Fecha resolución</div>
+            <div class="col-md-9 font-weight-bold">{{ ajuste.fechaResolucion | date: 'dd/MM/yyyy' }}</div>
+        </div>
+    </div>
+    <div class="bg-white p-0" *ngIf="ajuste.motivoResolucion">
+        <div class="row col-md-12 pb-1">
+            <div class="col-md-3 col-xl-2 etiqueta">Motivo</div>
+            <div class="col-md-9 font-weight-bold text-crop">{{ ajuste.motivoResolucion }}</div>
+        </div>
+    </div>
+</div>
+
+<app-grupo-colapsable *ngIf="tieneDescargos(ajuste)" [colapsado]="true" class="pl-0" classTitulo="pl-3"
+    classContenido="ml-0 pl-0 mr-0" ariaLabel="Expandir o colapsar sección de descargos">
+    <titulo>Descargos</titulo>
+    <contenido>
+        <div class="card-body-collapse bg-white">
+            <div *ngFor="let descargo of ajuste.descargos; let i = index" class=" pb-2" [ngClass]="{ 'mt-2': i !== 0 }">
+                <div class="row pt-1 col-12">
+                    <div class="col-12 col-md-2 etiqueta">Fecha descargo</div>
+                    <div class="col-12 col-md-8 font-weight-bold">
+                        {{ descargo.archivo?.fecha ? (descargo.archivo?.fecha | date:'dd/MM/yyyy') : '-' }}
+                    </div>
+                </div>
+                <div class="row pt-1 col-12">
+                    <div class="col-12 col-md-2 etiqueta">Observaciones</div>
+                    <div class="col-12 col-md-8 font-weight-bold">
+                        {{ descargo.comentario || '-' }}
+                    </div>
+                </div>
+                <div class="row pt-1 col-12">
+                    <div class="col-12 col-md-2 etiqueta">Archivo adjunto</div>
+                    <div class="col-12 col-md-8 font-weight-bold">
+                        <button *ngIf="descargo.archivo?.nombre" type="button" class="btn btn-link p-0 boton-link" (click)="descargarDescargo(descargo)">
+                            {{ descargo.archivo?.nombre }}
+                        </button>
+                        <span *ngIf="!descargo.archivo?.nombre">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </contenido>
+</app-grupo-colapsable>

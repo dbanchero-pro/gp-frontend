@@ -1,0 +1,64 @@
+
+<div class="container menu-container">
+    <nav class="navbar navbar-expand-lg navbar-dark" aria-label="Menú principal">
+        <button class="navbar-toggler" #buttonMenu type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon mt-1 mb-1"></span>
+        </button>
+        <div id="navbarNavDropdown"
+            class="collapse navbar-collapse w-100 order-1 order-md-0 dual-collapse6">
+        <ul class="navbar-nav">
+            <li *ngFor="let menu of menuItems$ | async; let i = index"
+                class="nav-item dropdown">
+            <!-- dropdown principal sigue con data-toggle para el primer nivel -->
+            <button type="button" class="nav-link btn btn-link p-0" id="navbarDropdownMenuLink{{i}}" 
+             [attr.aria-label]="'Menú principal ' + menu.nombre"
+             data-toggle="dropdown" aria-haspopup="true"  (click)="toggleMenu($event, menu)"  aria-expanded="false"> {{ menu.nombre }}&nbsp;</button>
+
+            <div class="dropdown-menu"
+                [attr.aria-labelledby]="'navbarDropdownMenuLink' + i">
+                <ng-container *ngFor="let item of menu.items; let j = index">
+
+                <!-- Submenú controlado por click -->
+                <div *ngIf="item.items?.length" class="dropdown-submenu" [class.show]="item._open" [class.seleccionado]="item._open">
+                    <button type="button" class="dropdown-item dropdown-toggle" (click)="toggleSubmenu($event, menu, item, true);$event.preventDefault();$event.stopPropagation();" (mouseover)="toggleSubmenu($event, menu, item, false)"> {{ item.nombre }} </button>
+                    <div class="dropdown-menu"> <a *ngFor="let sub of item.items" class="dropdown-item" [routerLink]="sub.url"> {{ sub.nombre }} </a> </div>
+                </div>
+
+                <!-- Ítem normal -->
+                <a *ngIf="!item.items?.length" (click)="toggleSubmenu($event, menu, item, true)" (mouseover)="toggleSubmenu($event, menu, item, false)" class="dropdown-item" [routerLink]="item.url"> {{ item.nombre }} </a>
+
+                </ng-container>
+            </div>
+            </li>
+            <li class="nav-item solo-movil" *ngIf="mostrarCambiarPerfil">
+                <button class="nav-link span-menu btn btn-link p-0" type="button"
+                *ngIf="mostrarCambiarPerfil"
+                 (click)="cambiarPerfil()" [attr.aria-label]="'Cambiar perfil ('+ tipoUsuario +')'"> Cambiar perfil ({{ tipoUsuario }})
+                    <em class="fa fa-sitemap" aria-hidden="true"></em>
+                </button>
+            </li>
+           <li class="nav-item solo-movil">
+                <button class="nav-link span-menu btn btn-link p-0" type="button" (click)="cerrarSesion()" [attr.aria-label]="'Cerrar sesión ('+ nombre +')'"> Cerrar sesión ({{ nombre }})
+                    <em class="fa fa-sign-out" aria-hidden="true"></em>
+                </button>
+            </li>
+        </ul>
+        </div>
+        <div class="navbar-collapse collapse w-100 order-2 dual-collapse1">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" *ngIf="mostrarCambiarPerfil">
+                  <button class="nav-link span-menu btn btn-link p-0 una-linea" type="button" (click)="cambiarPerfil();" [attr.aria-label]="'Cambiar perfil ('+ tipoUsuario +')'"> Cambiar perfil ({{ tipoUsuario }})
+                    <em class="fa fa-sitemap" aria-hidden="true"></em>
+                </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link span-menu btn btn-link p-0 una-linea" type="button" (click)="cerrarSesion()" [attr.aria-label]="'Cerrar sesión ('+ nombre +')'"> Cerrar sesión ({{ nombre }})
+                        <em class="fa fa-sign-out" aria-hidden="true"></em>
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+    </nav>
+</div>

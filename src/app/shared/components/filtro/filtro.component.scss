@@ -1,0 +1,76 @@
+@use "../../../../scss/portal-tipo/variables.scss";
+
+h3 {
+    margin: 10px 10px 0 15px;
+    font-size: 1rem;
+
+    & em {
+        border: 1px solid variables.$primary;
+        border-radius: 50%;
+        color: variables.$primary;
+        padding: 5px;
+        margin-right: 10px;
+    }
+}
+
+.link_home {
+    margin: 10px 10px 0 15px;
+    font-size: 1rem;
+
+    & em {
+        border: 1px solid variables.$primary;
+        border-radius: 50%;
+        color: variables.$primary;
+        padding: 5px;
+        margin-right: 15px;
+    }
+}
+
+.position-absolute-collapsed {
+    position: absolute;
+    right: 15px;
+}
+a {
+    
+    & em {
+        margin-right: 15px;
+        
+    }
+}
+button {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+
+    & em {
+        margin-right: 5px;
+    }
+}
+
+.buttonFilter {
+    background-color: variables.$primary;
+    display: flex;
+    align-self: center;
+    align-items: center;
+    justify-content: left;
+    margin-bottom: 15px;
+}
+
+.buttonFilterContainer {
+    text-align: -webkit-left;
+    padding: 10px 0px;
+}
+
+.busqueda-icono {
+    padding: 15px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+#sidebar {
+    z-index: 1;
+}
+
+#wrapper {
+    display: flow-root;
+}

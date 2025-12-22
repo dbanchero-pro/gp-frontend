@@ -1,0 +1,16 @@
+<div class=" border desplegable border-bottom-0" [ngClass]="class">
+    <div role="region" class="card-header d-flex justify-content-between align-items-center bg-white border-bottom-0 pl-1"
+        [ngClass]="(!colapsado? 'borde-inferior ': '') + classTitulo" (click)="colapsado = !colapsado" (keydown.enter)="colapsado = !colapsado"
+        [attr.aria-label]="ariaLabel">
+        <h4 class="font-weight-bold">{{titulo}}<ng-content select="titulo"></ng-content>
+        </h4>
+        <button class="btn-icon" type="button" [attr.aria-label]="ariaLabel"
+            (click)="colapsado = !colapsado; $event.stopPropagation()">
+            <em [ngClass]="!colapsado ? 'fa fa-caret-up' : 'fa fa-caret-down'"></em>
+        </button>
+    </div>
+    <div *ngIf="!colapsado" class="rounded-bottom" [ngClass]="classContenido">
+    <ng-content *ngIf="titulo" element></ng-content>
+        <ng-content *ngIf="!titulo" select="contenido"></ng-content>
+    </div>
+</div>

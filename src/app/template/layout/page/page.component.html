@@ -1,0 +1,18 @@
+<app-header></app-header>
+<app-menu></app-menu>
+<app-breadcrumbs></app-breadcrumbs>
+<div class="row" *ngIf="titulo">
+    <div class="col-12" >
+        <h1 class="mx-0 col-12" >{{ titulo }}</h1>
+    </div>
+</div>
+<header class="mx-0 col-12"  *ngIf="subTitulo">
+    <h2  >{{ subTitulo }}</h2>
+</header>
+<app-mensaje
+    [messages]="resultMsg"
+    [showMsg]="showMsg"
+    [typeMsg]="typeMsg"
+></app-mensaje>
+<ng-content> </ng-content>
+<app-footer></app-footer>

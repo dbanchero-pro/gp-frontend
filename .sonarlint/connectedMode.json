@@ -1,0 +1,4 @@
+{
+    "sonarQubeUri": "http://sonarqube25-pac-cicd.192.168.180.190.nip.io",
+    "projectKey": "gc-frontend"
+}

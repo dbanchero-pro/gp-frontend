@@ -1,0 +1,34 @@
+@use '../../../../scss/portal-tipo/variables.scss';
+
+input {
+  width: 100% !important;
+}
+
+.field-error{
+    justify-self: left;
+}
+
+.field-error label{
+    color: variables.$danger-border !important;
+}
+
+.input-documento-container {
+  position: relative;
+}
+
+.input-documento-container .field-error {
+  position: absolute;
+  bottom: -25px;
+  left: 0;
+  z-index: 1;
+}
+
+.col-form-label{
+    padding-right: 5px;
+    padding-left: 5px;
+    color: #00204A;
+}
+
+.nowrap {
+  white-space: nowrap;
+}

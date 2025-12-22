@@ -1,0 +1,92 @@
+<div class="modal-header d-flex justify-content-between align-items-center">
+    <h1 class="modal-title mb-0" id="tituloPopup"> {{tituloFormulario}}</h1>
+    <div class="d-flex align-items-center">
+        <small class="text-muted mr-3">Los campos con * son obligatorios</small>
+        <button type="button" aria-label="Cerrar" class="close" (click)="volverConConfirmacion()">&times;</button>
+    </div>
+</div>
+
+
+<div class="modal-body">
+    <div>
+        <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
+    </div>
+    <form [formGroup]="form" (submit)="guardar()">
+        <div class="form-row align-items-end">
+            <div class="form-group col-4 md-3">
+                <label for="pais">* País documento</label>
+                <select id="pais" class="form-control" formControlName="pais" (change)="cambioPais()">
+                    <option *ngFor="let pais of paises" [value]="pais.id">
+                        {{pais.descripcion}}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group col-md-3">
+                <label for="tipoDoc">* Tipo documento</label>
+                <select id="tipoDoc" class="form-control" formControlName="tipoDoc" (change)="cambioTipoDoc()">
+                    <option *ngFor="let tipo of tipoDocumentoOpciones" [value]="tipo.idTipoDocumento">
+                        {{ tipo.descripcion }}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group col-md-3" [class.field-error]="campoVacio('nroDoc')">
+                <app-input-documento formControlName="nroDoc"
+                    [esCedula]="this.form.get('tipoDoc')?.value === TipoDocumentoUsuario.CEDULA_IDENTIDAD"
+                    [required]="true" label="N° documento">
+                </app-input-documento>
+            </div>
+
+            <div class="form-group col-md-2 text-right" *ngIf="!this.datosIniciales">
+                <button type="button" class="Button btn btn-primary buttonFilter" (click)="buscar()" [disabled]="form.get('pais')!.invalid ||
+                      form.get('tipoDoc')!.invalid ||
+                      form.get('nroDoc')!.invalid">
+                    <em class="fa fa-search"></em>
+                    Buscar
+                </button>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6" [class.field-error]="campoVacio('nombre')">
+                <label for="nombre">* Nombre</label>
+                <input id="nombre" type="text" class="form-control" formControlName="nombre" />
+                <span class="texto-error m-0 position-absolute"
+                    *ngIf="form.get('nombre')?.hasError('required') && form.get('nombre')?.touched">
+                    El nombre no puede estar vacío</span>
+            </div>
+
+
+            <div class="form-group col-md-6" [class.field-error]="campoVacio('proveedor')"
+                *ngIf="this.proveedores.length > 1">
+                <label for="proveedor">* Proveedor</label>
+                <select id="proveedor" class="form-control" formControlName="proveedor">
+                    <option value="" *ngIf="proveedores && proveedores.length > 1">Seleccione un proveedor</option>
+                    <option *ngFor="let proveedor of proveedores" [value]="proveedor.id">{{proveedor | proveedor }}
+                    </option>
+                </select>
+                <span class="texto-error m-0 position-absolute "
+                    *ngIf="form.get('proveedor')?.hasError('required') && form.get('proveedor')?.touched">
+                    El proveedor no puede estar vacío</span>
+            </div>
+
+            <div class="form-group col-md-6" [class.field-error]="campoVacio('correo')">
+                <label for="correo">* Correo electrónico</label>
+                <input id="correo" type="text" class="form-control" formControlName="correo" />
+                <div>
+                    <span class="texto-error m-0 position-absolute "
+                        *ngIf="form.get('correo')?.hasError('required') && form.get('correo')?.touched">
+                        El correo electrónico no puede estar vacío</span>
+                    <span class="texto-error m-0 position-absolute"
+                        [style.visibility]="form.get('correo')?.errors?.['pattern'] && form.get('correo')?.touched ? 'visible' : 'hidden'">
+                        Correo electrónico inválido</span>
+                </div>
+            </div>
+        </div>
+        <!-- Botón Guardar -->
+        <div class="d-flex justify-content-end mt-3 pe-3">
+            <button class="btn btn-primary" type="submit" (click)="guardar()"
+                [disabled]="!(this.datosIniciales || this.idUsuarioBuscado != '')">Guardar</button>
+            <button class="btn btn-link ml-3" type="button" (click)="volverConConfirmacion()">Cancelar</button>
+        </div>
+    </form>
+</div>

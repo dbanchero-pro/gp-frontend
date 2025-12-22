@@ -1,0 +1,85 @@
+<div class="row row-usuario"  *ngIf="usuario">
+    <div class="border bg-transparent py-2 mb-2 col-12">
+        <div class="subtitle float-left">Usuario seleccionado: </div>
+        <div class="pl-3 font-weight-bold subtitle float-left">CI {{ usuario.id | formatoCi}}</div>
+        <div class="pl-3 font-weight-bold subtitle float-left">{{usuario.nombre}}</div>
+    </div>
+</div>
+<div class="row">
+    <div [ngClass]="colFiltro" class="sidebar">
+        <app-filtro titleBtn="Buscar" (evFilter)="actualizarFiltrosYBuscar()" (evCollapse)="aplicarColapso()"
+            class="filter">
+            <div [formGroup]="form">
+                <app-filtro-organismo  formControlName="organismo" (cambioFiltro)="cambiarFiltro($event)"
+                    (limpiarFiltro)="cambiarFiltro(null)" [requeridoInciso]="true" [requeridoUC]="true" [idUsuarioSeleccionado]="idUsuarioSeleccionado"
+                    [requeridoUE]="true"></app-filtro-organismo>
+
+                <div class="row">
+                    <div class="form-group form-row col-12 m-0 pb-0 pt-0 mb-4"
+                        [class.field-error]="campoVacio('idTipoCompra')">
+                        <label for="idTipoCompra" class="col-form-label col-12">Tipo de compra</label>
+                        <select id="idTipoCompra" class="form-control col-12" formControlName="idTipoCompra">
+                            <option value="">Todos los tipos de compra</option>
+                            <option *ngFor="let t of tiposCompra" [value]="t.id">{{ t.id }} - {{ t.descTipoCompra }}</option>
+                        </select>
+                        <p class="texto-error"
+                            *ngIf="form.get('idTipoCompra')?.hasError('required') && form.get('idTipoCompra')?.touched">
+                            El tipo de compra no puede estar vacío
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group form-row col-12 m-0 pb-0 pt-0"
+                       [class.field-error]="!nroCompraValido">
+                        <label for="nroAnioCompra" class="col-form-label">N°/año compra</label>
+                        <input id="nroAnioCompra" class="form-control" type="text" formControlName="nroAnioCompra" (blur)=validarNroAnioCompra() />
+                        <span class="texto-error" [style.visibility]="nroCompraValido ? 'hidden' : 'visible'">El N°/año compra es incorrecto.</span>
+                    </div>
+                </div>
+
+                <div class="clean-filter">
+                    <button type="button" class="btn btn-link" (click)="nuevaConsulta()">Nueva consulta</button>
+                </div>
+            </div>
+        </app-filtro>
+    </div>
+
+    <div [ngClass]="[colTabla, 'd-flex', 'flex-column', 'min-vh-100']">
+        <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total===-1">
+            <div class="card-body py-sm-2 mb-sm-2 col-12 text-center  pt-sm-4 pb-sm-4" >
+            <em class=" fa fa-search  fa-2x  d-block mb-4"></em>
+                <h4>Ingresa las opciones de búsqueda y presiona buscar para agregar el permiso por
+                    compra o ítems al usuario</h4>
+            
+            </div>
+        </div>
+        <app-cabezal-consulta [listaOrden]="listaOrden" [columnaOrden]="parametros.sort" [orden]="parametros.order"  (orderChange)="cambioOrden($event)"
+            (sortChange)="cambioColumnaOrden($event)" [totalItems]="total"></app-cabezal-consulta>
+        <div class="card bg-transparent mb-1" *ngFor="let compra of compras ; let i = index"  [style.z-index]="800-i">
+            <div class="row-record">
+                <div class="row align-items-center">
+                    <div class="col-8 subtitle">
+                        <div>
+                             {{ compra | compraResumen:'unidad' }}
+                        </div>
+                        <div [innerHTML]="compra | compraResumen:'detalleHtml' "></div>
+                    </div>
+                    <div class="col-4 d-flex justify-content-end align-items-center">
+                        <app-boton-accion [acciones]="obtenerAcciones(compra)"
+                        [ariaLabelMasOpciones]="'Mas opciones de la compra id '+ compra.idCompra">
+                        </app-boton-accion>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina" class="mt-4"
+            [paginaActual]="parametros.pagina + 1" (cambioPagina)="cambioPagina($event)"
+            (cambioItemsPorPagina)="cambioPorPagina($event)"></app-paginado>
+
+        <div class="btn-back d-flex justify-content-end">
+            <button class="btn btn-link" type="button" (click)="volver()"><em class="fa fa-arrow-left mr-1"></em>Volver</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+@use "../../../../../../../scss/portal-tipo/variables.scss";
+
+.btn-secondary{
+    background-color: transparent;
+    border: none;
+    color: variables.$primary;
+}
+
+@media screen and (max-width: 490px){
+    .funcionario{
+        font-size: 0.9rem;
+        text-align: left;
+    }
+}

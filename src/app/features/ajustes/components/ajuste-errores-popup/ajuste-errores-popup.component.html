@@ -1,0 +1,36 @@
+﻿<div class="modal-header d-flex justify-content-between align-items-center">
+    <h1 class="modal-title mb-0" id="tituloPopup">{{ titulo }}</h1>
+    <button type="button" aria-label="Cerrar" class="close" (click)="cancelarPopup()">&times;</button>
+</div>
+
+<div class="modal-body">
+    <div *ngIf="mensajeConfirmacion">{{ mensajeConfirmacion }}</div>
+
+    <div class="table-responsive ajustes-errores-tabla mt-3">
+        <table class="table table-sm table-striped mb-0" *ngIf="errores?.length; else sinErrores"
+            aria-label="Tabla de errores">
+            <thead>
+                <tr>
+                    <th scope="col" class="col">Ítem</th>
+                    <th scope="col" class="col">Mensaje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ajuste of errores">
+                    <td [innerHTML]="obtenerItemAjuste(ajuste) | itemOrdenResumen "></td>
+                    <td>{{ obtenerMensajeError(ajuste) }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <ng-template #sinErrores>
+            <div class="alert alert-info mb-0" role="alert">
+                No se registraron errores para mostrar.
+            </div>
+        </ng-template>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button *ngIf="!deshabilitarGuardar" type="button" class="btn btn-primary" (click)="aceptar()">Guardar</button>
+    <button type="button" class="btn btn-link" (click)="cancelarPopup()">Cancelar</button>
+</div>

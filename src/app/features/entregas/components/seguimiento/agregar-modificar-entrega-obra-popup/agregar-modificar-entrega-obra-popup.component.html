@@ -1,0 +1,125 @@
+<div class="modal-header d-flex justify-content-between align-items-center">
+    <h1 class="modal-title mb-0" id="tituloPopup">{{ titulo }} <span class="font-weight-bold" *ngIf="entregaModificar">
+            Identificador {{ entregaModificar.idEntrega }}</span>
+    </h1>
+    <div class="d-flex align-items-center">
+        <small class="text-muted mr-3">Los campos con * son obligatorios</small>
+        <button type="button" aria-label="Cerrar" class="close" (click)="cancelarConConfirmacion()">&times;</button>
+    </div>
+</div>
+
+<div class="modal-body">
+    <app-orden-compra-cabezal [ordenCompra]="ordenCompra"
+        [mostrarFechaComprometida]="!itemOrdenCompra.fechaComprometida"></app-orden-compra-cabezal>
+    <app-item-orden-compra-cabezal [itemOrdenCompra]="itemOrdenCompra" [mostrarCantidadPendienteAsignar]="true"
+        [mostrarFechaComprometida]="true" [entregable]="entregable">
+    </app-item-orden-compra-cabezal>
+
+    <app-entregable-cabezal [entregable]="entregable" containerClass="subtitle" fechaLabel="Fecha última entrega:">
+    </app-entregable-cabezal>
+
+    <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
+
+    <div [formGroup]="form">
+        <div class="row pt-2 mb-3">
+            <div class="col-lg-4"
+                [class.field-error]="form.get('fechaComprometida')?.invalid && form.get('fechaComprometida')?.touched">
+                <label for="fechaComprometida" class="form-label">
+                    * Fecha entrega propuesta
+                </label>
+                <input type="date" id="fechaComprometida" class="form-control" formControlName="fechaComprometida"
+                    [min]="fechaMinima" [max]="fechaMaxima"
+                    [class.is-invalid]="form.get('fechaComprometida')?.invalid && form.get('fechaComprometida')?.touched">
+                <div class="invalid-feedback"
+                    *ngIf="form.get('fechaComprometida')?.invalid && form.get('fechaComprometida')?.touched">
+                    <div *ngIf="form.get('fechaComprometida')?.errors?.['required']">
+                        La fecha no puede estar vacía
+                    </div>
+                    <div *ngIf="form.get('fechaComprometida')?.errors?.['fechaMinima']">
+                        La fecha no puede ser anterior a la fecha de la OC
+                    </div>
+                    <div *ngIf="form.get('fechaComprometida')?.errors?.['fechaMaxima']">
+                        La fecha no puede ser posterior a la fecha última entrega {{ entregable ? 'del entregable' :
+                        itemOrdenCompra.fechaComprometida ? 'del ítem' : 'de la orden de compra' }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mt-lg-0 mt-2" *ngIf="form"
+                [class.field-error]="form.get('cantidadPorcentaje')?.invalid && form.get('cantidadPorcentaje')?.touched">
+                <app-cantidad-porcentaje formControlName="cantidadPorcentaje"
+                    [porcentajeHabilitado]="porcentajeHabilitado" [cantidadFijaEnCantidad]="cantidadFijaEnCantidad"
+                    [cantidadHabilitada]="cantidadHabilitada">
+                </app-cantidad-porcentaje>
+            </div>
+
+
+            <div class="col-lg-4 mt-2 mt-lg-0"
+                [class.field-error]="form.get('estado')?.invalid && form.get('estado')?.touched">
+                <label for="estado" class="form-label">
+                    * Estado
+                </label>
+                <select id="estado" class="form-control" formControlName="estado"
+                    [class.is-invalid]="form.get('estado')?.invalid && form.get('estado')?.touched">
+                    <option value="">Seleccione un estado</option>
+                    <option *ngFor="let estado of tiposEstado" [value]="estado.nombre">{{ estado.nombre }}</option>
+                </select>
+                <div class="invalid-feedback" *ngIf="form.get('estado')?.invalid && form.get('estado')?.touched">
+                    El estado no puede estar vacío
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <label for="personasResponsables" class="form-label">Personas responsables</label>
+                <textarea id="personasResponsables" class="form-control" formControlName="personasResponsables" rows="2"
+                    maxlength="255"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 subtitle">
+            <span *ngIf="obtenerDocumentosAMostrar().length > 0">Documentos de la entrega</span>
+        </div>
+        <div class="col-6 d-flex justify-content-end">
+            <button type="button" class="btn btn-primary" [disabled]="documentos.length >= settings.archivosCantidadMax"
+                (click)="agregarDocumento()"><em class="fa fa-plus mr-1"></em>Agregar documento</button>
+        </div>
+    </div>
+    <div class="table-responsive" *ngIf="obtenerDocumentosAMostrar().length > 0">
+        <table class="table table-striped table-hover mb-0 align-middle" aria-label="Tabla de documentos">
+            <thead class="table-light sticky-top">
+                <tr>
+                    <th style="width: 60px;"></th>
+                    <th>Nombre</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let documento of obtenerDocumentosAMostrar(); let i = index">
+                    <td class="text-center">
+                        <button type="button" aria-label="Eliminar documento"
+                            class="btn btn-link p-0 icono-eliminar align-items-center"
+                            (click)="eliminarDocumento(documento)">
+                            <em class="fa fa-trash text-dark fa-lg"></em>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-link p-0" (click)="descargarDocumento(documento)">
+                            {{ documento.nombre }}
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary me-2" (click)="guardar()">
+        Guardar
+    </button>
+    <button type="button" class="btn btn-link" (click)="cancelarConConfirmacion()">
+        Cancelar
+    </button>
+</div>

@@ -1,0 +1,32 @@
+
+<div id="wrapper" class="w-100" *ngIf="mostrarFiltros">
+    <nav id="sidebar"  [class.collapsed]="collapsed">
+        <div (click)="toggleCollapse()"   [ngClass]="'expandBtn ' + claseCabezal ">
+            <span id="sidebarCollapse"  [ngClass]="'position-absolute'+(!collapsed?'':'-collapsed')" *ngIf="activarCollapse">
+                <em class="fa fa-compress" [class.fa-compress]="!collapsed" [class.fa-expand]="collapsed"></em>
+            </span>
+        </div>
+        <div [ngClass]="'w-100 '+ claseCabezal" id="headersBack">
+            <div class=" ml-0 pl-0 headersBack">
+                <button class="btn-link link_home m-0 p-0 border-0" type="button" routerLink="/inicio">
+                <em class="fa fa-home"></em>{{collapsed?'':'Inicio'}}
+                </button>
+            </div>
+        </div>
+        <form (submit)="filter()">
+            <div *ngIf="!collapsed">
+                <h3 [ngClass]="' ml-0 pl-0 busqueda-icono ' + claseCabezal">
+                    <em *ngIf="iconTitle" [ngClass]="iconTitle"></em> {{ title }}
+                </h3>
+                <br />
+                <ng-content #element></ng-content>
+            </div>
+            <div *ngIf="!collapsed"  [ngClass]="claseCabezal" >
+                <div class="buttonFilterContainer" *ngIf="mostrarBtnFilter">
+                <button class="button btn btn-primary buttonFilter" type="submit" (click)="filter()">
+                    <em class="fa fa-search"></em>{{ titleBtn }}
+                </button></div>
+            </div>
+        </form>
+    </nav>
+</div>

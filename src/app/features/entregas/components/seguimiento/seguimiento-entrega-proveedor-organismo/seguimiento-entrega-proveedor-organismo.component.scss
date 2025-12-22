@@ -1,0 +1,22 @@
+.card-header{
+    cursor: pointer;
+}
+
+.link_icono {
+    font-size: 1rem;
+    padding: 0 0 0 0 !important;
+    margin: 0 0 0 5px !important;
+    & em {
+        font-size: 1rem;
+        padding: 0 !important;
+        margin: 0 !important;
+        vertical-align: middle;
+        text-align: center;
+        margin-bottom: 9px !important;
+    }
+}
+
+.contenedor-checkbox {
+    flex-flow: row-reverse;
+    justify-content: left;
+}

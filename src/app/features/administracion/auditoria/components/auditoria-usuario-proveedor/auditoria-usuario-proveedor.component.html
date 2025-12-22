@@ -1,0 +1,148 @@
+<div class="row">
+  <div [ngClass]="colFiltro" class="sidebar">
+    <app-filtro titleBtn="Buscar" (evFilter)="actualizarFiltrosYBuscar()" (evCollapse)="aplicarColapso()"
+      class="filter">
+      <div [formGroup]="form">
+
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-4">
+            <label for="tipoOperacion" class="col-form-label col-12 pl-0">* Tipo de operación</label>
+            <select id="tipoOperacion" class="form-control col-12" formControlName="tipoOperacion">
+              <option *ngFor="let t of tiposOperacion" [value]="t.id">{{ t.nombre }}</option>
+            </select>
+          </div>
+        </div>
+        <app-rango-fechas formControlName="rangoFechas" class="mb-4" [requiereFechaDesde]="true"
+          [requiereFechaHasta]="true" orientacion="horizontal"></app-rango-fechas>
+
+        <div class="row" *ngIf="tipoUsuario === TipoUsuario.ORGANISMO">
+          <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-0">
+            <label for="paisDocProveedor" class="col-form-label">País documento proveedor</label>
+            <select id="paisDocProveedor" class="form-control" formControlName="paisDocProveedor"
+              (change)="cambioTipoDoc('nroDocProveedor')">
+              <option value="">Todos los países</option>
+              <option *ngFor="let p of paises" [value]="p.id">{{ p.descripcion }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" *ngIf="tipoUsuario === TipoUsuario.ORGANISMO">
+          <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-4">
+            <label for="tipoDocProveedor" class="col-form-label">Tipo documento proveedor</label>
+            <select id="tipoDocProveedor" class="form-control" formControlName="tipoDocProveedor"
+              (change)="cambioTipoDoc('nroDocProveedor')">
+              <option value="">Todos los tipos de documento</option>
+              <option *ngFor="let t of tiposDocumentoProveedor" [value]="t.tipoDocumento">{{ t.descripcion }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" *ngIf="tipoUsuario === TipoUsuario.ORGANISMO">
+          <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-4">
+            <app-input-documento id="nroDocProveedor" class="h-100 form-control" formControlName="nroDocProveedor"
+              [esCedula]="this.form.get('paisDocProveedor')?.value === Pais.URUGUAY && this.form.get('tipoDocProveedor')?.value === 'C'"
+              label="N° documento proveedor"></app-input-documento>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-4">
+            <label for="paisDocUsuario" class="col-form-label">País documento usuario que realizó el cambio</label>
+            <select id="paisDocUsuario" class="form-control" formControlName="paisDocUsuario"
+              (change)="cargarTiposDocumento()">
+              <option value="">Todos los países</option>
+              <option *ngFor="let p of paises" [value]="p.id">{{ p.descripcion }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-4">
+            <label for="tipoDocUsuario" class="col-form-label">Tipo documento usuario que realizó el cambio</label>
+            <select id="tipoDocUsuario" class="form-control" formControlName="tipoDocUsuario"
+              (change)="cambioTipoDoc('nroDocUsuario')">
+              <option value="">Todos los tipos de documento</option>
+              <option *ngFor="let t of tiposDocumento" [value]="t.idTipoDocumento">{{ t.descripcion }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-4">
+            <app-input-documento id="nroDocUsuario" class="h-100 form-control" formControlName="nroDocUsuario"
+              [esCedula]="this.form.get('paisDocUsuario')?.value === Pais.URUGUAY && this.form.get('tipoDocUsuario')?.value === TipoDocumentoUsuario.CEDULA_IDENTIDAD"
+              label="N° documento usuario que realizó el cambio"></app-input-documento>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-4">
+            <label for="paisDocGestionado" class="col-form-label">País documento usuario gestionado</label>
+            <select id="paisDocGestionado" class="form-control" formControlName="paisDocGestionado"
+              (change)="cargarTiposDocumentoGestionado()">
+              <option value="">Todos los países</option>
+              <option *ngFor="let p of paises" [value]="p.id">{{ p.descripcion }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-4">
+            <label for="tipoDocGestionado" class="col-form-label">Tipo documento usuario gestionado</label>
+            <select id="tipoDocGestionado" class="form-control" formControlName="tipoDocGestionado"
+              (change)="cambioTipoDoc('nroDocGestionado')">
+              <option value="">Todos los tipos de documento</option>
+              <option *ngFor="let t of tiposDocumentoGestionado" [value]="t.idTipoDocumento">{{ t.descripcion }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-4">
+            <app-input-documento id="nroDocGestionado" class="h-100 form-control" formControlName="nroDocGestionado"
+              [esCedula]="this.form.get('paisDocGestionado')?.value === Pais.URUGUAY && this.form.get('tipoDocGestionado')?.value === TipoDocumentoUsuario.CEDULA_IDENTIDAD"
+              label="N° documento usuario gestionado"></app-input-documento>
+          </div>
+        </div>
+        <div class="clean-filter">
+          <button type="button" class="btn btn-link" (click)="nuevaConsulta()">Nueva consulta</button>
+        </div>
+      </div>
+    </app-filtro>
+  </div>
+  <div [ngClass]="colTabla">
+    <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden" [columnaOrden]="parametros.sort"
+      [orden]="parametros.order" (orderChange)="cambioOrden($event)"
+      (sortChange)="cambioColumnaOrden($event)"></app-cabezal-consulta>
+    <div class="card mb-4" *ngIf="auditorias.length > 0">
+      <div class="table-responsive tabla-scroll-x m-0">
+        <table class="table table-striped table-hover mb-0 align-middle" aria-label="Tabla de auditoría">
+          <thead class="table-light sticky-top">
+            <tr>
+              <th>Fecha operación</th>
+              <th>Tipo operación</th>
+              <th>Proveedor</th>
+              <th>Campo</th>
+              <th>Valor anterior</th>
+              <th>Valor nuevo</th>
+              <th>CI usuario que <br> realizó el cambio</th>
+              <th>CI usuario <br> gestionado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let reg of auditorias">
+              <td>{{ reg.fechaOperacion | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td class="text-capitalize">{{ reg.tipoOperacion }}</td>
+              <td>{{ reg?.proveedor | idProveedor }}</td>
+              <td class="nowrap">{{ reg.campo }}</td>
+              <td [attr.title]="(reg.valorOriginal.length)>40 ?reg.valorFinal:''" class="nowrap">{{
+                reg.valorOriginal.substring(0, 40) }}</td>
+              <td [attr.title]="(reg.valorFinal.length)>40 ?reg.valorFinal:''" class="nowrap">{{
+                reg.valorFinal.substring(0, 40) }}</td>
+              <td class="text-end">{{ reg.usuario | idUsuario }}</td>
+              <td class="text-end">{{ reg?.usuarioGestionado?.id | idUsuario }}</td>
+            </tr>
+            <tr *ngIf="auditorias.length === 0">
+              <td colspan="8" class="text-center py-4">Sin resultados</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina" [paginaActual]="parametros.pagina+1"
+      (cambioPagina)="cambioPagina($event)" (cambioItemsPorPagina)="cambioPorPagina($event)"></app-paginado>
+  </div>
+</div>

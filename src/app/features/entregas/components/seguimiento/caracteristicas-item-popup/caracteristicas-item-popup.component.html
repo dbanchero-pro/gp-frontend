@@ -1,0 +1,51 @@
+<div class="modal-header d-flex justify-content-between align-items-center">
+    <h1 class="modal-title mb-0" id="tituloPopup">{{ titulo }}</h1>
+    <button type="button" aria-label="Cerrar" class="close" (click)="cerrarPopup()">&times;</button>
+</div>
+
+<div class="modal-body p-2">
+    <div *ngIf="item" class="mb-4">
+        <div class="table-responsive">
+            <app-orden-compra-cabezal [ordenCompra]="ordenCompra"></app-orden-compra-cabezal>
+            <app-item-orden-compra-cabezal [itemOrdenCompra]="item"></app-item-orden-compra-cabezal>
+            <table class="table table-bordered" aria-label="Tabla de características">
+                <thead>
+                    <tr class="bg-light">
+                        <th colspan="2" class="p-2">
+                            <div class="font-weight-bold">Características</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let propiedad of propiedades">
+                        <td style="width: 30%">{{ propiedad.descPropiedad }}</td>
+                        <td class="font-weight-bold">
+                            <ng-container *ngIf="propiedad.valorTexto || propiedad.valorNumero || propiedad.valorFecha">
+                                <strong *ngIf="propiedad.valorTexto && propiedad.tipoMedida == TipoMedida.STRING">
+                                    {{ propiedad.valorTexto | capitalizarPrimerLetra }}
+                                </strong>
+                                <strong *ngIf="propiedad.valorTexto && propiedad.tipoMedida == TipoMedida.BOOLEANO">
+                                    {{ propiedad.valorTexto | siNoValor }}
+                                </strong>
+                                <strong *ngIf="propiedad.valorFecha && propiedad.tipoMedida == TipoMedida.FECHA">
+                                    {{ propiedad.valorFecha | date : "dd/MM/yyyy" }}</strong>
+                                <strong *ngIf="propiedad.valorNumero  && propiedad.tipoMedida == TipoMedida.NUMERO">
+                                    {{ propiedad.valorNumero }}
+                                    <ng-container *ngIf="mostrarMedida(propiedad)">
+                                        {{ propiedad.descMedidaPropiedad | capitalizarPrimerLetra }}
+                                    </ng-container>
+                                </strong>
+                            </ng-container>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!propiedades.length">
+                        <td colspan="2" class="text-center">No se encontraron características.</td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end mt-3 pe-3">
+
+        <button type="button" class="Button btn-link" (click)="cerrarPopup()">Cancelar</button>
+    </div>
+</div>

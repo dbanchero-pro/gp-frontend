@@ -1,0 +1,25 @@
+<div class="modal-header d-flex justify-content-between align-items-center">
+    <h1 class="modal-title mb-0" id="tituloPopup">Seleccionar unidad de compra</h1>
+    <button type="button" aria-label="Cerrar" class="close" (click)="cancelarConConfirmacion()">&times;</button>
+</div>
+
+<div class="modal-body p-2">
+    <div *ngIf="usuario" class="row">
+        <div class="col-12 font-weight-bold py-1 pl-4 subtitle">
+            <div class="float-left pr-3">CI {{ usuario.id | formatoCi }}</div>
+            <div class="float-left">{{ usuario.nombre }}</div>
+        </div>
+    </div>
+    <form [formGroup]="form" (submit)="guardar()">
+        <app-filtro-organismo formControlName="organismo" [requeridoInciso]="true" [requeridoUC]="true"
+            [requeridoUE]="true" *ngIf="idUsuarioSeleccionado" [idUsuarioSeleccionado]="idUsuarioSeleccionado">
+        </app-filtro-organismo>
+
+        <div class="text-right mt-4">
+            <button type="submit" class="btn btn-primary" (click)="guardar()">
+                Guardar
+            </button>
+            <button type="button" class="Button btn-link" (click)="cancelarConConfirmacion()">Cancelar</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,28 @@
+.tabla-filtro{
+    margin: 10px 10px 0 15px;
+}
+
+.texto-proveedor {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    white-space: normal;
+    hyphens: auto;
+}
+
+.resultado-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.custom-menu-width {
+    width: 240px;
+}
+.options {
+    text-align: right;
+}
+@media screen and (max-width: 991px) {
+    .options {
+        text-align: left;
+    }
+}

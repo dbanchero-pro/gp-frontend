@@ -1,0 +1,14 @@
+{
+    "apiUrl": "${OPENSHIFT_BACKEND_URL}",
+    "keycloak": {
+        "url": "${OPENSHIFT_KEYCLOAK_URL}",
+        "realm": "${OPENSHIFT_KEYCLOAK_REALM}",
+        "clientId": "${OPENSHIFT_KEYCLOAK_CLIENTID}"
+    },
+    "extensionesPermitidas": "${OPENSHIFT_ALLOWED_FILE_EXTENSIONS}",
+    "urlBaseFrontEnd": "${OPENSHIFT_BACKEND_URL}",
+    "loggingLevel": "NONE",
+    "archivosTamanoMaxBytes": "${OPENSHIFT_ARCHIVOS_TAMANO_MAX_BYTES}",
+    "archivosCantidadMax": "${OPENSHIFT_ARCHIVOS_CANTIDAD_MAX}",
+    "contenidoInicio": "${OPENSHIFT_CONTENIDO_INICIO}"
+}

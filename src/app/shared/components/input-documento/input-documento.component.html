@@ -1,0 +1,8 @@
+<div [class.field-error]="invalid" class="input-documento-container">
+    <label [for]="id" class="col-form-label">{{ required ? '* ' : '' }}{{ label }}</label>
+    <input [attr.aria-labelledby]="id" #input [id]="id" type="text" [placeholder]="placeholder"
+        (input)="onInput($event)" (blur)="onBlur()" (keypress)="onKeyPress($event)" />
+    <span class="texto-error text-left position-absolute nowrap" [style.visibility]="invalid ? 'visible' : 'hidden'">
+        {{ errorMessage }}
+    </span>
+</div>

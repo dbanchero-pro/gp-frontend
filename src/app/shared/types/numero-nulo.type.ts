@@ -1,0 +1,1 @@
+export type NumeroNulo = number | '' | null;

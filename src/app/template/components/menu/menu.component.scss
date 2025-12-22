@@ -1,0 +1,176 @@
+:host {
+    display: block;
+    background-color: #0060a3;
+
+    .nav-link,
+    .dropdown-item {
+        font-weight: 600;
+        padding: .875rem 1.5rem !important;
+    }
+
+    nav {
+        padding: 0 !important;
+    }
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+
+    color: red;
+}
+
+.navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.navbar-nav .nav-link:hover {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.navbar-nav {
+    .dropdown-menu {
+        background-color: #0060a3;
+        opacity: 1;
+        color: rgba(255, 255, 255, 0.95);
+    }
+
+    .dropdown-menu .dropdown-item:hover {
+        background-color: #0060a3;
+        color: rgba(255, 255, 255, 0.6);
+    }
+}
+
+.dropdown-item {
+    padding-left: 10px;
+    cursor: pointer;
+    color: unset !important;
+}
+
+.dropdown-item em {
+    margin-right: 5px;
+    width: 20px;
+    text-align: center;
+}
+
+/* styles.scss */
+
+/* Contexto relativo para cada submenú */
+.dropdown-submenu {
+    position: relative;
+}
+
+@media screen and (min-width: 992px) {
+
+    /* Submenú oculto por defecto y posicionado a la derecha */
+    .dropdown-submenu .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 100%;
+        margin-top: 11px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+ 
+    .dropdown-submenu:hover>.dropdown-menu {
+        display: none;
+    }
+
+    .dropdown-submenu.seleccionado>.dropdown-menu {
+        display: block;
+        position: relative;
+        top: 0px;
+        left: 0px;
+    }
+
+    /* Contenedor relativo para el submenú */
+    .dropdown-submenu {
+        position: relative;
+    }
+
+    /* Submenú oculto por defecto y posicionado al costado */
+    .dropdown-submenu .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 100%;
+        margin-top: -1px;
+        /* ajusta según tu tema */
+    }
+
+    /* Solo al tener .show se muestra */
+    .dropdown-submenu.show>.dropdown-menu {
+        display: block;
+    }
+}
+
+/* Sólo se muestra cuando el contenedor .dropdown-submenu tiene .show */
+.dropdown-submenu.show>.dropdown-menu {
+    display: block;
+}
+
+/* ¡Elimina por completo cualquier regla de :hover para submenús! */
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: #0060a3 !important;
+    color: rgba(255, 255, 255, 1);
+}
+
+.dropdown-submenu>.dropdown-toggle::after {
+    /* Gira el triángulo 90° hacia la derecha */
+    transform: rotate(-90deg);
+    /* Asegura que se aplique la transición suave si la usas */
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Opcional: si quieres ocultar el caret original de Bootstrap
+   en el toggle principal puedes usar selector más específico */
+.navbar-nav .dropdown-submenu>.dropdown-toggle::after {
+    /* Ajusta márgenes si es necesario */
+    margin-left: 0.4em;
+}
+
+
+.navbar-collapse .solo-movil {
+    display: none;
+}
+
+.navbar-collapse.show .solo-movil {
+    display: inline;
+}
+
+.dropdown-item:hover {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.span-menu {
+    padding-top: 0.875rem !important;
+    padding-right: 1.5rem !important;
+    padding-bottom: 0.875rem !important;
+    padding-left: 1.5rem !important;
+}
+
+.dropdown-submenu.seleccionado {
+    color: rgb(255, 255, 255, 0.60) !important;
+}
+
+/* en el CSS/SCSS del componente */
+.span-menu:focus {
+  outline: 0 !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.menu-container {
+    padding: 0px;
+    margin: 0px;
+    display: contents;
+}
+
+.dropdown-submenu:focus-visible{
+    outline: 0 !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+}
+
+.una-linea {
+    inline-size: max-content;
+}

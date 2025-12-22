@@ -1,0 +1,86 @@
+<div class="row px-0 pr-3" *ngIf="ordenCompra">
+    <app-orden-compra-cabezal [ordenCompra]="ordenCompra" class="col-12 px-0"></app-orden-compra-cabezal>
+</div>
+<div class="row px-0 pr-3">
+    <app-item-orden-compra-cabezal [itemOrdenCompra]="itemOrdenCompra" [mostrarCantidadPendienteEntrega]="true" class="col-12 px-0" [mostrarFechaComprometida]="false" [esUsuarioProveedor]="esUsuarioProveedor">
+    </app-item-orden-compra-cabezal>
+</div>
+
+<div class="row">
+    <div [ngClass]="colFiltro" class="sidebar">
+        <app-filtro titleBtn="Buscar" (evFilter)="actualizarFiltrosYBuscar()" (evCollapse)="aplicarColapso()" class="filter">
+            <div [formGroup]="form">
+                <div class="row mt-3">
+                    <div class="form-group col-12">
+                        <label class="col-form-label" for="estado">Estado</label>
+                        <select id="estado" class="form-control" formControlName="estado">
+                            <option *ngFor="let e of tiposEstado" [ngValue]="e.id">{{ e.nombre }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="clean-filter text-end mt-3">
+                    <button type="button" class="btn btn-link p-0" (click)="nuevaConsulta()">Nueva
+                        consulta</button>
+                </div>
+                <div class="row">
+                    <div class="descargar-resultado col-12">
+                        <button *ngIf="this.seguridadService.obtenerTipoUsuario() === tipoUsuario || this.seguridadService.tieneAlgunPermiso(['GC_GESTION_RECEP.IMPRESION', 'GC_GESTION_CONF.IMPRESION'])"
+                            type="button" class="btn btn-link mr-1" id="exportarExcel" (click)="descargarExcel()">
+                            <span class="fa fa-file-excel-o"></span> Descargar Excel </button>
+                    </div>
+                </div>
+            </div>
+        </app-filtro>
+    </div>
+
+    <div [ngClass]="colTabla">
+        <div class="row px-0 pr-3 d-flex justify-content-end">
+            <span>
+                <button type="button" class="btn btn-primary ml-2 mb-1 btn-250" (click)="marcarDesmarcarEntregasTodos()"
+                    *ngIf="puedeRecepcionarEntregaMasivo() || puedeDarConformidadEntregaMasivo()">
+                    <em class="fa fa-check-square-o mr-1">
+                    </em>{{ this.marcarTodos ? 'Desmarcar todas las entregas': 'Seleccionar todas las entregas'}}
+                </button>
+            </span>
+            <span>
+                <button type="button" class="btn btn-primary ml-2 mb-1" (click)="abrirPopupRecepcionarSeleccionados()"
+                    [disabled]="!hayItemsSeleccionados" *ngIf="puedeRecepcionarEntregaMasivo()">
+                    <em class="fa fa-retweet mr-1">
+                    </em>
+                    Recepcionar entregas seleccionadas
+                </button>
+            </span>
+            <span>
+                <button type="button" class="btn btn-primary ml-2 mb-1" (click)="abrirPopupDarConformidadSeleccionados()"
+                    [disabled]="!hayItemsSeleccionados" *ngIf="puedeDarConformidadEntregaMasivo()">
+                    <em class="fa fa-check-circle mr-1">
+                    </em>
+                    Dar conformidad a entregas seleccionadas
+                </button>
+            </span>
+        </div>
+        <div class="row justify-content-end pr-2" *ngIf="puedeAgregarEntrega()">
+            <button type="button" class="btn btn-primary mr-2" (click)="abrirPopupAgregarEntrega()">
+                <em class="fa fa-plus mr-1">
+                </em>
+                Agregar entrega
+            </button>
+        </div>
+        <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden" [columnaOrden]="parametros.sort" [orden]="parametros.order" (orderChange)="cambioOrden($event)" (sortChange)="cambioColumnaOrden($event)"></app-cabezal-consulta>
+
+        <div *ngFor="let entrega of entregas; let i = index" class="mb-2">
+            <app-entrega [entrega]="entrega" (seleccionado)="seleccionar(entrega)" [itemOrdenCompra]="itemOrdenCompra"
+            [usuarioLogueadoTienePermisosRecepcion]="tienePermisoRecepcion"
+             [ordenCompra]="ordenCompra" (actualizarEvento)="actualizarEventoEntrega()"></app-entrega>
+        </div>
+
+        <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina" [paginaActual]="parametros.pagina + 1" (cambioPagina)="cambioPagina($event)" (cambioItemsPorPagina)="cambioPorPagina($event)"></app-paginado>
+
+        <div class="btn-back d-flex justify-content-end mt-auto">
+            <button class="btn btn-link" type="button" (click)="volver()">
+                <em class="fa fa-arrow-left"></em>
+                Volver
+            </button>
+        </div>
+    </div>
+</div>
