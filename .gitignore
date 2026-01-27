@@ -52,3 +52,4 @@ Thumbs.db
 /scripts
 /total_validator
 /robots.txt
+.env
