@@ -195,7 +195,7 @@ export class ConsultaUsuariosRolesComponent
 
                 return {
                     usuariosAgrupados: Array.from(mapa.values()),
-                    totalUsuarios: response.page?.totalElements,
+                    totalUsuarios: response.totalElements,
                 };
             }))
             .subscribe(({ usuariosAgrupados, totalUsuarios }) => {
