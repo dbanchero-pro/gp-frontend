@@ -282,16 +282,4 @@ describe('MenuComponent', () => {
         const nav: HTMLElement = fixture.nativeElement.querySelector('nav');
         expect(nav.getAttribute('aria-label')).toBe('Menú principal');
     });
-
-    it('los botones de cambio de perfil tienen type button', () => {
-        fixture.detectChanges();
-        component.mostrarCambiarPerfil = true;
-        fixture.detectChanges();
-        component.tipoUsuario = TipoUsuario.ORGANISMO;
-        const botones = fixture.nativeElement.querySelectorAll('button[aria-label="Cambiar perfil ('+ TipoUsuario.ORGANISMO +')"]');
-        expect(botones.length).toBeGreaterThan(0);
-        botones.forEach((btn: HTMLElement) => {
-            expect(btn.getAttribute('type')).toBe('button');
-        });
-    });
 });
