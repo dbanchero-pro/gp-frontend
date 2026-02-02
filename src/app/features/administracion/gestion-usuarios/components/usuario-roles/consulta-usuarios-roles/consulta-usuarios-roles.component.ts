@@ -525,7 +525,7 @@ export class ConsultaUsuariosRolesComponent
             {
                 nombre: 'Modificar',
                 ariaLabel: 'Modificar rol',
-                clase: 'btn btn-primary',
+                clase: 'btn btn-success',
                 icono: 'fa fa-edit',
                 permisos: ['GC_GESTION_USU.MODIFICACION'],
                 accion: () => this.modificarRolUsuarioEspecifico(permiso)
