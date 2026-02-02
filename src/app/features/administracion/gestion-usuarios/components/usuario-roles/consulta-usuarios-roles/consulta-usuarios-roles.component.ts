@@ -516,6 +516,30 @@ export class ConsultaUsuariosRolesComponent
         return roles.join(', ');
     }
 
+    obtenerAccionesPermiso(permiso: any): AccionBoton[] {
+        const acciones: AccionBoton[] = [];
+
+        acciones.push({
+            nombre: 'Modificar',
+            ariaLabel: 'Modificar rol del permiso',
+            clase: 'btn btn-success',
+            icono: 'fa fa-edit',
+            permisos: ['GC_GESTION_USU.MODIFICACION'],
+            accion: this.modificarRolUsuarioEspecifico.bind(this, permiso),
+        });
+
+        acciones.push({
+            nombre: 'Eliminar',
+            ariaLabel: 'Eliminar rol del permiso',
+            clase: 'btn btn-secondary',
+            icono: 'fa fa-trash',
+            permisos: ['GC_GESTION_USU.BAJA'],
+            accion: this.eliminarRolUsuarioEspecifico.bind(this, permiso),
+        });
+
+        return acciones;
+    }
+
     modificarRolUsuarioEspecifico(permiso: any): void {
         this.actualizarServ.mensajeModal('Funcionalidad en desarrollo', 'Esta funcionalidad estará disponible próximamente');
     }
