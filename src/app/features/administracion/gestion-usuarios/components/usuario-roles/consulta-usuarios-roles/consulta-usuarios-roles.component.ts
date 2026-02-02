@@ -520,6 +520,28 @@ export class ConsultaUsuariosRolesComponent
         this.actualizarServ.mensajeModal('Funcionalidad en desarrollo', 'Esta funcionalidad estará disponible próximamente');
     }
 
+    obtenerAccionesPermiso(permiso: any): AccionBoton[] {
+        const acciones: AccionBoton[] = [
+            {
+                nombre: 'Modificar',
+                ariaLabel: 'Modificar rol',
+                clase: 'btn btn-primary',
+                icono: 'fa fa-edit',
+                permisos: ['GC_GESTION_USU.MODIFICACION'],
+                accion: () => this.modificarRolUsuarioEspecifico(permiso)
+            },
+            {
+                nombre: 'Eliminar',
+                ariaLabel: 'Eliminar rol',
+                clase: 'btn btn-danger',
+                icono: 'fa fa-trash',
+                permisos: ['GC_GESTION_USU.BAJA'],
+                accion: () => this.eliminarRolUsuarioEspecifico(permiso)
+            }
+        ];
+        return acciones;
+    }
+
     abrirAsignarPorTipoCompra(usuario: UsuarioPermisoAgrupado): void {
         this.actualizarServ.mensajeModal('Funcionalidad en desarrollo', 'Esta funcionalidad estará disponible próximamente');
     }
