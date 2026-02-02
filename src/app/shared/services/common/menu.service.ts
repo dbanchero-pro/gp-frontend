@@ -57,7 +57,7 @@ export class MenuService {
     private obtenerMenuItems(tipoUsuario?: TipoUsuario): IMenuItem[] {
         return this.filtrarPorTipoUsuario([
             this.menuAdministracion(tipoUsuario),
-            this.menuEntregas(tipoUsuario),
+          //  this.menuEntregas(tipoUsuario),
         ], tipoUsuario);
     }
 
@@ -156,11 +156,11 @@ export class MenuService {
             visible: true,
             tipoUsuario: TipoUsuario.AMBOS,
             items: [
-                this.menuConformidad(),
+             //   this.menuConformidad(),
                 this.menuRoles(),
-                this.menuRecepcion(),
-                this.menuSeguimientoProveedores(),
-                this.menuPuntosRecepcion(),
+               // this.menuRecepcion(),
+                //this.menuSeguimientoProveedores(),
+                //this.menuPuntosRecepcion(),
             ],
         };
     }
