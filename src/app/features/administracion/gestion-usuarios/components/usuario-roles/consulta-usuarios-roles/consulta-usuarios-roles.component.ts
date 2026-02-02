@@ -321,17 +321,6 @@ export class ConsultaUsuariosRolesComponent
         return acciones;
     }
 
-    obtenerAccionesPermiso(permiso: any): AccionBoton[] {
-        return [{
-            nombre: 'Eliminar',
-            ariaLabel: "Eliminar rol",
-            clase: 'btn btn-danger',
-            icono: 'fa fa-trash',
-            permisos: ['GC_GESTION_USU.BAJA'],
-            accion: this.eliminarRolUsuarioEspecifico.bind(this, permiso),
-        }];
-    }
-
     abrirAgregarPermisoPorCompra() {
         const comp = this.abrirPopup(NuevoUsuarioPopupComponent, 'Buscar compra',
             {
