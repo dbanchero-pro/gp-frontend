@@ -18,6 +18,9 @@ import { UnidadesCompraSicePopupComponent } from './components/usuario-organismo
 import { AgregarModificarProveedorPopupComponent } from './components/usuario-proveedor/agregar-modificar-proveedor-popup/agregar-modificar-proveedor-popup.component';
 import { ConsultaUsuariosProveedorComponent } from './components/usuario-proveedor/consulta-usuarios-proveedor/consulta-usuarios-proveedor.component';
 import { VincularEmpresaPopupComponent } from './components/usuario-proveedor/vincular-empresa-popup/vincular-empresa-popup.component';
+import { ConsultaUsuariosRolesComponent } from './components/usuario-roles/consulta-usuarios-roles/consulta-usuarios-roles.component';
+import { ConsultaUsuariosRolesCompraComponent } from './components/usuario-roles/consulta-usuarios-roles-compra/consulta-usuarios-roles-compra.component';
+import { ConsultaUsuariosRolesItemsComponent } from './components/usuario-roles/consulta-usuarios-roles-items/consulta-usuarios-roles-items.component';
 import { PuntoRecepcionResumenPipe } from './pipes/punto-recepcion-resumen.pipe';
 
 const routes: Routes = [
@@ -51,6 +54,21 @@ const routes: Routes = [
         component: ConsultaUsuariosConformidadItemsComponent,
         canActivate: [AuthGuard],
     },
+    {
+        path: 'consulta-usuario-roles',
+        component: ConsultaUsuariosRolesComponent,
+        canActivate: [AuthGuard],
+    },
+    {
+        path: 'consulta-usuario-roles/:idUsuario',
+        component: ConsultaUsuariosRolesCompraComponent,
+        canActivate: [AuthGuard],
+    },
+    {
+        path: 'consulta-usuario-roles/:idUsuario/items/:idCompra',
+        component: ConsultaUsuariosRolesItemsComponent,
+        canActivate: [AuthGuard],
+    },
 ];
 
 export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
@@ -69,7 +87,10 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
         ConsultaUsuariosRecepcionComponent,
         NuevoUsuarioPopupComponent,
         NuevoUsuarioUcPopupComponent,
-        UnidadesCompraSicePopupComponent
+        UnidadesCompraSicePopupComponent,
+        ConsultaUsuariosRolesComponent,
+        ConsultaUsuariosRolesCompraComponent,
+        ConsultaUsuariosRolesItemsComponent
     ],
     imports: [
         CommonModule,
