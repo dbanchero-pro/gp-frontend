@@ -130,7 +130,6 @@
                         [attr.aria-label]="'Tabla de roles del usuario ' + usr.nombre">
                         <thead class="table-light sticky-top">
                             <tr>
-                                <th aria-label="Eliminar"></th>
                                 <th>Inciso</th>
                                 <th>Unidad ejecutora</th>
                                 <th>Unidad de compra</th>
@@ -138,19 +137,12 @@
                                 <th>Subtipo de compra</th>
                                 <th>N°/año compra</th>
                                 <th class="columna-item">Ítem</th>
+                                <th aria-label="Acciones"></th>
                             </tr>
                         </thead>
 
                         <tbody>
                             <tr *ngFor="let permiso of usr.permisos">
-                                <td class="text-center align-middle">
-                                    <button aria-label="Eliminar rol"
-                                        *ngIf="seguridad.tienePermiso('GC_GESTION_USU.BAJA')"
-                                        class="btn btn-link p-0 icono-eliminar align-items-center"
-                                        (click)="eliminarRolUsuarioEspecifico(permiso)">
-                                        <em class="fa fa-trash text-dark fa-lg"></em>
-                                    </button>
-                                </td>
                                 <td>{{ permiso.unidadCompra?.descInciso }}</td>
                                 <td>{{ permiso.unidadCompra?.descUnidadEjecutora }}</td>
                                 <td>{{ permiso.unidadCompra?.descUnidadCompra }}</td>
@@ -161,6 +153,11 @@
                                     @if (permiso.itemCompra) {
                                     {{permiso.itemCompra | itemResumen}}
                                     }
+                                </td>
+                                <td class="text-center align-middle">
+                                    <app-boton-accion [acciones]="obtenerAccionesPermiso(permiso)"
+                                        [ariaLabelMasOpciones]="'Acciones del permiso'"
+                                        (accionEjecutada)="ejecutarAccion($event)"></app-boton-accion>
                                 </td>
                             </tr>
                         </tbody>
