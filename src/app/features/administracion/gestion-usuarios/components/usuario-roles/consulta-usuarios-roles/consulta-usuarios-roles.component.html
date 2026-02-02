@@ -153,7 +153,7 @@
                                 <td>{{ obtenerUnidadEjecutora(permiso) }}</td>
                                 <td>{{ obtenerUnidadCompra(permiso) }}</td>
                                 <td>{{ permiso.compra?.subtipoCompra?.descTipoCompra }}</td>
-                                <td>Común</td>
+                                <td>{{ permiso.compra?.subtipoCompra?.descSubtipoCompra || '' }}</td>
                                 <td>{{ permiso.compra | nroCompra }}</td>
                                 <td>Editor principal, Editor</td>
                                 <td class="text-center align-middle">
