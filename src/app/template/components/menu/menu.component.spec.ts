@@ -64,10 +64,6 @@ class SeguridadServiceMock {
         return this.esUsuarioProveedor;
     }
 
-    usuarioLogueadoPuedeCambiarPerfil(): boolean {
-        return this.esUsuarioOrganismo && this.esUsuarioProveedor;
-    }
-
     almacenarPermisos: (permisos: string[]) => void = () => { };
 
     obtenerTipoUsuario(): TipoUsuario {
