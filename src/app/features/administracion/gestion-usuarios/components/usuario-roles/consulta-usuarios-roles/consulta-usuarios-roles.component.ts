@@ -40,7 +40,6 @@ export class ConsultaUsuariosRolesComponent
         { id: 'usuarioOrganismo.unidadCompra.descUnidadCompra', nombre: 'Unidad compra' },
         { id: 'compra.numCompra', nombre: 'N° compra' },
         { id: 'compra.anioCompra', nombre: 'Año compra' },
-        { id: 'itemCompra.nroItem', nombre: 'N° ítem' },
     ];
 
     columnaOrdenInicial = 'usuarioOrganismo.usuario.nroDocumento';
@@ -269,49 +268,48 @@ export class ConsultaUsuariosRolesComponent
 
         if (usuario.tienePermisoTodas) {
             return [{
-                nombre: 'Eliminar permiso todas las UC',
-                ariaLabel: "Eliminar permiso todas las UC usuario id " + usuario.id,
+                nombre: 'Ver lista UC',
+                ariaLabel: "Ver lista UC usuario id " + usuario.id,
                 clase: 'btn btn-success',
-                icono: 'fa fa-trash',
-                permisos: ['GC_GESTION_USU.BAJA'],
-                accion: this.eliminarRolTodos.bind(this, usuario),
-            },
-            {
-                nombre: 'Ver todas las UC de SICE',
-                ariaLabel: "Ver todas las UC de SICE usuario id " + usuario.id,
-                clase: 'btn btn-success',
-                icono: 'fa-list',
+                icono: 'fa fa-list',
                 permisos: ['GC_GESTION_USU.BAJA', 'GC_GESTION_USU.CONSULTA', 'GC_GESTION_USU.MODIFICACION'],
                 accion: this.verTodasUCSice.bind(this, usuario),
             }];
         } else {
-            acciones = [{
-                nombre: 'Agregar por compra',
-                ariaLabel: "Agregar por compra usuario id " + usuario.id,
-                clase: 'btn btn-success',
-                icono: 'fa fa-shopping-cart',
-                permisos: ['GC_GESTION_USU.ALTA'],
-                url: ['/administracion/gestion-usuarios/consulta-usuario-roles', usuario.id],
-            }];
-
-            acciones.push(
+            acciones = [
                 {
-                    nombre: 'Agregar por UC',
-                    ariaLabel: "Agregar por UC usuario id " + usuario.id,
+                    nombre: 'Asignar por compra',
+                    ariaLabel: "Asignar por compra usuario id " + usuario.id,
+                    clase: 'btn btn-success',
+                    icono: 'fa fa-shopping-cart',
+                    permisos: ['GC_GESTION_USU.ALTA'],
+                    url: ['/administracion/gestion-usuarios/consulta-usuario-roles', usuario.id],
+                },
+                {
+                    nombre: 'Asignar por UC',
+                    ariaLabel: "Asignar por UC usuario id " + usuario.id,
                     clase: 'btn btn-secondary',
                     icono: 'fa fa-folder',
                     permisos: ['GC_GESTION_USU.ALTA'],
                     accion: this.abrirOrganismoPopup.bind(this, usuario),
                 },
                 {
-                    nombre: 'Agregar todas UC',
-                    ariaLabel: "Agregar todas UC usuario id " + usuario.id,
+                    nombre: 'Asignar todas las UC del usuario',
+                    ariaLabel: "Asignar todas las UC del usuario id " + usuario.id,
                     clase: 'btn btn-secondary',
                     icono: 'fa fa-sitemap',
                     permisos: ['GC_GESTION_USU.ALTA'],
                     accion: this.guardarRolUsuarioParaTodasUc.bind(this, usuario),
+                },
+                {
+                    nombre: 'Asignar por tipo de compra',
+                    ariaLabel: "Asignar por tipo de compra usuario id " + usuario.id,
+                    clase: 'btn btn-secondary',
+                    icono: 'fa fa-file-text',
+                    permisos: ['GC_GESTION_USU.ALTA'],
+                    accion: this.abrirAsignarPorTipoCompra.bind(this, usuario),
                 }
-            );
+            ];
 
             if (acciones.length === 1) {
                 acciones[0].clase += ' btn-una-accion-roles';
@@ -475,6 +473,59 @@ export class ConsultaUsuariosRolesComponent
         if (accion.url) {
             this.router.navigate(accion.url);
         }
+    }
+
+    obtenerInciso(permiso: any): string {
+        if (!permiso.unidadCompra) {
+            return 'Todas';
+        }
+        return permiso.unidadCompra?.descInciso || '';
+    }
+
+    obtenerUnidadEjecutora(permiso: any): string {
+        if (!permiso.unidadCompra) {
+            return 'Todas';
+        }
+        return permiso.unidadCompra?.descUnidadEjecutora || '';
+    }
+
+    obtenerUnidadCompra(permiso: any): string {
+        if (!permiso.unidadCompra) {
+            return 'Todas';
+        }
+        const prefijo = permiso.compra?.esComun ? 'UC' : 'UA';
+        return `${prefijo} ${permiso.unidadCompra?.descUnidadCompra || ''}`;
+    }
+
+    obtenerRolesAsignados(permiso: any): string {
+        const roles: string[] = [];
+
+        if (permiso.esEditorPrincipal) {
+            roles.push('Editor Principal');
+        }
+        if (permiso.esEditor) {
+            roles.push('Editor');
+        }
+        if (permiso.esValidador) {
+            roles.push('Validador');
+        }
+        if (permiso.esAprobador) {
+            roles.push('Aprobador');
+        }
+
+        return roles.join(', ');
+    }
+
+    modificarRolUsuarioEspecifico(permiso: any): void {
+        this.actualizarServ.mensajeModal('Funcionalidad en desarrollo', 'Esta funcionalidad estará disponible próximamente');
+    }
+
+    abrirAsignarPorTipoCompra(usuario: UsuarioPermisoAgrupado): void {
+        this.actualizarServ.mensajeModal('Funcionalidad en desarrollo', 'Esta funcionalidad estará disponible próximamente');
+    }
+
+    abrirAgregarPermisoPorTipoCompra(): void {
+        this.actualizarServ.mensajeModal('Funcionalidad en desarrollo', 'Esta funcionalidad estará disponible próximamente');
     }
 
     private agruparPorUsuario(response: PageModel<UsuarioOrganismoPerfilDTO>, mapa: Map<string, UsuarioPermisoAgrupado>) {
