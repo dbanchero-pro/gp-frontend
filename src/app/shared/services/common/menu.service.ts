@@ -353,7 +353,7 @@ export class MenuService {
                 {
                     nombre: 'Gestión usuarios',
                     titulo: 'Gestión Usuarios Roles',
-                    subtitulo: 'Asigna o elimina roles a los usuarios, a nivel de unidades de compra, compra o ítem',
+                    subtitulo: 'Asigna o elimina roles a los usuarios, a nivel de unidades de compra, compra o tipo de compra',
                     visible: true,
                     permisos: [
                         'GC_GESTION_USU.ALTA',
