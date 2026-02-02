@@ -136,7 +136,6 @@
                         [attr.aria-label]="'Tabla de roles del usuario ' + usr.nombre">
                         <thead class="table-light sticky-top">
                             <tr>
-                                <th aria-label="Acciones" class="text-center">Acciones</th>
                                 <th>Inciso</th>
                                 <th>Unidad ejecutora</th>
                                 <th>Unidad de compra</th>
@@ -144,11 +143,19 @@
                                 <th>Subtipo de compra</th>
                                 <th>N°/año compra</th>
                                 <th>Roles asignados</th>
+                                <th aria-label="Acciones" class="text-center">Acciones</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             <tr *ngFor="let permiso of usr.permisos">
+                                <td>{{ obtenerInciso(permiso) }}</td>
+                                <td>{{ obtenerUnidadEjecutora(permiso) }}</td>
+                                <td>{{ obtenerUnidadCompra(permiso) }}</td>
+                                <td>{{ permiso.compra?.subtipoCompra?.descTipoCompra }}</td>
+                                <td>{{ permiso.compra?.subtipoCompra?.descSubtipoCompra }}</td>
+                                <td>{{ permiso.compra | nroCompra }}</td>
+                                <td>{{ obtenerRolesAsignados(permiso) }}</td>
                                 <td class="text-center align-middle">
                                     <button aria-label="Modificar rol"
                                         *ngIf="seguridad.tienePermiso('GC_GESTION_USU.MODIFICACION')"
@@ -163,13 +170,6 @@
                                         <em class="fa fa-trash text-dark fa-lg"></em>
                                     </button>
                                 </td>
-                                <td>{{ obtenerInciso(permiso) }}</td>
-                                <td>{{ obtenerUnidadEjecutora(permiso) }}</td>
-                                <td>{{ obtenerUnidadCompra(permiso) }}</td>
-                                <td>{{ permiso.compra?.subtipoCompra?.descTipoCompra }}</td>
-                                <td>{{ permiso.compra?.subtipoCompra?.descSubtipoCompra }}</td>
-                                <td>{{ permiso.compra | nroCompra }}</td>
-                                <td>{{ obtenerRolesAsignados(permiso) }}</td>
                             </tr>
                         </tbody>
                     </table>
