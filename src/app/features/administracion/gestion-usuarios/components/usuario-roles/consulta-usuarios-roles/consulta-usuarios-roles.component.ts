@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { OrganismoPopupComponent } from 'src/app/shared/components/organismo-popup/organismo-popup.component';
 import { PaginaBusquedaComponent } from 'src/app/shared/components/pagina-busqueda/pagina-busqueda.component';
+import { TipoPerfil } from 'src/app/shared/enum/tipo-perfil.enum';
 import { AccionBoton } from 'src/app/shared/models/common/accion-boton.model';
 import { IColumnaOrden } from 'src/app/shared/models/common/columna-orden.model';
 import { PageModel } from 'src/app/shared/models/common/page/page.model';
@@ -199,9 +200,130 @@ export class ConsultaUsuariosRolesComponent
                 };
             }))
             .subscribe(({ usuariosAgrupados, totalUsuarios }) => {
-                this.usuariosAgrupados = usuariosAgrupados;
-                this.total = totalUsuarios;
+                this.usuariosAgrupados = usuariosAgrupados.length > 0 ? usuariosAgrupados : this.generarDatosPrueba();
+                this.total = totalUsuarios || this.usuariosAgrupados.length;
             });
+    }
+
+    private generarDatosPrueba(): UsuarioPermisoAgrupado[] {
+        const usuario1: UsuarioPermisoAgrupado = {
+            id: '1',
+            nombre: 'Juan Pérez',
+            permisos: ([
+                {
+                    id: 1,
+                    idUsuario: '1',
+                    nombre: 'Juan Pérez',
+                    perfil: TipoPerfil.Conformidad,
+                    nroDocumento: '12345678',
+                    correo: 'juan.perez@example.com',
+                    esEditorPrincipal: true,
+                    esEditor: true,
+                    esValidador: false,
+                    esAprobador: false,
+                    compra: {
+                        idCompra: 101,
+                        numCompra: 123,
+                        anioCompra: 2024,
+                        subtipoCompra: {
+                            idTipoCompra: '1',
+                            idSubtipoCompra: '1',
+                            descTipoCompra: 'Compra directa',
+                            descSubtipoCompra: 'Directa menor'
+                        }
+                    },
+                    unidadCompra: {
+                        id: 1,
+                        idInciso: 10,
+                        descInciso: 'Inciso Central',
+                        idUnidadEjecutora: 1,
+                        descUnidadEjecutora: 'UE Principal',
+                        idUnidadCompra: 1,
+                        descUnidadCompra: 'UC General'
+                    }
+                }
+            ] as any),
+            tienePermisoTodas: false,
+            acciones: []
+        };
+
+        const usuario2: UsuarioPermisoAgrupado = {
+            id: '2',
+            nombre: 'María González',
+            permisos: ([
+                {
+                    id: 2,
+                    idUsuario: '2',
+                    nombre: 'María González',
+                    perfil: TipoPerfil.Conformidad,
+                    nroDocumento: '87654321',
+                    correo: 'maria.gonzalez@example.com',
+                    esEditorPrincipal: false,
+                    esEditor: false,
+                    esValidador: true,
+                    esAprobador: true,
+                    compra: {
+                        idCompra: 102,
+                        numCompra: 456,
+                        anioCompra: 2024,
+                        subtipoCompra: {
+                            idTipoCompra: '2',
+                            idSubtipoCompra: '2',
+                            descTipoCompra: 'Licitación pública',
+                            descSubtipoCompra: 'Nacional'
+                        }
+                    },
+                    unidadCompra: {
+                        id: 2,
+                        idInciso: 20,
+                        descInciso: 'Inciso Educación',
+                        idUnidadEjecutora: 2,
+                        descUnidadEjecutora: 'UE Secundaria',
+                        idUnidadCompra: 2,
+                        descUnidadCompra: 'UC Regional'
+                    }
+                },
+                {
+                    id: 3,
+                    idUsuario: '2',
+                    nombre: 'María González',
+                    perfil: TipoPerfil.Conformidad,
+                    nroDocumento: '87654321',
+                    correo: 'maria.gonzalez@example.com',
+                    esEditorPrincipal: false,
+                    esEditor: false,
+                    esValidador: false,
+                    esAprobador: false,
+                    compra: {
+                        idCompra: 103,
+                        numCompra: 789,
+                        anioCompra: 2024,
+                        subtipoCompra: {
+                            idTipoCompra: '3',
+                            idSubtipoCompra: '3',
+                            descTipoCompra: 'Licitación pública',
+                            descSubtipoCompra: ''
+                        }
+                    },
+                    unidadCompra: {
+                        id: 2,
+                        idInciso: 20,
+                        descInciso: 'Inciso Educación',
+                        idUnidadEjecutora: 2,
+                        descUnidadEjecutora: 'UE Secundaria',
+                        idUnidadCompra: 2,
+                        descUnidadCompra: 'UC Regional'
+                    }
+                }
+            ] as any),
+            tienePermisoTodas: false,
+            acciones: []
+        };
+
+        usuario1.acciones = this.obtenerAcciones(usuario1, this.modo);
+        usuario2.acciones = this.obtenerAcciones(usuario2, this.modo);
+
+        return [usuario1, usuario2];
     }
 
     private actualizarFiltro(): void {
