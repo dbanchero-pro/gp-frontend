@@ -210,7 +210,11 @@ export class ConsultaUsuariosRolesComponent
                             subtipoCompra: {
                                 descTipoCompra: 'Compra Directa'
                             }
-                        }
+                        },
+                        esEditorPrincipal: true,
+                        esEditor: true,
+                        esValidador: false,
+                        esAprobador: false
                     } as any);
                 }
             });
