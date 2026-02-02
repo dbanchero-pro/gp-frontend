@@ -201,6 +201,18 @@ export class ConsultaUsuariosRolesComponent
             .subscribe(({ usuariosAgrupados, totalUsuarios }) => {
                 this.usuariosAgrupados = usuariosAgrupados;
                 this.total = totalUsuarios;
+
+                // Agregar fila adicional para María González
+                const mariaGonzalez = this.usuariosAgrupados.find(u => u.nombre === 'María González');
+                if (mariaGonzalez) {
+                    mariaGonzalez.permisos.push({
+                        compra: {
+                            subtipoCompra: {
+                                descTipoCompra: 'Compra Directa'
+                            }
+                        }
+                    } as any);
+                }
             });
     }
 
