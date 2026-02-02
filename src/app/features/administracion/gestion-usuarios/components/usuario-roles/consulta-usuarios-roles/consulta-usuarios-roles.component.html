@@ -45,9 +45,19 @@
                     </div>
                 </div>
 
-                <app-filtro-items-articulos #filtroItems (cambioFiltro)="onFiltroItemsCambio($event)"
-                    (limpiarFiltro)="limpiarFiltroItems()" [filtroParaBusqueda]="filtroParaBusquedaArticulos">
-                </app-filtro-items-articulos>
+                <div class="row">
+                    <div class="form-group form-row col-12 m-0 pb-0 pt-0 mb-4">
+                        <label for="rol" class="col-form-label col-12 pl-0">Rol</label>
+                        <select id="rol" class="form-control col-12" formControlName="rol">
+                            <option value="">Todos los roles</option>
+                            <option value="EDITOR_PRINCIPAL">Editor principal</option>
+                            <option value="EDITOR">Editor</option>
+                            <option value="VALIDADOR">Validador</option>
+                            <option value="APROBADOR">Aprobador</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-4 mb-2">
                         <app-input-documento formControlName="nroDocumento" [esCedula]="true"

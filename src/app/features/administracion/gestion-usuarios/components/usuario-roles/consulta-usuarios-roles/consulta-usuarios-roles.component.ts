@@ -1,15 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { OrganismoPopupComponent } from 'src/app/shared/components/organismo-popup/organismo-popup.component';
 import { PaginaBusquedaComponent } from 'src/app/shared/components/pagina-busqueda/pagina-busqueda.component';
-import { TipoBusqueda } from 'src/app/shared/enum/tipo-busqueda-item.enum';
 import { AccionBoton } from 'src/app/shared/models/common/accion-boton.model';
 import { IColumnaOrden } from 'src/app/shared/models/common/columna-orden.model';
 import { PageModel } from 'src/app/shared/models/common/page/page.model';
-import { FiltroBusquedaArticulosDTO } from 'src/app/shared/models/filtros/filtro-busqueda-articulos.model';
-import { FiltroItemCompraDTO } from 'src/app/shared/models/filtros/filtro-item-compra.model';
 import { TipoCompraDTO } from 'src/app/shared/models/sice/tipo-compra.model';
 import { UsuarioOrganismoPerfilDTO } from 'src/app/shared/models/usuario/usuario-organismo-perfil.model';
 import { ActualizarService } from 'src/app/shared/services/common/actualizar.service';
@@ -35,7 +32,6 @@ import { UnidadesCompraSicePopupComponent } from '../../usuario-organismo/unidad
 export class ConsultaUsuariosRolesComponent
     extends PaginaBusquedaComponent<IConsultaUsuarioOrganismoPerfilFiltroDTO>
     implements OnInit {
-    @ViewChild('filtroItems') filtroItemsComponent!: any;
     listaOrden: IColumnaOrden[] = [
         { id: 'usuarioOrganismo.usuario.nroDocumento', nombre: 'Cédula de identidad' },
         { id: 'usuarioOrganismo.usuario.nombre', nombre: 'Nombre' },
@@ -47,23 +43,11 @@ export class ConsultaUsuariosRolesComponent
         { id: 'itemCompra.nroItem', nombre: 'N° ítem' },
     ];
 
-    get filtroParaBusquedaArticulos(): FiltroBusquedaArticulosDTO {
-        const { numCompra, anioCompra } = dividirNroAnioCompra(
-            this.form.get('nroAnioCompra')?.value
-        );
-
-        return {
-            numCompra: numCompra?.toString(),
-            anioCompra: anioCompra?.toString(),
-        };
-    }
-
     columnaOrdenInicial = 'usuarioOrganismo.usuario.nroDocumento';
     ordenInicial: 'asc' | 'desc' = 'asc';
     permisos: any = {};
     nroCompra!: number;
     usuariosAgrupados: UsuarioPermisoAgrupado[] = [];
-    filtroItem?: FiltroItemCompraDTO;
 
     tiposCompra: TipoCompraDTO[] = [];
     nroCompraValido = true;
@@ -92,8 +76,7 @@ export class ConsultaUsuariosRolesComponent
             filtroBase: [null],
             idTipoCompra: [''],
             nroAnioCompra: ['', Validators.pattern(mascaraNroAnioCompra)],
-            codEntregable: [''],
-            nomEntregable: [''],
+            rol: [''],
             organismo: [null],
         });
 
@@ -127,8 +110,7 @@ export class ConsultaUsuariosRolesComponent
                 nroDocumento: snap.filtro.nroDocumento ?? '',
                 idTipoCompra: snap.filtro.idTipoCompra ?? '',
                 nroAnioCompra: snap.filtro.nroAnioCompra ?? '',
-                codEntregable: snap.filtro.codEntregable ?? '',
-                nomEntregable: snap.filtro.nomEntregable ?? '',
+                rol: snap.filtro.rol ?? '',
             });
             if (snap.filtro.idInciso || snap.filtro.idUnidadEjecutora || snap.filtro.idUnidadCompra) {
                 organismo?.setValue({
@@ -141,12 +123,6 @@ export class ConsultaUsuariosRolesComponent
             this.parametros.tamanoPagina = snap.tamanoPagina ?? 10;
             this.parametros.sort = snap.sort ?? this.columnaOrdenInicial;
             this.parametros.order = snap.order ?? this.ordenInicial;
-
-            if (snap.nroItem || snap.descripcionArticulo) {
-                this.parametros.filtro ??= {};
-                this.parametros.filtro.nroItem = snap.nroItem;
-                this.parametros.filtro.descripcionArticulo = snap.descripcionArticulo;
-            }
 
             setTimeout(() => {
                 this.buscar();
@@ -167,8 +143,7 @@ export class ConsultaUsuariosRolesComponent
             'filtroBase',
             'idTipoCompra',
             'nroAnioCompra',
-            'codEntregable',
-            'nomEntregable',
+            'rol',
             'organismo',
         ];
 
@@ -177,8 +152,6 @@ export class ConsultaUsuariosRolesComponent
                 ? this.form.get(c)!.disable({ emitEvent: false })
                 : this.form.get(c)!.enable({ emitEvent: false })
         );
-
-        this.filtroItemsComponent?.setDisabledState(deshabilitar);
     }
 
     obtenerTiposCompra() {
@@ -238,18 +211,6 @@ export class ConsultaUsuariosRolesComponent
         const { numCompra, anioCompra } = dividirNroAnioCompra(v.nroAnioCompra);
         this.modo = v.modoBusqueda;
 
-        let nroItem: number | undefined;
-        let descArticulo: string | undefined;
-
-        if (this.filtroItem) {
-            const texto = (this.filtroItem.item ?? '').toString().trim();
-            if (this.filtroItem.tipoBusqueda === TipoBusqueda.NROITEM && texto) {
-                nroItem = +texto;
-            } else if (this.filtroItem.tipoBusqueda === TipoBusqueda.ARTICULO && texto) {
-                descArticulo = texto;
-            }
-        }
-
         this.parametros.filtro = {
             permisoTodas: this.modo === this.MODO_TODAS_UC,
             idTipoCompra: v.idTipoCompra,
@@ -258,10 +219,7 @@ export class ConsultaUsuariosRolesComponent
             idUnidadCompra: organismo?.idUnidadCompra,
             nroCompra: numCompra,
             anioCompra: anioCompra,
-            nroItem: nroItem,
-            descArticulo: descArticulo,
-            nomEntregable: v.nomEntregable,
-            codEntregable: v.codEntregable,
+            rol: v.rol,
             nroDocumento: v.nroDocumento,
             nroAnioCompra: v.nroAnioCompra,
         };
@@ -274,10 +232,7 @@ export class ConsultaUsuariosRolesComponent
                 idUnidadCompra: undefined,
                 nroCompra: undefined,
                 anioCompra: undefined,
-                nroItem: undefined,
-                descArticulo: undefined,
-                nomEntregable: undefined,
-                codEntregable: undefined,
+                rol: undefined,
             });
         }
     }
@@ -290,8 +245,7 @@ export class ConsultaUsuariosRolesComponent
     }
 
     override nuevaConsulta(): void {
-        this.filtroItemsComponent?.limpiar();
-        this.form?.reset({ modoBusqueda: this.MODO_FILTROS, idTipoCompra: '' });
+        this.form?.reset({ modoBusqueda: this.MODO_FILTROS, idTipoCompra: '', rol: '' });
         this.parametros.pagina = 0;
         this.parametros.sort = this.columnaOrdenInicial;
         this.parametros.order = this.ordenInicial;
@@ -521,15 +475,6 @@ export class ConsultaUsuariosRolesComponent
         if (accion.url) {
             this.router.navigate(accion.url);
         }
-    }
-
-    onFiltroItemsCambio(filtro: FiltroItemCompraDTO): void {
-        this.filtroItem = filtro;
-    }
-
-    limpiarFiltroItems(): void {
-        this.filtroItem = undefined;
-        this.actualizarFiltro();
     }
 
     private agruparPorUsuario(response: PageModel<UsuarioOrganismoPerfilDTO>, mapa: Map<string, UsuarioPermisoAgrupado>) {
