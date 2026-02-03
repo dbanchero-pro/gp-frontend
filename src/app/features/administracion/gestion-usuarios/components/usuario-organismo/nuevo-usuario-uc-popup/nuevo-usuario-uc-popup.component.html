@@ -27,7 +27,7 @@
         </div>
 
         <div class="row">
-            <div class="form-group form-row col-12 mb-4" [class.field-error]="!alMenosUnRolSeleccionado()">
+            <div class="form-group form-row col-12 mb-4" [class.field-error]="!alMenosUnRolSeleccionado() && intentoGuardar">
                 <label class="col-12 pl-0 font-weight-bold">* Roles</label>
                 <div class="col-12">
                     <div class="form-check">
