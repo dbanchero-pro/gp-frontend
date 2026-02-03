@@ -63,13 +63,7 @@ export class UsuarioRolesService {
                     descSubtipoCompra: 'Común'
                 }
             },
-            itemCompra: {
-                idCompra: 2,
-                idItem: 1,
-                nroItem: 1,
-                codArticulo: 1001,
-                descArticulo: 'Papel A4 75gr'
-            }
+          itemCompra: undefined
         },
         {
             id: 3,
@@ -81,7 +75,7 @@ export class UsuarioRolesService {
             unidadCompra: undefined,
             compra: undefined,
             itemCompra: undefined
-        }
+        },      
     ];
 
     constructor() { }

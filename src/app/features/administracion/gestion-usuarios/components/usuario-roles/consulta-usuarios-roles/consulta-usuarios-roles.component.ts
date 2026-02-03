@@ -509,18 +509,18 @@ export class ConsultaUsuariosRolesComponent
     obtenerRolesAsignados(permiso: any): string {
         const roles: string[] = [];
 
-        if (permiso.esEditorPrincipal) {
-            roles.push('Editor Principal');
-        }
-        if (permiso.esEditor) {
+      //  if (permiso.esEditorPrincipal) {
+            roles.push('Editor principal');
+     //   }
+     //   if (permiso.esEditor) {
             roles.push('Editor');
-        }
-        if (permiso.esValidador) {
+      //  }
+     //   if (permiso.esValidador) {
             roles.push('Validador');
-        }
-        if (permiso.esAprobador) {
+      //  }
+     //   if (permiso.esAprobador) {
             roles.push('Aprobador');
-        }
+      //  }
 
         return roles.join(', ');
     }
