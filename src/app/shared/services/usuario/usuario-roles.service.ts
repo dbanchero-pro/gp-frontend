@@ -147,9 +147,15 @@ export class UsuarioRolesService {
         idInciso: number,
         idUnidadEjecutora: number,
         idUnidadCompra: number,
-        idUsuario: string
+        idUsuario: string,
+        roles?: {
+            esEditorPrincipal: boolean;
+            esEditor: boolean;
+            esValidador: boolean;
+            esAprobador: boolean;
+        }
     ): Observable<boolean> {
-        console.log('Mock: agregarRolUC', { idInciso, idUnidadEjecutora, idUnidadCompra, idUsuario });
+        console.log('Mock: agregarRolUC', { idInciso, idUnidadEjecutora, idUnidadCompra, idUsuario, roles });
         return of(true);
     }
 

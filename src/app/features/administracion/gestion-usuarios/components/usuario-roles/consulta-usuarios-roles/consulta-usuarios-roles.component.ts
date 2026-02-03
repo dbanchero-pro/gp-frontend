@@ -393,12 +393,19 @@ export class ConsultaUsuariosRolesComponent
             idUnidadEjecutora: data.unidadCompra.idUnidadEjecutora,
             idUnidadCompra: data.unidadCompra.idUnidadCompra,
             idUsuario: data.idUsuario,
+            roles: data.roles,
         };
 
         this.usuarioRolesService
-            .agregarRolUC(filtros.idInciso, filtros.idUnidadEjecutora, filtros.idUnidadCompra, filtros.idUsuario)
+            .agregarRolUC(
+                filtros.idInciso,
+                filtros.idUnidadEjecutora,
+                filtros.idUnidadCompra,
+                filtros.idUsuario,
+                filtros.roles
+            )
             .subscribe(() => {
-                this.actualizarServ.mensajeCorrecto('El rol ha sido agregado de forma exitosa.');
+                this.actualizarServ.mensajeCorrecto('Los roles han sido agregados de forma exitosa.');
                 this.buscar();
             });
     }
@@ -427,7 +434,7 @@ export class ConsultaUsuariosRolesComponent
             idUnidadCompra: data.idUnidadCompra,
         };
 
-        this.usuarioRolesService.agregarRolUC(filtros.idInciso, filtros.idUnidadEjecutora, filtros.idUnidadCompra, usuario.id)
+        this.usuarioRolesService.agregarRolUC(filtros.idInciso, filtros.idUnidadEjecutora, filtros.idUnidadCompra, usuario.id, undefined)
             .subscribe(() => {
                 this.actualizarServ.mensajeCorrecto('El rol ha sido agregado de forma exitosa.');
                 this.buscar();
