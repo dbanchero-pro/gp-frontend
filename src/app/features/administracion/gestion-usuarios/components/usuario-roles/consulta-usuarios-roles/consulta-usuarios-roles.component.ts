@@ -294,7 +294,7 @@ export class ConsultaUsuariosRolesComponent
         } else {
             acciones = [
                 {
-                    nombre: 'Asignar compra',
+                    nombre: 'Asignar por compra',
                     ariaLabel: "Asignar por compra usuario id " + usuario.id,
                     clase: 'btn btn-success',
                     icono: 'fa fa-shopping-cart',
@@ -302,7 +302,7 @@ export class ConsultaUsuariosRolesComponent
                     url: ['/administracion/gestion-usuarios/consulta-usuario-roles', usuario.id],
                 },
                 {
-                    nombre: 'Asignar UC',
+                    nombre: 'Asignar por UC',
                     ariaLabel: "Asignar por UC usuario id " + usuario.id,
                     clase: 'btn btn-secondary',
                     icono: 'fa fa-folder',
@@ -318,7 +318,7 @@ export class ConsultaUsuariosRolesComponent
                     accion: this.guardarRolUsuarioParaTodasUc.bind(this, usuario),
                 },
                 {
-                    nombre: 'Asignar tipo de compra',
+                    nombre: 'Asignar por tipo de compra',
                     ariaLabel: "Asignar por tipo de compra usuario id " + usuario.id,
                     clase: 'btn btn-secondary',
                     icono: 'fa fa-file-text',
@@ -556,7 +556,7 @@ export class ConsultaUsuariosRolesComponent
             {
                 nombre: 'Eliminar',
                 ariaLabel: 'Eliminar rol',
-                clase: 'btn btn-danger',
+                clase: 'btn btn-secondary',
                 icono: 'fa fa-trash',
                 permisos: ['GC_GESTION_USU.BAJA'],
                 accion: () => this.eliminarRolUsuarioEspecifico(permiso)
