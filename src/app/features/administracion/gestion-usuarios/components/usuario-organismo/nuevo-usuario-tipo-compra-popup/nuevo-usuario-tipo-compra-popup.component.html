@@ -8,7 +8,12 @@
     <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
   </div>
   <form [formGroup]="form" (submit)="guardar()">
-    <div class="row">
+
+     <div class="Box Box--color1" *ngIf="usuario">
+        <span class="subtitle mb-0"><strong>CI {{ usuario.id | formatoCi }}</strong> - {{ usuario.nombre }} </span>
+    </div>
+
+    <div class="row" *ngIf="!usuario">
       <div class="form-row col-12 pl-2">
         <div class="form-group col-md-5">
             <app-input-documento #inputDocumento formControlName="nroDocumento" [esCedula]="true" [minLength]="7" [required]="true"
@@ -22,10 +27,6 @@
             Buscar
           </button>
         </div>
-      </div>
-      <div class="form-group px-0">
-        <label for="" class="col-3 pl-0 font-weight-bold" *ngIf="usuario">{{usuario.nombre}}</label>
-        <label for="" class="col-3 pl-0 font-weight-bold" *ngIf="usuario">{{usuario.correo}}</label>
       </div>
     </div>
   <div class="row">
