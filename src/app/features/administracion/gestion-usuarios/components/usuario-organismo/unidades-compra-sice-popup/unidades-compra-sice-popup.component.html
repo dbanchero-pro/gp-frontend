@@ -1,117 +1,53 @@
 <div class="modal-header d-flex justify-content-between align-items-center">
   <h1 class="modal-title mb-0" id="tituloPopup">{{titulo}}</h1>
-  <button type="button" aria-label="Cerrar" class="close" (click)="cancelarConConfirmacion()">&times;</button>
+  <button type="button" aria-label="Cerrar" class="close" (click)="cerrarPopup()">&times;</button>
 </div>
 
-<div class="modal-body justify-content-center">
-  <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
-  <form [formGroup]="form" class="col-12 justify-content-center" (submit)="guardar()">
-
-    <div class="row py-1 pl-3 pb-4 subtitle">
-      <div class="float-left pr-3">Usuario seleccionado:</div>
-      <div class="float-left  font-weight-bold  pr-3">CI {{ usuario.id | formatoCi }}</div>
-      <div class="float-left font-weight-bold ">{{ usuario.nombre }}</div>
-    </div>
-
-    <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden" [columnaOrden]="parametros.sort"
-      [orden]="parametros.order" (orderChange)="cambioOrden($event)" titulo="Unidades de compra asignadas"
-      (sortChange)="cambioColumnaOrden($event)"></app-cabezal-consulta>
-
-    <div class="card mb-4" *ngIf="unidadesCompra.length > 0">
-      <div class="table-responsive m-0">
-        <table class="table table-striped table-hover mb-0 align-middle" aria-label="Tabla de unidades de compra">
-          <thead class="table-light sticky-top">
-            <tr>
-              <th>Inciso</th>
-              <th>Unidad ejecutora</th>
-              <th>Unidad de compra</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr *ngFor="let reg of unidadesCompra">
-              <td>{{ reg.idInciso }} - {{ reg.descInciso }}</td>
-              <td>{{ reg.idUnidadEjecutora }} - {{ reg.descUnidadEjecutora }}</td>
-              <td>{{ reg.idUnidadCompra }} - {{ reg.descUnidadCompra}}</td>
-            </tr>
-
-            <tr *ngIf="unidadesCompra.length === 0">
-              <td colspan="3" class="text-center py-4">Sin resultados</td>
-            </tr>
-          </tbody>
-        </table>
+<div class="modal-body p-2 justify-content-center">
+  <div class="form-group">
+    <div class="col-12">
+      <div class="row py-1 pl-3 pb-4 subtitle">
+        <div class="float-left pr-3">Usuario seleccionado:</div>
+        <div class="float-left  font-weight-bold  pr-3">CI {{ usuario.id | formatoCi }}</div>
+        <div class="float-left font-weight-bold ">{{ usuario.nombre }}</div>
       </div>
-    </div>
+      <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden" [columnaOrden]="parametros.sort"
+        [orden]="parametros.order" (orderChange)="cambioOrden($event)" titulo="Unidades de compra asignadas"
+        (sortChange)="cambioColumnaOrden($event)"></app-cabezal-consulta>
 
-    <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina"
-      [paginaActual]="parametros.pagina + 1" (cambioPagina)="cambioPagina($event)"
-      (cambioItemsPorPagina)="cambioPorPagina($event)"></app-paginado>
+      <div class="card mb-4" *ngIf="unidadesCompra.length > 0">
+        <div class="table-responsive m-0">
+          <table class="table table-striped table-hover mb-0 align-middle" aria-label="Tabla de unidades de compra">
+            <thead class="table-light sticky-top">
+              <tr>
+                <th>Inciso</th>
+                <th>Unidad ejecutora</th>
+                <th>Unidad de compra</th>
+              </tr>
+            </thead>
 
-    <div class="row mt-4">
-      <div class="form-group form-row col-12 mb-4" [class.field-error]="campoVacio('unidadCompra')">
-        <label for="unidadCompra">* Unidad de compra a asignar</label>
-        <select class="form-control" formControlName="unidadCompra" id="unidadCompra"
-                (change)="onSeleccionUnidadCompra($event)">
-          <option [value]="null">Seleccione una unidad de compra</option>
-          <option *ngFor="let uc of todasUC"
-                  [value]="uc.idInciso + '-' + uc.idUnidadEjecutora + '-' + uc.idUnidadCompra">
-            {{ uc.idInciso }} - {{ uc.descInciso }} |
-            {{ uc.idUnidadEjecutora }} - {{ uc.descUnidadEjecutora }} |
-            {{ uc.idUnidadCompra }} - {{ uc.descUnidadCompra }}
-          </option>
-        </select>
-        <span class="texto-error" [style.visibility]="campoVacio('unidadCompra') ? 'visible' : 'hidden'">
-          La unidad de compra no puede estar vacía
-        </span>
-      </div>
-    </div>
+            <tbody>
+              <tr *ngFor="let reg of unidadesCompra">
+                <td>{{ reg.idInciso }} - {{ reg.descInciso }}</td>
+                <td>{{ reg.idUnidadEjecutora }} - {{ reg.descUnidadEjecutora }}</td>
+                <td>{{ reg.idUnidadCompra }} - {{ reg.descUnidadCompra}}</td>
+              </tr>
 
-    <div class="row">
-      <div class="form-group form-row col-12 mb-4" [class.field-error]="!alMenosUnRolSeleccionado() && intentoGuardar">
-        <label for="roles" class="font-weight-bold">* Roles</label>
-        <div class="d-flex justify-content-center w-100">
-          <div class="border rounded p-3 bg-light d-flex flex-column align-items-start" style="width: 100%; padding-left: 40% !important;">
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="esEditorPrincipal"
-                     formControlName="esEditorPrincipal">
-              <label class="form-check-label" for="esEditorPrincipal">
-                Editor principal
-              </label>
-            </div>
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="esEditor"
-                     formControlName="esEditor">
-              <label class="form-check-label" for="esEditor">
-                Editor
-              </label>
-            </div>
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="esValidador"
-                     formControlName="esValidador">
-              <label class="form-check-label" for="esValidador">
-                Validador
-              </label>
-            </div>
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="esAprobador"
-                     formControlName="esAprobador">
-              <label class="form-check-label" for="esAprobador">
-                Aprobador
-              </label>
-            </div>
-          </div>
+              <tr *ngIf="unidadesCompra.length === 0">
+                <td colspan="3" class="text-center py-4">Sin resultados</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <span class="texto-error" [style.visibility]="!alMenosUnRolSeleccionado() && intentoGuardar ? 'visible' : 'hidden'">
-          Debe seleccionar al menos un rol
-        </span>
       </div>
-    </div>
-  </form>
 
-  <div class="d-flex justify-content-end mt-3 pe-3">
-    <button type="submit" class="btn btn-primary" (click)="guardar()" [disabled]="validarPopUpInvalido()">
-      Guardar
-    </button>
-    <button type="button" class="Button btn-link" (click)="cancelarConConfirmacion()">Cancelar</button>
+      <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina"
+        [paginaActual]="parametros.pagina + 1" (cambioPagina)="cambioPagina($event)"
+        (cambioItemsPorPagina)="cambioPorPagina($event)"></app-paginado>
+    </div>
+
+    <div class="d-flex justify-content-end mt-3 pe-3">
+
+      <button type="button" class="Button btn-link" (click)="cerrarPopup()">Cancelar</button>
+    </div>
   </div>
-</div>
