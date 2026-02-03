@@ -31,7 +31,7 @@
 
     </div>
 
-    <div class="form-group">
+    <div class="form-group" *ngIf="submitText === 'Guardar'">
       <div class="form-row col-12 mb-4" [class.field-error]="!alMenosUnRolSeleccionado() && intentoGuardar">
         <label for="roles" class="font-weight-bold col-12">* Roles</label>
         <div class="d-flex justify-content-center w-100 col-12">
