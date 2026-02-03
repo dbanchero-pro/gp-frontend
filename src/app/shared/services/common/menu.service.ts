@@ -424,7 +424,7 @@ export class MenuService {
                     url: '/administracion/gestion-usuarios/consulta-usuario-conformidad',
                 },
                 {
-                    nombre: 'Seccciones',
+                    nombre: 'Secciones',
                     titulo: 'Administración de las secciones',
                     subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar las secciones',
                     visible: true,
