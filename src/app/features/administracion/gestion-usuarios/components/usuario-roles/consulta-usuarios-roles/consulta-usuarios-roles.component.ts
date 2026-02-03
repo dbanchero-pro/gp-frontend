@@ -310,7 +310,7 @@ export class ConsultaUsuariosRolesComponent
                     accion: this.abrirOrganismoPopup.bind(this, usuario),
                 },
                 {
-                    nombre: 'Asignar todas las UC,
+                    nombre: 'Asignar todas las UC',
                     ariaLabel: "Asignar todas las UC del usuario id " + usuario.id,
                     clase: 'btn btn-secondary',
                     icono: 'fa fa-sitemap',
