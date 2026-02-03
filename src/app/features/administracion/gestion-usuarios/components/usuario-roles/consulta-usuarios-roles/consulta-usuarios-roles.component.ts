@@ -294,7 +294,7 @@ export class ConsultaUsuariosRolesComponent
         } else {
             acciones = [
                 {
-                    nombre: 'Asignar por compra',
+                    nombre: 'Asignar compra',
                     ariaLabel: "Asignar por compra usuario id " + usuario.id,
                     clase: 'btn btn-success',
                     icono: 'fa fa-shopping-cart',
@@ -302,7 +302,7 @@ export class ConsultaUsuariosRolesComponent
                     url: ['/administracion/gestion-usuarios/consulta-usuario-roles', usuario.id],
                 },
                 {
-                    nombre: 'Asignar por UC',
+                    nombre: 'Asignar UC',
                     ariaLabel: "Asignar por UC usuario id " + usuario.id,
                     clase: 'btn btn-secondary',
                     icono: 'fa fa-folder',
@@ -310,7 +310,7 @@ export class ConsultaUsuariosRolesComponent
                     accion: this.abrirOrganismoPopup.bind(this, usuario),
                 },
                 {
-                    nombre: 'Asignar todas las UC del usuario',
+                    nombre: 'Asignar todas las UC,
                     ariaLabel: "Asignar todas las UC del usuario id " + usuario.id,
                     clase: 'btn btn-secondary',
                     icono: 'fa fa-sitemap',
@@ -318,7 +318,7 @@ export class ConsultaUsuariosRolesComponent
                     accion: this.guardarRolUsuarioParaTodasUc.bind(this, usuario),
                 },
                 {
-                    nombre: 'Asignar por tipo de compra',
+                    nombre: 'Asignar tipo de compra',
                     ariaLabel: "Asignar por tipo de compra usuario id " + usuario.id,
                     clase: 'btn btn-secondary',
                     icono: 'fa fa-file-text',
