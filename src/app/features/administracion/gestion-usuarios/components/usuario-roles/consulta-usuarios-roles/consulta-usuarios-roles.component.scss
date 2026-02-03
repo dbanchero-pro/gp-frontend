@@ -1,6 +1,11 @@
 app-boton-accion {
     position: relative;
     z-index: 1050;
+
+    .btn-split {
+        min-width: 200px;
+        white-space: nowrap;
+    }
 }
 
 .btn-ancho-fijo-eliminar{

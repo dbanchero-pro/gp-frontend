@@ -56,7 +56,11 @@ export class NuevoUsuarioPopupComponent
     guardar(): void {
         this.intentoGuardar = true;
 
-        if (this.form.invalid || this.tienePermisoTodas || !this.alMenosUnRolSeleccionado()) {
+        if (this.form.invalid || this.tienePermisoTodas) {
+            return;
+        }
+
+        if (this.submitText === 'Guardar' && !this.alMenosUnRolSeleccionado()) {
             return;
         }
 
