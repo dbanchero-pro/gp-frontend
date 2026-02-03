@@ -22,6 +22,7 @@ import { VincularEmpresaPopupComponent } from './components/usuario-proveedor/vi
 import { ConsultaUsuariosRolesComponent } from './components/usuario-roles/consulta-usuarios-roles/consulta-usuarios-roles.component';
 import { ConsultaUsuariosRolesCompraComponent } from './components/usuario-roles/consulta-usuarios-roles-compra/consulta-usuarios-roles-compra.component';
 import { ConsultaUsuariosRolesItemsComponent } from './components/usuario-roles/consulta-usuarios-roles-items/consulta-usuarios-roles-items.component';
+import { ModificarRolPopupComponent } from './components/usuario-roles/modificar-rol-popup/modificar-rol-popup.component';
 import { PuntoRecepcionResumenPipe } from './pipes/punto-recepcion-resumen.pipe';
 
 const routes: Routes = [
@@ -92,7 +93,8 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
         UnidadesCompraSicePopupComponent,
         ConsultaUsuariosRolesComponent,
         ConsultaUsuariosRolesCompraComponent,
-        ConsultaUsuariosRolesItemsComponent
+        ConsultaUsuariosRolesItemsComponent,
+        ModificarRolPopupComponent
     ],
     imports: [
         CommonModule,

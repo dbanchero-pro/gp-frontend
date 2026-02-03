@@ -23,6 +23,7 @@ import { NuevoUsuarioPopupComponent } from '../../usuario-organismo/nuevo-usuari
 import { NuevoUsuarioTipoCompraPopupComponent } from '../../usuario-organismo/nuevo-usuario-tipo-compra-popup/nuevo-usuario-tipo-compra-popup.component';
 import { NuevoUsuarioUcPopupComponent } from '../../usuario-organismo/nuevo-usuario-uc-popup/nuevo-usuario-uc-popup.component';
 import { UnidadesCompraSicePopupComponent } from '../../usuario-organismo/unidades-compra-sice-popup/unidades-compra-sice-popup.component';
+import { ModificarRolPopupComponent } from '../modificar-rol-popup/modificar-rol-popup.component';
 
 @Component({
     selector: 'app-consulta-usuarios-roles',
@@ -541,7 +542,32 @@ export class ConsultaUsuariosRolesComponent
     }
 
     modificarRolUsuarioEspecifico(permiso: any): void {
-        this.actualizarServ.mensajeModal('Funcionalidad en desarrollo', 'Esta funcionalidad estará disponible próximamente');
+        const comp = this.abrirPopup(ModificarRolPopupComponent, 'Guardar', {
+            initialState: {
+                permiso: permiso,
+            },
+        }) as ModificarRolPopupComponent;
+
+        comp.guardarEvento.subscribe((data) => {
+            if (this.modalService.getModalsCount() > 0) {
+                this.modalService.hide();
+            }
+            setTimeout(() => {
+                this.actualizarServ.confirmar(
+                    '¿Está seguro que desea modificar los roles asignados?',
+                    () => {
+                        this.usuarioRolesService
+                            .modificarRol(data.id, data.roles)
+                            .subscribe(() => {
+                                this.actualizarServ.mensajeCorrecto(
+                                    'Los roles han sido modificados de forma exitosa.'
+                                );
+                                this.buscar();
+                            });
+                    }
+                );
+            }, 100);
+        });
     }
 
     obtenerAccionesPermiso(permiso: any): AccionBoton[] {
