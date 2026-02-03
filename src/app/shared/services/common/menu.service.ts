@@ -158,6 +158,7 @@ export class MenuService {
             items: [
              //   this.menuConformidad(),
                 this.menuRoles(),
+                this.menuPliegos(),
                // this.menuRecepcion(),
                 //this.menuSeguimientoProveedores(),
                 //this.menuPuntosRecepcion(),
@@ -346,14 +347,30 @@ export class MenuService {
 
     private menuRoles(): IMenuItem {
         return {
-            nombre: 'Roles',
+            nombre: 'Gestión de roles',
+            titulo: 'Gestión Usuarios Roles',
+            subtitulo: 'Asigna o elimina roles a los usuarios, a nivel de unidades de compra, compra o tipo de compra',
+            visible: true,
+            permisos: [
+                'GC_GESTION_USU.ALTA',
+                'GC_GESTION_USU.BAJA',
+                'GC_GESTION_USU.MODIFICACION',
+                'GC_GESTION_USU.CONSULTA',
+            ],
+            url: '/administracion/gestion-usuarios/consulta-usuario-roles',        
+        };
+    }
+
+     private menuPliegos(): IMenuItem {
+         return {
+            nombre: 'Pliegos',
             visible: true,
             tipoUsuario: TipoUsuario.ORGANISMO,
-            items: [
-                {
-                    nombre: 'Gestión usuarios',
-                    titulo: 'Gestión Usuarios Roles',
-                    subtitulo: 'Asigna o elimina roles a los usuarios, a nivel de unidades de compra, compra o tipo de compra',
+            items: [     
+                 {
+                    nombre: 'Campos y reglas',
+                    titulo: 'Administración de campos y sus reglas',
+                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar los campos',
                     visible: true,
                     permisos: [
                         'GC_GESTION_USU.ALTA',
@@ -361,18 +378,62 @@ export class MenuService {
                         'GC_GESTION_USU.MODIFICACION',
                         'GC_GESTION_USU.CONSULTA',
                     ],
-                    url: '/administracion/gestion-usuarios/consulta-usuario-roles',
-                },
+                    url: '/administracion/gestion-usuarios/consulta-usuario-conformidad',
+                },          
                 {
-                    nombre: 'Ver auditoría',
-                    titulo: 'Auditoría Funcional Usuarios Roles',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar las operaciones sobre los usuarios',
+                    nombre: 'Capítulos',
+                    titulo: 'Administración de las capítulos',
+                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar los capítulos',
                     visible: true,
                     permisos: [
                         'GC_GESTION_USU.CONSULTA'
                     ],
-                    url: '/administracion/auditoria/roles',
+                    url: '/administracion/auditoria/conformidad',
                 },
+                {
+                    nombre: 'Cláusulas',
+                    titulo: 'Administración de las cláusulas',
+                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar las cláusulas',
+                    visible: true,
+                    permisos: [
+                        'GC_GESTION_USU.CONSULTA'
+                    ],
+                    url: '/administracion/auditoria/conformidad',
+                },
+                {
+                    nombre: 'Modelos',
+                    titulo: 'Administración de las modelos',
+                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar los modelos',
+                    visible: true,
+                    permisos: [
+                        'GC_GESTION_USU.CONSULTA'
+                    ],
+                    url: '/administracion/auditoria/conformidad',
+                },
+                {
+                    nombre: 'Repositorio archivos',
+                    titulo: 'Administración del repositorio de archivos',
+                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar los archivos',
+                    visible: true,
+                    permisos: [
+                        'GC_GESTION_USU.ALTA',
+                        'GC_GESTION_USU.BAJA',
+                        'GC_GESTION_USU.MODIFICACION',
+                        'GC_GESTION_USU.CONSULTA',
+                    ],
+                    url: '/administracion/gestion-usuarios/consulta-usuario-conformidad',
+                },
+                {
+                    nombre: 'Seccciones',
+                    titulo: 'Administración de las secciones',
+                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar las secciones',
+                    visible: true,
+                    permisos: [
+                        'GC_GESTION_USU.CONSULTA'
+                    ],
+                    url: '/administracion/auditoria/conformidad',
+                },
+                
             ]
         };
     }
