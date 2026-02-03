@@ -579,7 +579,7 @@ export class ConsultaUsuariosRolesComponent
     abrirAsignarPorTipoCompra(usuario: UsuarioPermisoAgrupado): void {
         const comp = this.abrirPopup(NuevoUsuarioTipoCompraPopupComponent, 'Guardar', {
             initialState: {
-                titulo: 'Agregar rol por tipo de compra',
+                titulo: 'Asignar rol por tipo de compra',
             },
         }) as NuevoUsuarioTipoCompraPopupComponent;
 
