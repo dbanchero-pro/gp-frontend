@@ -31,47 +31,6 @@
 
     </div>
 
-    <div class="form-group">
-      <div class="form-row col-12 mb-4" [class.field-error]="!alMenosUnRolSeleccionado() && intentoGuardar">
-        <label for="roles" class="font-weight-bold col-12">* Roles</label>
-        <div class="d-flex justify-content-center w-100 col-12">
-          <div class="border rounded p-3 bg-light d-flex flex-column align-items-start" style="width: 100%; padding-left: 40% !important;">
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="esEditorPrincipal"
-                formControlName="esEditorPrincipal">
-              <label class="form-check-label" for="esEditorPrincipal">
-                Editor principal
-              </label>
-            </div>
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="esEditor"
-                formControlName="esEditor">
-              <label class="form-check-label" for="esEditor">
-                Editor
-              </label>
-            </div>
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="esValidador"
-                formControlName="esValidador">
-              <label class="form-check-label" for="esValidador">
-                Validador
-              </label>
-            </div>
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="esAprobador"
-                formControlName="esAprobador">
-              <label class="form-check-label" for="esAprobador">
-                Aprobador
-              </label>
-            </div>
-          </div>
-        </div>
-        <span class="texto-error col-12" [style.visibility]="!alMenosUnRolSeleccionado() && intentoGuardar ? 'visible' : 'hidden'">
-          Debe seleccionar al menos un rol
-        </span>
-      </div>
-    </div>
-
     <div class="d-flex justify-content-end mt-3 pe-3">
       <button type="submit" class="btn btn-primary" (click)="guardar()" [disabled]="deshabilitarGuardar" >
         {{submitText}}
