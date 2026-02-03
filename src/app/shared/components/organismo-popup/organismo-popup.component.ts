@@ -14,6 +14,7 @@ export class OrganismoPopupComponent extends PopupBaseComponent implements OnIni
     @Input() usuario?: UsuarioDTO;
     @Output() guardarEvento = new EventEmitter<any>();
 
+    intentoGuardar = false;
 
     constructor(
         private readonly fb: FormBuilder
@@ -23,17 +24,40 @@ export class OrganismoPopupComponent extends PopupBaseComponent implements OnIni
         super.ngOnInit();
         this.form = this.fb.group({
             organismo: [null, [Validators.required]],
+            esEditorPrincipal: [false],
+            esEditor: [false],
+            esValidador: [false],
+            esAprobador: [false],
         });
     }
-    
+
     guardar(): void {
+        this.intentoGuardar = true;
         this.form.markAllAsTouched();
-        if (!this.form.valid) {
+
+        if (!this.form.valid || !this.alMenosUnRolSeleccionado()) {
             return;
         }
 
-        this.guardarEvento.emit(this.form.get('organismo')?.value);
+        const dataAGuardar = {
+            ...this.form.get('organismo')?.value,
+            esEditorPrincipal: this.form.get('esEditorPrincipal')!.value,
+            esEditor: this.form.get('esEditor')!.value,
+            esValidador: this.form.get('esValidador')!.value,
+            esAprobador: this.form.get('esAprobador')!.value,
+        };
+
+        this.guardarEvento.emit(dataAGuardar);
         this.cerrarPopup();
+    }
+
+    alMenosUnRolSeleccionado(): boolean {
+        return (
+            this.form.get('esEditorPrincipal')!.value ||
+            this.form.get('esEditor')!.value ||
+            this.form.get('esValidador')!.value ||
+            this.form.get('esAprobador')!.value
+        );
     }
 
 }
