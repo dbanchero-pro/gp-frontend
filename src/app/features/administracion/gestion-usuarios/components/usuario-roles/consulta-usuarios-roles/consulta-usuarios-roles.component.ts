@@ -301,7 +301,7 @@ export class ConsultaUsuariosRolesComponent
                     clase: 'btn btn-secondary',
                     icono: 'fa fa-sitemap',
                     permisos: ['GC_GESTION_USU.ALTA'],
-                    accion: this.guardarRolUsuarioParaTodasUc.bind(this, usuario),
+                    accion: this.abrirAgregarPermisoTodasUcPopupParaUsuario.bind(this, usuario),
                 },
                 {
                     nombre: 'Asignar por tipo de compra',
@@ -340,6 +340,26 @@ export class ConsultaUsuariosRolesComponent
                 titulo: "Asignar roles a todas las unidades de compra habilitadas en SICE para el usuario",
             },
         }) as NuevoUsuarioPopupComponent;
+        comp.guardarEvento.subscribe((data) =>
+            this.guardarRolNuevoUsuarioParaTodasUc(data)
+        );
+    }
+
+    abrirAgregarPermisoTodasUcPopupParaUsuario(usuario: UsuarioPermisoAgrupado) {
+        const comp = this.abrirPopup(NuevoUsuarioPopupComponent, 'Guardar', {
+            initialState: {
+                titulo: "Asignar roles a todas las unidades de compra habilitadas en SICE para el usuario",
+            },
+        }) as NuevoUsuarioPopupComponent;
+
+        setTimeout(() => {
+            comp.form.get('nroDocumento')?.setValue(usuario.id.replace('uy-ci-', ''));
+            comp.usuario = {
+                nombre: usuario.nombre,
+                nroDocumento: usuario.id.replace('uy-ci-', ''),
+            } as any;
+        }, 100);
+
         comp.guardarEvento.subscribe((data) =>
             this.guardarRolNuevoUsuarioParaTodasUc(data)
         );
