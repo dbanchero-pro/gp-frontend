@@ -7,15 +7,15 @@
   <div>
     <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
   </div>
-  <form [formGroup]="form" class="col-12 col-lg-9" (submit)="guardar()" >
-    <div class="form-group">
+  <form [formGroup]="form" (submit)="guardar()" >
+   
+<div class="row">
       <div class="form-row col-12 pl-2">
-        <div class="form-group col-md-7">
+        <div class="form-group col-md-5">
             <app-input-documento #inputDocumento formControlName="nroDocumento" [esCedula]="true" [minLength]="7" [required]="true"
                 label="Cédula de identidad">
             </app-input-documento>
         </div>
-
         <div class="form-group col-md-3 d-flex align-items-center justify-content-end" style="margin-top: 1.6rem; margin-bottom: 0px;">
           <button type="button" class="Button btn btn-primary buttonFilter" [disabled]="form.invalid"
             (click)="buscar()" [disabled]="buscando">
@@ -28,50 +28,46 @@
         <label for="" class="col-3 pl-0 font-weight-bold" *ngIf="usuario">{{usuario.nombre}}</label>
         <label for="" class="col-3 pl-0 font-weight-bold" *ngIf="usuario">{{usuario.correo}}</label>
       </div>
-
     </div>
 
-    <div class="form-group" *ngIf="submitText === 'Guardar'">
-      <div class="form-row col-12 mb-4" [class.field-error]="!alMenosUnRolSeleccionado() && intentoGuardar">
-        <label for="roles" class="font-weight-bold col-12">* Roles</label>
-        <div class="d-flex justify-content-center w-100 col-12">
-          <div class="border rounded p-3 bg-light d-flex flex-column align-items-start" style="width: 100%; padding-left: 40% !important;">
-            <div class="form-check">
+    <div class="row" *ngIf="submitText === 'Guardar'">
+      <div class="form-group form-row col-12 m-0 pb-0 pt-0" [class.field-error]="!alMenosUnRolSeleccionado() && intentoGuardar">
+        <label for="roles">* Roles</label>
+        <div class="d-flex justify-content-center w-100 col-12 Box">
+          <div class="form-check col-3">
               <input type="checkbox" class="form-check-input" id="esEditorPrincipal"
-                formControlName="esEditorPrincipal">
+                  formControlName="esEditorPrincipal">
               <label class="form-check-label" for="esEditorPrincipal">
-                Editor principal
+                  Editor principal
               </label>
-            </div>
-            <div class="form-check">
+          </div>
+          <div class="form-check col-2">
               <input type="checkbox" class="form-check-input" id="esEditor"
-                formControlName="esEditor">
+                  formControlName="esEditor">
               <label class="form-check-label" for="esEditor">
-                Editor
+                  Editor
               </label>
-            </div>
-            <div class="form-check">
+          </div>
+          <div class="form-check col-2">
               <input type="checkbox" class="form-check-input" id="esValidador"
-                formControlName="esValidador">
+                  formControlName="esValidador">
               <label class="form-check-label" for="esValidador">
-                Validador
+                  Validador
               </label>
-            </div>
-            <div class="form-check">
+          </div>
+          <div class="form-check col-2">
               <input type="checkbox" class="form-check-input" id="esAprobador"
-                formControlName="esAprobador">
+                  formControlName="esAprobador">
               <label class="form-check-label" for="esAprobador">
-                Aprobador
+                  Aprobador
               </label>
-            </div>
           </div>
         </div>
         <span class="texto-error col-12" [style.visibility]="!alMenosUnRolSeleccionado() && intentoGuardar ? 'visible' : 'hidden'">
-          Debe seleccionar al menos un rol
+            Debe seleccionar al menos un rol
         </span>
       </div>
     </div>
-
     <div class="d-flex justify-content-end mt-3 pe-3">
       <button type="submit" class="btn btn-primary" (click)="guardar()" [disabled]="deshabilitarGuardar" >
         {{submitText}}

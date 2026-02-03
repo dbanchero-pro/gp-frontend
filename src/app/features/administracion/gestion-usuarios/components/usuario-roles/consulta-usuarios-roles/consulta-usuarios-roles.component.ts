@@ -325,7 +325,7 @@ export class ConsultaUsuariosRolesComponent
         const comp = this.abrirPopup(NuevoUsuarioPopupComponent, 'Buscar compra',
             {
                 initialState: {
-                    titulo: "Agregar usuario con rol a nivel de la compra",
+                    titulo: "Asignar roles por compra",
                 },
             }
         ) as NuevoUsuarioPopupComponent;
@@ -337,7 +337,7 @@ export class ConsultaUsuariosRolesComponent
     abrirAgregarPermisoTodasUcPopup() {
         const comp = this.abrirPopup(NuevoUsuarioPopupComponent, 'Guardar', {
             initialState: {
-                titulo: "Agregar usuario con rol a nivel de todas las UC definidas en SICE para ese usuario",
+                titulo: "Asignar roles a todas las unidades de compra habilitadas en SICE para el usuario",
             },
         }) as NuevoUsuarioPopupComponent;
         comp.guardarEvento.subscribe((data) =>
@@ -348,7 +348,7 @@ export class ConsultaUsuariosRolesComponent
     abrirNuevoUsuarioUcPopup() {
         const comp = this.abrirPopup(NuevoUsuarioUcPopupComponent, 'Guardar', {
             initialState: {
-                titulo: "Agregar usuario con rol a nivel de una UC",
+                titulo: "Asignar roles por unidad de compra",
             },
         }) as NuevoUsuarioUcPopupComponent;
         comp.guardarEvento.subscribe((data) =>
@@ -594,7 +594,7 @@ export class ConsultaUsuariosRolesComponent
     abrirAgregarPermisoPorTipoCompra(): void {
         const comp = this.abrirPopup(NuevoUsuarioTipoCompraPopupComponent, 'Guardar', {
             initialState: {
-                titulo: 'Agregar usuario con rol por tipo de compra',
+                titulo: 'Asignar roles por tipo de compra',
             },
         }) as NuevoUsuarioTipoCompraPopupComponent;
 

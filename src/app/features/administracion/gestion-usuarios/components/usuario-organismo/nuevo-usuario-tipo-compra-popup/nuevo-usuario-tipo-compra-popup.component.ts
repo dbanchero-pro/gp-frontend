@@ -31,7 +31,7 @@ export class NuevoUsuarioTipoCompraPopupComponent
         esAprobador: boolean;
     }>();
 
-    @Input() titulo = 'Agregar usuario con rol por tipo de compra';
+    @Input() titulo = 'Asignar roles por tipo de compra';
     @Input() tipoPerfil!: TipoPerfil;
 
     usuario!: UsuarioOrganismoDTO;

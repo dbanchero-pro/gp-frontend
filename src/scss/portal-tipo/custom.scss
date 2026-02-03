@@ -497,11 +497,21 @@ select {
 /* Box Styles from Portal Tipo
    ========================================================================== */
 .Box {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 2px;
-    padding: 1rem;
+    background: #fff;
+    border-radius: 8px;
+    //box-shadow: 0 2px 2px rgba(0, 0, 0, .18);
+    display: block;
     margin-bottom: 1rem;
+    outline: 1px solid transparent;
+    overflow: hidden;
+    padding: 1rem;
+    position: relative;
+    //border-top: 1px solid rgb(249,249,249);
+    border: 1px solid #dee2e6 !important;
+}
+
+.Box--color1 {
+   border-left: 4px solid #0060a3 !important;
 }
 
 .Box:after,
