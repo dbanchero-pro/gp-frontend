@@ -91,25 +91,25 @@
                 (click)="abrirAgregarPermisoPorCompra()">
                 <em class="fa fa-user-plus mr-1">
                 </em>
-                Asignar por compra usuario nuevo
+                Asignar por compra
             </button>
             <button class="btn btn-primary mr-2" *ngIf="seguridad.tienePermiso('GC_GESTION_USU.ALTA')"
                 (click)="abrirNuevoUsuarioUcPopup()">
                 <em class="fa fa-user-plus mr-1">
                 </em>
-                Asignar por UC usuario nuevo
+                Asignar por UC
             </button>
             <button class="btn btn-primary mr-2" *ngIf="seguridad.tienePermiso('GC_GESTION_USU.ALTA')"
                 (click)="abrirAgregarPermisoTodasUcPopup()">
                 <em class="fa fa-user-plus mr-1">
                 </em>
-                Asignar todas las UC usuario nuevo
+                Asignar todas las UC
             </button>
             <button class="btn btn-primary mr-2" *ngIf="seguridad.tienePermiso('GC_GESTION_USU.ALTA')"
                 (click)="abrirAgregarPermisoPorTipoCompra()">
                 <em class="fa fa-user-plus mr-1">
                 </em>
-                Asignar por tipo de compra usuario nuevo
+                Asignar por tipo de compra
             </button>
         </div>
         <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden" [columnaOrden]="parametros.sort"
