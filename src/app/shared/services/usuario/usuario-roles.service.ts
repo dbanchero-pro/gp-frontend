@@ -32,7 +32,7 @@ export class UsuarioRolesService {
                     idTipoCompra: 'LC',
                     idSubtipoCompra: 'LP',
                     descTipoCompra: 'Licitación Abreviada',
-                    descSubtipoCompra: 'Por precio'
+                    descSubtipoCompra: 'Común'
                 }
             },
             itemCompra: undefined
@@ -60,7 +60,7 @@ export class UsuarioRolesService {
                     idTipoCompra: 'CD',
                     idSubtipoCompra: 'CM',
                     descTipoCompra: 'Compra Directa',
-                    descSubtipoCompra: 'Por monto'
+                    descSubtipoCompra: 'Común'
                 }
             },
             itemCompra: {
