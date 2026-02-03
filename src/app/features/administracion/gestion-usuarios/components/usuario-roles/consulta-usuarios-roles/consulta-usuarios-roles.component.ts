@@ -20,6 +20,7 @@ import { mascaraNroAnioCompra } from 'src/app/shared/utils/masks';
 import { IConsultaUsuarioOrganismoPerfilFiltroDTO } from '../../../models/consulta-usuario-organismo-perfil-filtro.model';
 import { UsuarioPermisoAgrupado } from '../../../models/usuario-permiso-agrupado.model';
 import { NuevoUsuarioPopupComponent } from '../../usuario-organismo/nuevo-usuario-popup/nuevo-usuario-popup.component';
+import { NuevoUsuarioTipoCompraPopupComponent } from '../../usuario-organismo/nuevo-usuario-tipo-compra-popup/nuevo-usuario-tipo-compra-popup.component';
 import { NuevoUsuarioUcPopupComponent } from '../../usuario-organismo/nuevo-usuario-uc-popup/nuevo-usuario-uc-popup.component';
 import { UnidadesCompraSicePopupComponent } from '../../usuario-organismo/unidades-compra-sice-popup/unidades-compra-sice-popup.component';
 
@@ -566,11 +567,90 @@ export class ConsultaUsuariosRolesComponent
     }
 
     abrirAsignarPorTipoCompra(usuario: UsuarioPermisoAgrupado): void {
-        this.actualizarServ.mensajeModal('Funcionalidad en desarrollo', 'Esta funcionalidad estará disponible próximamente');
+        const comp = this.abrirPopup(NuevoUsuarioTipoCompraPopupComponent, 'Guardar', {
+            initialState: {
+                titulo: 'Agregar rol por tipo de compra',
+            },
+        }) as NuevoUsuarioTipoCompraPopupComponent;
+
+        comp.form.get('nroDocumento')?.setValue(usuario.id.replace('uy-ci-', ''));
+        comp.obtenerUsuario(usuario.id.replace('uy-ci-', ''));
+
+        comp.guardarEvento.subscribe((data) =>
+            this.guardarRolUsuarioPorTipoCompra(data)
+        );
     }
 
     abrirAgregarPermisoPorTipoCompra(): void {
-        this.actualizarServ.mensajeModal('Funcionalidad en desarrollo', 'Esta funcionalidad estará disponible próximamente');
+        const comp = this.abrirPopup(NuevoUsuarioTipoCompraPopupComponent, 'Guardar', {
+            initialState: {
+                titulo: 'Agregar usuario con rol por tipo de compra',
+            },
+        }) as NuevoUsuarioTipoCompraPopupComponent;
+
+        comp.guardarEvento.subscribe((data) =>
+            this.guardarRolNuevoUsuarioPorTipoCompra(data)
+        );
+    }
+
+    guardarRolUsuarioPorTipoCompra(data: any): void {
+        if (this.modalService.getModalsCount() > 0) {
+            this.modalService.hide();
+        }
+        setTimeout(() => {
+            this.actualizarServ.confirmar(
+                `¿Está seguro que desea agregar el rol a nivel del tipo de compra ${data.idTipoCompra}?`,
+                () => {
+                    this.usuarioRolesService
+                        .agregarRolTipoCompra(
+                            data.idTipoCompra,
+                            data.idUsuario,
+                            {
+                                esEditorPrincipal: data.esEditorPrincipal,
+                                esEditor: data.esEditor,
+                                esValidador: data.esValidador,
+                                esAprobador: data.esAprobador,
+                            }
+                        )
+                        .subscribe(() => {
+                            this.actualizarServ.mensajeCorrecto(
+                                'El rol ha sido agregado de forma exitosa.'
+                            );
+                            this.buscar();
+                        });
+                }
+            );
+        }, 100);
+    }
+
+    guardarRolNuevoUsuarioPorTipoCompra(data: any): void {
+        if (this.modalService.getModalsCount() > 0) {
+            this.modalService.hide();
+        }
+        setTimeout(() => {
+            this.actualizarServ.confirmar(
+                `¿Está seguro que desea agregar el rol a nivel del tipo de compra ${data.idTipoCompra}?`,
+                () => {
+                    this.usuarioRolesService
+                        .agregarRolTipoCompra(
+                            data.idTipoCompra,
+                            data.idUsuario,
+                            {
+                                esEditorPrincipal: data.esEditorPrincipal,
+                                esEditor: data.esEditor,
+                                esValidador: data.esValidador,
+                                esAprobador: data.esAprobador,
+                            }
+                        )
+                        .subscribe(() => {
+                            this.actualizarServ.mensajeCorrecto(
+                                'El rol ha sido agregado de forma exitosa.'
+                            );
+                            this.buscar();
+                        });
+                }
+            );
+        }, 100);
     }
 
     private agruparPorUsuario(response: PageModel<UsuarioOrganismoPerfilDTO>, mapa: Map<string, UsuarioPermisoAgrupado>) {

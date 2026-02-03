@@ -13,6 +13,7 @@ import { ConsultaUsuariosConformidadComponent } from './components/usuario-organ
 import { ConsultaUsuariosRecepcionPuntoComponent } from './components/usuario-organismo/consulta-usuarios-recepcion-punto/consulta-usuarios-recepcion-punto.component';
 import { ConsultaUsuariosRecepcionComponent } from './components/usuario-organismo/consulta-usuarios-recepcion/consulta-usuarios-recepcion.component';
 import { NuevoUsuarioPopupComponent } from './components/usuario-organismo/nuevo-usuario-popup/nuevo-usuario-popup.component';
+import { NuevoUsuarioTipoCompraPopupComponent } from './components/usuario-organismo/nuevo-usuario-tipo-compra-popup/nuevo-usuario-tipo-compra-popup.component';
 import { NuevoUsuarioUcPopupComponent } from './components/usuario-organismo/nuevo-usuario-uc-popup/nuevo-usuario-uc-popup.component';
 import { UnidadesCompraSicePopupComponent } from './components/usuario-organismo/unidades-compra-sice-popup/unidades-compra-sice-popup.component';
 import { AgregarModificarProveedorPopupComponent } from './components/usuario-proveedor/agregar-modificar-proveedor-popup/agregar-modificar-proveedor-popup.component';
@@ -86,6 +87,7 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
         ConsultaUsuariosRecepcionPuntoComponent,
         ConsultaUsuariosRecepcionComponent,
         NuevoUsuarioPopupComponent,
+        NuevoUsuarioTipoCompraPopupComponent,
         NuevoUsuarioUcPopupComponent,
         UnidadesCompraSicePopupComponent,
         ConsultaUsuariosRolesComponent,

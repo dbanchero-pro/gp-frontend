@@ -164,6 +164,20 @@ export class UsuarioRolesService {
         return of(true);
     }
 
+    agregarRolTipoCompra(
+        idTipoCompra: string,
+        idUsuario: string,
+        roles: {
+            esEditorPrincipal: boolean;
+            esEditor: boolean;
+            esValidador: boolean;
+            esAprobador: boolean;
+        }
+    ): Observable<boolean> {
+        console.log('Mock: agregarRolTipoCompra', { idTipoCompra, idUsuario, roles });
+        return of(true);
+    }
+
     agregarRolPorCompra(idCompra: number, idUsuario: string): Observable<boolean> {
         console.log('Mock: agregarRolPorCompra', { idCompra, idUsuario });
         return of(true);
