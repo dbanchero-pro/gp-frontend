@@ -31,6 +31,7 @@ export class NuevoUsuarioPopupComponent
     mensajePermiso = '';
     deshabilitarGuardar = true;
     buscando = false;
+    intentoGuardar = false;
 
     @ViewChild('inputDocumento') inputDocumento!: InputDocumentoComponent;
     constructor(
@@ -45,11 +46,17 @@ export class NuevoUsuarioPopupComponent
         super.ngOnInit();
         this.form = this.fb.group({
             nroDocumento: ['', [Validators.minLength(7), Validators.required]],
+            esEditorPrincipal: [false],
+            esEditor: [false],
+            esValidador: [false],
+            esAprobador: [false],
         });
     }
 
     guardar(): void {
-        if (this.form.invalid || this.tienePermisoTodas) {
+        this.intentoGuardar = true;
+
+        if (this.form.invalid || this.tienePermisoTodas || !this.alMenosUnRolSeleccionado()) {
             return;
         }
 
@@ -57,10 +64,23 @@ export class NuevoUsuarioPopupComponent
             idUsuario: transformarNroDocumento(
                 this.form.get('nroDocumento')!.value
             ),
+            esEditorPrincipal: this.form.get('esEditorPrincipal')!.value,
+            esEditor: this.form.get('esEditor')!.value,
+            esValidador: this.form.get('esValidador')!.value,
+            esAprobador: this.form.get('esAprobador')!.value,
         };
 
         this.guardarEvento.emit(dataAGuardar);
         this.cerrarPopup();
+    }
+
+    alMenosUnRolSeleccionado(): boolean {
+        return (
+            this.form.get('esEditorPrincipal')!.value ||
+            this.form.get('esEditor')!.value ||
+            this.form.get('esValidador')!.value ||
+            this.form.get('esAprobador')!.value
+        );
     }
 
     override buscar(): void {
@@ -88,6 +108,7 @@ export class NuevoUsuarioPopupComponent
                     this.usuario = usuario;
                     this.showMsg = false;
                     this.buscando = false;
+                    this.intentoGuardar = false;
 
                     // Verificar si el usuario ya tiene permiso (permiso 0)
                     this.verificarPermisoTodas(nroDocumento);
