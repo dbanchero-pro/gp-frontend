@@ -24,6 +24,8 @@ export class NuevoUsuarioUcPopupComponent
 
     protected noSeEncontraronUsuarios = false;
 
+    protected intentoGuardar = false;
+
     constructor(
         private readonly fb: FormBuilder,
         private readonly usuarioOrganismoService: UsuarioOrganismoService
@@ -36,6 +38,10 @@ export class NuevoUsuarioUcPopupComponent
         this.form = this.fb.group({
             usuario: ['', Validators.required],
             organismo: [null, Validators.required],
+            esEditorPrincipal: [false],
+            esEditor: [false],
+            esValidador: [false],
+            esAprobador: [false],
         });
     }
 
@@ -96,27 +102,46 @@ export class NuevoUsuarioUcPopupComponent
     }
 
     guardar(): void {
+        this.intentoGuardar = true;
         const usuarioSeleccionado = this.form.get('usuario')!.value;
         this.form.get('organismo')?.markAsTouched();
         this.form.get('usuario')?.markAsTouched();
 
-        if (!usuarioSeleccionado || this.form.get('organismo')?.invalid) {
+        if (!usuarioSeleccionado || this.form.get('organismo')?.invalid || !this.alMenosUnRolSeleccionado()) {
             return;
         }
 
         const dataAGuardar = {
             idUsuario: usuarioSeleccionado,
             unidadCompra: this.form.get('organismo')?.value,
+            roles: {
+                esEditorPrincipal: this.form.get('esEditorPrincipal')?.value || false,
+                esEditor: this.form.get('esEditor')?.value || false,
+                esValidador: this.form.get('esValidador')?.value || false,
+                esAprobador: this.form.get('esAprobador')?.value || false,
+            }
         };
 
         this.guardarEvento.emit(dataAGuardar);
         this.cerrarPopup();
     }
 
+    alMenosUnRolSeleccionado(): boolean {
+        return (
+            this.form.get('esEditorPrincipal')?.value ||
+            this.form.get('esEditor')?.value ||
+            this.form.get('esValidador')?.value ||
+            this.form.get('esAprobador')?.value
+        );
+    }
+
     validarPopUpInvalido(): boolean {
+        if (this.intentoGuardar) {
+            return this.form.invalid || !this.alMenosUnRolSeleccionado();
+        }
         return this.form.invalid;
     }
-    
+
     transformarNroDocumento(nroDocumento: string): string {
         return 'uy-ci-' + nroDocumento;
     }
