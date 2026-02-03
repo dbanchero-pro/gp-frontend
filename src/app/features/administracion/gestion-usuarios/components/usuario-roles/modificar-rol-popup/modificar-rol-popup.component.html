@@ -5,10 +5,13 @@
 
 <div class="modal-body justify-content-center">
     <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
-    <div *ngIf="permiso" class="row">
-        <div class="col-12 font-weight-bold py-1 pl-4 subtitle">
-            <div class="float-left pr-3">CI {{ permiso.nroDocumento | formatoCi }}</div>
-            <div class="float-left">{{ permiso.nombre }}</div>
+    <div *ngIf="permiso" class="row mb-3">
+        <div class="col-12">
+            <div class="Box Box--color4 p-3">
+                <div class="Box-subtitle mb-0">
+                    <strong>CI {{ permiso.nroDocumento | formatoCi }}</strong> - {{ permiso.nombre }}
+                </div>
+            </div>
         </div>
     </div>
     <form [formGroup]="form" class="col-12" (submit)="guardar()">

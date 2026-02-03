@@ -493,3 +493,48 @@ select {
     display: inline-flex !important;
     width: 100% !important;
 }
+
+/* Box Styles from Portal Tipo
+   ========================================================================== */
+.Box {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.Box:after,
+.Box:before {
+    display: table;
+    content: "";
+}
+
+.Box:after {
+    clear: both;
+}
+
+.Box-subtitle {
+    color: #555;
+    display: block;
+    font-size: 1.15em;
+    line-height: 1.15;
+    margin-bottom: 1em;
+}
+
+/* Box Color Modifiers
+   ========================================================================== */
+.Box--color4 {
+    background-color: #F9F9F9;
+    color: #000;
+}
+
+.Box--color4 p,
+.Box--color4 .Box-text {
+    color: #000;
+}
+
+.Box--color4 .Box-info {
+    color: #000;
+    opacity: .65;
+}

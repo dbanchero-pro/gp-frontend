@@ -4,10 +4,13 @@
 </div>
 
 <div class="modal-body p-2">
-    <div *ngIf="usuario" class="row">
-        <div class="col-12 font-weight-bold py-1 pl-4 subtitle">
-            <div class="float-left pr-3">CI {{ usuario.id | formatoCi }}</div>
-            <div class="float-left">{{ usuario.nombre }}</div>
+    <div *ngIf="usuario" class="row mb-3">
+        <div class="col-12">
+            <div class="Box Box--color4 p-3">
+                <div class="Box-subtitle mb-0">
+                    <strong>CI {{ usuario.id | formatoCi }}</strong> - {{ usuario.nombre }}
+                </div>
+            </div>
         </div>
     </div>
     <form [formGroup]="form" (submit)="guardar()">
