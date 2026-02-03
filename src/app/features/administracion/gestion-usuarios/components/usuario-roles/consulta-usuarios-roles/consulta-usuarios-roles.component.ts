@@ -450,7 +450,7 @@ export class ConsultaUsuariosRolesComponent
 
     eliminarRolUsuarioEspecifico(permiso: any): void {
         const permisoId = permiso.id;
-        this.actualizarServ.confirmar('¿Está seguro que desea quitar el rol?',
+        this.actualizarServ.confirmar('¿Está seguro que desea quitar los roles seleccionados?',
             () =>
                 this.usuarioRolesService.eliminarRol(permisoId)
                     .subscribe(() => {
