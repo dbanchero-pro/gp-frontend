@@ -21,6 +21,10 @@ export class AgregarDocumentoRepositorioPopupComponent extends PopupBaseComponen
 
   @Output() documentoGuardado = new EventEmitter<DocumentoRepositorioDTO>();
 
+  documentoExistente?: DocumentoRepositorioDTO;
+  esModificacion = false;
+  titulo = 'Agregar archivo';
+
   override form!: FormGroup<{
     organismo: FormControl<IFiltroOrganismoDTO | null>;
     nombreDocumento: FormControl<string>;
@@ -43,17 +47,46 @@ export class AgregarDocumentoRepositorioPopupComponent extends PopupBaseComponen
 
   override ngOnInit(): void {
     super.ngOnInit();
+
+    if (this.documentoExistente) {
+      this.esModificacion = true;
+      this.titulo = 'Modificar archivo';
+    }
+
     this.inicializarFormulario();
+    this.cargarDatosDocumento();
   }
 
   private inicializarFormulario(): void {
+    const archivoValidators = this.esModificacion ? [] : [Validators.required];
+
     this.form = this.fb.nonNullable.group({
       organismo: this.fb.control<IFiltroOrganismoDTO | null>(null, Validators.required),
       nombreDocumento: this.fb.nonNullable.control<string>('', [Validators.required, Validators.maxLength(200)]),
       descripcionDocumento: this.fb.nonNullable.control<string>('', Validators.maxLength(500)),
       tipoArchivo: this.fb.nonNullable.control<string>('', Validators.required),
-      archivo: this.fb.control<File | null>(null, Validators.required)
+      archivo: this.fb.control<File | null>(null, archivoValidators)
     });
+  }
+
+  private cargarDatosDocumento(): void {
+    if (!this.documentoExistente) {
+      return;
+    }
+
+    this.form.patchValue({
+      organismo: {
+        idInciso: this.documentoExistente.idInciso,
+        idUnidadEjecutora: this.documentoExistente.idUnidadEjecutora
+      },
+      nombreDocumento: this.documentoExistente.nombreDocumento || '',
+      descripcionDocumento: this.documentoExistente.descripcionDocumento || '',
+      tipoArchivo: this.documentoExistente.tipoArchivo
+    });
+
+    if (this.documentoExistente.archivo) {
+      this.nombreArchivoMostrar = this.documentoExistente.archivo.nombre || 'Archivo actual';
+    }
   }
 
   onFileSelected(event: Event): void {
@@ -117,62 +150,76 @@ export class AgregarDocumentoRepositorioPopupComponent extends PopupBaseComponen
       return;
     }
 
-    if (!this.archivoSeleccionado) {
+    if (!this.esModificacion && !this.archivoSeleccionado) {
       this.actualizarServ.mensajeError('Debe seleccionar un archivo');
       return;
     }
 
-    // Convertir archivo a base64
-    const reader = new FileReader();
-    reader.onload = () => {
-      const base64Content = reader.result as string;
-      const base64Data = base64Content.split(',')[1];
+    if (this.archivoSeleccionado) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64Content = reader.result as string;
+        const base64Data = base64Content.split(',')[1];
 
-      const archivo = new ArchivoDTO(
-        undefined,
-        this.archivoSeleccionado!.name,
-        this.archivoSeleccionado!.type,
-        base64Data,
-        false,
-        false,
-        new Date()
-      );
+        const archivo = new ArchivoDTO(
+          undefined,
+          this.archivoSeleccionado!.name,
+          this.archivoSeleccionado!.type,
+          base64Data,
+          false,
+          false,
+          new Date()
+        );
 
-      const documento = new DocumentoRepositorioDTO(
-        undefined,
-        organismo!.idInciso,
-        '', // nombreInciso se completará en el servicio
-        organismo!.idUnidadEjecutora,
-        '', // nombreUnidadEjecutora se completará en el servicio
-        this.form.value.nombreDocumento || '',
-        this.form.value.descripcionDocumento || '',
-        this.form.value.tipoArchivo as TipoArchivoRepositorio,
-        archivo,
-        new Date(),
-        new Date()
-      );
+        this.procesarGuardado(organismo, archivo);
+      };
 
-      try {
-        this.documentoService.crear(documento).subscribe({
-          next: (documentoCreado) => {
-            this.actualizarServ.mensajeCorrecto('Documento agregado correctamente');
-            this.documentoGuardado.emit(documentoCreado);
-            this.cerrarPopup();
-          },
-          error: (err) => {
-            this.actualizarServ.mensajeError(err.message || 'Error al guardar el documento');
-          }
-        });
-      } catch (error: any) {
-        this.actualizarServ.mensajeError(error.message || 'Error al guardar el documento');
-      }
-    };
+      reader.onerror = () => {
+        this.actualizarServ.mensajeError('Error al leer el archivo');
+      };
 
-    reader.onerror = () => {
-      this.actualizarServ.mensajeError('Error al leer el archivo');
-    };
+      reader.readAsDataURL(this.archivoSeleccionado);
+    } else {
+      this.procesarGuardado(organismo, undefined);
+    }
+  }
 
-    reader.readAsDataURL(this.archivoSeleccionado);
+  private procesarGuardado(organismo: IFiltroOrganismoDTO, archivo?: ArchivoDTO): void {
+    const documento = new DocumentoRepositorioDTO(
+      this.documentoExistente?.id,
+      organismo.idInciso!,
+      this.documentoExistente?.nombreInciso || '',
+      organismo.idUnidadEjecutora!,
+      this.documentoExistente?.nombreUnidadEjecutora || '',
+      this.form.value.nombreDocumento || '',
+      this.form.value.descripcionDocumento || '',
+      this.form.value.tipoArchivo as TipoArchivoRepositorio,
+      archivo || this.documentoExistente?.archivo,
+      this.documentoExistente?.fechaCreacion || new Date(),
+      new Date()
+    );
+
+    try {
+      const operacion = this.esModificacion
+        ? this.documentoService.actualizar(documento)
+        : this.documentoService.crear(documento);
+
+      operacion.subscribe({
+        next: (documentoGuardado) => {
+          const mensaje = this.esModificacion
+            ? 'Documento modificado correctamente'
+            : 'Documento agregado correctamente';
+          this.actualizarServ.mensajeCorrecto(mensaje);
+          this.documentoGuardado.emit(documentoGuardado);
+          this.cerrarPopup();
+        },
+        error: (err) => {
+          this.actualizarServ.mensajeError(err.message || 'Error al guardar el documento');
+        }
+      });
+    } catch (error: any) {
+      this.actualizarServ.mensajeError(error.message || 'Error al guardar el documento');
+    }
   }
 
   cancelar(): void {

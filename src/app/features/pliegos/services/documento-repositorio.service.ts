@@ -335,6 +335,48 @@ export class DocumentoRepositorioService {
     return of(nuevoDocumento).pipe(delay(300));
   }
 
+  actualizar(documento: DocumentoRepositorioDTO): Observable<DocumentoRepositorioDTO> {
+    if (!documento.id) {
+      throw new Error('El documento debe tener un ID para actualizarlo');
+    }
+
+    // Validar archivo si se proporcionó uno nuevo
+    if (documento.archivo) {
+      const validacion = this.validarArchivo(documento.archivo);
+      if (!validacion.valido) {
+        throw new Error(validacion.mensaje);
+      }
+    }
+
+    const index = this.documentos.findIndex(doc => doc.id === documento.id);
+    if (index === -1) {
+      throw new Error('Documento no encontrado');
+    }
+
+    const documentoExistente = this.documentos[index];
+    const documentoActualizado = new DocumentoRepositorioDTO(
+      documento.id,
+      documento.idInciso,
+      documento.nombreInciso,
+      documento.idUnidadEjecutora,
+      documento.nombreUnidadEjecutora,
+      documento.nombreDocumento,
+      documento.descripcionDocumento,
+      documento.tipoArchivo,
+      documento.archivo || documentoExistente.archivo,
+      documentoExistente.fechaCreacion,
+      new Date()
+    );
+
+    this.documentos[index] = documentoActualizado;
+    return of(documentoActualizado).pipe(delay(300));
+  }
+
+  obtenerPorId(id: number): Observable<DocumentoRepositorioDTO | undefined> {
+    const documento = this.documentos.find(doc => doc.id === id);
+    return of(documento).pipe(delay(300));
+  }
+
   eliminar(id: number): Observable<void> {
     const index = this.documentos.findIndex(doc => doc.id === id);
     if (index !== -1) {

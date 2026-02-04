@@ -212,11 +212,11 @@ export class ConsultaRepositorioArchivosComponent
   obtenerAcciones(documento: DocumentoRepositorioDTO): AccionBoton[] {
     const acciones: AccionBoton[] = [];
 
-     acciones.push({
+    acciones.push({
       nombre: 'Modificar',
-       clase: 'btn btn-success',
+      clase: 'btn btn-success',
       icono: 'fa fa-edit',
-      ariaLabel: 'Pendiente'
+      accion: () => this.modificarDocumento(documento)
     });
 
     acciones.push({
@@ -228,7 +228,7 @@ export class ConsultaRepositorioArchivosComponent
 
     acciones.push({
       nombre: 'Eliminar',
-       clase: 'btn btn-success',
+      clase: 'btn btn-success',
       icono: 'fa fa-trash',
       accion: () => this.eliminarDocumento(documento)
     });
@@ -298,8 +298,17 @@ export class ConsultaRepositorioArchivosComponent
   }
 
   modificarDocumento(documento: DocumentoRepositorioDTO): void {
-    this.actualizarServ.mensajeInformacion(
-      'La funcionalidad de modificar documento estará disponible próximamente'
-    );
+    const popup = this.abrirPopup(AgregarDocumentoRepositorioPopupComponent, 'Guardar', {
+      class: 'modal-lg',
+      backdrop: 'static',
+      keyboard: false,
+      initialState: {
+        documentoExistente: documento
+      }
+    });
+
+    popup.documentoGuardado.subscribe(() => {
+      this.buscar();
+    });
   }
 }

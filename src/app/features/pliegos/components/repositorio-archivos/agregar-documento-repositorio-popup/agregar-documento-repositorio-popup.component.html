@@ -1,5 +1,5 @@
 <div class="modal-header d-flex justify-content-between align-items-center" #modalRoot>
-    <h1 class="modal-title mb-0" id="tituloPopup">Agregar archivo</h1>
+    <h1 class="modal-title mb-0" id="tituloPopup">{{ titulo }}</h1>
     <div class="d-flex align-items-center">
         <small class="text-muted mr-3">Los campos con * son obligatorios</small>
         <button type="button" aria-label="Cerrar" class="close" (click)="cancelar()">&times;</button>
@@ -58,7 +58,7 @@
 
         <div class="form-row">
             <div class="form-group col-12" [class.field-error]="form.get('archivo')?.invalid && form.get('archivo')?.touched">
-                <label for="archivo">* Archivo (máximo {{ MAX_FILE_SIZE_KB }} KB)</label>
+                <label for="archivo">{{ esModificacion ? '' : '* ' }}Archivo (máximo {{ MAX_FILE_SIZE_KB }} KB)</label>
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="archivo"
                         accept=".pdf,.doc,.docx,.xls,.xlsx"
@@ -68,7 +68,7 @@
                     </label>
                 </div>
                 <small class="form-text text-muted">
-                    Tipos permitidos: PDF, Word, Excel
+                    {{ esModificacion ? 'Tipos permitidos: PDF, Word, Excel. Opcional: solo si desea reemplazar el archivo actual.' : 'Tipos permitidos: PDF, Word, Excel' }}
                 </small>
                 <span class="texto-error m-0 position-absolute"
                     *ngIf="form.get('archivo')?.hasError('required') && form.get('archivo')?.touched">
