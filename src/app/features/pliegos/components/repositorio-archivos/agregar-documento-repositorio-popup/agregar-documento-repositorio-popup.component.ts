@@ -22,6 +22,7 @@ export class AgregarDocumentoRepositorioPopupComponent extends PopupBaseComponen
   @Output() documentoGuardado = new EventEmitter<DocumentoRepositorioDTO>();
 
   documentoExistente?: DocumentoRepositorioDTO;
+  idUsuarioSeleccionado?: string;
   esModificacion = false;
   titulo = 'Agregar archivo';
 
