@@ -73,6 +73,14 @@
                             consulta </button>
                     </div>
                 </div>
+                <div class="row">
+                    <div class=" descargar-resultado  col-12">
+                        <button type="button" class="btn btn-link " id="exportarExcel" (click)="descargarExcel()"
+                            *ngIf="seguridad.tienePermiso('GC_GESTION_USU.IMPRESION')">
+                            <span class="fa fa-file-excel-o"></span> Descargar Excel
+                        </button>
+                    </div>
+                </div>
             </div>
         </app-filtro>
     </div>

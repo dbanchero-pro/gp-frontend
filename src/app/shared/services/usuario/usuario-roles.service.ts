@@ -199,4 +199,9 @@ export class UsuarioRolesService {
         console.log('Mock: modificarRol', { id, roles });
         return of(true);
     }
+
+    exportarUsuariosRol(filtro: any): void {
+        console.log('Mock: exportarUsuariosRol', filtro);
+        alert('Funcionalidad de exportación mock - Los datos se exportarían aquí');
+    }
 }

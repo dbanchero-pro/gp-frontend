@@ -255,12 +255,6 @@ export class DocumentoRepositorioService {
         doc.nombreDocumento?.toLowerCase().includes(nombreBusqueda)
       );
     }
-    if (filtro.descripcionDocumento) {
-      const descripcionBusqueda = filtro.descripcionDocumento.toLowerCase();
-      documentosFiltrados = documentosFiltrados.filter(doc =>
-        doc.descripcionDocumento?.toLowerCase().includes(descripcionBusqueda)
-      );
-    }
     if (filtro.tipoArchivo) {
       documentosFiltrados = documentosFiltrados.filter(doc => doc.tipoArchivo === filtro.tipoArchivo);
     }
@@ -274,10 +268,6 @@ export class DocumentoRepositorioService {
         case 'nombreDocumento':
           valorA = a.nombreDocumento || '';
           valorB = b.nombreDocumento || '';
-          break;
-        case 'descripcionDocumento':
-          valorA = a.descripcionDocumento || '';
-          valorB = b.descripcionDocumento || '';
           break;
         case 'tipoArchivo':
           valorA = a.tipoArchivo || '';

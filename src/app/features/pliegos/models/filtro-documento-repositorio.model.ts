@@ -4,7 +4,6 @@ export interface IFiltroDocumentoRepositorioDTO {
     idInciso?: number;
     idUnidadEjecutora?: number;
     nombreDocumento?: string;
-    descripcionDocumento?: string;
     tipoArchivo?: TipoArchivoRepositorio;
 }
 
@@ -13,7 +12,6 @@ export class FiltroDocumentoRepositorioDTO implements IFiltroDocumentoRepositori
         public idInciso?: number,
         public idUnidadEjecutora?: number,
         public nombreDocumento?: string,
-        public descripcionDocumento?: string,
         public tipoArchivo?: TipoArchivoRepositorio
     ) {}
 }
