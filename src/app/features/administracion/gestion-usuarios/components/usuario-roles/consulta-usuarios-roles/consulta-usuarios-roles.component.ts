@@ -260,11 +260,6 @@ export class ConsultaUsuariosRolesComponent
         this.actualizarFiltrosYBuscar();
     }
 
-    override descargarExcel(): void {
-        const { _pagina, _tamanoPagina, _sort, _order, filtro } = this.parametros;
-        this.usuarioRolesService.exportarUsuariosRol(filtro);
-    }
-
     obtenerAcciones(usuario: UsuarioPermisoAgrupado, modoBusqueda: string): AccionBoton[] {
         let acciones: AccionBoton[] = [];
 

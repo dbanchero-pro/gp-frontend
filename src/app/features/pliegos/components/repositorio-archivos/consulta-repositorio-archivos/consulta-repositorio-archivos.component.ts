@@ -191,12 +191,6 @@ export class ConsultaRepositorioArchivosComponent
     this.actualizarFiltrosYBuscar();
   }
 
-  override descargarExcel(): void {
-    this.actualizarServ.mensajeInformacion(
-      'La funcionalidad de exportar a Excel estará disponible próximamente'
-    );
-  }
-
   abrirAgregarDocumento(): void {
     const popup = this.abrirPopup(AgregarDocumentoRepositorioPopupComponent, 'Guardar', {
       class: 'modal-lg',
@@ -302,6 +296,7 @@ export class ConsultaRepositorioArchivosComponent
       class: 'modal-lg',
       backdrop: 'static',
       keyboard: false,
+
       initialState: {
         documentoExistente: documento
       }
