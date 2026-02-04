@@ -17,8 +17,14 @@
             (sortChange)="cambioColumnaOrden($event)">
         </app-cabezal-consulta>
 
+        <div class="row justify-content-end pr-2 mb-3">
+            <button class="btn btn-primary mr-2" (click)="abrirAgregarDocumento()">
+                <em class="fa fa-plus mr-1"></em>
+                Agregar
+            </button>
+        </div>
+
         <app-resultado-repositorio-archivos [documentos]="documentos"
-            (agregar)="abrirAgregarDocumento()"
             (modificar)="modificarDocumento($event)"
             (eliminar)="eliminarDocumento($event)"
             (descargar)="descargarDocumento($event)">

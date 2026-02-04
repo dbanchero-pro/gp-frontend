@@ -13,14 +13,9 @@ export class ResultadoRepositorioArchivosComponent {
   protected readonly seguridad = inject(SeguridadService);
 
   @Input() documentos: DocumentoRepositorioDTO[] = [];
-  @Output() agregar = new EventEmitter<void>();
   @Output() modificar = new EventEmitter<DocumentoRepositorioDTO>();
   @Output() eliminar = new EventEmitter<DocumentoRepositorioDTO>();
   @Output() descargar = new EventEmitter<DocumentoRepositorioDTO>();
-
-  onAgregar(): void {
-    this.agregar.emit();
-  }
 
   obtenerAcciones(documento: DocumentoRepositorioDTO): AccionBoton[] {
     const acciones: AccionBoton[] = [];

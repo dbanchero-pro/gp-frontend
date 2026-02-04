@@ -1,10 +1,3 @@
-<div class="row justify-content-end pr-2 mb-2">
-    <button class="btn btn-primary mr-2" (click)="onAgregar()">
-        <em class="fa fa-plus mr-1"></em>
-        Agregar
-    </button>
-</div>
-
 <div *ngFor="let doc of documentos; let i = index" [style.position]="'relative'" [style.z-index]="8000-i">
     <div class="card mb-2 bg-transparent">
         <div class="border-bottom py-2 bg-transparent pb-2">
