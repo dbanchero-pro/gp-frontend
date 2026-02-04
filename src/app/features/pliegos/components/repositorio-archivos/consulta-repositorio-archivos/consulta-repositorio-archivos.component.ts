@@ -1,5 +1,5 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginaBusquedaComponent } from '../../../../../shared/components/pagina-busqueda/pagina-busqueda.component';
 import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden.model';
@@ -11,9 +11,10 @@ import { ActualizarService } from '../../../../../shared/services/common/actuali
 import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
 import { SeguridadService } from '../../../../../shared/services/common/seguridad.service';
 import { ArchivoService } from '../../../../../shared/services/common/archivo.service';
-import { FiltroRepositorioArchivosComponent } from '../filtro-repositorio-archivos/filtro-repositorio-archivos.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { AgregarDocumentoRepositorioPopupComponent } from '../agregar-documento-repositorio-popup/agregar-documento-repositorio-popup.component';
+import { IFiltroOrganismoDTO } from '../../../../../shared/models/filtros/filtro-organismo.model';
+import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
 
 @Component({
   selector: 'app-consulta-repositorio-archivos',
@@ -35,8 +36,6 @@ export class ConsultaRepositorioArchivosComponent
   private readonly archivoService = inject(ArchivoService);
   protected override readonly modalService = inject(BsModalService);
 
-  @ViewChild(FiltroRepositorioArchivosComponent) filtroComponent!: FiltroRepositorioArchivosComponent;
-
   listaOrden: IColumnaOrden[] = [
     { id: 'nombreDocumento', nombre: 'Nombre documento' },
     { id: 'tipoArchivo', nombre: 'Tipo archivo' },
@@ -47,16 +46,23 @@ export class ConsultaRepositorioArchivosComponent
   ordenInicial: 'asc' | 'desc' = 'desc';
 
   documentos: DocumentoRepositorioDTO[] = [];
+  tiposArchivo: { id: string; nombre: string }[] = [];
 
   public static readonly SNAPSHOT_KEY = 'CONSULTA_REPOSITORIO_ARCHIVOS';
 
   constructor() {
     super();
-    this.form = this.fb.group({});
+    this.form = this.fb.nonNullable.group({
+      organismo: this.fb.control<IFiltroOrganismoDTO | null>(null),
+      nombreDocumento: this.fb.nonNullable.control<string>(''),
+      tipoArchivo: this.fb.nonNullable.control<string>('')
+    });
   }
 
   override ngOnInit(): void {
     super.ngOnInit();
+
+    this.tiposArchivo = this.documentoService.obtenerTiposArchivo();
 
     const paramVolver = this.route.snapshot.queryParamMap.get('volver');
 
@@ -75,11 +81,22 @@ export class ConsultaRepositorioArchivosComponent
       ConsultaRepositorioArchivosComponent.SNAPSHOT_KEY
     );
     if (snap) {
+      const filtro = snap.filtro;
+      if (filtro) {
+        this.form.patchValue({
+          organismo: {
+            idInciso: filtro.idInciso,
+            idUnidadEjecutora: filtro.idUnidadEjecutora
+          },
+          nombreDocumento: filtro.nombreDocumento || '',
+          tipoArchivo: filtro.tipoArchivo || ''
+        });
+      }
+
       this.parametros.pagina = snap.pagina ?? 0;
       this.parametros.tamanoPagina = snap.tamanoPagina ?? 10;
       this.parametros.sort = snap.sort ?? this.columnaOrdenInicial;
       this.parametros.order = snap.order ?? this.ordenInicial;
-      this.parametros.filtro = snap.filtro ?? {};
 
       setTimeout(() => {
         this.buscar();
@@ -89,18 +106,37 @@ export class ConsultaRepositorioArchivosComponent
     }
   }
 
+  onFiltroOrganismo(filtro: IFiltroOrganismoDTO | null): void {
+    this.form.patchValue({ organismo: filtro });
+  }
+
   actualizarFiltrosYBuscar(): void {
-    this.parametros.pagina = 0;
+    this.actualizarFiltro();
     this.buscar();
   }
 
-  buscar(): void {
-    const filtro = this.filtroComponent?.obtenerFiltro() || new FiltroDocumentoRepositorioDTO();
-    this.parametros.filtro = filtro;
+  private actualizarFiltro(): void {
+    const v = this.form.value;
+    const organismo = v.organismo;
+
+    this.parametros.filtro = new FiltroDocumentoRepositorioDTO(
+      organismo?.idInciso,
+      organismo?.idUnidadEjecutora,
+      v.nombreDocumento || undefined,
+      v.tipoArchivo as any || undefined
+    );
+  }
+
+  buscar(resetearPagina: boolean = false): void {
+    if (resetearPagina) {
+      this.parametros.pagina = 0;
+    }
+
+    this.actualizarFiltro();
 
     this.documentoService
       .obtenerTodos(
-        filtro,
+        this.parametros.filtro,
         this.parametros.pagina,
         this.parametros.tamanoPagina,
         this.parametros.sort,
@@ -132,6 +168,12 @@ export class ConsultaRepositorioArchivosComponent
   }
 
   override nuevaConsulta(): void {
+    this.form.reset({
+      organismo: null,
+      nombreDocumento: '',
+      tipoArchivo: ''
+    });
+
     this.parametros = {
       filtro: new FiltroDocumentoRepositorioDTO(),
       pagina: 0,
@@ -140,11 +182,13 @@ export class ConsultaRepositorioArchivosComponent
       order: this.ordenInicial
     };
     this.documentos = [];
-    this.total = 0;
+    this.total = -1;
 
     this.snapshotGenericService.clear(
       ConsultaRepositorioArchivosComponent.SNAPSHOT_KEY
     );
+
+    this.actualizarFiltrosYBuscar();
   }
 
   override descargarExcel(): void {
@@ -166,6 +210,52 @@ export class ConsultaRepositorioArchivosComponent
     modalRef.content?.documentoGuardado.subscribe(() => {
       this.buscar();
     });
+  }
+
+  obtenerAcciones(documento: DocumentoRepositorioDTO): AccionBoton[] {
+    const acciones: AccionBoton[] = [];
+
+    acciones.push({
+      nombre: 'Descargar',
+      clase: 'btn-link',
+      icono: 'fa fa-download',
+      accion: () => this.descargarDocumento(documento)
+    });
+
+    acciones.push({
+      nombre: 'Modificar',
+      clase: 'btn-link disabled',
+      icono: 'fa fa-edit',
+      ariaLabel: 'Pendiente'
+    });
+
+    acciones.push({
+      nombre: 'Eliminar',
+      clase: 'btn-link',
+      icono: 'fa fa-trash',
+      accion: () => this.eliminarDocumento(documento)
+    });
+
+    return acciones;
+  }
+
+  ejecutarAccion(accion: AccionBoton): void {
+    if (accion.accion) {
+      accion.accion();
+    }
+  }
+
+  obtenerEtiquetaTipoArchivo(tipoArchivo: string | undefined): string {
+    switch (tipoArchivo) {
+      case 'LOGO':
+        return 'Logo';
+      case 'FORMULARIO':
+        return 'Formulario';
+      case 'OTRO':
+        return 'Otro';
+      default:
+        return '-';
+    }
   }
 
   descargarDocumento(documento: DocumentoRepositorioDTO): void {
