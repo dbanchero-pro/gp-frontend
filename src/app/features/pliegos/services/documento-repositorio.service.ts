@@ -255,6 +255,12 @@ export class DocumentoRepositorioService {
         doc.nombreDocumento?.toLowerCase().includes(nombreBusqueda)
       );
     }
+    if (filtro.descripcionDocumento) {
+      const descripcionBusqueda = filtro.descripcionDocumento.toLowerCase();
+      documentosFiltrados = documentosFiltrados.filter(doc =>
+        doc.descripcionDocumento?.toLowerCase().includes(descripcionBusqueda)
+      );
+    }
     if (filtro.tipoArchivo) {
       documentosFiltrados = documentosFiltrados.filter(doc => doc.tipoArchivo === filtro.tipoArchivo);
     }

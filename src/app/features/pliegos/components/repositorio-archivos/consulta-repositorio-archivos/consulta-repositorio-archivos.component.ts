@@ -55,6 +55,7 @@ export class ConsultaRepositorioArchivosComponent
     this.form = this.fb.nonNullable.group({
       organismo: this.fb.control<IFiltroOrganismoDTO | null>(null),
       nombreDocumento: this.fb.nonNullable.control<string>(''),
+      descripcionDocumento: this.fb.nonNullable.control<string>(''),
       tipoArchivo: this.fb.nonNullable.control<string>('')
     });
   }
@@ -83,6 +84,7 @@ export class ConsultaRepositorioArchivosComponent
       organismo?.idInciso,
       organismo?.idUnidadEjecutora,
       v.nombreDocumento || undefined,
+      v.descripcionDocumento || undefined,
       v.tipoArchivo as any || undefined
     );
   }
@@ -131,6 +133,7 @@ export class ConsultaRepositorioArchivosComponent
     this.form.reset({
       organismo: null,
       nombreDocumento: '',
+      descripcionDocumento: '',
       tipoArchivo: ''
     });
 
