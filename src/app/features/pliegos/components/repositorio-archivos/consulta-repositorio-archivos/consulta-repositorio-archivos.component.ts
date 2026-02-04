@@ -38,6 +38,7 @@ export class ConsultaRepositorioArchivosComponent
 
   listaOrden: IColumnaOrden[] = [
     { id: 'nombreDocumento', nombre: 'Nombre documento' },
+    { id: 'descripcionDocumento', nombre: 'Descripción' },
     { id: 'tipoArchivo', nombre: 'Tipo archivo' },
     { id: 'fechaCreacion', nombre: 'Fecha creación' }
   ];

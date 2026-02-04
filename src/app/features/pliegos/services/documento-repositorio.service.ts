@@ -275,6 +275,10 @@ export class DocumentoRepositorioService {
           valorA = a.nombreDocumento || '';
           valorB = b.nombreDocumento || '';
           break;
+        case 'descripcionDocumento':
+          valorA = a.descripcionDocumento || '';
+          valorB = b.descripcionDocumento || '';
+          break;
         case 'tipoArchivo':
           valorA = a.tipoArchivo || '';
           valorB = b.tipoArchivo || '';
