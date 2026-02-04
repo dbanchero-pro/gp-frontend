@@ -1,0 +1,34 @@
+<div class="row">
+    <div [ngClass]="colFiltro" class="sidebar">
+        <app-filtro-repositorio-archivos [filtro]="parametros.filtro"
+            (evFilter)="actualizarFiltrosYBuscar()"
+            (evCollapse)="aplicarColapso()"
+            (evNuevaConsulta)="nuevaConsulta()"
+            (evDescargarExcel)="descargarExcel()">
+        </app-filtro-repositorio-archivos>
+    </div>
+
+    <div [ngClass]="colTabla">
+        <app-cabezal-consulta [totalItems]="total"
+            [listaOrden]="listaOrden"
+            [columnaOrden]="parametros.sort"
+            [orden]="parametros.order"
+            (orderChange)="cambioOrden($event)"
+            (sortChange)="cambioColumnaOrden($event)">
+        </app-cabezal-consulta>
+
+        <app-resultado-repositorio-archivos [documentos]="documentos"
+            (agregar)="abrirAgregarDocumento()"
+            (modificar)="modificarDocumento($event)"
+            (eliminar)="eliminarDocumento($event)"
+            (descargar)="descargarDocumento($event)">
+        </app-resultado-repositorio-archivos>
+
+        <app-paginado [totalItems]="total"
+            [itemsPorPagina]="parametros.tamanoPagina"
+            [paginaActual]="parametros.pagina + 1"
+            (cambioPagina)="cambioPagina($event)"
+            (cambioItemsPorPagina)="cambioPorPagina($event)">
+        </app-paginado>
+    </div>
+</div>

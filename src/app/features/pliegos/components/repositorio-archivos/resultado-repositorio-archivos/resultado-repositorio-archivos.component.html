@@ -1,0 +1,39 @@
+<div class="row justify-content-end pr-2 mb-2">
+    <button class="btn btn-primary mr-2" (click)="onAgregar()">
+        <em class="fa fa-plus mr-1"></em>
+        Agregar
+    </button>
+</div>
+
+<div *ngFor="let doc of documentos; let i = index" [style.position]="'relative'" [style.z-index]="8000-i">
+    <div class="card mb-2 bg-transparent">
+        <div class="border-bottom py-2 bg-transparent pb-2">
+            <div class="row">
+                <div class="col-8 px-4">
+                    <div class="font-weight-bold subtitle mb-2">
+                        {{ doc.nombreInciso }} | {{ doc.nombreUnidadEjecutora }}
+                    </div>
+                    <div class="mb-1">
+                        <strong>Nombre del documento:</strong> {{ doc.nombreDocumento }}
+                    </div>
+                    <div class="mb-1" *ngIf="doc.descripcionDocumento">
+                        <strong>Descripción:</strong> {{ doc.descripcionDocumento }}
+                    </div>
+                    <div>
+                        <strong>Tipo de archivo:</strong> {{ obtenerEtiquetaTipoArchivo(doc.tipoArchivo) }}
+                    </div>
+                </div>
+                <div class="col-4 d-flex justify-content-end align-items-start pt-2">
+                    <app-boton-accion [acciones]="obtenerAcciones(doc)"
+                        [ariaLabelMasOpciones]="'Mas opciones del documento ' + doc.nombreDocumento"
+                        (accionEjecutada)="ejecutarAccion($event)">
+                    </app-boton-accion>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="documentos.length === 0" class="text-center py-4 text-muted">
+    No se encontraron documentos con los filtros seleccionados.
+</div>

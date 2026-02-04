@@ -1,0 +1,13 @@
+.subtitle {
+    font-size: 1rem;
+    color: #333;
+}
+
+.card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+
+    &.bg-transparent {
+        background-color: transparent !important;
+    }
+}
