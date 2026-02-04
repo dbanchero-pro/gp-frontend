@@ -309,32 +309,13 @@ export class ConsultaUsuariosRolesCompraComponent
     obtenerAcciones(compra: CompraDTO): AccionBoton[] {
         const acciones: AccionBoton[] = [
             {
-                nombre: 'Agregar a toda la compra',
-                ariaLabel: "Agregar a toda la compra compra usuario id " + this.usuario?.id,
+                nombre: 'Asignar',
+                ariaLabel: "Asginar roles a toda la compra usuario id " + this.usuario?.id,
                 clase: 'btn btn-success ',
                 icono: 'fa fa-shopping-cart',
                 permisos: ['GC_GESTION_USU.ALTA'],
                 accion: this.agregarPermisoPorCompra.bind(this, compra),
-            },
-            {
-                nombre: 'Agregar por ítem',
-                ariaLabel: "Agregar por ítem usuario id " + this.usuario?.id,
-                clase: 'btn btn-primary ',
-                icono: 'fa fa-list-ul',
-                permisos: ['GC_GESTION_USU.ALTA'],
-                accion: () => {
-                    const idUsuario = this.route.snapshot.paramMap.get('idUsuario');
-                    if (idUsuario) {
-                        this.guardarFiltro();
-                        this.router.navigate([
-                            '/administracion/gestion-usuarios/consulta-usuario-roles',
-                            idUsuario,
-                            'items',
-                            compra.idCompra,
-                        ]);
-                    }
-                },
-            },
+            }
         ];
 
         return acciones;

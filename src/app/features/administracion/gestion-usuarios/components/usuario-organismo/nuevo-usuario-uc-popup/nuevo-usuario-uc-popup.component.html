@@ -3,7 +3,7 @@
     <button type="button" aria-label="Cerrar" class="close" (click)="cancelarConConfirmacion()">&times;</button>
 </div>
 
-<div class="modal-body justify-content-center">
+<div class="modal-body justify-content-center p-20">
     <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
     <form [formGroup]="form" class="col-12 justify-content-center" (submit)="guardar()">
 

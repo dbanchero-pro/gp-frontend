@@ -270,10 +270,18 @@ export class ConsultaUsuariosRolesComponent
 
         if (usuario.tienePermisoTodas) {
             return [{
-                nombre: 'Ver lista UC',
-                ariaLabel: "Ver lista UC usuario id " + usuario.id,
+                nombre: 'Eliminar todas las UC',
+                ariaLabel: "Eliminar roles asignados a todas las UC usuario id " + usuario.id,
                 clase: 'btn btn-success',
-                icono: 'fa fa-list',
+                icono: 'fa fa-trash',
+                permisos: ['GC_GESTION_USU.BAJA'],
+                //accion: this.eliminarPerfilTodos.bind(this, usuario),
+            },
+            {
+                nombre: 'Ver todas las UC',
+                ariaLabel: "Ver todas las UC de SICE usuario id " + usuario.id,
+                clase: 'btn btn-success',
+                icono: 'fa-list',
                 permisos: ['GC_GESTION_USU.BAJA', 'GC_GESTION_USU.CONSULTA', 'GC_GESTION_USU.MODIFICACION'],
                 accion: this.verTodasUCSice.bind(this, usuario),
             }];
@@ -304,7 +312,7 @@ export class ConsultaUsuariosRolesComponent
                     accion: this.abrirAgregarPermisoTodasUcPopupParaUsuario.bind(this, usuario),
                 },
                 {
-                    nombre: 'Asignar por tipo de compra',
+                    nombre: 'Asignar por TC',
                     ariaLabel: "Asignar por tipo de compra usuario id " + usuario.id,
                     clase: 'btn btn-secondary',
                     icono: 'fa fa-file-text',
@@ -587,7 +595,7 @@ export class ConsultaUsuariosRolesComponent
             {
                 nombre: 'Eliminar',
                 ariaLabel: 'Eliminar rol',
-                clase: 'btn btn-secondary',
+                clase: 'btn btn-success',
                 icono: 'fa fa-trash',
                 permisos: ['GC_GESTION_USU.BAJA'],
                 accion: () => this.eliminarRolUsuarioEspecifico(permiso)

@@ -3,15 +3,17 @@
     <button type="button" aria-label="Cerrar" class="close" (click)="cancelar()">&times;</button>
 </div>
 
-<div class="modal-body justify-content-center">
+<div class="modal-body">
+
     <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
+  
     <div *ngIf="permiso" class="Box Box--color1">
-        <span class="subtitle mb-0"> <strong>CI {{ permiso.nroDocumento | formatoCi }}</strong> - {{ permiso.nombre }}</span>
+        <span class="subtitle"> <strong>CI {{ permiso.nroDocumento | formatoCi }}</strong> - {{ permiso.nombre }}</span>
     </div>
 
-    <form [formGroup]="form" class="col-12" (submit)="guardar()">
+    <form [formGroup]="form" (submit)="guardar()">
         <div class="row">
-            <div class="form-group form-row col-12 m-0 pb-0 pt-0" [class.field-error]="!alMenosUnRolSeleccionado() && intentoGuardar">
+            <div class="form-group form-row col-12" [class.field-error]="!alMenosUnRolSeleccionado() && intentoGuardar">
                 <label for="roles">* Roles</label>
                 <div class="d-flex justify-content-center w-100 col-12 Box">
                         <div class="form-check col-3">
@@ -49,7 +51,7 @@
             </div>
         </div>
     </form>
-    <div class="d-flex justify-content-end mt-3 pe-3">
+    <div class="d-flex justify-content-end m-3 pe-3">
         <button type="submit" class="btn btn-primary" (click)="guardar()" [disabled]="guardando">
             Guardar
         </button>

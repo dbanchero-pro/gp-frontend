@@ -1,10 +1,8 @@
-<div class="row row-usuario"  *ngIf="usuario">
-    <div class="border bg-transparent py-2 mb-2 col-12">
-        <div class="subtitle float-left">Usuario seleccionado: </div>
-        <div class="pl-3 font-weight-bold subtitle float-left">CI {{ usuario.id | formatoCi}}</div>
-        <div class="pl-3 font-weight-bold subtitle float-left">{{usuario.nombre}}</div>
-    </div>
+<div class="row row-usuario Box Box--color1"  *ngIf="usuario">
+    <div class="pl-3 font-weight-bold subtitle float-left">CI {{ usuario.id | formatoCi}}</div>
+    <div class="pl-3 font-weight-bold subtitle float-left">{{usuario.nombre}}</div>
 </div>
+
 <div class="row">
     <div [ngClass]="colFiltro" class="sidebar">
         <app-filtro titleBtn="Buscar" (evFilter)="actualizarFiltrosYBuscar()" (evCollapse)="aplicarColapso()"
@@ -49,9 +47,7 @@
         <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total===-1">
             <div class="card-body py-sm-2 mb-sm-2 col-12 text-center  pt-sm-4 pb-sm-4" >
             <em class=" fa fa-search  fa-2x  d-block mb-4"></em>
-                <h4>Ingresa las opciones de búsqueda y presiona buscar para agregar el rol por
-                    compra o ítems al usuario</h4>
-
+                <h4>Ingresa las opciones de búsqueda y presiona buscar para asignar roles por compra</h4>
             </div>
         </div>
         <app-cabezal-consulta [listaOrden]="listaOrden" [columnaOrden]="parametros.sort" [orden]="parametros.order"  (orderChange)="cambioOrden($event)"
