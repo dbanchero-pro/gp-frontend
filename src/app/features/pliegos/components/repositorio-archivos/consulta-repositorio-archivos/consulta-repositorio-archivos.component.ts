@@ -198,16 +198,13 @@ export class ConsultaRepositorioArchivosComponent
   }
 
   abrirAgregarDocumento(): void {
-    const initialState = {};
-
-    const modalRef = this.modalService.show(AgregarDocumentoRepositorioPopupComponent, {
-      initialState,
+    const popup = this.abrirPopup(AgregarDocumentoRepositorioPopupComponent, 'Guardar', {
       class: 'modal-lg',
       backdrop: 'static',
       keyboard: false
     });
 
-    modalRef.content?.documentoGuardado.subscribe(() => {
+    popup.documentoGuardado.subscribe(() => {
       this.buscar();
     });
   }
