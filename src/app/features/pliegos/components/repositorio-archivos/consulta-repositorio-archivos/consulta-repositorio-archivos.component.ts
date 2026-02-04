@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginaBusquedaComponent } from '../../../../../shared/components/pagina-busqueda/pagina-busqueda.component';
@@ -47,8 +47,6 @@ export class ConsultaRepositorioArchivosComponent
 
   documentos: DocumentoRepositorioDTO[] = [];
   tiposArchivo: { id: string; nombre: string }[] = [];
-
-  @Input() idUsuarioSeleccionado?: string;
 
   public static readonly SNAPSHOT_KEY = 'CONSULTA_REPOSITORIO_ARCHIVOS';
 
@@ -203,10 +201,7 @@ export class ConsultaRepositorioArchivosComponent
     const popup = this.abrirPopup(AgregarDocumentoRepositorioPopupComponent, 'Guardar', {
       class: 'modal-lg',
       backdrop: 'static',
-      keyboard: false,
-      initialState: {
-        idUsuarioSeleccionado: this.idUsuarioSeleccionado
-      }
+      keyboard: false
     });
 
     popup.documentoGuardado.subscribe(() => {
@@ -308,8 +303,7 @@ export class ConsultaRepositorioArchivosComponent
       backdrop: 'static',
       keyboard: false,
       initialState: {
-        documentoExistente: documento,
-        idUsuarioSeleccionado: this.idUsuarioSeleccionado
+        documentoExistente: documento
       }
     });
 
