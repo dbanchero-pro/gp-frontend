@@ -21,7 +21,7 @@ import { AccionBoton } from '../../../../../shared/models/common/accion-boton.mo
   templateUrl: './consulta-repositorio-archivos.component.html',
   styleUrls: ['./consulta-repositorio-archivos.component.scss'],
   standalone: false
-})
+}) 
 export class ConsultaRepositorioArchivosComponent
   extends PaginaBusquedaComponent<FiltroDocumentoRepositorioDTO>
   implements OnInit {
@@ -60,50 +60,10 @@ export class ConsultaRepositorioArchivosComponent
   }
 
   override ngOnInit(): void {
+
     super.ngOnInit();
-
-    this.tiposArchivo = this.documentoService.obtenerTiposArchivo();
-
-    const paramVolver = this.route.snapshot.queryParamMap.get('volver');
-
-    if (paramVolver === '1') {
-      this.buscarVolver();
-
-      const currentUrl = this.router.url.split('?')[0];
-      this.router.navigateByUrl(currentUrl, { replaceUrl: true });
-    } else {
-      this.nuevaConsulta();
-    }
-  }
-
-  private buscarVolver(): void {
-    const snap = this.snapshotGenericService.load<any>(
-      ConsultaRepositorioArchivosComponent.SNAPSHOT_KEY
-    );
-    if (snap) {
-      const filtro = snap.filtro;
-      if (filtro) {
-        this.form.patchValue({
-          organismo: {
-            idInciso: filtro.idInciso,
-            idUnidadEjecutora: filtro.idUnidadEjecutora
-          },
-          nombreDocumento: filtro.nombreDocumento || '',
-          tipoArchivo: filtro.tipoArchivo || ''
-        });
-      }
-
-      this.parametros.pagina = snap.pagina ?? 0;
-      this.parametros.tamanoPagina = snap.tamanoPagina ?? 10;
-      this.parametros.sort = snap.sort ?? this.columnaOrdenInicial;
-      this.parametros.order = snap.order ?? this.ordenInicial;
-
-      setTimeout(() => {
-        this.buscar();
-      }, 200);
-    } else {
-      this.nuevaConsulta();
-    }
+    this.tiposArchivo = this.documentoService.obtenerTiposArchivo();   
+    this.nuevaConsulta();
   }
 
   onFiltroOrganismo(filtro: IFiltroOrganismoDTO | null): void {
@@ -186,14 +146,6 @@ export class ConsultaRepositorioArchivosComponent
 
     this.snapshotGenericService.clear(
       ConsultaRepositorioArchivosComponent.SNAPSHOT_KEY
-    );
-
-    this.actualizarFiltrosYBuscar();
-  }
-
-  override descargarExcel(): void {
-    this.actualizarServ.mensajeInformacion(
-      'La funcionalidad de exportar a Excel estará disponible próximamente'
     );
   }
 
@@ -302,6 +254,7 @@ export class ConsultaRepositorioArchivosComponent
       class: 'modal-lg',
       backdrop: 'static',
       keyboard: false,
+
       initialState: {
         documentoExistente: documento
       }

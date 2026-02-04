@@ -16,9 +16,9 @@
                             placeholder="Buscar por nombre" />
                     </div>
                 </div>
-
+                
                 <div class="row">
-                    <div class="form-group form-row col-12 m-0 pb-0 pt-0 mb-4">
+                    <div class="form-group form-row col-12 m-0 pt-0 pt-0">
                         <label for="tipoArchivo" class="col-form-label col-12 pl-0">Tipo archivo</label>
                         <select id="tipoArchivo" class="form-control col-12" formControlName="tipoArchivo">
                             <option *ngFor="let tipo of tiposArchivo" [value]="tipo.id">{{ tipo.nombre }}</option>
@@ -33,14 +33,6 @@
                         </button>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="descargar-resultado col-12">
-                        <button type="button" class="btn btn-link" id="exportarExcel" (click)="descargarExcel()">
-                            <span class="fa fa-file-excel-o"></span> Descargar Excel
-                        </button>
-                    </div>
-                </div>
             </div>
         </app-filtro>
     </div>
@@ -51,6 +43,13 @@
                 <em class="fa fa-plus mr-1"></em>
                 Agregar archivo
             </button>
+        </div>
+
+         <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total===-1">
+            <div class="card-body py-sm-2 mb-sm-2 col-12 text-center  pt-sm-4 pb-sm-4" >
+            <em class=" fa fa-search  fa-2x  d-block mb-4"></em>
+                <h6>Ingresa las opciones de búsqueda y presiona buscar para consultar archivos</h6>
+            </div>
         </div>
 
         <app-cabezal-consulta [totalItems]="total"
