@@ -49,7 +49,7 @@
         <div class="row justify-content-end pr-2 mb-2">
             <button class="btn btn-primary mr-2" (click)="abrirAgregarDocumento()">
                 <em class="fa fa-plus mr-1"></em>
-                Agregar
+                Agregar archivo
             </button>
         </div>
 
@@ -62,43 +62,42 @@
         </app-cabezal-consulta>
 
         <div *ngFor="let doc of documentos; let i = index" [style.position]="'relative'" [style.z-index]="8000-i">
-            <div class="card mb-2 bg-white">
-                <div class="border-bottom py-2 pb-2">
+            <div class="card mb-2">
                     <div class="row">
-                        <div class="col-8 px-4">
-                            <div class="font-weight-bold subtitle mb-2">
-                                {{ doc.nombreInciso }} | {{ doc.nombreUnidadEjecutora }}
+                        <div class="col-12 py-2 px-4">
+                            <div class="row g-0 py-1 px-3">
+                                <div class="col-3 col-xl-3 fw-semibold etiqueta">Nombre</div>
+                                <div class="col-7 col-xl-7 font-weight-bold">{{ doc.nombreDocumento }}</div>
+                                <div class="col-2 d-flex justify-content-end align-items-start">
+                                    <app-boton-accion [acciones]="obtenerAcciones(doc)"
+                                        [ariaLabelMasOpciones]="'Mas opciones del documento ' + doc.nombreDocumento"
+                                        (accionEjecutada)="ejecutarAccion($event)">
+                                    </app-boton-accion>
+                                 </div>   
                             </div>
-                            <div class="mb-1">
-                                <strong>Nombre del documento:</strong> {{ doc.nombreDocumento }}
+                             <div class="row g-0 py-1 px-3">
+                                <div class="col-3 col-xl-3 fw-semibold etiqueta">Descripción</div>
+                                <div class="col-7 col-xl-7 font-weight-bold">{{ doc.descripcionDocumento }}</div>
                             </div>
-                            <div class="mb-1" *ngIf="doc.descripcionDocumento">
-                                <strong>Descripción:</strong> {{ doc.descripcionDocumento }}
+                             <div class="row g-0 py-1 px-3">
+                                <div class="col-3 col-xl-3 fw-semibold etiqueta">Tipo archivo</div>
+                                <div class="col-7 col-xl-7 font-weight-bold">{{ obtenerEtiquetaTipoArchivo(doc.tipoArchivo) }}</div>
                             </div>
-                            <div>
-                                <strong>Tipo de archivo:</strong> {{ obtenerEtiquetaTipoArchivo(doc.tipoArchivo) }}
+                            <div class="row g-0 py-1 px-3">
+                                <div class="col-3 col-xl-3 fw-semibold etiqueta">Organismo</div>
+                                <div class="col-7 col-xl-7 font-weight-bold">{{ doc.nombreInciso }} | {{ doc.nombreUnidadEjecutora }}</div>
                             </div>
                         </div>
-                        <div class="col-4 d-flex justify-content-end align-items-start pt-2">
-                            <app-boton-accion [acciones]="obtenerAcciones(doc)"
-                                [ariaLabelMasOpciones]="'Mas opciones del documento ' + doc.nombreDocumento"
-                                (accionEjecutada)="ejecutarAccion($event)">
-                            </app-boton-accion>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div *ngIf="documentos.length === 0" class="text-center py-4 text-muted">
-            No se encontraron documentos con los filtros seleccionados.
-        </div>
-
-        <app-paginado [totalItems]="total"
-            [itemsPorPagina]="parametros.tamanoPagina"
-            [paginaActual]="parametros.pagina + 1"
-            (cambioPagina)="cambioPagina($event)"
-            (cambioItemsPorPagina)="cambioPorPagina($event)">
-        </app-paginado>
+            <app-paginado [totalItems]="total"
+                [itemsPorPagina]="parametros.tamanoPagina"
+                [paginaActual]="parametros.pagina + 1"
+                (cambioPagina)="cambioPagina($event)"
+                (cambioItemsPorPagina)="cambioPorPagina($event)">
+            </app-paginado>
     </div>
 </div>

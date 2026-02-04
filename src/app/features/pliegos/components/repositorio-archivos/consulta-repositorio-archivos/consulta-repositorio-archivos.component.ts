@@ -215,23 +215,23 @@ export class ConsultaRepositorioArchivosComponent
   obtenerAcciones(documento: DocumentoRepositorioDTO): AccionBoton[] {
     const acciones: AccionBoton[] = [];
 
-    acciones.push({
-      nombre: 'Descargar',
-      clase: 'btn-link',
-      icono: 'fa fa-download',
-      accion: () => this.descargarDocumento(documento)
-    });
-
-    acciones.push({
+     acciones.push({
       nombre: 'Modificar',
-      clase: 'btn-link disabled',
+       clase: 'btn btn-success',
       icono: 'fa fa-edit',
       ariaLabel: 'Pendiente'
     });
 
     acciones.push({
+      nombre: 'Descargar',
+      clase: 'btn btn-success',
+      icono: 'fa fa-download',
+      accion: () => this.descargarDocumento(documento)
+    });
+
+    acciones.push({
       nombre: 'Eliminar',
-      clase: 'btn-link',
+       clase: 'btn btn-success',
       icono: 'fa fa-trash',
       accion: () => this.eliminarDocumento(documento)
     });
