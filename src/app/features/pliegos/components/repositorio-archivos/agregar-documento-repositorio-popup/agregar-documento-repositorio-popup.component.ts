@@ -222,6 +222,10 @@ export class AgregarDocumentoRepositorioPopupComponent extends PopupBaseComponen
     }
   }
 
+  onDatosCargados(): void {
+    // Este método se ejecuta cuando el filtro-organismo termina de cargar los datos
+  }
+
   cancelar(): void {
     this.cancelarConConfirmacion();
   }

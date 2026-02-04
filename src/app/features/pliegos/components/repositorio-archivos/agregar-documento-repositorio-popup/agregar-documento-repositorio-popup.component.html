@@ -17,6 +17,7 @@
                 <app-filtro-organismo formControlName="organismo"
                     (cambioFiltro)="onFiltroOrganismo($event)"
                     (limpiarFiltro)="onFiltroOrganismo(null)"
+                    (datosCargados)="onDatosCargados()"
                     [requeridoInciso]="true"
                     [requeridoUE]="true"
                     [requeridoUC]="false">
