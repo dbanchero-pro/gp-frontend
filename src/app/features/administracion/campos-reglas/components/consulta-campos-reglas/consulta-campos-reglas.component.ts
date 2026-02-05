@@ -140,7 +140,7 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   }
 
   abrirAgregarCampo(): void {
-    const popup = this.abrirPopup(AgregarModificarCampoPopupComponent, undefined, {
+    const popup = this.abrirPopupGrande(AgregarModificarCampoPopupComponent, undefined, {
       class: 'modal-lg',
       backdrop: 'static',
       keyboard: false
@@ -184,7 +184,7 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   }
 
   modificarCampo(campo: CampoDTO): void {
-    const popup = this.abrirPopup(AgregarModificarCampoPopupComponent, undefined, {
+    const popup = this.abrirPopupGrande(AgregarModificarCampoPopupComponent, undefined, {
       class: 'modal-lg',
       backdrop: 'static',
       keyboard: false,

@@ -101,7 +101,7 @@ export class AgregarModificarCampoPopupComponent extends PopupBaseComponent impl
       return;
     }
 
-    const popup = this.abrirPopup(AgregarModificarReglaPopupComponent, undefined, {
+    const popup = this.abrirPopupGrande(AgregarModificarReglaPopupComponent, undefined, {
       class: 'modal-lg',
       backdrop: 'static',
       keyboard: false,
