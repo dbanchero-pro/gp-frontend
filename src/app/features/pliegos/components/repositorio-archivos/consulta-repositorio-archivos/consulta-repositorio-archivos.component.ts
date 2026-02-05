@@ -39,10 +39,9 @@ export class ConsultaRepositorioArchivosComponent
   listaOrden: IColumnaOrden[] = [
     { id: 'nombreDocumento', nombre: 'Nombre documento' },
     { id: 'tipoArchivo', nombre: 'Tipo archivo' },
-    { id: 'fechaCreacion', nombre: 'Fecha creación' }
   ];
 
-  columnaOrdenInicial = 'fechaCreacion';
+  columnaOrdenInicial = 'nombreDocumento';
   ordenInicial: 'asc' | 'desc' = 'desc';
 
   documentos: DocumentoRepositorioDTO[] = [];

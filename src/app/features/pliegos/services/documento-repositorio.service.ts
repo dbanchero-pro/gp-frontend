@@ -237,7 +237,7 @@ export class DocumentoRepositorioService {
     filtro: FiltroDocumentoRepositorioDTO,
     pagina: number = 0,
     tamanoPagina: number = 10,
-    sort: string = 'fechaCreacion',
+    sort: string = 'nombreDocumento',
     order: string = 'desc'
   ): Observable<PageModel<DocumentoRepositorioDTO>> {
     let documentosFiltrados = [...this.documentos];
@@ -272,11 +272,6 @@ export class DocumentoRepositorioService {
         case 'tipoArchivo':
           valorA = a.tipoArchivo || '';
           valorB = b.tipoArchivo || '';
-          break;
-        case 'fechaCreacion':
-        default:
-          valorA = a.fechaCreacion || new Date(0);
-          valorB = b.fechaCreacion || new Date(0);
           break;
       }
 
