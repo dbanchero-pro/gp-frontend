@@ -158,7 +158,6 @@ export class MenuService {
             items: [
              //   this.menuConformidad(),
                 this.menuRoles(),
-                this.menuCamposReglas(),
                 this.menuPliegos(),
                // this.menuRecepcion(),
                 //this.menuSeguimientoProveedores(),
@@ -362,29 +361,26 @@ export class MenuService {
         };
     }
 
-    private menuCamposReglas(): IMenuItem {
-        return {
-            nombre: 'Campos y reglas',
-            titulo: 'Administración de campos y sus reglas',
-            subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar los campos',
-            visible: true,
-            tipoUsuario: TipoUsuario.ORGANISMO,
-            permisos: [
-                'GC_GESTION_USU.ALTA',
-                'GC_GESTION_USU.BAJA',
-                'GC_GESTION_USU.MODIFICACION',
-                'GC_GESTION_USU.CONSULTA',
-            ],
-            url: '/administracion/campos-reglas',
-        };
-    }
-
      private menuPliegos(): IMenuItem {
          return {
             nombre: 'Pliegos',
             visible: true,
             tipoUsuario: TipoUsuario.ORGANISMO,
             items: [
+                {
+                    nombre: 'Campos y reglas',
+                    titulo: 'Administración de campos y sus reglas',
+                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar los campos',
+                    visible: true,
+                    tipoUsuario: TipoUsuario.ORGANISMO,
+                    permisos: [
+                        'GC_GESTION_USU.ALTA',
+                        'GC_GESTION_USU.BAJA',
+                        'GC_GESTION_USU.MODIFICACION',
+                        'GC_GESTION_USU.CONSULTA',
+                    ],
+                    url: '/administracion/campos-reglas',
+                },
                 {
                     nombre: 'Capítulos',
                     titulo: 'Administración de las capítulos',
