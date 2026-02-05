@@ -1,0 +1,5 @@
+export enum TipoFuenteCampo {
+    SICE_EDITABLE = 'SICE_EDITABLE',
+    SICE_NO_EDITABLE = 'SICE_NO_EDITABLE',
+    USUARIO = 'USUARIO'
+}

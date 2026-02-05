@@ -1,0 +1,29 @@
+.field-error {
+  .form-control,
+  .custom-select {
+    border-color: #dc3545;
+  }
+}
+
+.texto-error {
+  color: #dc3545;
+  font-size: 0.875rem;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.alert {
+  margin-bottom: 0;
+}

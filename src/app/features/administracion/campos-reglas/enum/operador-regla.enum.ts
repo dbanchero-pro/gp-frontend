@@ -1,0 +1,10 @@
+export enum OperadorRegla {
+    IGUAL = 'IGUAL',
+    DISTINTO = 'DISTINTO',
+    MENOR = 'MENOR',
+    MENOR_IGUAL = 'MENOR_IGUAL',
+    MAYOR = 'MAYOR',
+    MAYOR_IGUAL = 'MAYOR_IGUAL',
+    RANGO = 'RANGO',
+    LISTA_VALORES = 'LISTA_VALORES'
+}

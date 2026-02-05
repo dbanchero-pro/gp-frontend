@@ -37,7 +37,15 @@ const routes: Routes = [
             ),
         canActivate: [AuthGuard],
     },
-    
+    {
+        path: 'campos-reglas',
+        loadChildren: () =>
+            import('./campos-reglas/campos-reglas.module').then(
+                (m) => m.CamposReglasModule
+            ),
+        canActivate: [AuthGuard],
+    },
+
 ];
 
 export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
