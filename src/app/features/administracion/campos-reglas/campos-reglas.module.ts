@@ -8,7 +8,7 @@ import { AgregarModificarReglaPopupComponent } from './components/agregar-modifi
 
 export const routes: Routes = [
     {
-        path: 'campos-reglas',
+        path: '',
         component: ConsultaCamposReglasComponent
     }
 ];

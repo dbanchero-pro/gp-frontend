@@ -158,6 +158,7 @@ export class MenuService {
             items: [
              //   this.menuConformidad(),
                 this.menuRoles(),
+                this.menuCamposReglas(),
                 this.menuPliegos(),
                // this.menuRecepcion(),
                 //this.menuSeguimientoProveedores(),
@@ -357,7 +358,24 @@ export class MenuService {
                 'GC_GESTION_USU.MODIFICACION',
                 'GC_GESTION_USU.CONSULTA',
             ],
-            url: '/administracion/gestion-usuarios/consulta-usuario-roles',        
+            url: '/administracion/gestion-usuarios/consulta-usuario-roles',
+        };
+    }
+
+    private menuCamposReglas(): IMenuItem {
+        return {
+            nombre: 'Campos y reglas',
+            titulo: 'Administración de campos y sus reglas',
+            subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar los campos',
+            visible: true,
+            tipoUsuario: TipoUsuario.ORGANISMO,
+            permisos: [
+                'GC_GESTION_USU.ALTA',
+                'GC_GESTION_USU.BAJA',
+                'GC_GESTION_USU.MODIFICACION',
+                'GC_GESTION_USU.CONSULTA',
+            ],
+            url: '/administracion/campos-reglas',
         };
     }
 
@@ -366,20 +384,7 @@ export class MenuService {
             nombre: 'Pliegos',
             visible: true,
             tipoUsuario: TipoUsuario.ORGANISMO,
-            items: [     
-                 {
-                    nombre: 'Campos y reglas',
-                    titulo: 'Administración de campos y sus reglas',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar los campos',
-                    visible: true,
-                    permisos: [
-                        'GC_GESTION_USU.ALTA',
-                        'GC_GESTION_USU.BAJA',
-                        'GC_GESTION_USU.MODIFICACION',
-                        'GC_GESTION_USU.CONSULTA',
-                    ],
-                    url: '/administracion/campos-reglas',
-                },          
+            items: [
                 {
                     nombre: 'Capítulos',
                     titulo: 'Administración de las capítulos',
