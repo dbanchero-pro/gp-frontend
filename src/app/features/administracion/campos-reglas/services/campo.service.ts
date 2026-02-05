@@ -28,7 +28,17 @@ export class CampoService {
         fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
         tipoDato: TipoDatoCampo.TEXTO,
         sePuedeEliminar: SiNoValor.NO,
-        reglas: [],
+        reglas: [
+          {
+            id: 1,
+            codigo: 'REG001',
+            nombre: 'Organismo requerido',
+            tipoRegla: 'VALOR' as any,
+            operador: 'DISTINTO' as any,
+            valor: '',
+            mensajeError: 'El campo Organismo es obligatorio'
+          }
+        ],
         fechaCreacion: new Date('2024-01-01'),
         fechaModificacion: new Date('2024-01-01'),
         activo: true
@@ -100,7 +110,26 @@ export class CampoService {
         fuente: TipoFuenteCampo.SICE_EDITABLE,
         tipoDato: TipoDatoCampo.NUMERO,
         sePuedeEliminar: SiNoValor.NO,
-        reglas: [],
+        reglas: [
+          {
+            id: 2,
+            codigo: 'REG002',
+            nombre: 'Presupuesto mínimo',
+            tipoRegla: 'VALOR' as any,
+            operador: 'MAYOR' as any,
+            valor: '0',
+            mensajeError: 'El presupuesto debe ser mayor a 0'
+          },
+          {
+            id: 3,
+            codigo: 'REG003',
+            nombre: 'Presupuesto máximo',
+            tipoRegla: 'VALOR' as any,
+            operador: 'MENOR_IGUAL' as any,
+            valor: '10000000',
+            mensajeError: 'El presupuesto no puede superar los 10.000.000'
+          }
+        ],
         fechaCreacion: new Date('2024-01-01'),
         fechaModificacion: new Date('2024-01-01'),
         activo: true
@@ -112,7 +141,17 @@ export class CampoService {
         fuente: TipoFuenteCampo.SICE_EDITABLE,
         tipoDato: TipoDatoCampo.CORREO_ELECTRONICO,
         sePuedeEliminar: SiNoValor.NO,
-        reglas: [],
+        reglas: [
+          {
+            id: 4,
+            codigo: 'REG004',
+            nombre: 'Email requerido',
+            tipoRegla: 'VALOR' as any,
+            operador: 'DISTINTO' as any,
+            valor: '',
+            mensajeError: 'Debe ingresar un correo electrónico'
+          }
+        ],
         fechaCreacion: new Date('2024-01-01'),
         fechaModificacion: new Date('2024-01-01'),
         activo: true
@@ -125,6 +164,72 @@ export class CampoService {
         tipoDato: TipoDatoCampo.TEXTO,
         sePuedeEliminar: SiNoValor.NO,
         reglas: [],
+        fechaCreacion: new Date('2024-01-01'),
+        fechaModificacion: new Date('2024-01-01'),
+        activo: true
+      },
+      {
+        id: this.nextId++,
+        etiqueta: 'Fecha inicio',
+        descripcion: 'Fecha de inicio del contrato',
+        fuente: TipoFuenteCampo.USUARIO,
+        tipoDato: TipoDatoCampo.FECHA,
+        sePuedeEliminar: SiNoValor.SI,
+        reglas: [],
+        fechaCreacion: new Date('2024-01-01'),
+        fechaModificacion: new Date('2024-01-01'),
+        activo: true
+      },
+      {
+        id: this.nextId++,
+        etiqueta: 'Fecha fin',
+        descripcion: 'Fecha de finalización del contrato',
+        fuente: TipoFuenteCampo.USUARIO,
+        tipoDato: TipoDatoCampo.FECHA,
+        sePuedeEliminar: SiNoValor.SI,
+        reglas: [
+          {
+            id: 5,
+            codigo: 'REG005',
+            nombre: 'Fecha fin posterior',
+            tipoRegla: 'CAMPO' as any,
+            operador: 'MAYOR' as any,
+            idCampoComparar: 10,
+            etiquetaCampoComparar: 'Fecha inicio',
+            mensajeError: 'La fecha de fin debe ser posterior a la fecha de inicio'
+          }
+        ],
+        fechaCreacion: new Date('2024-01-01'),
+        fechaModificacion: new Date('2024-01-01'),
+        activo: true
+      },
+      {
+        id: this.nextId++,
+        etiqueta: 'Plazo de entrega',
+        descripcion: 'Cantidad de días para la entrega',
+        fuente: TipoFuenteCampo.USUARIO,
+        tipoDato: TipoDatoCampo.NUMERO,
+        sePuedeEliminar: SiNoValor.SI,
+        reglas: [
+          {
+            id: 6,
+            codigo: 'REG006',
+            nombre: 'Plazo mínimo',
+            tipoRegla: 'VALOR' as any,
+            operador: 'MAYOR_IGUAL' as any,
+            valor: '1',
+            mensajeError: 'El plazo debe ser al menos 1 día'
+          },
+          {
+            id: 7,
+            codigo: 'REG007',
+            nombre: 'Plazo máximo',
+            tipoRegla: 'VALOR' as any,
+            operador: 'MENOR_IGUAL' as any,
+            valor: '365',
+            mensajeError: 'El plazo no puede superar los 365 días'
+          }
+        ],
         fechaCreacion: new Date('2024-01-01'),
         fechaModificacion: new Date('2024-01-01'),
         activo: true
