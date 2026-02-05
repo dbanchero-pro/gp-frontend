@@ -7,7 +7,6 @@ import { CampoService } from '../../services/campo.service';
 import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
 import { SeguridadService } from '../../../../../shared/services/common/seguridad.service';
 import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { AgregarModificarCampoPopupComponent } from '../agregar-modificar-campo-popup/agregar-modificar-campo-popup.component';
 import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
 import { TipoFuenteCampo } from '../../enum/tipo-fuente-campo.enum';
@@ -35,7 +34,6 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   private readonly operadorHelper = inject(OperadorHelperService);
   private readonly snapshotGenericService = inject(SnapshotGenericService);
   protected readonly seguridad = inject(SeguridadService);
-  protected override readonly modalService = inject(BsModalService);
 
   listaOrden: IColumnaOrden[] = [
     { id: 'etiqueta', nombre: 'Etiqueta' },
@@ -142,13 +140,12 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   }
 
   abrirAgregarCampo(): void {
-    const modalRef = this.modalService.show(AgregarModificarCampoPopupComponent, {
+    const popup = this.abrirPopup(AgregarModificarCampoPopupComponent, undefined, {
       class: 'modal-lg',
       backdrop: 'static',
       keyboard: false
     });
 
-    const popup = modalRef.content as AgregarModificarCampoPopupComponent;
     if (popup.campoGuardado) {
       popup.campoGuardado.subscribe(() => {
         this.buscar();
@@ -187,7 +184,7 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   }
 
   modificarCampo(campo: CampoDTO): void {
-    const modalRef = this.modalService.show(AgregarModificarCampoPopupComponent, {
+    const popup = this.abrirPopup(AgregarModificarCampoPopupComponent, undefined, {
       class: 'modal-lg',
       backdrop: 'static',
       keyboard: false,
@@ -196,7 +193,6 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
       }
     });
 
-    const popup = modalRef.content as AgregarModificarCampoPopupComponent;
     if (popup.campoGuardado) {
       popup.campoGuardado.subscribe(() => {
         this.buscar();

@@ -7,7 +7,6 @@ import { TipoFuenteCampo } from '../../enum/tipo-fuente-campo.enum';
 import { TipoDatoCampo } from '../../enum/tipo-dato-campo.enum';
 import { SiNoValor } from '../../../../../shared/enum/si-no-valor.enum';
 import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { AgregarModificarReglaPopupComponent } from '../agregar-modificar-regla-popup/agregar-modificar-regla-popup.component';
 import { IReglaDTO, ReglaDTO } from '../../models/regla.model';
 import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
@@ -25,7 +24,6 @@ export class AgregarModificarCampoPopupComponent extends PopupBaseComponent impl
   private readonly campoService = inject(CampoService);
   private readonly operadorHelper = inject(OperadorHelperService);
   protected readonly actualizarServ = inject(ActualizarService);
-  protected override readonly modalService = inject(BsModalService);
 
   @Output() campoGuardado = new EventEmitter<CampoDTO>();
 
@@ -103,7 +101,7 @@ export class AgregarModificarCampoPopupComponent extends PopupBaseComponent impl
       return;
     }
 
-    const modalRef = this.modalService.show(AgregarModificarReglaPopupComponent, {
+    const popup = this.abrirPopup(AgregarModificarReglaPopupComponent, undefined, {
       class: 'modal-lg',
       backdrop: 'static',
       keyboard: false,
@@ -114,7 +112,6 @@ export class AgregarModificarCampoPopupComponent extends PopupBaseComponent impl
       }
     });
 
-    const popup = modalRef.content as AgregarModificarReglaPopupComponent;
     if (popup.reglaGuardada) {
       popup.reglaGuardada.subscribe((regla: IReglaDTO) => {
         regla.id = this.siguienteIdRegla++;
@@ -155,7 +152,7 @@ export class AgregarModificarCampoPopupComponent extends PopupBaseComponent impl
       return;
     }
 
-    const modalRef = this.modalService.show(AgregarModificarReglaPopupComponent, {
+    const popup = this.abrirPopup(AgregarModificarReglaPopupComponent, undefined, {
       class: 'modal-lg',
       backdrop: 'static',
       keyboard: false,
@@ -167,7 +164,6 @@ export class AgregarModificarCampoPopupComponent extends PopupBaseComponent impl
       }
     });
 
-    const popup = modalRef.content as AgregarModificarReglaPopupComponent;
     if (popup.reglaGuardada) {
       popup.reglaGuardada.subscribe((reglaModificada: IReglaDTO) => {
         const index = this.reglas.findIndex(r => r.id === regla.id);
