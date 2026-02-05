@@ -378,7 +378,7 @@ export class MenuService {
                         'GC_GESTION_USU.MODIFICACION',
                         'GC_GESTION_USU.CONSULTA',
                     ],
-                    url: '/administracion/gestion-usuarios/consulta-usuario-conformidad',
+                    url: '/administracion/campos-reglas',
                 },          
                 {
                     nombre: 'Capítulos',
