@@ -23,7 +23,7 @@ export class CampoService {
     const camposMock: CampoDTO[] = [
       {
         id: this.nextId++,
-        etiqueta: 'Organismo',
+        etiqueta: 'ORGANISMO',
         descripcion: 'Corresponde a la descripción del inciso y descripción de la unidad ejecutora, tomados de las codigueras, correspondientes al ID de inciso e ID de unidad ejecutora de la compra proveniente de SICE.',
         fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
         tipoDato: TipoDatoCampo.TEXTO,
@@ -45,7 +45,7 @@ export class CampoService {
       },
       {
         id: this.nextId++,
-        etiqueta: 'Tipo de compra',
+        etiqueta: 'TIPO_DE_COMPRA',
         descripcion: 'Corresponde a la descripción del tipo de compra, tomado de la codiguera correspondiente al ID de compra proveniente de SICE.',
         fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
         tipoDato: TipoDatoCampo.TEXTO,
@@ -57,7 +57,7 @@ export class CampoService {
       },
       {
         id: this.nextId++,
-        etiqueta: 'Sub-tipo de compra',
+        etiqueta: 'SUB_TIPO_DE_COMPRA',
         descripcion: 'Corresponde a la descripción del sub-tipo de compra, tomado de la codiguera correspondiente al ID de sub-tipo de compra proveniente de SICE.',
         fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
         tipoDato: TipoDatoCampo.TEXTO,
@@ -69,7 +69,7 @@ export class CampoService {
       },
       {
         id: this.nextId++,
-        etiqueta: 'Número de compra',
+        etiqueta: 'NUMERO_DE_COMPRA',
         descripcion: 'Es el número del procedimiento de la compra proveniente de SICE',
         fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
         tipoDato: TipoDatoCampo.NUMERO,
@@ -81,7 +81,7 @@ export class CampoService {
       },
       {
         id: this.nextId++,
-        etiqueta: 'Año de compra',
+        etiqueta: 'ANO_DE_COMPRA',
         descripcion: 'Corresponde al año del procedimiento de la compra proveniente de SICE',
         fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
         tipoDato: TipoDatoCampo.NUMERO,
@@ -93,7 +93,7 @@ export class CampoService {
       },
       {
         id: this.nextId++,
-        etiqueta: 'Ítem de compra',
+        etiqueta: 'ITEM_DE_COMPRA',
         descripcion: 'Corresponde a la lista de ítems de la compra en formato: descripción artículo + (código artículo)',
         fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
         tipoDato: TipoDatoCampo.TEXTO,
@@ -105,7 +105,7 @@ export class CampoService {
       },
       {
         id: this.nextId++,
-        etiqueta: 'Presupuesto',
+        etiqueta: 'PRESUPUESTO',
         descripcion: 'Número que indica el presupuesto asignado a la contratación',
         fuente: TipoFuenteCampo.SICE_EDITABLE,
         tipoDato: TipoDatoCampo.NUMERO,
@@ -136,7 +136,7 @@ export class CampoService {
       },
       {
         id: this.nextId++,
-        etiqueta: 'Correo electrónico de comunicaciones',
+        etiqueta: 'CORREO_ELECTRONICO_DE_COMUNICACIONES',
         descripcion: 'Corresponde al correo de comunicaciones, asociado a la Unidad de compra, obtenido de la codiguera de Comunicaciones para Unidades de Compra en SICE.',
         fuente: TipoFuenteCampo.SICE_EDITABLE,
         tipoDato: TipoDatoCampo.CORREO_ELECTRONICO,
@@ -170,7 +170,7 @@ export class CampoService {
       },
       {
         id: this.nextId++,
-        etiqueta: 'Fecha inicio',
+        etiqueta: 'FECHA_INICIO',
         descripcion: 'Fecha de inicio del contrato',
         fuente: TipoFuenteCampo.USUARIO,
         tipoDato: TipoDatoCampo.FECHA,
@@ -182,7 +182,7 @@ export class CampoService {
       },
       {
         id: this.nextId++,
-        etiqueta: 'Fecha fin',
+        etiqueta: 'FECHA_FIN',
         descripcion: 'Fecha de finalización del contrato',
         fuente: TipoFuenteCampo.USUARIO,
         tipoDato: TipoDatoCampo.FECHA,
@@ -195,7 +195,7 @@ export class CampoService {
             tipoRegla: 'CAMPO' as any,
             operador: 'MAYOR' as any,
             idCampoComparar: 10,
-            etiquetaCampoComparar: 'Fecha inicio',
+            etiquetaCampoComparar: 'FECHA_INICIO',
             mensajeError: 'La fecha de fin debe ser posterior a la fecha de inicio'
           }
         ],
@@ -205,7 +205,7 @@ export class CampoService {
       },
       {
         id: this.nextId++,
-        etiqueta: 'Plazo de entrega',
+        etiqueta: 'PLAZO_DE_ENTREGA',
         descripcion: 'Cantidad de días para la entrega',
         fuente: TipoFuenteCampo.USUARIO,
         tipoDato: TipoDatoCampo.NUMERO,
