@@ -1,10 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CampoDTO } from '../../models/campo.model';
 import { FiltroCampoDTO } from '../../models/filtro-campo.model';
 import { CampoService } from '../../services/campo.service';
 import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
 import { SeguridadService } from '../../../../../shared/services/common/seguridad.service';
+import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { AgregarModificarCampoPopupComponent } from '../agregar-modificar-campo-popup/agregar-modificar-campo-popup.component';
 import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
@@ -13,6 +15,9 @@ import { TipoDatoCampo } from '../../enum/tipo-dato-campo.enum';
 import { IReglaDTO } from '../../models/regla.model';
 import { OperadorHelperService } from '../../services/operador-helper.service';
 import { TipoRegla } from '../../enum/tipo-regla.enum';
+import { PaginaBusquedaComponent } from '../../../../../shared/components/pagina-busqueda/pagina-busqueda.component';
+import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden.model';
+import { PageModel } from '../../../../../shared/models/common/page/page.model';
 
 @Component({
   selector: 'app-consulta-campos-reglas',
@@ -20,57 +25,121 @@ import { TipoRegla } from '../../enum/tipo-regla.enum';
   styleUrls: ['./consulta-campos-reglas.component.scss'],
   standalone: false
 })
-export class ConsultaCamposReglasComponent implements OnInit {
+export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<FiltroCampoDTO> implements OnInit {
 
   private readonly fb = inject(FormBuilder);
   private readonly actualizarServ = inject(ActualizarService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly campoService = inject(CampoService);
   private readonly operadorHelper = inject(OperadorHelperService);
+  private readonly snapshotGenericService = inject(SnapshotGenericService);
   protected readonly seguridad = inject(SeguridadService);
-  private readonly modalService = inject(BsModalService);
+  protected override readonly modalService = inject(BsModalService);
 
-  form = this.fb.nonNullable.group({
-    etiqueta: this.fb.nonNullable.control<string>(''),
-    descripcion: this.fb.nonNullable.control<string>(''),
-    fuente: this.fb.nonNullable.control<string>('')
-  });
+  listaOrden: IColumnaOrden[] = [
+    { id: 'etiqueta', nombre: 'Etiqueta' },
+    { id: 'fuente', nombre: 'Fuente' },
+  ];
+
+  columnaOrdenInicial = 'etiqueta';
+  ordenInicial: 'asc' | 'desc' = 'asc';
 
   campos: CampoDTO[] = [];
   tiposFuente: { id: string; nombre: string }[] = [];
   camposExpandidos: { [key: number]: boolean } = {};
 
-  ngOnInit(): void {
+  public static readonly SNAPSHOT_KEY = 'CONSULTA_CAMPOS_REGLAS';
+
+  constructor() {
+    super();
+    this.form = this.fb.nonNullable.group({
+      etiqueta: this.fb.nonNullable.control<string>(''),
+      descripcion: this.fb.nonNullable.control<string>(''),
+      fuente: this.fb.nonNullable.control<string>('')
+    });
+  }
+
+  override ngOnInit(): void {
+    super.ngOnInit();
     this.tiposFuente = this.campoService.obtenerTiposFuente();
+    this.nuevaConsulta();
+  }
+
+  actualizarFiltrosYBuscar(): void {
+    this.actualizarFiltro();
     this.buscar();
   }
 
-  buscar(): void {
+  private actualizarFiltro(): void {
     const v = this.form.value;
-    const filtro = new FiltroCampoDTO(
+    this.parametros.filtro = new FiltroCampoDTO(
       v.etiqueta || undefined,
       v.descripcion || undefined,
       (v.fuente as TipoFuenteCampo) || undefined
     );
-
-    this.campoService.obtenerTodos(filtro).subscribe({
-      next: (campos) => {
-        this.campos = campos;
-      },
-      error: (err) => {
-        this.actualizarServ.mensajeError('Error al consultar campos');
-        console.error('Error al consultar campos:', err);
-        this.campos = [];
-      }
-    });
   }
 
-  nuevaConsulta(): void {
+  buscar(resetearPagina: boolean = false): void {
+    if (resetearPagina) {
+      this.parametros.pagina = 0;
+    }
+
+    this.actualizarFiltro();
+
+    this.campoService
+      .obtenerTodosPaginado(
+        this.parametros.filtro,
+        this.parametros.pagina,
+        this.parametros.tamanoPagina,
+        this.parametros.sort,
+        this.parametros.order
+      )
+      .subscribe({
+        next: (page: PageModel<CampoDTO>) => {
+          this.campos = page.content || [];
+          this.total = page.totalElements || 0;
+
+          this.snapshotGenericService.save(
+            ConsultaCamposReglasComponent.SNAPSHOT_KEY,
+            {
+              filtro: this.parametros.filtro,
+              pagina: this.parametros.pagina,
+              tamanoPagina: this.parametros.tamanoPagina,
+              sort: this.parametros.sort,
+              order: this.parametros.order
+            }
+          );
+        },
+        error: (err) => {
+          this.actualizarServ.mensajeError('Error al consultar campos');
+          console.error('Error al consultar campos:', err);
+          this.campos = [];
+          this.total = 0;
+        }
+      });
+  }
+
+  override nuevaConsulta(): void {
     this.form.reset({
       etiqueta: '',
       descripcion: '',
       fuente: ''
     });
-    this.buscar();
+
+    this.parametros = {
+      filtro: new FiltroCampoDTO(),
+      pagina: 0,
+      tamanoPagina: 10,
+      sort: this.columnaOrdenInicial,
+      order: this.ordenInicial
+    };
+    this.campos = [];
+    this.total = -1;
+
+    this.snapshotGenericService.clear(
+      ConsultaCamposReglasComponent.SNAPSHOT_KEY
+    );
   }
 
   abrirAgregarCampo(): void {

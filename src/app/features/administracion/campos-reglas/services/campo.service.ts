@@ -6,6 +6,7 @@ import { FiltroCampoDTO } from '../models/filtro-campo.model';
 import { TipoFuenteCampo } from '../enum/tipo-fuente-campo.enum';
 import { TipoDatoCampo } from '../enum/tipo-dato-campo.enum';
 import { SiNoValor } from '../../../../shared/enum/si-no-valor.enum';
+import { PageModel } from '../../../../shared/models/common/page/page.model';
 
 @Injectable({
   providedIn: 'root'
@@ -161,6 +162,81 @@ export class CampoService {
     });
 
     return of(camposFiltrados).pipe(delay(300));
+  }
+
+  obtenerTodosPaginado(
+    filtro?: FiltroCampoDTO,
+    pagina: number = 0,
+    tamanoPagina: number = 10,
+    sort: string = 'etiqueta',
+    order: 'asc' | 'desc' = 'asc'
+  ): Observable<PageModel<CampoDTO>> {
+    let camposFiltrados = this.campos.filter(c => c.activo);
+
+    if (filtro) {
+      if (filtro.etiqueta) {
+        const etiquetaBusqueda = filtro.etiqueta.toLowerCase();
+        camposFiltrados = camposFiltrados.filter(campo =>
+          campo.etiqueta?.toLowerCase().includes(etiquetaBusqueda)
+        );
+      }
+      if (filtro.descripcion) {
+        const descripcionBusqueda = filtro.descripcion.toLowerCase();
+        camposFiltrados = camposFiltrados.filter(campo =>
+          campo.descripcion?.toLowerCase().includes(descripcionBusqueda)
+        );
+      }
+      if (filtro.fuente) {
+        camposFiltrados = camposFiltrados.filter(campo => campo.fuente === filtro.fuente);
+      }
+    }
+
+    camposFiltrados.sort((a, b) => {
+      let valorA: any = '';
+      let valorB: any = '';
+
+      switch (sort) {
+        case 'etiqueta':
+          valorA = a.etiqueta || '';
+          valorB = b.etiqueta || '';
+          break;
+        case 'fuente':
+          valorA = a.fuente || '';
+          valorB = b.fuente || '';
+          break;
+        default:
+          valorA = a.etiqueta || '';
+          valorB = b.etiqueta || '';
+      }
+
+      const resultado = valorA.toString().localeCompare(valorB.toString());
+      return order === 'asc' ? resultado : -resultado;
+    });
+
+    const totalElements = camposFiltrados.length;
+    const inicio = pagina * tamanoPagina;
+    const fin = inicio + tamanoPagina;
+    const camposPaginados = camposFiltrados.slice(inicio, fin);
+
+    const page: PageModel<CampoDTO> = {
+      page: null,
+      content: camposPaginados,
+      totalElements,
+      totalPages: Math.ceil(totalElements / tamanoPagina),
+      size: tamanoPagina,
+      number: pagina,
+      first: pagina === 0,
+      last: pagina >= Math.ceil(totalElements / tamanoPagina) - 1,
+      numberOfElements: camposPaginados.length,
+      sort: {
+        sorted: order !== undefined,
+        unsorted: order === undefined,
+        empty: order === undefined
+      },
+      empty: camposPaginados.length === 0
+    };
+
+    return of(page).pipe(delay(300));
   }
 
   crear(campo: CampoDTO): Observable<CampoDTO> {
