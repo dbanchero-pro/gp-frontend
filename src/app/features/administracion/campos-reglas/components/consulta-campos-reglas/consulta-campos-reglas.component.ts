@@ -206,7 +206,7 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
 
   eliminarCampo(campo: CampoDTO): void {
     this.actualizarServ.confirmar(
-      '¿Está seguro que desea eliminar el campo seleccionado?',
+      `¿Está seguro que desea eliminar el campo "${campo.etiqueta}"?`,
       () => {
         if (campo.id) {
           this.campoService.eliminar(campo.id, false).subscribe({
