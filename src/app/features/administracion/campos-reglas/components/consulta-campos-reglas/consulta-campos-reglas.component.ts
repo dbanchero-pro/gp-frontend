@@ -47,7 +47,6 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
 
   campos: CampoDTO[] = [];
   tiposFuente: { id: string; nombre: string }[] = [];
-  camposExpandidos: { [key: number]: boolean } = {};
 
   public static readonly SNAPSHOT_KEY = 'CONSULTA_CAMPOS_REGLAS';
 
@@ -272,16 +271,6 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
 
   obtenerNombreOperador(regla: IReglaDTO): string {
     return regla.operador ? this.operadorHelper.obtenerNombreOperador(regla.operador) : '-';
-  }
-
-  toggleReglas(campoId: number | undefined): void {
-    if (campoId) {
-      this.camposExpandidos[campoId] = !this.camposExpandidos[campoId];
-    }
-  }
-
-  estanReglasExpandidas(campoId: number | undefined): boolean {
-    return campoId ? !!this.camposExpandidos[campoId] : false;
   }
 
   tieneReglas(campo: CampoDTO): boolean {

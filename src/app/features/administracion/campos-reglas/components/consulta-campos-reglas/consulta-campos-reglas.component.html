@@ -92,46 +92,39 @@
 
                             <div *ngIf="tieneReglas(campo)" class="row g-0 py-2 px-3">
                                 <div class="col-12">
-                                    <button class="btn btn-link p-0 text-decoration-none"
-                                            (click)="toggleReglas(campo.id)"
-                                            [attr.aria-expanded]="estanReglasExpandidas(campo.id)">
-                                        <em class="fa"
-                                            [class.fa-chevron-down]="!estanReglasExpandidas(campo.id)"
-                                            [class.fa-chevron-up]="estanReglasExpandidas(campo.id)"></em>
-                                        Reglas ({{ campo.reglas?.length || 0 }})
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div *ngIf="tieneReglas(campo) && estanReglasExpandidas(campo.id)"
-                                 class="row g-0 py-1 px-3">
-                                <div class="col-12">
-                                    <div class="table-responsive">
-                                        <table class="table table-sm table-bordered">
-                                            <thead class="thead-light">
-                                                <tr>
-                                                    <th>Código</th>
-                                                    <th>Nombre</th>
-                                                    <th>Tipo</th>
-                                                    <th>Operador</th>
-                                                    <th>Valor</th>
-                                                    <th>Campo</th>
-                                                    <th>Mensaje error</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngFor="let regla of campo.reglas">
-                                                    <td>{{ regla.codigo }}</td>
-                                                    <td>{{ regla.nombre }}</td>
-                                                    <td>{{ obtenerEtiquetaTipoRegla(regla.tipoRegla) }}</td>
-                                                    <td>{{ obtenerNombreOperador(regla) }}</td>
-                                                    <td>{{ regla.tipoRegla === 'VALOR' ? (regla.valor || '-') : '-' }}</td>
-                                                    <td>{{ regla.tipoRegla === 'CAMPO' ? (regla.etiquetaCampoComparar || '-') : '-' }}</td>
-                                                    <td>{{ regla.mensajeError }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <app-grupo-colapsable
+                                        [titulo]="'Reglas (' + (campo.reglas?.length || 0) + ')'"
+                                        [colapsado]="true"
+                                        [ariaLabel]="'Mostrar u ocultar reglas del campo ' + campo.etiqueta">
+                                        <contenido>
+                                            <div class="table-responsive">
+                                                <table class="table table-sm table-bordered">
+                                                    <thead class="thead-light">
+                                                        <tr>
+                                                            <th>Código</th>
+                                                            <th>Nombre</th>
+                                                            <th>Tipo</th>
+                                                            <th>Operador</th>
+                                                            <th>Valor</th>
+                                                            <th>Campo</th>
+                                                            <th>Mensaje error</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let regla of campo.reglas">
+                                                            <td>{{ regla.codigo }}</td>
+                                                            <td>{{ regla.nombre }}</td>
+                                                            <td>{{ obtenerEtiquetaTipoRegla(regla.tipoRegla) }}</td>
+                                                            <td>{{ obtenerNombreOperador(regla) }}</td>
+                                                            <td>{{ regla.tipoRegla === 'VALOR' ? (regla.valor || '-') : '-' }}</td>
+                                                            <td>{{ regla.tipoRegla === 'CAMPO' ? (regla.etiquetaCampoComparar || '-') : '-' }}</td>
+                                                            <td>{{ regla.mensajeError }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </contenido>
+                                    </app-grupo-colapsable>
                                 </div>
                             </div>
                         </div>
