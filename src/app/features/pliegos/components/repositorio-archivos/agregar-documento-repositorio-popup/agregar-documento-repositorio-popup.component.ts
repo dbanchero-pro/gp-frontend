@@ -104,7 +104,7 @@ export class AgregarDocumentoRepositorioPopupComponent extends PopupBaseComponen
       ];
 
       if (!tiposPermitidos.includes(file.type)) {
-        this.actualizarServ.mensajeError(
+        this.mostrarError(
           'Tipo de archivo no permitido. Solo se permiten archivos PDF, Word y Excel.'
         );
         input.value = '';
@@ -116,7 +116,7 @@ export class AgregarDocumentoRepositorioPopupComponent extends PopupBaseComponen
 
       // Validar tamaño
       if (file.size > this.MAX_FILE_SIZE_BYTES) {
-        this.actualizarServ.mensajeError(
+        this.mostrarError(
           `El archivo excede el tamaño máximo permitido de ${this.MAX_FILE_SIZE_KB} KB.`
         );
         input.value = '';
@@ -140,18 +140,18 @@ export class AgregarDocumentoRepositorioPopupComponent extends PopupBaseComponen
     this.form.markAllAsTouched();
 
     if (!this.form.valid) {
-      this.actualizarServ.mensajeError('Por favor complete todos los campos requeridos');
+      this.mostrarError('Por favor complete todos los campos requeridos');
       return;
     }
 
     const organismo = this.form.value.organismo;
     if (!organismo || !organismo.idInciso || !organismo.idUnidadEjecutora) {
-      this.actualizarServ.mensajeError('Debe seleccionar un Inciso y una Unidad Ejecutora');
+      this.mostrarError('Debe seleccionar un Inciso y una Unidad Ejecutora');
       return;
     }
 
     if (!this.esModificacion && !this.archivoSeleccionado) {
-      this.actualizarServ.mensajeError('Debe seleccionar un archivo');
+      this.mostrarError('Debe seleccionar un archivo');
       return;
     }
 
@@ -175,7 +175,7 @@ export class AgregarDocumentoRepositorioPopupComponent extends PopupBaseComponen
       };
 
       reader.onerror = () => {
-        this.actualizarServ.mensajeError('Error al leer el archivo');
+        this.mostrarError('Error al leer el archivo');
       };
 
       reader.readAsDataURL(this.archivoSeleccionado);
