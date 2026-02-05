@@ -97,7 +97,7 @@ export class AgregarModificarCampoPopupComponent extends PopupBaseComponent impl
   abrirAgregarRegla(): void {
     const tipoDato = this.form.value.tipoDato as TipoDatoCampo;
     if (!tipoDato) {
-      this.actualizarServ.mensajeError('Debe seleccionar un tipo de dato antes de agregar reglas');
+      this.mostrarError('Debe seleccionar un tipo de dato antes de agregar reglas');
       return;
     }
 
@@ -242,11 +242,11 @@ export class AgregarModificarCampoPopupComponent extends PopupBaseComponent impl
           this.cerrarPopup();
         },
         error: (err) => {
-          this.actualizarServ.mensajeError(err.message || 'Error al guardar el campo');
+          this.mostrarError(err, 'Error al guardar el campo');
         }
       });
     } catch (error: any) {
-      this.actualizarServ.mensajeError(error.message || 'Error al guardar el campo');
+      this.mostrarError(error, 'Error al guardar el campo');
     }
   }
 

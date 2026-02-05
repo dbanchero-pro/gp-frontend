@@ -214,11 +214,11 @@ export class AgregarDocumentoRepositorioPopupComponent extends PopupBaseComponen
           this.cerrarPopup();
         },
         error: (err) => {
-          this.actualizarServ.mensajeError(err.message || 'Error al guardar el documento');
+          this.mostrarError(err, 'Error al guardar el documento');
         }
       });
     } catch (error: any) {
-      this.actualizarServ.mensajeError(error.message || 'Error al guardar el documento');
+      this.mostrarError(error, 'Error al guardar el documento');
     }
   }
 
