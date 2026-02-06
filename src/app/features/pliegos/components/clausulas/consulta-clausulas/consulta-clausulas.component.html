@@ -222,21 +222,13 @@
                   [ariaLabel]="'Mostrar u ocultar redacciones de la cláusula ' + clausula.denominacion">
                   <titulo>Redacciones ({{ clausula.redacciones.length }})</titulo>
                   <contenido>
-                    <div class="table-responsive w-100">
-                      <table class="table table-sm table-bordered mb-0">
-                        <thead class="thead-light">
-                          <tr>
-                            <th>Prioridad</th>
-                            <th>Redacción</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let redaccion of clausula.redacciones">
-                            <td>{{ redaccion.prioridad }}</td>
-                            <td>{{ redaccion.redaccion }}</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                    <div class="px-3 py-2">
+                      <div *ngFor="let redaccion of clausula.redacciones" class="card mb-2">
+                        <div class="card-body">
+                          <span class="badge badge-secondary mb-2">Prioridad: {{ redaccion.prioridad }}</span>
+                          <p class="mb-0">{{ redaccion.redaccion }}</p>
+                        </div>
+                      </div>
                     </div>
                   </contenido>
                 </app-grupo-colapsable>
