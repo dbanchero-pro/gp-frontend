@@ -1,321 +1,277 @@
-<div class="container-fluid mt-3">
-  <div class="row">
-    <!-- Filtro -->
-    <div class="col-md-4">
-      <div class="card">
-        <div class="card-header bg-primary text-white">
-          <h5 class="mb-0">Filtro de Cláusulas</h5>
-        </div>
-        <div class="card-body">
-          <form [formGroup]="formularioFiltro">
-            <div class="form-group">
-              <label for="incisoId">Inciso</label>
-              <select
-                class="form-control"
-                id="incisoId"
-                formControlName="incisoId">
-                <option [ngValue]="null">Seleccione...</option>
-                <option *ngFor="let inciso of incisos" [ngValue]="inciso.id">
-                  {{ inciso.id }} - {{ inciso.descInciso }}
-                </option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="unidadEjecutoraId">Unidad Ejecutora</label>
-              <select
-                class="form-control"
-                id="unidadEjecutoraId"
-                formControlName="unidadEjecutoraId"
-                [disabled]="!formularioFiltro.value.incisoId">
-                <option [ngValue]="null">Seleccione...</option>
-                <option *ngFor="let ue of unidadesEjecutoras" [ngValue]="ue.id">
-                  {{ ue.idUnidadEjecutora }} - {{ ue.descUnidadEjecutora }}
-                </option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="tipoCompraId">Tipo de Compra</label>
-              <select
-                class="form-control"
-                id="tipoCompraId"
-                formControlName="tipoCompraId">
-                <option [ngValue]="null">Seleccione...</option>
-                <option *ngFor="let tipo of tiposCompra" [ngValue]="tipo.id">
-                  {{ tipo.descTipoCompra }}
-                </option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="subtipoCompraId">Subtipo de Compra</label>
-              <select
-                class="form-control"
-                id="subtipoCompraId"
-                formControlName="subtipoCompraId"
-                [disabled]="!formularioFiltro.value.tipoCompraId">
-                <option [ngValue]="null">Seleccione...</option>
-                <option *ngFor="let subtipo of subtiposCompra" [ngValue]="subtipo.idSubtipoCompra">
-                  {{ subtipo.descSubtipoCompra }}
-                </option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="familiaId">Familia</label>
-              <select
-                class="form-control"
-                id="familiaId"
-                formControlName="familiaId">
-                <option [ngValue]="null">Seleccione...</option>
-                <option *ngFor="let familia of familias" [ngValue]="familia.id">
-                  {{ familia.descFamilia }}
-                </option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="subfamiliaId">Subfamilia</label>
-              <select
-                class="form-control"
-                id="subfamiliaId"
-                formControlName="subfamiliaId"
-                [disabled]="!formularioFiltro.value.familiaId">
-                <option [ngValue]="null">Seleccione...</option>
-                <option *ngFor="let subfamilia of subfamilias" [ngValue]="subfamilia.id">
-                  {{ subfamilia.descSubfamilia }}
-                </option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="claseId">Clase</label>
-              <select
-                class="form-control"
-                id="claseId"
-                formControlName="claseId"
-                [disabled]="!formularioFiltro.value.subfamiliaId">
-                <option [ngValue]="null">Seleccione...</option>
-                <option *ngFor="let clase of clases" [ngValue]="clase.id">
-                  {{ clase.descClase }}
-                </option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="subclaseId">Subclase</label>
-              <select
-                class="form-control"
-                id="subclaseId"
-                formControlName="subclaseId"
-                [disabled]="!formularioFiltro.value.claseId">
-                <option [ngValue]="null">Seleccione...</option>
-                <option *ngFor="let subclase of subclases" [ngValue]="subclase.id">
-                  {{ subclase.descSubclase }}
-                </option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="articuloId">Artículo</label>
-              <select
-                class="form-control"
-                id="articuloId"
-                formControlName="articuloId"
-                [disabled]="!formularioFiltro.value.subclaseId">
-                <option [ngValue]="null">Seleccione...</option>
-                <option *ngFor="let articulo of articulos" [ngValue]="articulo.id">
-                  {{ articulo.descArticuloServObra }}
-                </option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="denominacion">Denominación</label>
-              <input
-                type="text"
-                class="form-control"
-                id="denominacion"
-                formControlName="denominacion"
-                placeholder="Ingrese denominación">
-            </div>
-
-            <div class="form-group">
-              <label for="fechaVigenciaDesde">Fecha Vigencia Desde</label>
-              <input
-                type="date"
-                class="form-control"
-                id="fechaVigenciaDesde"
-                formControlName="fechaVigenciaDesde">
-            </div>
-
-            <div class="form-group">
-              <label for="fechaVigenciaHasta">Fecha Vigencia Hasta</label>
-              <input
-                type="date"
-                class="form-control"
-                id="fechaVigenciaHasta"
-                formControlName="fechaVigenciaHasta">
-            </div>
-
-            <div class="d-flex justify-content-between mt-3">
-              <button
-                type="button"
-                class="btn btn-primary"
-                (click)="buscar()"
-                [disabled]="cargando">
-                <span *ngIf="cargando" class="spinner-border spinner-border-sm mr-2"></span>
-                Buscar
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                (click)="nuevaConsulta()"
-                [disabled]="cargando">
-                Nueva Consulta
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <!-- Resultados -->
-    <div class="col-md-8">
-      <div class="card">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">Resultados ({{ clausulas.length }})</h5>
-          <button
-            *ngIf="!mostrarSoloSeleccion"
-            type="button"
-            class="btn btn-light btn-sm"
-            (click)="agregarClausula()">
-            <i class="mdi mdi-plus"></i> Agregar
-          </button>
-        </div>
-        <div class="card-body">
-          <div *ngIf="cargando" class="text-center py-5">
-            <div class="spinner-border text-primary" role="status">
-              <span class="sr-only">Cargando...</span>
-            </div>
+<div class="row">
+  <div [ngClass]="colFiltro" class="sidebar">
+    <app-filtro title="Búsqueda" titleBtn="Buscar" iconTitle="fa fa-search"
+      (evFilter)="actualizarFiltrosYBuscar()" (evCollapse)="aplicarColapso()">
+      <div [formGroup]="formularioFiltro" class="col-12 ml-0 pl-0 mr-0 pr-0">
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0">
+            <label for="incisoId" class="col-form-label col-12">Inciso</label>
+            <select class="form-control col-12" id="incisoId" formControlName="incisoId">
+              <option [ngValue]="null">Todos los incisos</option>
+              <option *ngFor="let inciso of incisos" [ngValue]="inciso.id">
+                {{ inciso.id }} - {{ inciso.descInciso }}
+              </option>
+            </select>
           </div>
+        </div>
 
-          <div *ngIf="!cargando && clausulas.length === 0" class="alert alert-info">
-            No se encontraron cláusulas que coincidan con los criterios de búsqueda.
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0">
+            <label for="unidadEjecutoraId" class="col-form-label col-12">Unidad Ejecutora</label>
+            <select class="form-control col-12" id="unidadEjecutoraId" formControlName="unidadEjecutoraId"
+              [disabled]="!formularioFiltro.value.incisoId">
+              <option [ngValue]="null">Todas las unidades ejecutoras</option>
+              <option *ngFor="let ue of unidadesEjecutoras" [ngValue]="ue.id">
+                {{ ue.idUnidadEjecutora }} - {{ ue.descUnidadEjecutora }}
+              </option>
+            </select>
           </div>
+        </div>
 
-          <div *ngIf="!cargando && clausulas.length > 0" class="clausulas-lista">
-            <div *ngFor="let clausula of clausulas" class="clausula-bloque card mb-3">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                  <h6 class="font-weight-bold mb-1">{{ clausula.denominacion }}</h6>
-                  <span
-                    class="badge"
-                    [ngClass]="{
-                      'badge-success': clausula.estado === 'VIGENTE',
-                      'badge-warning': clausula.estado === 'NO_VIGENTE'
-                    }">
-                    {{ clausula.estado === 'VIGENTE' ? 'Vigente' : 'No vigente' }}
-                  </span>
-                </div>
-
-                <div class="clausula-info">
-                  <p class="mb-1">
-                    <strong>Apertura Electrónica:</strong>
-                    {{ clausula.aperturaElectronica ? 'Sí' : 'No' }}
-                  </p>
-
-                  <p class="mb-1">
-                    <strong>Tipos y Subtipos de Compra:</strong><br>
-                    {{ obtenerResumenTiposCompra(clausula) }}
-                  </p>
-
-                  <p class="mb-1">
-                    <strong>Inciso:</strong>
-                    {{ obtenerResumenIncisos(clausula) }}
-                  </p>
-
-                  <p class="mb-1">
-                    <strong>Unidad Ejecutora:</strong>
-                    {{ obtenerResumenUnidadesEjecutoras(clausula) }}
-                  </p>
-
-                  <p class="mb-1">
-                    <strong>Objetos de Compra:</strong><br>
-                    {{ obtenerResumenObjetosCompra(clausula) }}
-                  </p>
-
-                  <p class="mb-1">
-                    <strong>Vigencia:</strong>
-                    {{ obtenerTextoVigencia(clausula) }}
-                  </p>
-                </div>
-
-                <!-- Redacciones colapsables -->
-                <div class="mt-3">
-                  <button
-                    class="btn btn-sm btn-outline-primary"
-                    type="button"
-                    data-toggle="collapse"
-                    [attr.data-target]="'#redacciones' + clausula.id"
-                    aria-expanded="false">
-                    <i class="mdi mdi-chevron-down"></i> Ver Redacciones ({{ clausula.redacciones.length }})
-                  </button>
-
-                  <div class="collapse mt-2" [attr.id]="'redacciones' + clausula.id">
-                    <div *ngFor="let redaccion of clausula.redacciones" class="border rounded p-2 mb-2 bg-light">
-                      <p class="mb-1"><strong>Prioridad:</strong> {{ redaccion.prioridad }}</p>
-                      <p class="mb-0">
-                        <strong>Redacción:</strong><br>
-                        {{ truncarTexto(redaccion.redaccion) }}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Acciones -->
-                <div class="mt-3 d-flex justify-content-end">
-                  <button
-                    *ngIf="mostrarSoloSeleccion"
-                    type="button"
-                    class="btn btn-primary btn-sm mr-2"
-                    (click)="seleccionarClausula(clausula)">
-                    <i class="mdi mdi-check"></i> Seleccionar
-                  </button>
-
-                  <ng-container *ngIf="!mostrarSoloSeleccion">
-                    <button
-                      type="button"
-                      class="btn btn-warning btn-sm mr-2"
-                      (click)="modificarClausula(clausula)">
-                      <i class="mdi mdi-pencil"></i> Modificar
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-danger btn-sm mr-2"
-                      (click)="eliminarClausula(clausula)">
-                      <i class="mdi mdi-delete"></i> Eliminar
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-info btn-sm"
-                      (click)="verHistorial(clausula)">
-                      <i class="mdi mdi-history"></i> Ver Historial
-                    </button>
-                  </ng-container>
-                </div>
-              </div>
-            </div>
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0">
+            <label for="tipoCompraId" class="col-form-label col-12">Tipo de Compra</label>
+            <select class="form-control col-12" id="tipoCompraId" formControlName="tipoCompraId">
+              <option [ngValue]="null">Todos los tipos</option>
+              <option *ngFor="let tipo of tiposCompra" [ngValue]="tipo.id">
+                {{ tipo.descTipoCompra }}
+              </option>
+            </select>
           </div>
+        </div>
 
-          <div *ngIf="mostrarSoloSeleccion && !cargando" class="mt-3 text-right">
-            <button type="button" class="btn btn-secondary">
-              <i class="mdi mdi-arrow-left"></i> Volver
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0">
+            <label for="subtipoCompraId" class="col-form-label col-12">Subtipo de Compra</label>
+            <select class="form-control col-12" id="subtipoCompraId" formControlName="subtipoCompraId"
+              [disabled]="!formularioFiltro.value.tipoCompraId">
+              <option [ngValue]="null">Todos los subtipos</option>
+              <option *ngFor="let subtipo of subtiposCompra" [ngValue]="subtipo.idSubtipoCompra">
+                {{ subtipo.descSubtipoCompra }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0">
+            <label for="familiaId" class="col-form-label col-12">Familia</label>
+            <select class="form-control col-12" id="familiaId" formControlName="familiaId">
+              <option [ngValue]="null">Todas las familias</option>
+              <option *ngFor="let familia of familias" [ngValue]="familia.id">
+                {{ familia.descFamilia }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0">
+            <label for="subfamiliaId" class="col-form-label col-12">Subfamilia</label>
+            <select class="form-control col-12" id="subfamiliaId" formControlName="subfamiliaId"
+              [disabled]="!formularioFiltro.value.familiaId">
+              <option [ngValue]="null">Todas las subfamilias</option>
+              <option *ngFor="let subfamilia of subfamilias" [ngValue]="subfamilia.id">
+                {{ subfamilia.descSubfamilia }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0">
+            <label for="claseId" class="col-form-label col-12">Clase</label>
+            <select class="form-control col-12" id="claseId" formControlName="claseId"
+              [disabled]="!formularioFiltro.value.subfamiliaId">
+              <option [ngValue]="null">Todas las clases</option>
+              <option *ngFor="let clase of clases" [ngValue]="clase.id">
+                {{ clase.descClase }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0">
+            <label for="subclaseId" class="col-form-label col-12">Subclase</label>
+            <select class="form-control col-12" id="subclaseId" formControlName="subclaseId"
+              [disabled]="!formularioFiltro.value.claseId">
+              <option [ngValue]="null">Todas las subclases</option>
+              <option *ngFor="let subclase of subclases" [ngValue]="subclase.id">
+                {{ subclase.descSubclase }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0">
+            <label for="articuloId" class="col-form-label col-12">Artículo</label>
+            <select class="form-control col-12" id="articuloId" formControlName="articuloId"
+              [disabled]="!formularioFiltro.value.subclaseId">
+              <option [ngValue]="null">Todos los artículos</option>
+              <option *ngFor="let articulo of articulos" [ngValue]="articulo.id">
+                {{ articulo.descArticuloServObra }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0">
+            <label for="denominacion" class="col-form-label col-12">Denominación</label>
+            <input type="text" class="form-control col-12" id="denominacion"
+              formControlName="denominacion" placeholder="Ingrese denominación">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0">
+            <label for="fechaVigenciaDesde" class="col-form-label col-12">Fecha Vigencia Desde</label>
+            <input type="date" class="form-control col-12" id="fechaVigenciaDesde"
+              formControlName="fechaVigenciaDesde">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0">
+            <label for="fechaVigenciaHasta" class="col-form-label col-12">Fecha Vigencia Hasta</label>
+            <input type="date" class="form-control col-12" id="fechaVigenciaHasta"
+              formControlName="fechaVigenciaHasta">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="clean-filter col-12">
+            <button type="button" class="btn btn-link" (click)="nuevaConsulta()">
+              Nueva consulta
             </button>
           </div>
         </div>
       </div>
+    </app-filtro>
+  </div>
+
+  <div [ngClass]="colTabla">
+    <div class="row mb-2" *ngIf="!mostrarSoloSeleccion">
+      <div class="col-12 d-flex justify-content-end btn-group">
+        <button class="btn btn-primary btn-ancho-fijo-one" type="button" (click)="agregarClausula()">
+          <em class="fa fa-plus mr-1"></em> Agregar
+        </button>
+      </div>
+    </div>
+
+    <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden"
+      [columnaOrden]="parametros.sort" [orden]="parametros.order"
+      (orderChange)="cambioOrden($event)" (sortChange)="cambioColumnaOrden($event)">
+    </app-cabezal-consulta>
+
+    <div *ngIf="cargando" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Cargando...</span>
+      </div>
+    </div>
+
+    <div *ngIf="!cargando && clausulas.length === 0" class="alert alert-info mx-2">
+      No se encontraron cláusulas que coincidan con los criterios de búsqueda.
+    </div>
+
+    <div *ngFor="let clausula of clausulas" class="row">
+      <div class="col-12 my-1">
+        <div class="resultado-item border rounded">
+          <div class="d-flex justify-content-between align-items-center bg-light border-bottom px-3 py-2">
+            <div>
+              <span class="font-weight-bold">{{ clausula.denominacion }}</span>
+              <span class="badge ml-2" [ngClass]="{
+                'badge-success': clausula.estado === 'VIGENTE',
+                'badge-warning': clausula.estado === 'NO_VIGENTE'
+              }">
+                {{ clausula.estado === 'VIGENTE' ? 'Vigente' : 'No vigente' }}
+              </span>
+            </div>
+            <div class="d-flex" *ngIf="!mostrarSoloSeleccion">
+              <div class="z-index-10">
+                <app-boton-accion [acciones]="obtenerAccionesClausula(clausula)"
+                  [ariaLabelMasOpciones]="'Mas opciones de la clausula ' + clausula.denominacion">
+                </app-boton-accion>
+              </div>
+            </div>
+            <div *ngIf="mostrarSoloSeleccion">
+              <button type="button" class="btn btn-primary btn-sm" (click)="seleccionarClausula(clausula)">
+                <em class="fa fa-check mr-1"></em> Seleccionar
+              </button>
+            </div>
+          </div>
+
+          <div class="px-3 py-2">
+            <div class="row">
+              <div class="col-12 col-md-6 mb-2">
+                <strong>Apertura Electrónica:</strong>
+                {{ clausula.aperturaElectronica ? 'Sí' : 'No' }}
+              </div>
+              <div class="col-12 col-md-6 mb-2">
+                <strong>Vigencia:</strong>
+                {{ obtenerTextoVigencia(clausula) }}
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 mb-2">
+                <strong>Tipos y Subtipos de Compra:</strong><br>
+                {{ obtenerResumenTiposCompra(clausula) }}
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-md-6 mb-2">
+                <strong>Inciso:</strong>
+                {{ obtenerResumenIncisos(clausula) }}
+              </div>
+              <div class="col-12 col-md-6 mb-2">
+                <strong>Unidad Ejecutora:</strong>
+                {{ obtenerResumenUnidadesEjecutoras(clausula) }}
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 mb-2">
+                <strong>Objetos de Compra:</strong><br>
+                {{ obtenerResumenObjetosCompra(clausula) }}
+              </div>
+            </div>
+
+            <div class="row mt-2" *ngIf="clausula.redacciones.length > 0">
+              <div class="col-12">
+                <button class="btn btn-sm btn-link p-0" type="button"
+                  (click)="toggleRedacciones(clausula.id)">
+                  <em class="fa" [ngClass]="redaccionesExpandidas.has(clausula.id) ? 'fa-chevron-up' : 'fa-chevron-down'"></em>
+                  Ver Redacciones ({{ clausula.redacciones.length }})
+                </button>
+                <div *ngIf="redaccionesExpandidas.has(clausula.id)" class="mt-2">
+                  <div *ngFor="let redaccion of clausula.redacciones" class="border rounded p-2 mb-2 bg-light">
+                    <p class="mb-1"><strong>Prioridad:</strong> {{ redaccion.prioridad }}</p>
+                    <p class="mb-0">
+                      <strong>Redacción:</strong><br>
+                      {{ truncarTexto(redaccion.redaccion) }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina"
+      [paginaActual]="parametros.pagina + 1" (cambioPagina)="cambioPagina($event)"
+      (cambioItemsPorPagina)="cambioPorPagina($event)">
+    </app-paginado>
+
+    <div class="btn-back d-flex justify-content-end" *ngIf="mostrarSoloSeleccion">
+      <button class="btn btn-link" type="button" (click)="volver()">
+        <em class="fa fa-arrow-left mr-1"></em>Volver
+      </button>
     </div>
   </div>
 </div>

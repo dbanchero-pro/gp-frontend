@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Location } from '@angular/common';
 import { Clausula } from '../../../models/clausula.model';
 import { FiltroClausula } from '../../../models/filtro-clausula.model';
 import { ClausulaService } from '../../../services/clausula.service';
@@ -12,6 +13,9 @@ import { SubfamiliaDTO } from '../../../../../shared/models/cbso/subfamilia.mode
 import { ClaseDTO } from '../../../../../shared/models/cbso/clase.model';
 import { SubclaseDTO } from '../../../../../shared/models/cbso/subclase.model';
 import { ArticuloServObraDTO } from '../../../../../shared/models/cbso/articulo-serv-obra.model';
+import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
+import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden.model';
+import { NumeroNulo } from '../../../../../shared/types/numero-nulo.type';
 
 @Component({
   selector: 'app-consulta-clausulas',
@@ -22,11 +26,31 @@ import { ArticuloServObraDTO } from '../../../../../shared/models/cbso/articulo-
 export class ConsultaClausulasComponent implements OnInit {
   private fb = inject(FormBuilder);
   private clausulaService = inject(ClausulaService);
+  private location = inject(Location);
 
   formularioFiltro: FormGroup;
   clausulas: Clausula[] = [];
   cargando = false;
   mostrarSoloSeleccion = false;
+
+  colFiltro = 'col-12 col-lg-3 col-xl-2';
+  colTabla = 'col-12 col-lg-9 col-xl-10';
+
+  total = 0;
+  parametros = {
+    pagina: 0,
+    tamanoPagina: 10,
+    sort: 'denominacion',
+    order: 'asc' as 'asc' | 'desc'
+  };
+
+  listaOrden: IColumnaOrden[] = [
+    { id: 'denominacion', nombre: 'Denominación' },
+    { id: 'estado', nombre: 'Estado' },
+    { id: 'fechaVigenciaDesde', nombre: 'Fecha Vigencia' }
+  ];
+
+  redaccionesExpandidas: Set<NumeroNulo> = new Set();
 
   // Datos mock para filtros
   incisos: IncisoDTO[] = [
@@ -110,7 +134,7 @@ export class ConsultaClausulasComponent implements OnInit {
 
   ngOnInit(): void {
     this.configurarCambiosFiltros();
-    this.buscar();
+    this.actualizarFiltrosYBuscar();
   }
 
   configurarCambiosFiltros(): void {
@@ -182,6 +206,7 @@ export class ConsultaClausulasComponent implements OnInit {
     this.clausulaService.buscarClausulas(filtro).subscribe({
       next: (clausulas) => {
         this.clausulas = clausulas;
+        this.total = clausulas.length;
         this.cargando = false;
       },
       error: () => {
@@ -190,9 +215,88 @@ export class ConsultaClausulasComponent implements OnInit {
     });
   }
 
+  actualizarFiltrosYBuscar(): void {
+    this.parametros.pagina = 0;
+    this.buscar();
+  }
+
   nuevaConsulta(): void {
     this.formularioFiltro.reset();
+    this.parametros.pagina = 0;
+    this.actualizarFiltrosYBuscar();
+  }
+
+  aplicarColapso(): void {
+    if (this.colFiltro === 'col-12 col-lg-3 col-xl-2') {
+      this.colFiltro = 'col-1';
+      this.colTabla = 'col-11';
+    } else {
+      this.colFiltro = 'col-12 col-lg-3 col-xl-2';
+      this.colTabla = 'col-12 col-lg-9 col-xl-10';
+    }
+  }
+
+  cambioPagina(pagina: number): void {
+    this.parametros.pagina = pagina - 1;
     this.buscar();
+  }
+
+  cambioPorPagina(tamanoPagina: number): void {
+    this.parametros.tamanoPagina = tamanoPagina;
+    this.parametros.pagina = 0;
+    this.buscar();
+  }
+
+  cambioOrden(orden: 'asc' | 'desc'): void {
+    this.parametros.order = orden;
+    this.buscar();
+  }
+
+  cambioColumnaOrden(columna: string): void {
+    this.parametros.sort = columna;
+    this.buscar();
+  }
+
+  toggleRedacciones(clausulaId: NumeroNulo): void {
+    if (this.redaccionesExpandidas.has(clausulaId)) {
+      this.redaccionesExpandidas.delete(clausulaId);
+    } else {
+      this.redaccionesExpandidas.add(clausulaId);
+    }
+  }
+
+  obtenerAccionesClausula(clausula: Clausula): AccionBoton[] {
+    const acciones: AccionBoton[] = [];
+
+    acciones.push({
+      nombre: 'Modificar',
+      clase: 'btn btn-warning btn-sm',
+      icono: 'fa fa-pencil',
+      ariaLabel: 'Modificar cláusula ' + clausula.denominacion,
+      accion: () => this.modificarClausula(clausula)
+    });
+
+    acciones.push({
+      nombre: 'Eliminar',
+      clase: 'btn btn-danger btn-sm',
+      icono: 'fa fa-trash',
+      ariaLabel: 'Eliminar cláusula ' + clausula.denominacion,
+      accion: () => this.eliminarClausula(clausula)
+    });
+
+    acciones.push({
+      nombre: 'Ver Historial',
+      clase: 'btn btn-info btn-sm',
+      icono: 'fa fa-history',
+      ariaLabel: 'Ver historial de cláusula ' + clausula.denominacion,
+      accion: () => this.verHistorial(clausula)
+    });
+
+    return acciones;
+  }
+
+  volver(): void {
+    this.location.back();
   }
 
   agregarClausula(): void {
