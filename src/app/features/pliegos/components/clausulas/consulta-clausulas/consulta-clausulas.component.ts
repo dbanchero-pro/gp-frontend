@@ -261,15 +261,15 @@ export class ConsultaClausulasComponent implements OnInit {
 
     acciones.push({
       nombre: 'Modificar',
-      clase: 'btn btn-warning btn-sm',
-      icono: 'fa fa-pencil',
+      clase: 'btn btn-success',
+      icono: 'fa fa-edit',
       ariaLabel: 'Modificar cláusula ' + clausula.denominacion,
       accion: () => this.modificarClausula(clausula)
     });
 
     acciones.push({
       nombre: 'Eliminar',
-      clase: 'btn btn-danger btn-sm',
+      clase: 'btn btn-success',
       icono: 'fa fa-trash',
       ariaLabel: 'Eliminar cláusula ' + clausula.denominacion,
       accion: () => this.eliminarClausula(clausula)
