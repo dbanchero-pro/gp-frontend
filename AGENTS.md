@@ -1,4 +1,4 @@
-﻿# Instrucciones para los Agentes Codex
+# Instrucciones para los Agentes Codex
 
 -   Ejecuta los tests usando `npm run testCodex --silent` cuando trabajes en la nube (Codex Cloud).
 -   Si estás trabajando localmente, ejecuta `npm run test --silent`.

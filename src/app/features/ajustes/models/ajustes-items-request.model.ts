@@ -1,4 +1,4 @@
-﻿import { TipoUsuario } from 'src/app/shared/enum/tipo-usuario.enum';
+import { TipoUsuario } from 'src/app/shared/enum/tipo-usuario.enum';
 import { IArchivoDTO } from 'src/app/shared/models/common/archivo.model';
 import { UsuarioDTO } from 'src/app/shared/models/usuario/usuario.model';
 import { EstadoAjuste } from '../enum/estado-ajuste.enum';
