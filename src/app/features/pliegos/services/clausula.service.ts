@@ -33,10 +33,7 @@ export class ClausulaService {
           claseDescripcion: 'Notebooks',
           subclaseId: 1,
           subclaseDescripcion: 'Portátiles',
-          articulos: [
-            { articuloId: 1, articuloCodigo: 'ART001', articuloDescripcion: 'Notebook HP' },
-            { articuloId: 2, articuloCodigo: 'ART002', articuloDescripcion: 'Notebook Dell' }
-          ]
+          articulo: { articuloId: 1, articuloCodigo: 'ART001', articuloDescripcion: 'Notebook HP' }
         }
       ],
       incisos: [
@@ -89,9 +86,7 @@ export class ClausulaService {
           claseDescripcion: 'Escritorios',
           subclaseId: 2,
           subclaseDescripcion: 'Ejecutivos',
-          articulos: [
-            { articuloId: 3, articuloCodigo: 'ART003', articuloDescripcion: 'Escritorio ejecutivo' }
-          ]
+          articulo: { articuloId: 3, articuloCodigo: 'ART003', articuloDescripcion: 'Escritorio ejecutivo' }
         }
       ],
       incisos: [
@@ -154,9 +149,7 @@ export class ClausulaService {
           claseDescripcion: 'Notebooks',
           subclaseId: 1,
           subclaseDescripcion: 'Portátiles',
-          articulos: [
-            { articuloId: 1, articuloCodigo: 'ART001', articuloDescripcion: 'Notebook HP' }
-          ]
+          articulo: { articuloId: 1, articuloCodigo: 'ART001', articuloDescripcion: 'Notebook HP' }
         }
       ],
       incisos: [
@@ -217,7 +210,7 @@ export class ClausulaService {
           claseDescripcion: 'Consultoría',
           subclaseId: 3,
           subclaseDescripcion: 'Asesoría técnica',
-          articulos: []
+          articulo: null
         }
       ],
       incisos: [
@@ -310,7 +303,7 @@ export class ClausulaService {
     if (filtro.articuloId) {
       resultados = resultados.filter(c =>
         c.objetosCompra.some(oc =>
-          oc.articulos.some(art => art.articuloId === filtro.articuloId)
+          oc.articulo?.articuloId === filtro.articuloId
         )
       );
     }

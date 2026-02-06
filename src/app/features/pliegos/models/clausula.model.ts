@@ -43,7 +43,7 @@ export interface ObjetoCompraClausula {
   claseDescripcion: string;
   subclaseId: NumeroNulo;
   subclaseDescripcion: string;
-  articulos: ArticuloClausula[];
+  articulo?: ArticuloClausula | null;
 }
 
 export interface ArticuloClausula {

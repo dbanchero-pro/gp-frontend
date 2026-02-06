@@ -346,11 +346,8 @@ export class ConsultaClausulasComponent implements OnInit {
 
         let resultado = partes.join(' | ');
 
-        if (oc.articulos.length > 0) {
-          const articulos = oc.articulos
-            .map(art => `${art.articuloDescripcion} (${art.articuloCodigo})`)
-            .join(', ');
-          resultado += ` | ${articulos}`;
+        if (oc.articulo) {
+          resultado += ` | ${oc.articulo.articuloDescripcion} (${oc.articulo.articuloCodigo})`;
         }
 
         return resultado;
