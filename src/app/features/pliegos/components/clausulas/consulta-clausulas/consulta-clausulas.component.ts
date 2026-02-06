@@ -50,8 +50,6 @@ export class ConsultaClausulasComponent implements OnInit {
     { id: 'fechaVigenciaDesde', nombre: 'Fecha Vigencia' }
   ];
 
-  redaccionesExpandidas: Set<NumeroNulo> = new Set();
-
   // Datos mock para filtros
   incisos: IncisoDTO[] = [
     new IncisoDTO(1, 'Poder Ejecutivo'),
@@ -257,13 +255,6 @@ export class ConsultaClausulasComponent implements OnInit {
     this.buscar();
   }
 
-  toggleRedacciones(clausulaId: NumeroNulo): void {
-    if (this.redaccionesExpandidas.has(clausulaId)) {
-      this.redaccionesExpandidas.delete(clausulaId);
-    } else {
-      this.redaccionesExpandidas.add(clausulaId);
-    }
-  }
 
   obtenerAccionesClausula(clausula: Clausula): AccionBoton[] {
     const acciones: AccionBoton[] = [];
@@ -376,10 +367,4 @@ export class ConsultaClausulasComponent implements OnInit {
     return `${desde} - ${hasta}`;
   }
 
-  truncarTexto(texto: string, maxLength: number = 200): string {
-    if (texto.length <= maxLength) {
-      return texto;
-    }
-    return texto.substring(0, maxLength) + '...';
-  }
 }
