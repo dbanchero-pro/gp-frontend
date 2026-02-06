@@ -91,8 +91,9 @@
                                 </div>
 
                                 <div *ngIf="reglas.length > 0" class="table-responsive">
-                                    <table class="table table-sm table-bordered">
-                                        <thead class="thead-light">
+                                    <table class="table table-striped table-hover mb-0 align-middle"
+                                        aria-label="Tabla de reglas del campo">
+                                        <thead class="table-light sticky-top">
                                             <tr>
                                                 <th>Código</th>
                                                 <th>Nombre</th>
@@ -101,7 +102,7 @@
                                                 <th>Valor</th>
                                                 <th>Campo</th>
                                                 <th>Mensaje error</th>
-                                                <th style="width: 150px;">Acciones</th>
+                                                <th style="width: 150px;" aria-label="Acciones">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -113,7 +114,7 @@
                                                 <td>{{ regla.tipoRegla === 'VALOR' ? (regla.valor || '-') : '-' }}</td>
                                                 <td>{{ regla.tipoRegla === 'CAMPO' ? (regla.etiquetaCampoComparar || '-') : '-' }}</td>
                                                 <td>{{ regla.mensajeError }}</td>
-                                                <td class="text-center">
+                                                <td class="text-center align-middle">
                                                     <app-boton-accion [acciones]="obtenerAccionesRegla(regla)"
                                                         [ariaLabelMasOpciones]="'Mas opciones de la regla ' + regla.nombre"
                                                         (accionEjecutada)="ejecutarAccionRegla($event)">
