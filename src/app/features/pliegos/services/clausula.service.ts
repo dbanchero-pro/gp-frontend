@@ -53,7 +53,7 @@ export class ClausulaService {
           id: 1,
           clausulaId: 1,
           prioridad: 1,
-          redaccion: 'El proveedor deberá presentar una garantía de cumplimiento por el 10% del monto total del contrato. Esta garantía deberá mantenerse vigente durante toda la ejecución del contrato y hasta 90 días posteriores a la recepción definitiva de los bienes.',
+          redaccion: 'El proveedor deberá presentar una garantía de cumplimiento por el 10% del monto total del contrato. Esta garantía deberá mantenerse vigente durante toda la ejecución del contrato y hasta 90 días posteriores a la recepción definitiva de los bienes. El proveedor deberá presentar una garantía de cumplimiento por el 10% del monto total del contrato. Esta garantía deberá mantenerse vigente durante toda la ejecución del contrato y hasta 90 días posteriores a la recepción definitiva de los bienes.El proveedor deberá presentar una garantía de cumplimiento por el 10% del monto total del contrato. Esta garantía deberá mantenerse vigente durante toda la ejecución del contrato y hasta 90 días posteriores a la recepción definitiva de los bienes.',
           fechaCreacion: '2024-01-01',
           usuarioCreacion: 'admin',
           fechaModificacion: null,
