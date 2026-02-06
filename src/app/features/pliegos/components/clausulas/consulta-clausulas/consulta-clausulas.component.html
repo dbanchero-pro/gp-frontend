@@ -193,27 +193,27 @@
           <div class="px-3 py-2">
             <div class="row g-0 py-1 px-3">
               <div class="col-md-6 d-flex">
-                <div class="col-auto etiqueta">Apertura electrónica</div>
+                <div class="col-md-6 col-lg-5 etiqueta">Apertura electrónica</div>
                 <div class="col font-weight-bold">{{ clausula.aperturaElectronica ? 'Sí' : 'No' }}</div>
               </div>
               <div class="col-md-6 d-flex">
-                <div class="col-auto etiqueta">Vigencia</div>
+                <div class="col-md-6 col-lg-5 etiqueta">Vigencia</div>
                 <div class="col font-weight-bold">{{ obtenerTextoVigencia(clausula) }}</div>
               </div>
             </div>
 
             <div class="row g-0 py-1 px-3">
-              <div class="col-auto etiqueta">Tipos y subtipos de compra</div>
+              <div class="col-md-3 col-lg-2 etiqueta">Tipos y subtipos de compra</div>
               <div class="col font-weight-bold">{{ obtenerResumenTiposCompra(clausula) }}</div>
             </div>
 
             <div class="row g-0 py-1 px-3">
-              <div class="col-auto etiqueta">Organismo</div>
+              <div class="col-md-3 col-lg-2 etiqueta">Organismo</div>
               <div class="col font-weight-bold">{{ obtenerResumenIncisos(clausula) }} | {{ obtenerResumenUnidadesEjecutoras(clausula) }}</div>
             </div>
 
             <div class="row g-0 py-1 px-3">
-              <div class="col-auto etiqueta">Objetos de compra</div>
+              <div class="col-md-3 col-lg-2 etiqueta">Objetos de compra</div>
               <div class="col font-weight-bold">{{ obtenerResumenObjetosCompra(clausula) }}</div>
             </div>
 
