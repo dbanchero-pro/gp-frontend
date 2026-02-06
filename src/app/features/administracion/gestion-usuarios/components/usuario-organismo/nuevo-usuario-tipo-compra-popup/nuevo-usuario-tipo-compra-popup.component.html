@@ -10,7 +10,7 @@
 
   <form [formGroup]="form" (submit)="guardar()">
 
-     <div class="Box Box--color1" *ngIf="usuario">
+     <div class="Box Box--colorInfo" *ngIf="usuario">
         <span class="subtitle mb-0"><strong>CI {{ usuario.id | formatoCi }}</strong> - {{ usuario.nombre }} </span>
     </div>
 

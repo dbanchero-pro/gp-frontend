@@ -7,7 +7,7 @@
 
     <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
   
-    <div *ngIf="permiso" class="Box Box--color1">
+    <div *ngIf="permiso" class="Box Box--colorInfo">
         <span class="subtitle"> <strong>CI {{ permiso.nroDocumento | formatoCi }}</strong> - {{ permiso.nombre }}</span>
     </div>
 

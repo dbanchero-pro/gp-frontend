@@ -508,10 +508,17 @@ select {
     border: 1px solid #dee2e6;
 }
 
-.Box--color1 {
+.Box--colorInfo {
    border-top: 1px solid rgb(249,249,249) !important;
-   border-left: 4px solid #0060a3 !important;
-   border-radius: 0.25rem;
+   border-left: 3px solid #0060a3 !important;
+   border-radius: 0.5rem;
+   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.Box--colorInfo {
+   border-top: 1px solid rgb(249,249,249) !important;
+   border-left: 3px solid #0060a3 !important;
+   border-radius: 0.5rem;
    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 
@@ -563,10 +570,18 @@ select {
     margin-top: .5rem;
 }
 
-
 .Box-info {
     color: #555;
     display: block;
     font-size: .875em;
     margin-bottom: .5em;
+}
+
+.Alert {
+    background-color: #f5f5f5;
+    border-left: 3px solid #bbb;
+    color: #222;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+    padding: 1rem 1.5rem;
 }

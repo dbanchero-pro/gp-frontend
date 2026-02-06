@@ -223,7 +223,6 @@ export class AgregarModificarCampoComponent extends FormularioBaseComponent impl
     this.form.markAllAsTouched();
 
     if (!this.form.valid) {
-      this.actualizarService.mensajeError('Por favor complete todos los campos requeridos');
       return;
     }
 

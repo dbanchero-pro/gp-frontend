@@ -1,8 +1,14 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <h2 class="mb-3">{{ titulo }}</h2>
-            <div class="text-md-right mb-2">Los campos con * son obligatorios</div>
+            <div class="form-row">
+             <div class="col-9">
+                <h3>{{ titulo }}</h3>
+            </div>
+            <div class="col-3 text-md-right mb-0">
+                <span>Los campos con * son obligatorios</span>
+            </div>
+        </div>
         </div>
     </div>
 
@@ -81,7 +87,7 @@
                                     </button>
                                 </div>
 
-                                <div *ngIf="reglas.length === 0" class="alert alert-info">
+                                <div *ngIf="reglas.length === 0" class="Alert">
                                     No hay reglas asociadas a este campo
                                 </div>
 
@@ -128,7 +134,9 @@
         <div class="col-12">
             <div class="d-flex justify-content-end mt-3 pe-3">
                 <button class="btn btn-primary" type="submit" (click)="guardar()">Guardar</button>
-                <button class="btn btn-link ml-3" type="button" (click)="volver()">Volver</button>
+                <div class="btn-back d-flex justify-content-end">   
+                    <button class="btn btn-link" type="button" (click)="volver()"><em class="fa fa-arrow-left mr-1"></em>Volver</button>
+                </div>
             </div>
         </div>
     </form>
