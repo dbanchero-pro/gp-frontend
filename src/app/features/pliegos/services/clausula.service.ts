@@ -37,10 +37,12 @@ export class ClausulaService {
         }
       ],
       incisos: [
-        { incisoId: 1, incisoCodigo: '01', incisoDescripcion: 'Poder Ejecutivo' }
-      ],
-      unidadesEjecutoras: [
-        { unidadEjecutoraId: 1, unidadEjecutoraCodigo: '001', unidadEjecutoraDescripcion: 'Ministerio de Economía' }
+        {
+          incisoId: 1,
+          incisoCodigo: '01',
+          incisoDescripcion: 'Poder Ejecutivo',
+          unidadEjecutora: { unidadEjecutoraId: 1, unidadEjecutoraCodigo: '001', unidadEjecutoraDescripcion: 'Ministerio de Economía' }
+        }
       ],
       fechaVigenciaDesde: '2024-01-01',
       fechaVigenciaHasta: '2025-12-31',
@@ -90,10 +92,12 @@ export class ClausulaService {
         }
       ],
       incisos: [
-        { incisoId: 2, incisoCodigo: '02', incisoDescripcion: 'Poder Legislativo' }
-      ],
-      unidadesEjecutoras: [
-        { unidadEjecutoraId: 2, unidadEjecutoraCodigo: '002', unidadEjecutoraDescripcion: 'Cámara de Diputados' }
+        {
+          incisoId: 2,
+          incisoCodigo: '02',
+          incisoDescripcion: 'Poder Legislativo',
+          unidadEjecutora: { unidadEjecutoraId: 2, unidadEjecutoraCodigo: '002', unidadEjecutoraDescripcion: 'Cámara de Diputados' }
+        }
       ],
       fechaVigenciaDesde: '2024-06-01',
       fechaVigenciaHasta: null,
@@ -153,10 +157,12 @@ export class ClausulaService {
         }
       ],
       incisos: [
-        { incisoId: 1, incisoCodigo: '01', incisoDescripcion: 'Poder Ejecutivo' }
-      ],
-      unidadesEjecutoras: [
-        { unidadEjecutoraId: 1, unidadEjecutoraCodigo: '001', unidadEjecutoraDescripcion: 'Ministerio de Economía' }
+        {
+          incisoId: 1,
+          incisoCodigo: '01',
+          incisoDescripcion: 'Poder Ejecutivo',
+          unidadEjecutora: { unidadEjecutoraId: 1, unidadEjecutoraCodigo: '001', unidadEjecutoraDescripcion: 'Ministerio de Economía' }
+        }
       ],
       fechaVigenciaDesde: '2023-01-01',
       fechaVigenciaHasta: '2023-12-31',
@@ -214,12 +220,18 @@ export class ClausulaService {
         }
       ],
       incisos: [
-        { incisoId: 1, incisoCodigo: '01', incisoDescripcion: 'Poder Ejecutivo' },
-        { incisoId: 2, incisoCodigo: '02', incisoDescripcion: 'Poder Legislativo' }
-      ],
-      unidadesEjecutoras: [
-        { unidadEjecutoraId: 1, unidadEjecutoraCodigo: '001', unidadEjecutoraDescripcion: 'Ministerio de Economía' },
-        { unidadEjecutoraId: 2, unidadEjecutoraCodigo: '002', unidadEjecutoraDescripcion: 'Cámara de Diputados' }
+        {
+          incisoId: 1,
+          incisoCodigo: '01',
+          incisoDescripcion: 'Poder Ejecutivo',
+          unidadEjecutora: { unidadEjecutoraId: 1, unidadEjecutoraCodigo: '001', unidadEjecutoraDescripcion: 'Ministerio de Economía' }
+        },
+        {
+          incisoId: 2,
+          incisoCodigo: '02',
+          incisoDescripcion: 'Poder Legislativo',
+          unidadEjecutora: null
+        }
       ],
       fechaVigenciaDesde: '2024-01-01',
       fechaVigenciaHasta: null,
@@ -258,7 +270,7 @@ export class ClausulaService {
 
     if (filtro.unidadEjecutoraId) {
       resultados = resultados.filter(c =>
-        c.unidadesEjecutoras.some(ue => ue.unidadEjecutoraId === filtro.unidadEjecutoraId)
+        c.incisos.some(i => i.unidadEjecutora?.unidadEjecutoraId === filtro.unidadEjecutoraId)
       );
     }
 

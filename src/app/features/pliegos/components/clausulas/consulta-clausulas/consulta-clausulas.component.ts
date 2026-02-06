@@ -357,14 +357,14 @@ export class ConsultaClausulasComponent implements OnInit {
 
   obtenerResumenIncisos(clausula: Clausula): string {
     return clausula.incisos
-      .map(i => `${i.incisoCodigo} - ${i.incisoDescripcion}`)
-      .join(', ');
-  }
-
-  obtenerResumenUnidadesEjecutoras(clausula: Clausula): string {
-    return clausula.unidadesEjecutoras
-      .map(ue => `${ue.unidadEjecutoraCodigo} - ${ue.unidadEjecutoraDescripcion}`)
-      .join(', ');
+      .map(i => {
+        const inciso = `${i.incisoCodigo} - ${i.incisoDescripcion}`;
+        if (i.unidadEjecutora) {
+          return `${inciso} | ${i.unidadEjecutora.unidadEjecutoraCodigo} - ${i.unidadEjecutora.unidadEjecutoraDescripcion}`;
+        }
+        return inciso;
+      })
+      .join(' • ');
   }
 
   obtenerTextoVigencia(clausula: Clausula): string {

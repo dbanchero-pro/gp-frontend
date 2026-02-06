@@ -11,7 +11,6 @@ export interface Clausula {
   tiposCompra: TipoCompraClausula[];
   objetosCompra: ObjetoCompraClausula[];
   incisos: IncisoClausula[];
-  unidadesEjecutoras: UnidadEjecutoraClausula[];
   fechaVigenciaDesde: FechaStringNulo;
   fechaVigenciaHasta: FechaStringNulo;
   estado: EstadoClausula;
@@ -56,6 +55,7 @@ export interface IncisoClausula {
   incisoId: number;
   incisoCodigo: string;
   incisoDescripcion: string;
+  unidadEjecutora?: UnidadEjecutoraClausula | null;
 }
 
 export interface UnidadEjecutoraClausula {
