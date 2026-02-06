@@ -49,7 +49,8 @@ export class ConsultaClausulasComponent implements OnInit {
   listaOrden: IColumnaOrden[] = [
     { id: 'denominacion', nombre: 'Denominación' },
     { id: 'estado', nombre: 'Estado' },
-    { id: 'fechaVigenciaDesde', nombre: 'Fecha Vigencia' }
+    { id: 'fechaVigenciaDesde', nombre: 'Fecha vigencia desde' },
+    { id: 'fechaVigenciaHasta', nombre: 'Fecha vigencia hasta' }
   ];
 
   // Datos mock para filtros
