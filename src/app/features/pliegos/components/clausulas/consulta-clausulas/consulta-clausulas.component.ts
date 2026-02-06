@@ -377,13 +377,83 @@ export class ConsultaClausulasComponent implements OnInit {
     return `${desde} - ${hasta}`;
   }
 
-  truncarRedaccion(texto: string): string {
-    if (!texto) return '';
-    return texto.length > 500 ? texto.substring(0, 500) : texto;
+  truncarRedaccion(html: string): string {
+    if (!html) return '';
+
+    const textoPlano = this.extraerTextoDeHTML(html);
+    const longitudMaxima = 300;
+
+    if (textoPlano.length <= longitudMaxima) {
+      return html;
+    }
+
+    return this.truncarHTMLPorTexto(html, longitudMaxima);
   }
 
-  esRedaccionTruncada(texto: string): boolean {
-    return !!texto && texto.length > 500;
+  esRedaccionTruncada(html: string): boolean {
+    if (!html) return false;
+    const textoPlano = this.extraerTextoDeHTML(html);
+    return textoPlano.length > 300;
+  }
+
+  private extraerTextoDeHTML(html: string): string {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || '';
+  }
+
+  private truncarHTMLPorTexto(html: string, longitudMaxima: number): string {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    let textoAcumulado = 0;
+    let resultadoHTML = '';
+
+    const procesarNodo = (nodo: Node): boolean => {
+      if (textoAcumulado >= longitudMaxima) {
+        return false;
+      }
+
+      if (nodo.nodeType === Node.TEXT_NODE) {
+        const textoNodo = nodo.textContent || '';
+        const espacioRestante = longitudMaxima - textoAcumulado;
+
+        if (textoNodo.length <= espacioRestante) {
+          resultadoHTML += textoNodo;
+          textoAcumulado += textoNodo.length;
+          return true;
+        } else {
+          resultadoHTML += textoNodo.substring(0, espacioRestante) + '...';
+          textoAcumulado = longitudMaxima;
+          return false;
+        }
+      } else if (nodo.nodeType === Node.ELEMENT_NODE) {
+        const elemento = nodo as Element;
+        const etiqueta = elemento.tagName.toLowerCase();
+
+        const atributos = Array.from(elemento.attributes)
+          .map(attr => `${attr.name}="${attr.value}"`)
+          .join(' ');
+
+        resultadoHTML += `<${etiqueta}${atributos ? ' ' + atributos : ''}>`;
+
+        for (let i = 0; i < nodo.childNodes.length; i++) {
+          if (!procesarNodo(nodo.childNodes[i])) {
+            break;
+          }
+        }
+
+        resultadoHTML += `</${etiqueta}>`;
+        return textoAcumulado < longitudMaxima;
+      }
+
+      return true;
+    };
+
+    for (let i = 0; i < doc.body.childNodes.length; i++) {
+      if (!procesarNodo(doc.body.childNodes[i])) {
+        break;
+      }
+    }
+
+    return resultadoHTML;
   }
 
 }
