@@ -203,7 +203,7 @@
 
           <div class="px-3 py-2">
             <div class="row g-0 py-1 px-3">
-              <div class="col-auto etiqueta">Apertura Electrónica</div>
+              <div class="col-auto etiqueta">Apertura electrónica</div>
               <div class="col font-weight-bold">{{ clausula.aperturaElectronica ? 'Sí' : 'No' }}</div>
             </div>
 
@@ -213,22 +213,17 @@
             </div>
 
             <div class="row g-0 py-1 px-3">
-              <div class="col-auto etiqueta">Tipos y Subtipos de Compra</div>
+              <div class="col-auto etiqueta">Tipos y subtipos de compra</div>
               <div class="col font-weight-bold">{{ obtenerResumenTiposCompra(clausula) }}</div>
             </div>
 
             <div class="row g-0 py-1 px-3">
-              <div class="col-auto etiqueta">Inciso</div>
-              <div class="col font-weight-bold">{{ obtenerResumenIncisos(clausula) }}</div>
+              <div class="col-auto etiqueta">Organismo</div>
+              <div class="col font-weight-bold">{{ obtenerResumenIncisos(clausula) }} | {{ obtenerResumenUnidadesEjecutoras(clausula) }}</div>
             </div>
 
             <div class="row g-0 py-1 px-3">
-              <div class="col-auto etiqueta">Unidad Ejecutora</div>
-              <div class="col font-weight-bold">{{ obtenerResumenUnidadesEjecutoras(clausula) }}</div>
-            </div>
-
-            <div class="row g-0 py-1 px-3">
-              <div class="col-auto etiqueta">Objetos de Compra</div>
+              <div class="col-auto etiqueta">Objetos de compra</div>
               <div class="col font-weight-bold">{{ obtenerResumenObjetosCompra(clausula) }}</div>
             </div>
 
