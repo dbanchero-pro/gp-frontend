@@ -1,6 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { Clausula } from '../../../models/clausula.model';
 import { FiltroClausula } from '../../../models/filtro-clausula.model';
 import { ClausulaService } from '../../../services/clausula.service';
@@ -18,6 +19,8 @@ import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden
 import { NumeroNulo } from '../../../../../shared/types/numero-nulo.type';
 import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
 import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
+import { PaginaBusquedaComponent } from '../../../../../shared/components/pagina-busqueda/pagina-busqueda.component';
+import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
 
 @Component({
   selector: 'app-consulta-clausulas',
@@ -25,28 +28,18 @@ import { ActualizarService } from '../../../../../shared/services/common/actuali
   styleUrls: ['./consulta-clausulas.component.scss'],
   standalone: false
 })
-export class ConsultaClausulasComponent implements OnInit {
-  private fb = inject(FormBuilder);
-  private clausulaService = inject(ClausulaService);
-  private location = inject(Location);
-  private fechaPipe = inject(FechaPipe);
-  private actualizarService = inject(ActualizarService);
+export class ConsultaClausulasComponent extends PaginaBusquedaComponent<FiltroClausula> implements OnInit, AfterViewInit {
+  private readonly fb = inject(FormBuilder);
+  private readonly clausulaService = inject(ClausulaService);
+  private readonly location = inject(Location);
+  private readonly fechaPipe = inject(FechaPipe);
+  private readonly route = inject(ActivatedRoute);
+  private readonly snapshotGenericService = inject(SnapshotGenericService);
 
-  formularioFiltro: FormGroup;
-  clausulas: Clausula[] = [];
-  cargando = false;
-  mostrarSoloSeleccion = false;
+  public static readonly SNAPSHOT_KEY = 'CONSULTA_CLAUSULAS';
 
-  colFiltro = 'col-lg-3';
-  colTabla = 'col-lg-9';
-
-  total = 0;
-  parametros = {
-    pagina: 0,
-    tamanoPagina: 10,
-    sort: 'denominacion',
-    order: 'asc' as 'asc' | 'desc'
-  };
+  columnaOrdenInicial = 'denominacion';
+  ordenInicial: 'asc' | 'desc' = 'asc';
 
   listaOrden: IColumnaOrden[] = [
     { id: 'denominacion', nombre: 'Denominación' },
@@ -54,6 +47,11 @@ export class ConsultaClausulasComponent implements OnInit {
     { id: 'fechaVigenciaDesde', nombre: 'Fecha vigencia desde' },
     { id: 'fechaVigenciaHasta', nombre: 'Fecha vigencia hasta' }
   ];
+
+  formularioFiltro: FormGroup;
+  clausulas: Clausula[] = [];
+  cargando = false;
+  mostrarSoloSeleccion = false;
 
   // Datos mock para filtros
   incisos: IncisoDTO[] = [
@@ -119,24 +117,55 @@ export class ConsultaClausulasComponent implements OnInit {
   clausulaSeleccionadaMap: Map<number, boolean> = new Map();
 
   constructor() {
-    this.formularioFiltro = this.fb.nonNullable.group({
-      incisoId: [null],
-      unidadEjecutoraId: [null],
-      tipoCompraId: [null],
-      subtipoCompraId: [null],
-      familiaId: [null],
-      subfamiliaId: [null],
-      claseId: [null],
-      subclaseId: [null],
-      articuloId: [null],
-      denominacion: [''],
-      rangoFechasVigencia: [null]
+    super();
+    this.form = this.fb.nonNullable.group({
+      incisoId: this.fb.nonNullable.control<NumeroNulo>(null),
+      unidadEjecutoraId: this.fb.nonNullable.control<NumeroNulo>(null),
+      tipoCompraId: this.fb.nonNullable.control<string | null>(null),
+      subtipoCompraId: this.fb.nonNullable.control<string | null>(null),
+      familiaId: this.fb.nonNullable.control<NumeroNulo>(null),
+      subfamiliaId: this.fb.nonNullable.control<NumeroNulo>(null),
+      claseId: this.fb.nonNullable.control<NumeroNulo>(null),
+      subclaseId: this.fb.nonNullable.control<NumeroNulo>(null),
+      articuloId: this.fb.nonNullable.control<NumeroNulo>(null),
+      denominacion: this.fb.nonNullable.control<string>(''),
+      rangoFechasVigencia: this.fb.nonNullable.control<any>(null)
     });
+    this.formularioFiltro = this.form;
   }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
+    super.ngOnInit();
     this.configurarCambiosFiltros();
-    this.actualizarFiltrosYBuscar();
+  }
+
+  ngAfterViewInit(): void {
+    const paramVolver = this.route.snapshot.queryParamMap.get('volver');
+    if (paramVolver === '1') {
+      setTimeout(() => {
+        this.buscarVolver();
+      }, 100);
+    } else {
+      setTimeout(() => {
+        this.nuevaConsulta();
+      }, 100);
+    }
+  }
+
+  private buscarVolver(): void {
+    const snap = this.snapshotGenericService.load<any>(ConsultaClausulasComponent.SNAPSHOT_KEY);
+
+    if (snap) {
+      this.parametros = snap;
+      this.form.patchValue(snap.filtro);
+      this.parametros.pagina = snap.pagina;
+      this.parametros.tamanoPagina = snap.tamanoPagina;
+      this.actualizarFiltro();
+      this.buscar();
+    }
+
+    const currentUrl = this.location.path().split('?')[0];
+    this.location.replaceState(currentUrl);
   }
 
   configurarCambiosFiltros(): void {
@@ -201,72 +230,93 @@ export class ConsultaClausulasComponent implements OnInit {
     });
   }
 
-  buscar(): void {
+  buscar(resetearPagina: boolean = false): void {
+    if (resetearPagina) {
+      this.parametros.pagina = 0;
+    }
+
+    this.actualizarFiltro();
+
     this.cargando = true;
-    const valores = this.formularioFiltro.value;
-    const rangoFechas = valores.rangoFechasVigencia;
-
-    const filtro: FiltroClausula = {
-      ...valores,
-      fechaVigenciaDesde: rangoFechas?.fechaDesde || null,
-      fechaVigenciaHasta: rangoFechas?.fechaHasta || null,
-      rangoFechasVigencia: undefined
-    };
-
-    this.clausulaService.buscarClausulas(filtro).subscribe({
+    this.clausulaService.buscarClausulas(this.parametros.filtro).subscribe({
       next: (clausulas) => {
         this.clausulas = clausulas;
         this.total = clausulas.length;
         this.cargando = false;
+
+        this.snapshotGenericService.save(
+          ConsultaClausulasComponent.SNAPSHOT_KEY,
+          {
+            filtro: this.parametros.filtro,
+            pagina: this.parametros.pagina,
+            tamanoPagina: this.parametros.tamanoPagina,
+            sort: this.parametros.sort,
+            order: this.parametros.order
+          }
+        );
       },
       error: () => {
+        this.actualizarService.mensajeError('Error al consultar cláusulas');
+        this.clausulas = [];
+        this.total = 0;
         this.cargando = false;
       }
     });
   }
 
+  private actualizarFiltro(): void {
+    const valores = this.form.value;
+    const rangoFechas = valores.rangoFechasVigencia;
+
+    this.parametros.filtro = {
+      ...valores,
+      fechaVigenciaDesde: rangoFechas?.fechaDesde || null,
+      fechaVigenciaHasta: rangoFechas?.fechaHasta || null,
+      rangoFechasVigencia: undefined
+    };
+  }
+
   actualizarFiltrosYBuscar(): void {
-    this.parametros.pagina = 0;
+    this.actualizarFiltro();
     this.buscar();
   }
 
-  nuevaConsulta(): void {
-    this.formularioFiltro.reset();
-    this.parametros.pagina = 0;
-    this.actualizarFiltrosYBuscar();
-  }
+  override nuevaConsulta(): void {
+    this.form.reset({
+      incisoId: null,
+      unidadEjecutoraId: null,
+      tipoCompraId: null,
+      subtipoCompraId: null,
+      familiaId: null,
+      subfamiliaId: null,
+      claseId: null,
+      subclaseId: null,
+      articuloId: null,
+      denominacion: '',
+      rangoFechasVigencia: null
+    });
 
-  aplicarColapso(): void {
-    if (this.colFiltro === 'col-lg-3') {
-      this.colFiltro = 'col-lg-1';
-      this.colTabla = 'col-lg-11';
-    } else {
-      this.colFiltro = 'col-lg-3';
-      this.colTabla = 'col-lg-9';
-    }
-  }
+    this.parametros = {
+      filtro: {},
+      pagina: 0,
+      tamanoPagina: 10,
+      sort: this.columnaOrdenInicial,
+      order: this.ordenInicial
+    };
 
-  cambioPagina(pagina: number): void {
-    this.parametros.pagina = pagina - 1;
-    this.buscar();
-  }
+    this.clausulas = [];
+    this.total = -1;
+    this.unidadesEjecutoras = [];
+    this.subtiposCompra = [];
+    this.subfamilias = [];
+    this.clases = [];
+    this.subclases = [];
+    this.articulos = [];
 
-  cambioPorPagina(tamanoPagina: number): void {
-    this.parametros.tamanoPagina = tamanoPagina;
-    this.parametros.pagina = 0;
-    this.buscar();
+    this.snapshotGenericService.clear(
+      ConsultaClausulasComponent.SNAPSHOT_KEY
+    );
   }
-
-  cambioOrden(orden: 'asc' | 'desc'): void {
-    this.parametros.order = orden;
-    this.buscar();
-  }
-
-  cambioColumnaOrden(columna: string): void {
-    this.parametros.sort = columna;
-    this.buscar();
-  }
-
 
   obtenerAccionesClausula(clausula: Clausula): AccionBoton[] {
     const acciones: AccionBoton[] = [];
