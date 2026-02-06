@@ -288,10 +288,18 @@ export class ConsultaClausulasComponent implements OnInit {
     });
 
     acciones.push({
-      nombre: 'Ver Historial',
-      clase: 'btn btn-info btn-sm',
+      nombre: 'Ver historial',
+      clase: 'btn btn-success',
       icono: 'fa fa-history',
       ariaLabel: 'Ver historial de cláusula ' + clausula.denominacion,
+      accion: () => this.verHistorial(clausula)
+    });
+
+    acciones.push({
+      nombre: 'Ver modelos',
+      clase: 'btn btn-success',
+      icono: 'fa fa-copy',
+      ariaLabel: 'Ver modelos que usan la cláusula ' + clausula.denominacion,
       accion: () => this.verHistorial(clausula)
     });
 
@@ -322,7 +330,7 @@ export class ConsultaClausulasComponent implements OnInit {
       next: (tieneVersionEditable) => {
         const mensaje = tieneVersionEditable
           ? `¿Está seguro que desea volver a la versión anteriormente aprobada de la cláusula "${clausula.denominacion}"?`
-          : `¿Está seguro que desea eliminar la sección "${clausula.denominacion}"?`;
+          : `¿Está seguro que desea eliminar la cláusula "${clausula.denominacion}"?`;
 
         this.actualizarService.confirmar(
           mensaje,
