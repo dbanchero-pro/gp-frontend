@@ -1,5 +1,5 @@
-import { IPropiedadDTO } from "../propiedad.model";
-import { ISubclaseControlDTO } from "./cbso.model";
+import { IPropiedadDTO } from "./propiedad.model";
+import { ISubclaseDTO } from "./subclase.model";
 import { IUnidadMedidaDTO } from "./unidad-medida.model";
 
 export interface IArticuloServObraDTO {
@@ -8,7 +8,7 @@ export interface IArticuloServObraDTO {
     propiedadVariante?: IPropiedadDTO;
     unidadMedidaVariante?: IUnidadMedidaDTO;
     tipoArticulo?: string;
-    subclase?: ISubclaseControlDTO;
+    subclase?: ISubclaseDTO;
 }
 
 export class ArticuloServObraDTO implements IArticuloServObraDTO {
@@ -18,6 +18,6 @@ export class ArticuloServObraDTO implements IArticuloServObraDTO {
         public propiedadVariante?: IPropiedadDTO,
         public unidadMedidaVariante?: IUnidadMedidaDTO,
         public tipoArticulo?: string,
-        public subclase?: ISubclaseControlDTO) {
+        public subclase?: ISubclaseDTO) {
     }
 }

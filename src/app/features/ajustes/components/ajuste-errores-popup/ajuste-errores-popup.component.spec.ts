@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { AjusteErroresPopupComponent } from './ajuste-errores-popup.component';

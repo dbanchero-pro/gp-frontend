@@ -1,0 +1,5 @@
+export enum TipoApertura {
+  ELECTRONICA = 'ELECTRONICA',
+  PRESENCIAL = 'PRESENCIAL',
+  AMBAS = 'AMBAS'
+}

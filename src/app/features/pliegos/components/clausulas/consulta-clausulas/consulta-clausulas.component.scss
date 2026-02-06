@@ -1,0 +1,35 @@
+.clausula-bloque {
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.clausula-info {
+  font-size: 0.9rem;
+
+  p {
+    line-height: 1.5;
+  }
+}
+
+.form-group {
+  margin-bottom: 1rem;
+
+  label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.card-header {
+  h5 {
+    font-size: 1.1rem;
+  }
+}
+
+.clausulas-lista {
+  max-height: calc(100vh - 250px);
+  overflow-y: auto;
+}
