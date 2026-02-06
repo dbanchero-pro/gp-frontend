@@ -16,6 +16,7 @@ import { ArticuloServObraDTO } from '../../../../../shared/models/cbso/articulo-
 import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
 import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden.model';
 import { NumeroNulo } from '../../../../../shared/types/numero-nulo.type';
+import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
 
 @Component({
   selector: 'app-consulta-clausulas',
@@ -27,6 +28,7 @@ export class ConsultaClausulasComponent implements OnInit {
   private fb = inject(FormBuilder);
   private clausulaService = inject(ClausulaService);
   private location = inject(Location);
+  private fechaPipe = inject(FechaPipe);
 
   formularioFiltro: FormGroup;
   clausulas: Clausula[] = [];
@@ -369,8 +371,12 @@ export class ConsultaClausulasComponent implements OnInit {
   }
 
   obtenerTextoVigencia(clausula: Clausula): string {
-    const desde = clausula.fechaVigenciaDesde || 'N/A';
-    const hasta = clausula.fechaVigenciaHasta || 'Indefinido';
+    const desde = clausula.fechaVigenciaDesde
+      ? this.fechaPipe.transform(clausula.fechaVigenciaDesde)
+      : 'N/A';
+    const hasta = clausula.fechaVigenciaHasta
+      ? this.fechaPipe.transform(clausula.fechaVigenciaHasta)
+      : 'Indefinido';
     return `${desde} - ${hasta}`;
   }
 

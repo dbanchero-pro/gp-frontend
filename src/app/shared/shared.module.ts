@@ -220,6 +220,8 @@ const configEditor = {
             BsDatepickerConfig,
             BsDropdownConfig,
             BsModalService,
+            FechaPipe,
+            FechaHoraPipe,
             {
                 provide: HTTP_INTERCEPTORS,
                 useClass: ErrorInterceptor,

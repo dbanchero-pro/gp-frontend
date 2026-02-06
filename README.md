@@ -2,6 +2,38 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.1.
 
+## Estándares de Desarrollo
+
+### Formato de Fechas
+
+El proyecto utiliza el formato **dd/MM/yyyy** para mostrar todas las fechas.
+
+Para aplicar este formato:
+
+1. **Usar el pipe FechaPipe**: Inyectar el `FechaPipe` en el componente y utilizarlo para transformar las fechas.
+
+```typescript
+import { FechaPipe } from 'ruta/al/pipe/fecha.pipe';
+
+export class MiComponente {
+  private fechaPipe = inject(FechaPipe);
+
+  formatearFecha(fecha: any): string {
+    return this.fechaPipe.transform(fecha) || '';
+  }
+}
+```
+
+2. **En la plantilla HTML**: Puedes usar el pipe directamente en la plantilla:
+
+```html
+{{ miFecha | fechaPipe }}
+```
+
+El `FechaPipe` está configurado por defecto para usar el formato 'dd/MM/yyyy' y el locale 'es-UY'.
+
+**Importante**: Siempre mantener este formato consistente en todo el proyecto para una mejor experiencia de usuario.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change
