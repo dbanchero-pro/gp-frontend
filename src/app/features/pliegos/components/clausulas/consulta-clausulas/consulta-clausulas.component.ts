@@ -377,4 +377,13 @@ export class ConsultaClausulasComponent implements OnInit {
     return `${desde} - ${hasta}`;
   }
 
+  truncarRedaccion(texto: string): string {
+    if (!texto) return '';
+    return texto.length > 500 ? texto.substring(0, 500) : texto;
+  }
+
+  esRedaccionTruncada(texto: string): boolean {
+    return !!texto && texto.length > 500;
+  }
+
 }
