@@ -1,6 +1,7 @@
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { PopupBaseComponent } from '../../../../../shared/components/popup-base/popup-base.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { CampoService } from '../../services/campo.service';
 import { CampoDTO } from '../../models/campo.model';
 import { TipoFuenteCampo } from '../../enum/tipo-fuente-campo.enum';
@@ -12,26 +13,30 @@ import { IReglaDTO, ReglaDTO } from '../../models/regla.model';
 import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
 import { OperadorHelperService } from '../../services/operador-helper.service';
 import { TipoRegla } from '../../enum/tipo-regla.enum';
+import { CanComponentDeactivate } from '../../../../../shared/utils/can-component-deactivate';
+import { formularioTocado } from '../../../../../shared/utils/functions';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
-  selector: 'app-agregar-modificar-campo-popup',
-  templateUrl: './agregar-modificar-campo-popup.component.html',
-  styleUrls: ['./agregar-modificar-campo-popup.component.scss'],
+  selector: 'app-agregar-modificar-campo',
+  templateUrl: './agregar-modificar-campo.component.html',
+  styleUrls: ['./agregar-modificar-campo.component.scss'],
   standalone: false
 })
-export class AgregarModificarCampoPopupComponent extends PopupBaseComponent implements OnInit {
+export class AgregarModificarCampoComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
+  private readonly activatedRoute = inject(ActivatedRoute);
   private readonly campoService = inject(CampoService);
   private readonly operadorHelper = inject(OperadorHelperService);
+  private readonly modalService = inject(BsModalService);
   protected readonly actualizarServ = inject(ActualizarService);
 
-  @Output() campoGuardado = new EventEmitter<CampoDTO>();
-
-  campoExistente?: CampoDTO;
-  esModificacion = false;
+  idCampo!: number;
+  modoIngreso = false;
   titulo = 'Agregar campo';
 
-  override form!: FormGroup<{
+  form!: FormGroup<{
     etiqueta: FormControl<string>;
     descripcion: FormControl<string>;
     fuente: FormControl<string>;
@@ -49,14 +54,18 @@ export class AgregarModificarCampoPopupComponent extends PopupBaseComponent impl
   reglas: IReglaDTO[] = [];
   siguienteIdRegla = 1;
 
-  override ngOnInit(): void {
-    super.ngOnInit();
+  constructor() {
+    this.activatedRoute.params.subscribe(params => {
+      this.idCampo = +params['idCampo'];
+      this.modoIngreso = !this.idCampo;
+    });
+  }
 
+  ngOnInit(): void {
     this.tiposFuente = this.campoService.obtenerTiposFuente().filter(t => t.id !== '');
     this.tiposDato = this.campoService.obtenerTiposDato();
 
-    if (this.campoExistente) {
-      this.esModificacion = true;
+    if (!this.modoIngreso) {
       this.titulo = 'Modificar campo';
     }
 
@@ -75,45 +84,64 @@ export class AgregarModificarCampoPopupComponent extends PopupBaseComponent impl
   }
 
   private cargarDatosCampo(): void {
-    if (!this.campoExistente) {
+    if (this.modoIngreso) {
       return;
     }
 
-    this.form.patchValue({
-      etiqueta: this.campoExistente.etiqueta || '',
-      descripcion: this.campoExistente.descripcion || '',
-      fuente: this.campoExistente.fuente || '',
-      tipoDato: this.campoExistente.tipoDato || '',
-      sePuedeEliminar: this.campoExistente.sePuedeEliminar || SiNoValor.SI
-    });
+    this.campoService.obtenerPorId(this.idCampo).subscribe({
+      next: (campo: CampoDTO | undefined) => {
+        if (!campo) {
+          this.actualizarServ.mensajeError('Campo no encontrado');
+          this.volver();
+          return;
+        }
 
-    if (this.campoExistente.reglas) {
-      this.reglas = [...this.campoExistente.reglas];
-      const maxId = Math.max(0, ...this.reglas.map(r => r.id || 0));
-      this.siguienteIdRegla = maxId + 1;
-    }
+        this.form.patchValue({
+          etiqueta: campo.etiqueta || '',
+          descripcion: campo.descripcion || '',
+          fuente: campo.fuente || '',
+          tipoDato: campo.tipoDato || '',
+          sePuedeEliminar: campo.sePuedeEliminar || SiNoValor.SI
+        });
+
+        if (campo.reglas) {
+          this.reglas = [...campo.reglas];
+          const maxId = Math.max(0, ...this.reglas.map(r => r.id || 0));
+          this.siguienteIdRegla = maxId + 1;
+        }
+
+        setTimeout(() => {
+          this.form.markAsPristine();
+        }, 500);
+      },
+      error: (err) => {
+        this.actualizarServ.mensajeError('Error al cargar el campo');
+        console.error('Error al cargar campo:', err);
+      }
+    });
   }
 
   abrirAgregarRegla(): void {
     const tipoDato = this.form.value.tipoDato as TipoDatoCampo;
     if (!tipoDato) {
-      this.mostrarError('Debe seleccionar un tipo de dato antes de agregar reglas');
+      this.actualizarServ.mensajeError('Debe seleccionar un tipo de dato antes de agregar reglas');
       return;
     }
 
-    const popup = this.abrirPopupGrande(AgregarModificarReglaPopupComponent, undefined, {
+    const modalRef = this.modalService.show(AgregarModificarReglaPopupComponent, {
       class: 'modal-lg',
       backdrop: 'static',
       keyboard: false,
       initialState: {
         tipoDatoCampo: tipoDato,
         reglasExistentes: this.reglas,
-        idCampoActual: this.campoExistente?.id
+        idCampoActual: this.idCampo
       }
     });
 
-    if (popup.reglaGuardada) {
-      popup.reglaGuardada.subscribe((regla: IReglaDTO) => {
+    const component = modalRef.content as AgregarModificarReglaPopupComponent;
+    if (component.reglaGuardada) {
+      component.reglaGuardada.subscribe((regla: IReglaDTO) => {
         regla.id = this.siguienteIdRegla++;
         this.reglas.push(regla);
       });
@@ -152,7 +180,7 @@ export class AgregarModificarCampoPopupComponent extends PopupBaseComponent impl
       return;
     }
 
-    const popup = this.abrirPopup(AgregarModificarReglaPopupComponent, undefined, {
+    const modalRef = this.modalService.show(AgregarModificarReglaPopupComponent, {
       class: 'modal-lg',
       backdrop: 'static',
       keyboard: false,
@@ -160,12 +188,13 @@ export class AgregarModificarCampoPopupComponent extends PopupBaseComponent impl
         tipoDatoCampo: tipoDato,
         reglaExistente: regla,
         reglasExistentes: this.reglas.filter(r => r.id !== regla.id),
-        idCampoActual: this.campoExistente?.id
+        idCampoActual: this.idCampo
       }
     });
 
-    if (popup.reglaGuardada) {
-      popup.reglaGuardada.subscribe((reglaModificada: IReglaDTO) => {
+    const component = modalRef.content as AgregarModificarReglaPopupComponent;
+    if (component.reglaGuardada) {
+      component.reglaGuardada.subscribe((reglaModificada: IReglaDTO) => {
         const index = this.reglas.findIndex(r => r.id === regla.id);
         if (index !== -1) {
           this.reglas[index] = { ...reglaModificada, id: regla.id };
@@ -200,12 +229,12 @@ export class AgregarModificarCampoPopupComponent extends PopupBaseComponent impl
     this.form.markAllAsTouched();
 
     if (!this.form.valid) {
-      this.mostrarError('Por favor complete todos los campos requeridos');
+      this.actualizarServ.mensajeError('Por favor complete todos los campos requeridos');
       return;
     }
 
     const campo = new CampoDTO(
-      this.campoExistente?.id,
+      this.modoIngreso ? undefined : this.idCampo,
       this.form.value.etiqueta || '',
       this.form.value.descripcion || '',
       this.form.value.fuente as TipoFuenteCampo,
@@ -222,35 +251,43 @@ export class AgregarModificarCampoPopupComponent extends PopupBaseComponent impl
         r.etiquetaCampoComparar,
         r.mensajeError
       )),
-      this.campoExistente?.fechaCreacion || new Date(),
+      new Date(),
       new Date(),
       true
     );
 
     try {
-      const operacion = this.esModificacion
-        ? this.campoService.actualizar(campo)
-        : this.campoService.crear(campo);
+      const operacion = this.modoIngreso
+        ? this.campoService.crear(campo)
+        : this.campoService.actualizar(campo);
 
       operacion.subscribe({
-        next: (campoGuardado) => {
-          const mensaje = this.esModificacion
-            ? 'Campo modificado correctamente'
-            : 'Campo agregado correctamente';
-          this.actualizarServ.mensajeCorrecto(mensaje);
-          this.campoGuardado.emit(campoGuardado);
-          this.cerrarPopup();
+        next: () => {
+          const mensaje = this.modoIngreso
+            ? 'Campo agregado correctamente'
+            : 'Campo modificado correctamente';
+          this.form.markAsPristine();
+          this.volver();
+          window.setTimeout(() => {
+            this.actualizarServ.mensajeCorrecto(mensaje);
+          }, 1000);
         },
         error: (err) => {
-          this.mostrarError(err, 'Error al guardar el campo');
+          this.actualizarServ.mensajeError(err.message || 'Error al guardar el campo');
+          console.error('Error al guardar el campo:', err);
         }
       });
     } catch (error: any) {
-      this.mostrarError(error, 'Error al guardar el campo');
+      this.actualizarServ.mensajeError(error.message || 'Error al guardar el campo');
+      console.error('Error al guardar el campo:', error);
     }
   }
 
-  cancelar(): void {
-    this.cancelarConConfirmacion();
+  volver(): void {
+    this.router.navigate(['/administracion/campos-reglas'], { queryParams: { volver: 1 } });
+  }
+
+  canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
+    return !formularioTocado(this.form);
   }
 }

@@ -1,4 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CampoDTO } from '../../models/campo.model';
@@ -7,7 +8,6 @@ import { CampoService } from '../../services/campo.service';
 import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
 import { SeguridadService } from '../../../../../shared/services/common/seguridad.service';
 import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
-import { AgregarModificarCampoPopupComponent } from '../agregar-modificar-campo-popup/agregar-modificar-campo-popup.component';
 import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
 import { TipoFuenteCampo } from '../../enum/tipo-fuente-campo.enum';
 import { TipoDatoCampo } from '../../enum/tipo-dato-campo.enum';
@@ -24,12 +24,13 @@ import { PageModel } from '../../../../../shared/models/common/page/page.model';
   styleUrls: ['./consulta-campos-reglas.component.scss'],
   standalone: false
 })
-export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<FiltroCampoDTO> implements OnInit {
+export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<FiltroCampoDTO> implements OnInit, AfterViewInit {
 
   private readonly fb = inject(FormBuilder);
   private readonly actualizarServ = inject(ActualizarService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly location = inject(Location);
   private readonly campoService = inject(CampoService);
   private readonly operadorHelper = inject(OperadorHelperService);
   private readonly snapshotGenericService = inject(SnapshotGenericService);
@@ -60,7 +61,35 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   override ngOnInit(): void {
     super.ngOnInit();
     this.tiposFuente = this.campoService.obtenerTiposFuente();
-    this.nuevaConsulta();
+  }
+
+  ngAfterViewInit(): void {
+    const paramVolver = this.route.snapshot.queryParamMap.get('volver');
+    if (paramVolver === '1') {
+      setTimeout(() => {
+        this.buscarVolver();
+      }, 100);
+    } else {
+      setTimeout(() => {
+        this.nuevaConsulta();
+      }, 100);
+    }
+  }
+
+  private buscarVolver(): void {
+    const snap = this.snapshotGenericService.load<any>(ConsultaCamposReglasComponent.SNAPSHOT_KEY);
+
+    if (snap) {
+      this.parametros = snap;
+      this.form.patchValue(snap.filtro);
+      this.parametros.pagina = snap.pagina;
+      this.parametros.tamanoPagina = snap.tamanoPagina;
+      this.actualizarFiltro();
+      this.buscar();
+    }
+
+    const currentUrl = this.location.path().split('?')[0];
+    this.location.replaceState(currentUrl);
   }
 
   actualizarFiltrosYBuscar(): void {
@@ -140,17 +169,7 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   }
 
   abrirAgregarCampo(): void {
-    const popup = this.abrirPopupGrande(AgregarModificarCampoPopupComponent, undefined, {
-      class: 'modal-lg',
-      backdrop: 'static',
-      keyboard: false
-    });
-
-    if (popup.campoGuardado) {
-      popup.campoGuardado.subscribe(() => {
-        this.buscar();
-      });
-    }
+    this.router.navigate(['/administracion/campos-reglas/agregar']);
   }
 
   obtenerAcciones(campo: CampoDTO): AccionBoton[] {
@@ -184,20 +203,7 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   }
 
   modificarCampo(campo: CampoDTO): void {
-    const popup = this.abrirPopupGrande(AgregarModificarCampoPopupComponent, undefined, {
-      class: 'modal-lg',
-      backdrop: 'static',
-      keyboard: false,
-      initialState: {
-        campoExistente: campo
-      }
-    });
-
-    if (popup.campoGuardado) {
-      popup.campoGuardado.subscribe(() => {
-        this.buscar();
-      });
-    }
+    this.router.navigate(['/administracion/campos-reglas/modificar', campo.id]);
   }
 
   eliminarCampo(campo: CampoDTO): void {
