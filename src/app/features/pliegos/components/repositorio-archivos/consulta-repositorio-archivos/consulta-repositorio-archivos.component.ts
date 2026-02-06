@@ -149,7 +149,7 @@ export class ConsultaRepositorioArchivosComponent
   }
 
   abrirAgregarDocumento(): void {
-    const popup = this.abrirPopup(AgregarDocumentoRepositorioPopupComponent, 'Guardar', {
+    const popup = this.abrirPopupGrande(AgregarDocumentoRepositorioPopupComponent, 'Guardar', {
       class: 'modal-lg',
       backdrop: 'static',
       keyboard: false
@@ -249,7 +249,7 @@ export class ConsultaRepositorioArchivosComponent
   }
 
   modificarDocumento(documento: DocumentoRepositorioDTO): void {
-    const popup = this.abrirPopup(AgregarDocumentoRepositorioPopupComponent, 'Guardar', {
+    const popup = this.abrirPopupGrande(AgregarDocumentoRepositorioPopupComponent, 'Guardar', {
       class: 'modal-lg',
       backdrop: 'static',
       keyboard: false,
