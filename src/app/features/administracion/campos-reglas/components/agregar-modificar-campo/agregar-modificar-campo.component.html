@@ -14,10 +14,9 @@
 
     <form [formGroup]="form" (submit)="guardar()" class="row pr-0 mr-0">
         <div class="col-12 table-bordered">
-            <div class="container pt-4 pb-4 pr-0 pl-0 pr-md-4 pl-md-4">
-                <div class="contenido-centrado">
-                    <div class="col-12 col-md-10 col-lg-8">
-                        <div class="form-row">
+            <div class="container-fluid pt-4 pb-4 pr-0 pl-0 pr-md-4 pl-md-4">
+                <div class="col-12">
+                    <div class="form-row">
                             <div class="form-group col-md-6" [class.field-error]="form.get('etiqueta')?.invalid && form.get('etiqueta')?.touched">
                                 <label for="etiqueta">* Etiqueta</label>
                                 <input id="etiqueta" type="text" class="form-control" formControlName="etiqueta"
@@ -126,7 +125,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>

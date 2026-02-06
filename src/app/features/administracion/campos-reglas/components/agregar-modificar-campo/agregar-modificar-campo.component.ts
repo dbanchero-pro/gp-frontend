@@ -126,7 +126,7 @@ export class AgregarModificarCampoComponent extends FormularioBaseComponent impl
       return;
     }
 
-    const popup = this.abrirPopupGrande(AgregarModificarReglaPopupComponent, 'Guardar', {
+    const popup = this.abrirPopupXXL(AgregarModificarReglaPopupComponent, 'Guardar', {
       backdrop: 'static',
       keyboard: false,
       initialState: {
@@ -176,7 +176,7 @@ export class AgregarModificarCampoComponent extends FormularioBaseComponent impl
       return;
     }
 
-    const popup = this.abrirPopupGrande(AgregarModificarReglaPopupComponent, 'Guardar', {
+    const popup = this.abrirPopupXXL(AgregarModificarReglaPopupComponent, 'Guardar', {
       backdrop: 'static',
       keyboard: false,
       initialState: {
