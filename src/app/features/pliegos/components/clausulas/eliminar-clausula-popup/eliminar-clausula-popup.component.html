@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <h4 class="modal-title">Confirmar eliminación</h4>
+</div>
+
+<div class="modal-body">
+  <div class="alert alert-warning" role="alert">
+    <i class="fa fa-exclamation-triangle"></i>
+    {{ obtenerMensaje() }}
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelar()">
+    <i class="fa fa-times"></i> No
+  </button>
+  <button type="button" class="btn btn-danger" (click)="confirmar()">
+    <i class="fa fa-check"></i> Sí
+  </button>
+</div>

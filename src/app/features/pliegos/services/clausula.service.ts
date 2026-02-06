@@ -3,6 +3,7 @@ import { Observable, of, delay } from 'rxjs';
 import { Clausula } from '../models/clausula.model';
 import { FiltroClausula } from '../models/filtro-clausula.model';
 import { EstadoClausula } from '../enum/estado-clausula.enum';
+import { EliminarClausulaResponse } from '../models/eliminar-clausula-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -253,6 +254,61 @@ export class ClausulaService {
       usuarioCreacion: 'admin',
       fechaModificacion: null,
       usuarioModificacion: null
+    },
+    {
+      id: 5,
+      denominacion: 'Cláusula de confidencialidad - Borrador',
+      aperturaElectronica: true,
+      tiposCompra: [
+        {
+          tipoCompraId: 3,
+          tipoCompraDescripcion: 'Licitación Abreviada',
+          subtipos: [
+            { subtipoCompraId: 4, subtipoCompraDescripcion: 'Nacional' }
+          ]
+        }
+      ],
+      objetosCompra: [
+        {
+          familiaId: 3,
+          familiaDescripcion: 'Servicios',
+          subfamiliaId: 3,
+          subfamiliaDescripcion: 'Servicios profesionales',
+          claseId: 3,
+          claseDescripcion: 'Consultoría',
+          subclaseId: 3,
+          subclaseDescripcion: 'Asesoría técnica',
+          articulo: null
+        }
+      ],
+      incisos: [
+        {
+          incisoId: 1,
+          incisoCodigo: '01',
+          incisoDescripcion: 'Poder Ejecutivo',
+          unidadEjecutora: { unidadEjecutoraId: 3, unidadEjecutoraCodigo: '003', unidadEjecutoraDescripcion: 'Ministerio de Salud' }
+        }
+      ],
+      fechaVigenciaDesde: '2025-01-01',
+      fechaVigenciaHasta: null,
+      estado: EstadoClausula.BORRADOR,
+      versionada: true,
+      redacciones: [
+        {
+          id: 6,
+          clausulaId: 5,
+          prioridad: 1,
+          redaccion: '<p><strong>Esta es una versión en borrador.</strong></p><p>El proveedor deberá mantener <em>estricta confidencialidad</em> sobre toda la información a la que tenga acceso durante la ejecución del contrato.</p><ul><li>No divulgar información</li><li>No copiar documentos</li><li>Devolver toda la información al finalizar</li></ul>',
+          fechaCreacion: '2025-01-15',
+          usuarioCreacion: 'admin',
+          fechaModificacion: null,
+          usuarioModificacion: null
+        }
+      ],
+      fechaCreacion: '2025-01-15',
+      usuarioCreacion: 'admin',
+      fechaModificacion: null,
+      usuarioModificacion: null
     }
   ];
 
@@ -367,12 +423,97 @@ export class ClausulaService {
     return of(clausula).pipe(delay(300));
   }
 
-  eliminarClausula(id: number): Observable<boolean> {
+  eliminarClausula(id: number): Observable<EliminarClausulaResponse> {
+    const clausula = this.clausulasMock.find(c => c.id === id);
+
+    if (!clausula) {
+      const response: EliminarClausulaResponse = {
+        exitoso: false,
+        mensaje: 'No se encontró la cláusula especificada.',
+        tipoEliminacion: 'FISICA'
+      };
+      return of(response).pipe(delay(300));
+    }
+
+    // Verificar si tiene versión editable (estado BORRADOR)
+    const tieneVersionEditable = clausula.estado === EstadoClausula.BORRADOR;
+
+    if (tieneVersionEditable) {
+      // Eliminar versión editable y restaurar versión anterior aprobada
+      return this.eliminarVersionEditable(id);
+    } else {
+      // Es una versión aprobada única
+      return this.eliminarVersionAprobada(id, clausula);
+    }
+  }
+
+  private eliminarVersionEditable(id: number): Observable<EliminarClausulaResponse> {
+    // Simular eliminación de versión editable
+    // En realidad, aquí se eliminaría la versión BORRADOR y se restauraría la versión anterior aprobada
     const index = this.clausulasMock.findIndex(c => c.id === id);
+
     if (index !== -1) {
       this.clausulasMock.splice(index, 1);
-      return of(true).pipe(delay(300));
+      const response: EliminarClausulaResponse = {
+        exitoso: true,
+        mensaje: 'Se eliminó la versión editable y se restauró la versión anteriormente aprobada.',
+        tipoEliminacion: 'VERSION_EDITABLE'
+      };
+      return of(response).pipe(delay(300));
     }
-    return of(false).pipe(delay(300));
+
+    const response: EliminarClausulaResponse = {
+      exitoso: false,
+      mensaje: 'No se pudo eliminar la versión editable.',
+      tipoEliminacion: 'VERSION_EDITABLE'
+    };
+    return of(response).pipe(delay(300));
+  }
+
+  private eliminarVersionAprobada(id: number, clausula: Clausula): Observable<EliminarClausulaResponse> {
+    const estaUsadaPorModelo = this.verificarUsoPorModelo(id);
+
+    if (estaUsadaPorModelo) {
+      // Baja lógica: cambiar estado a NO_VIGENTE
+      const index = this.clausulasMock.findIndex(c => c.id === id);
+      if (index !== -1) {
+        this.clausulasMock[index] = {
+          ...clausula,
+          estado: EstadoClausula.NO_VIGENTE
+        };
+      }
+
+      const response: EliminarClausulaResponse = {
+        exitoso: true,
+        mensaje: 'La cláusula está siendo utilizada por modelos. Se realizó baja lógica (estado: NO VIGENTE).',
+        tipoEliminacion: 'LOGICA'
+      };
+      return of(response).pipe(delay(300));
+    } else {
+      // Baja física: eliminar completamente
+      const index = this.clausulasMock.findIndex(c => c.id === id);
+      if (index !== -1) {
+        this.clausulasMock.splice(index, 1);
+      }
+
+      const response: EliminarClausulaResponse = {
+        exitoso: true,
+        mensaje: 'La cláusula se eliminó completamente (baja física).',
+        tipoEliminacion: 'FISICA'
+      };
+      return of(response).pipe(delay(300));
+    }
+  }
+
+  private verificarUsoPorModelo(clausulaId: number): boolean {
+    // Simular verificación de uso en modelos
+    // En la implementación real, esto consultaría a la base de datos
+    // Por ahora, retornamos false para permitir bajas físicas en testing
+    return false;
+  }
+
+  verificarTieneVersionEditable(id: number): Observable<boolean> {
+    const clausula = this.clausulasMock.find(c => c.id === id);
+    return of(clausula?.estado === EstadoClausula.BORRADOR || false).pipe(delay(100));
   }
 }
