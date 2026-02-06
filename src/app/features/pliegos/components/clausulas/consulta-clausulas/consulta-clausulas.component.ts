@@ -33,8 +33,8 @@ export class ConsultaClausulasComponent implements OnInit {
   cargando = false;
   mostrarSoloSeleccion = false;
 
-  colFiltro = 'col-12 col-lg-3 col-xl-2';
-  colTabla = 'col-12 col-lg-9 col-xl-10';
+  colFiltro = 'col-lg-3';
+  colTabla = 'col-lg-9';
 
   total = 0;
   parametros = {
@@ -227,12 +227,12 @@ export class ConsultaClausulasComponent implements OnInit {
   }
 
   aplicarColapso(): void {
-    if (this.colFiltro === 'col-12 col-lg-3 col-xl-2') {
-      this.colFiltro = 'col-1';
-      this.colTabla = 'col-11';
+    if (this.colFiltro === 'col-lg-3') {
+      this.colFiltro = 'col-lg-1';
+      this.colTabla = 'col-lg-11';
     } else {
-      this.colFiltro = 'col-12 col-lg-3 col-xl-2';
-      this.colTabla = 'col-12 col-lg-9 col-xl-10';
+      this.colFiltro = 'col-lg-3';
+      this.colTabla = 'col-lg-9';
     }
   }
 
