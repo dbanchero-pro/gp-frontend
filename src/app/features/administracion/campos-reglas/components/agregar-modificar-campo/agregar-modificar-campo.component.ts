@@ -7,7 +7,6 @@ import { CampoDTO } from '../../models/campo.model';
 import { TipoFuenteCampo } from '../../enum/tipo-fuente-campo.enum';
 import { TipoDatoCampo } from '../../enum/tipo-dato-campo.enum';
 import { SiNoValor } from '../../../../../shared/enum/si-no-valor.enum';
-import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
 import { AgregarModificarReglaPopupComponent } from '../agregar-modificar-regla-popup/agregar-modificar-regla-popup.component';
 import { IReglaDTO, ReglaDTO } from '../../models/regla.model';
 import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
@@ -15,7 +14,7 @@ import { OperadorHelperService } from '../../services/operador-helper.service';
 import { TipoRegla } from '../../enum/tipo-regla.enum';
 import { CanComponentDeactivate } from '../../../../../shared/utils/can-component-deactivate';
 import { formularioTocado } from '../../../../../shared/utils/functions';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { FormularioBaseComponent } from '../../../../../shared/components/base/formulario-base.component';
 
 @Component({
   selector: 'app-agregar-modificar-campo',
@@ -23,20 +22,18 @@ import { BsModalService } from 'ngx-bootstrap/modal';
   styleUrls: ['./agregar-modificar-campo.component.scss'],
   standalone: false
 })
-export class AgregarModificarCampoComponent implements OnInit, CanComponentDeactivate {
+export class AgregarModificarCampoComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly campoService = inject(CampoService);
   private readonly operadorHelper = inject(OperadorHelperService);
-  private readonly modalService = inject(BsModalService);
-  protected readonly actualizarServ = inject(ActualizarService);
 
   idCampo!: number;
   modoIngreso = false;
   titulo = 'Agregar campo';
 
-  form!: FormGroup<{
+  override form!: FormGroup<{
     etiqueta: FormControl<string>;
     descripcion: FormControl<string>;
     fuente: FormControl<string>;
@@ -55,6 +52,7 @@ export class AgregarModificarCampoComponent implements OnInit, CanComponentDeact
   siguienteIdRegla = 1;
 
   constructor() {
+    super();
     this.activatedRoute.params.subscribe(params => {
       this.idCampo = +params['idCampo'];
       this.modoIngreso = !this.idCampo;
@@ -91,7 +89,7 @@ export class AgregarModificarCampoComponent implements OnInit, CanComponentDeact
     this.campoService.obtenerPorId(this.idCampo).subscribe({
       next: (campo: CampoDTO | undefined) => {
         if (!campo) {
-          this.actualizarServ.mensajeError('Campo no encontrado');
+          this.actualizarService.mensajeError('Campo no encontrado');
           this.volver();
           return;
         }
@@ -115,7 +113,7 @@ export class AgregarModificarCampoComponent implements OnInit, CanComponentDeact
         }, 500);
       },
       error: (err) => {
-        this.actualizarServ.mensajeError('Error al cargar el campo');
+        this.actualizarService.mensajeError('Error al cargar el campo');
         console.error('Error al cargar campo:', err);
       }
     });
@@ -124,12 +122,11 @@ export class AgregarModificarCampoComponent implements OnInit, CanComponentDeact
   abrirAgregarRegla(): void {
     const tipoDato = this.form.value.tipoDato as TipoDatoCampo;
     if (!tipoDato) {
-      this.actualizarServ.mensajeError('Debe seleccionar un tipo de dato antes de agregar reglas');
+      this.actualizarService.mensajeError('Debe seleccionar un tipo de dato antes de agregar reglas');
       return;
     }
 
-    const modalRef = this.modalService.show(AgregarModificarReglaPopupComponent, {
-      class: 'modal-lg',
+    const popup = this.abrirPopupGrande(AgregarModificarReglaPopupComponent, 'Guardar', {
       backdrop: 'static',
       keyboard: false,
       initialState: {
@@ -139,9 +136,8 @@ export class AgregarModificarCampoComponent implements OnInit, CanComponentDeact
       }
     });
 
-    const component = modalRef.content as AgregarModificarReglaPopupComponent;
-    if (component.reglaGuardada) {
-      component.reglaGuardada.subscribe((regla: IReglaDTO) => {
+    if (popup.reglaGuardada) {
+      popup.reglaGuardada.subscribe((regla: IReglaDTO) => {
         regla.id = this.siguienteIdRegla++;
         this.reglas.push(regla);
       });
@@ -180,8 +176,7 @@ export class AgregarModificarCampoComponent implements OnInit, CanComponentDeact
       return;
     }
 
-    const modalRef = this.modalService.show(AgregarModificarReglaPopupComponent, {
-      class: 'modal-lg',
+    const popup = this.abrirPopupGrande(AgregarModificarReglaPopupComponent, 'Guardar', {
       backdrop: 'static',
       keyboard: false,
       initialState: {
@@ -192,9 +187,8 @@ export class AgregarModificarCampoComponent implements OnInit, CanComponentDeact
       }
     });
 
-    const component = modalRef.content as AgregarModificarReglaPopupComponent;
-    if (component.reglaGuardada) {
-      component.reglaGuardada.subscribe((reglaModificada: IReglaDTO) => {
+    if (popup.reglaGuardada) {
+      popup.reglaGuardada.subscribe((reglaModificada: IReglaDTO) => {
         const index = this.reglas.findIndex(r => r.id === regla.id);
         if (index !== -1) {
           this.reglas[index] = { ...reglaModificada, id: regla.id };
@@ -229,7 +223,7 @@ export class AgregarModificarCampoComponent implements OnInit, CanComponentDeact
     this.form.markAllAsTouched();
 
     if (!this.form.valid) {
-      this.actualizarServ.mensajeError('Por favor complete todos los campos requeridos');
+      this.actualizarService.mensajeError('Por favor complete todos los campos requeridos');
       return;
     }
 
@@ -269,16 +263,16 @@ export class AgregarModificarCampoComponent implements OnInit, CanComponentDeact
           this.form.markAsPristine();
           this.volver();
           window.setTimeout(() => {
-            this.actualizarServ.mensajeCorrecto(mensaje);
+            this.actualizarService.mensajeCorrecto(mensaje);
           }, 1000);
         },
         error: (err) => {
-          this.actualizarServ.mensajeError(err.message || 'Error al guardar el campo');
+          this.actualizarService.mensajeError(err.message || 'Error al guardar el campo');
           console.error('Error al guardar el campo:', err);
         }
       });
     } catch (error: any) {
-      this.actualizarServ.mensajeError(error.message || 'Error al guardar el campo');
+      this.actualizarService.mensajeError(error.message || 'Error al guardar el campo');
       console.error('Error al guardar el campo:', error);
     }
   }
