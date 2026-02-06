@@ -125,8 +125,7 @@ export class ConsultaClausulasComponent implements OnInit {
       subclaseId: [null],
       articuloId: [null],
       denominacion: [''],
-      fechaVigenciaDesde: [null],
-      fechaVigenciaHasta: [null]
+      rangoFechasVigencia: [null]
     });
   }
 
@@ -199,7 +198,15 @@ export class ConsultaClausulasComponent implements OnInit {
 
   buscar(): void {
     this.cargando = true;
-    const filtro: FiltroClausula = this.formularioFiltro.value;
+    const valores = this.formularioFiltro.value;
+    const rangoFechas = valores.rangoFechasVigencia;
+
+    const filtro: FiltroClausula = {
+      ...valores,
+      fechaVigenciaDesde: rangoFechas?.fechaDesde || null,
+      fechaVigenciaHasta: rangoFechas?.fechaHasta || null,
+      rangoFechasVigencia: undefined
+    };
 
     this.clausulaService.buscarClausulas(filtro).subscribe({
       next: (clausulas) => {

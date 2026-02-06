@@ -126,18 +126,16 @@
         </div>
 
         <div class="row">
-          <div class="form-group form-row col-12 m-0 pb-0">
-            <label for="fechaVigenciaDesde" class="col-form-label col-12">Fecha Vigencia Desde</label>
-            <input type="date" class="form-control col-12" id="fechaVigenciaDesde"
-              formControlName="fechaVigenciaDesde">
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="form-group form-row col-12 m-0 pb-0">
-            <label for="fechaVigenciaHasta" class="col-form-label col-12">Fecha Vigencia Hasta</label>
-            <input type="date" class="form-control col-12" id="fechaVigenciaHasta"
-              formControlName="fechaVigenciaHasta">
+          <div class="form-group form-row col-12 m-0 pb-0 px-0">
+            <app-rango-fechas
+              formControlName="rangoFechasVigencia"
+              orientacion="vertical"
+              etiquetaFechaDesde="Fecha Vigencia Desde"
+              etiquetaFechaHasta="Fecha Vigencia Hasta"
+              [requiereFechaDesde]="false"
+              [requiereFechaHasta]="false"
+              [permiteFechaFutura]="true">
+            </app-rango-fechas>
           </div>
         </div>
 
