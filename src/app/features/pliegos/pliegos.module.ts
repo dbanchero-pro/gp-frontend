@@ -5,7 +5,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ConsultaRepositorioArchivosComponent } from './components/repositorio-archivos/consulta-repositorio-archivos/consulta-repositorio-archivos.component';
 import { AgregarDocumentoRepositorioPopupComponent } from './components/repositorio-archivos/agregar-documento-repositorio-popup/agregar-documento-repositorio-popup.component';
 import { ConsultaClausulasComponent } from './components/clausulas/consulta-clausulas/consulta-clausulas.component';
-import { EliminarClausulaPopupComponent } from './components/clausulas/eliminar-clausula-popup/eliminar-clausula-popup.component';
 
 export const routes: Routes = [
     {
@@ -25,8 +24,7 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
     declarations: [
         ConsultaRepositorioArchivosComponent,
         AgregarDocumentoRepositorioPopupComponent,
-        ConsultaClausulasComponent,
-        EliminarClausulaPopupComponent
+        ConsultaClausulasComponent
     ], imports: [
         CommonModule,
         SharedModule,

@@ -254,61 +254,6 @@ export class ClausulaService {
       usuarioCreacion: 'admin',
       fechaModificacion: null,
       usuarioModificacion: null
-    },
-    {
-      id: 5,
-      denominacion: 'Cláusula de confidencialidad - Borrador',
-      aperturaElectronica: true,
-      tiposCompra: [
-        {
-          tipoCompraId: 3,
-          tipoCompraDescripcion: 'Licitación Abreviada',
-          subtipos: [
-            { subtipoCompraId: 4, subtipoCompraDescripcion: 'Nacional' }
-          ]
-        }
-      ],
-      objetosCompra: [
-        {
-          familiaId: 3,
-          familiaDescripcion: 'Servicios',
-          subfamiliaId: 3,
-          subfamiliaDescripcion: 'Servicios profesionales',
-          claseId: 3,
-          claseDescripcion: 'Consultoría',
-          subclaseId: 3,
-          subclaseDescripcion: 'Asesoría técnica',
-          articulo: null
-        }
-      ],
-      incisos: [
-        {
-          incisoId: 1,
-          incisoCodigo: '01',
-          incisoDescripcion: 'Poder Ejecutivo',
-          unidadEjecutora: { unidadEjecutoraId: 3, unidadEjecutoraCodigo: '003', unidadEjecutoraDescripcion: 'Ministerio de Salud' }
-        }
-      ],
-      fechaVigenciaDesde: '2025-01-01',
-      fechaVigenciaHasta: null,
-      estado: EstadoClausula.BORRADOR,
-      versionada: true,
-      redacciones: [
-        {
-          id: 6,
-          clausulaId: 5,
-          prioridad: 1,
-          redaccion: '<p><strong>Esta es una versión en borrador.</strong></p><p>El proveedor deberá mantener <em>estricta confidencialidad</em> sobre toda la información a la que tenga acceso durante la ejecución del contrato.</p><ul><li>No divulgar información</li><li>No copiar documentos</li><li>Devolver toda la información al finalizar</li></ul>',
-          fechaCreacion: '2025-01-15',
-          usuarioCreacion: 'admin',
-          fechaModificacion: null,
-          usuarioModificacion: null
-        }
-      ],
-      fechaCreacion: '2025-01-15',
-      usuarioCreacion: 'admin',
-      fechaModificacion: null,
-      usuarioModificacion: null
     }
   ];
 

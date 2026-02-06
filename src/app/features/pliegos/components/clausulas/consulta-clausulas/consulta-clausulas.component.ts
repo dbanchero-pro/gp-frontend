@@ -1,7 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
 import { Clausula } from '../../../models/clausula.model';
 import { FiltroClausula } from '../../../models/filtro-clausula.model';
 import { ClausulaService } from '../../../services/clausula.service';
@@ -18,7 +17,6 @@ import { AccionBoton } from '../../../../../shared/models/common/accion-boton.mo
 import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden.model';
 import { NumeroNulo } from '../../../../../shared/types/numero-nulo.type';
 import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
-import { EliminarClausulaPopupComponent, EliminarClausulaData } from '../eliminar-clausula-popup/eliminar-clausula-popup.component';
 import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
 
 @Component({
@@ -32,7 +30,6 @@ export class ConsultaClausulasComponent implements OnInit {
   private clausulaService = inject(ClausulaService);
   private location = inject(Location);
   private fechaPipe = inject(FechaPipe);
-  private dialog = inject(MatDialog);
   private actualizarService = inject(ActualizarService);
 
   formularioFiltro: FormGroup;
@@ -318,39 +315,33 @@ export class ConsultaClausulasComponent implements OnInit {
       return;
     }
 
+    const clausulaId = clausula.id;
+
     // Verificar si tiene versión editable
-    this.clausulaService.verificarTieneVersionEditable(clausula.id).subscribe({
+    this.clausulaService.verificarTieneVersionEditable(clausulaId).subscribe({
       next: (tieneVersionEditable) => {
-        // Abrir popup de confirmación
-        const dialogRef = this.dialog.open(EliminarClausulaPopupComponent, {
-          width: '500px',
-          data: {
-            denominacion: clausula.denominacion,
-            tieneVersionEditable: tieneVersionEditable
-          } as EliminarClausulaData
-        });
+        const mensaje = tieneVersionEditable
+          ? `¿Está seguro que desea volver a la versión anteriormente aprobada de la cláusula "${clausula.denominacion}"?`
+          : `¿Está seguro que desea eliminar la sección "${clausula.denominacion}"?`;
 
-        dialogRef.afterClosed().subscribe((confirmar: boolean) => {
-          if (confirmar && clausula.id) {
-            this.ejecutarEliminacion(clausula.id);
+        this.actualizarService.confirmar(
+          mensaje,
+          () => {
+            this.clausulaService.eliminarClausula(clausulaId).subscribe({
+              next: (response) => {
+                if (response.exitoso) {
+                  this.actualizarService.mensajeCorrecto(response.mensaje);
+                  this.buscar();
+                } else {
+                  this.actualizarService.mensajeError(response.mensaje);
+                }
+              },
+              error: () => {
+                this.actualizarService.mensajeError('Ocurrió un error al eliminar la cláusula.');
+              }
+            });
           }
-        });
-      }
-    });
-  }
-
-  private ejecutarEliminacion(clausulaId: number): void {
-    this.clausulaService.eliminarClausula(clausulaId).subscribe({
-      next: (response) => {
-        if (response.exitoso) {
-          this.actualizarService.mensajeCorrecto(response.mensaje);
-          this.buscar();
-        } else {
-          this.actualizarService.mensajeError(response.mensaje);
-        }
-      },
-      error: () => {
-        this.actualizarService.mensajeError('Ocurrió un error al eliminar la cláusula.');
+        );
       }
     });
   }
