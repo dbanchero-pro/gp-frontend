@@ -205,7 +205,7 @@ export class AgregarModificarCapituloComponent extends FormularioBaseComponent i
     if (index > 0) {
       acciones.push({
         nombre: 'Subir',
-        clase: 'btn btn-secondary btn-sm',
+        clase: 'btn btn-sm',
         icono: 'fa fa-arrow-up',
         ariaLabel: `Subir cláusula ${clausula.denominacion}`,
         accion: () => this.moverClausulaArriba(clausula)
@@ -215,7 +215,7 @@ export class AgregarModificarCapituloComponent extends FormularioBaseComponent i
     if (index < this.clausulasAgregadas.length - 1) {
       acciones.push({
         nombre: 'Bajar',
-        clase: 'btn btn-secondary btn-sm',
+        clase: 'btn btn-sm',
         icono: 'fa fa-arrow-down',
         ariaLabel: `Bajar cláusula ${clausula.denominacion}`,
         accion: () => this.moverClausulaAbajo(clausula)
@@ -224,7 +224,7 @@ export class AgregarModificarCapituloComponent extends FormularioBaseComponent i
 
     acciones.push({
       nombre: 'Eliminar',
-      clase: 'btn btn-danger btn-sm',
+      clase: 'btn btn-sm',
       icono: 'fa fa-trash',
       ariaLabel: `Eliminar cláusula ${clausula.denominacion}`,
       accion: () => this.eliminarClausula(clausula)
