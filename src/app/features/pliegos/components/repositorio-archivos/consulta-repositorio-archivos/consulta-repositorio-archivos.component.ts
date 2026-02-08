@@ -1,6 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { PaginaBusquedaComponent } from '../../../../../shared/components/pagina-busqueda/pagina-busqueda.component';
 import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden.model';
 import { FiltroDocumentoRepositorioDTO } from '../../../models/filtro-documento-repositorio.model';
@@ -11,8 +12,6 @@ import { ActualizarService } from '../../../../../shared/services/common/actuali
 import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
 import { SeguridadService } from '../../../../../shared/services/common/seguridad.service';
 import { ArchivoService } from '../../../../../shared/services/common/archivo.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { AgregarDocumentoRepositorioPopupComponent } from '../agregar-documento-repositorio-popup/agregar-documento-repositorio-popup.component';
 import { IFiltroOrganismoDTO } from '../../../../../shared/models/filtros/filtro-organismo.model';
 import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
 
@@ -21,20 +20,20 @@ import { AccionBoton } from '../../../../../shared/models/common/accion-boton.mo
   templateUrl: './consulta-repositorio-archivos.component.html',
   styleUrls: ['./consulta-repositorio-archivos.component.scss'],
   standalone: false
-}) 
+})
 export class ConsultaRepositorioArchivosComponent
   extends PaginaBusquedaComponent<FiltroDocumentoRepositorioDTO>
-  implements OnInit {
+  implements OnInit, AfterViewInit {
 
   private readonly fb = inject(FormBuilder);
   private readonly actualizarServ = inject(ActualizarService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly location = inject(Location);
   private readonly documentoService = inject(DocumentoRepositorioService);
   private readonly snapshotGenericService = inject(SnapshotGenericService);
   protected readonly seguridad = inject(SeguridadService);
   private readonly archivoService = inject(ArchivoService);
-  protected override readonly modalService = inject(BsModalService);
 
   listaOrden: IColumnaOrden[] = [
     { id: 'nombreDocumento', nombre: 'Nombre documento' },
@@ -59,10 +58,37 @@ export class ConsultaRepositorioArchivosComponent
   }
 
   override ngOnInit(): void {
-
     super.ngOnInit();
-    this.tiposArchivo = this.documentoService.obtenerTiposArchivo();   
-    this.nuevaConsulta();
+    this.tiposArchivo = this.documentoService.obtenerTiposArchivo();
+  }
+
+  ngAfterViewInit(): void {
+    const paramVolver = this.route.snapshot.queryParamMap.get('volver');
+    if (paramVolver === '1') {
+      setTimeout(() => {
+        this.buscarVolver();
+      }, 100);
+    } else {
+      setTimeout(() => {
+        this.nuevaConsulta();
+      }, 100);
+    }
+  }
+
+  private buscarVolver(): void {
+    const snap = this.snapshotGenericService.load<any>(ConsultaRepositorioArchivosComponent.SNAPSHOT_KEY);
+
+    if (snap) {
+      this.parametros = snap;
+      this.form.patchValue(snap.filtro);
+      this.parametros.pagina = snap.pagina;
+      this.parametros.tamanoPagina = snap.tamanoPagina;
+      this.actualizarFiltro();
+      this.buscar();
+    }
+
+    const currentUrl = this.location.path().split('?')[0];
+    this.location.replaceState(currentUrl);
   }
 
   onFiltroOrganismo(filtro: IFiltroOrganismoDTO | null): void {
@@ -149,15 +175,7 @@ export class ConsultaRepositorioArchivosComponent
   }
 
   abrirAgregarDocumento(): void {
-    const popup = this.abrirPopupGrande(AgregarDocumentoRepositorioPopupComponent, 'Guardar', {
-      class: 'modal-lg',
-      backdrop: 'static',
-      keyboard: false
-    });
-
-    popup.documentoGuardado.subscribe(() => {
-      this.buscar();
-    });
+    this.router.navigate(['/pliegos/repositorio-archivos/agregar']);
   }
 
   obtenerAcciones(documento: DocumentoRepositorioDTO): AccionBoton[] {
@@ -249,18 +267,6 @@ export class ConsultaRepositorioArchivosComponent
   }
 
   modificarDocumento(documento: DocumentoRepositorioDTO): void {
-    const popup = this.abrirPopupGrande(AgregarDocumentoRepositorioPopupComponent, 'Guardar', {
-      class: 'modal-lg',
-      backdrop: 'static',
-      keyboard: false,
-
-      initialState: {
-        documentoExistente: documento
-      }
-    });
-
-    popup.documentoGuardado.subscribe(() => {
-      this.buscar();
-    });
+    this.router.navigate(['/pliegos/repositorio-archivos/modificar', documento.id]);
   }
 }

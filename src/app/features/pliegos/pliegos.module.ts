@@ -12,6 +12,14 @@ export const routes: Routes = [
         component: ConsultaRepositorioArchivosComponent
     },
     {
+        path: 'repositorio-archivos/agregar',
+        component: AgregarDocumentoRepositorioPopupComponent
+    },
+    {
+        path: 'repositorio-archivos/modificar/:idDocumento',
+        component: AgregarDocumentoRepositorioPopupComponent
+    },
+    {
         path: 'clausulas',
         component: ConsultaClausulasComponent
     }
