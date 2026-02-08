@@ -158,6 +158,13 @@
       </div>
     </div>
 
+    <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total===-1">
+      <div class="card-body py-sm-2 mb-sm-2 col-12 text-center pt-sm-4 pb-sm-4">
+        <em class="fa fa-search fa-2x d-block mb-4"></em>
+        <h6>Ingresa las opciones de búsqueda y presiona buscar para consultar cláusulas</h6>
+      </div>
+    </div>
+
     <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden"
       [columnaOrden]="parametros.sort" [orden]="parametros.order"
       (orderChange)="cambioOrden($event)" (sortChange)="cambioColumnaOrden($event)">

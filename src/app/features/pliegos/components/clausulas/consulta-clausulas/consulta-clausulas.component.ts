@@ -1,6 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { Clausula } from '../../../models/clausula.model';
 import { FiltroClausula } from '../../../models/filtro-clausula.model';
 import { ClausulaService } from '../../../services/clausula.service';
@@ -18,6 +19,7 @@ import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden
 import { NumeroNulo } from '../../../../../shared/types/numero-nulo.type';
 import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
 import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
+import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
 
 @Component({
   selector: 'app-consulta-clausulas',
@@ -25,12 +27,14 @@ import { ActualizarService } from '../../../../../shared/services/common/actuali
   styleUrls: ['./consulta-clausulas.component.scss'],
   standalone: false
 })
-export class ConsultaClausulasComponent implements OnInit {
+export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
   private fb = inject(FormBuilder);
   private clausulaService = inject(ClausulaService);
   private location = inject(Location);
+  private route = inject(ActivatedRoute);
   private fechaPipe = inject(FechaPipe);
   private actualizarService = inject(ActualizarService);
+  private snapshotGenericService = inject(SnapshotGenericService);
 
   formularioFiltro: FormGroup;
   clausulas: Clausula[] = [];
@@ -40,7 +44,7 @@ export class ConsultaClausulasComponent implements OnInit {
   colFiltro = 'col-lg-3';
   colTabla = 'col-lg-9';
 
-  total = 0;
+  total = -1;
   parametros = {
     pagina: 0,
     tamanoPagina: 10,
@@ -118,6 +122,8 @@ export class ConsultaClausulasComponent implements OnInit {
 
   clausulaSeleccionadaMap: Map<number, boolean> = new Map();
 
+  public static readonly SNAPSHOT_KEY = 'CONSULTA_CLAUSULAS';
+
   constructor() {
     this.formularioFiltro = this.fb.nonNullable.group({
       incisoId: [null],
@@ -136,7 +142,35 @@ export class ConsultaClausulasComponent implements OnInit {
 
   ngOnInit(): void {
     this.configurarCambiosFiltros();
-    this.actualizarFiltrosYBuscar();
+  }
+
+  ngAfterViewInit(): void {
+    const paramVolver = this.route.snapshot.queryParamMap.get('volver');
+    if (paramVolver === '1') {
+      setTimeout(() => {
+        this.buscarVolver();
+      }, 100);
+    } else {
+      setTimeout(() => {
+        this.nuevaConsulta();
+      }, 100);
+    }
+  }
+
+  private buscarVolver(): void {
+    const snap = this.snapshotGenericService.load<any>(ConsultaClausulasComponent.SNAPSHOT_KEY);
+
+    if (snap) {
+      this.formularioFiltro.patchValue(snap.filtro);
+      this.parametros.pagina = snap.pagina;
+      this.parametros.tamanoPagina = snap.tamanoPagina;
+      this.parametros.sort = snap.sort;
+      this.parametros.order = snap.order;
+      this.buscar();
+    }
+
+    const currentUrl = this.location.path().split('?')[0];
+    this.location.replaceState(currentUrl);
   }
 
   configurarCambiosFiltros(): void {
@@ -213,6 +247,17 @@ export class ConsultaClausulasComponent implements OnInit {
       rangoFechasVigencia: undefined
     };
 
+    this.snapshotGenericService.save(
+      ConsultaClausulasComponent.SNAPSHOT_KEY,
+      {
+        filtro: valores,
+        pagina: this.parametros.pagina,
+        tamanoPagina: this.parametros.tamanoPagina,
+        sort: this.parametros.sort,
+        order: this.parametros.order
+      }
+    );
+
     this.clausulaService.buscarClausulas(filtro).subscribe({
       next: (clausulas) => {
         this.clausulas = clausulas;
@@ -233,7 +278,15 @@ export class ConsultaClausulasComponent implements OnInit {
   nuevaConsulta(): void {
     this.formularioFiltro.reset();
     this.parametros.pagina = 0;
-    this.actualizarFiltrosYBuscar();
+    this.parametros.tamanoPagina = 10;
+    this.parametros.sort = 'denominacion';
+    this.parametros.order = 'asc';
+    this.clausulas = [];
+    this.total = -1;
+
+    this.snapshotGenericService.clear(
+      ConsultaClausulasComponent.SNAPSHOT_KEY
+    );
   }
 
   cambioPagina(pagina: number): void {
