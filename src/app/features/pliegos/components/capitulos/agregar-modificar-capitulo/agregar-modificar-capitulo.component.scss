@@ -1,8 +1,14 @@
-.gap-2 {
-  gap: 0.5rem;
+
+.table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
 }
 
-.btn-group {
-  display: inline-flex;
-  gap: 0.25rem;
+.badge-primary {
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+}
+
+.alert {
+  border-radius: 0.25rem;
 }

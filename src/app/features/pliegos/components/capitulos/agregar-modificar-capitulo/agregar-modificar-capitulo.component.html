@@ -1,69 +1,50 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-12">
-      <h2 class="mb-4">{{ titulo }}</h2>
+      <div class="col-md-8">
+        <h4>{{ titulo }}</h4>
+      </div>
+      <div class="col-md-4">
+        <span class="float-right text-muted">Los campos con * son obligatorios</span>
+      </div>
+  </div>
 
+  <div class="row">
+    <div class="col-12">
       <form [formGroup]="form">
-        <div class="card mb-4">
-          <div class="card-header">
-            <h5 class="mb-0">Datos del capítulo</h5>
-          </div>
+        <div class="card mb-3">
           <div class="card-body">
+            <h5 class="card-title mb-3">Datos generales</h5>
             <div class="row">
-              <div class="col-md-12 mb-3">
-                <label for="denominacion" class="form-label">
-                  Denominación <span class="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="denominacion"
-                  formControlName="denominacion"
-                  maxlength="500"
-                  [class.is-invalid]="form.get('denominacion')?.invalid && form.get('denominacion')?.touched"
-                />
-                <div class="invalid-feedback" *ngIf="form.get('denominacion')?.invalid && form.get('denominacion')?.touched">
-                  <div *ngIf="form.get('denominacion')?.errors?.['required']">
-                    La denominación es obligatoria
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="denominacion">* Denominación</label>
+                  <input type="text" class="form-control" id="denominacion" formControlName="denominacion"
+                    placeholder="Ingrese denominación" maxlength="500">
+                  <div *ngIf="form.controls.denominacion.invalid && form.controls.denominacion.touched" class="text-danger">
+                    <small *ngIf="form.controls.denominacion.errors?.['required']">La denominación es obligatoria</small>
+                    <small *ngIf="form.controls.denominacion.errors?.['maxlength']">La denominación no puede exceder los 500 caracteres</small>
                   </div>
-                  <div *ngIf="form.get('denominacion')?.errors?.['maxlength']">
-                    La denominación no puede superar los 500 caracteres
-                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="fechaVigenciaDesde">Fecha vigencia desde</label>
+                  <input type="date" class="form-control" id="fechaVigenciaDesde" formControlName="fechaVigenciaDesde">
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="fechaVigenciaHasta">Fecha vigencia hasta</label>
+                  <input type="date" class="form-control" id="fechaVigenciaHasta" formControlName="fechaVigenciaHasta">
                 </div>
               </div>
             </div>
 
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="fechaVigenciaDesde" class="form-label">
-                  Fecha vigencia desde
-                </label>
-                <input
-                  type="date"
-                  class="form-control"
-                  id="fechaVigenciaDesde"
-                  formControlName="fechaVigenciaDesde"
-                  [class.is-invalid]="form.errors?.['fechasInvalidas'] && form.get('fechaVigenciaDesde')?.touched"
-                />
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <label for="fechaVigenciaHasta" class="form-label">
-                  Fecha vigencia hasta
-                </label>
-                <input
-                  type="date"
-                  class="form-control"
-                  id="fechaVigenciaHasta"
-                  formControlName="fechaVigenciaHasta"
-                  [class.is-invalid]="form.errors?.['fechasInvalidas'] && form.get('fechaVigenciaHasta')?.touched"
-                />
-              </div>
-            </div>
-
-            <div class="row" *ngIf="form.errors?.['fechasInvalidas'] && (form.get('fechaVigenciaDesde')?.touched || form.get('fechaVigenciaHasta')?.touched)">
+            <div *ngIf="form.errors?.['fechasInvalidas'] && (form.controls.fechaVigenciaDesde.touched || form.controls.fechaVigenciaHasta.touched)" class="row">
               <div class="col-12">
-                <div class="alert alert-danger mb-0">
+                <div class="alert alert-danger">
                   La fecha vigencia desde debe ser anterior a la fecha vigencia hasta
                 </div>
               </div>
@@ -71,31 +52,23 @@
           </div>
         </div>
 
-        <div class="card mb-4">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Cláusulas</h5>
-            <button
-              type="button"
-              class="btn btn-primary"
-              (click)="agregarClausula()"
-            >
-              <i class="fa fa-plus" aria-hidden="true"></i>
-              Agregar cláusula
-            </button>
-          </div>
+        <div class="card mb-3">
           <div class="card-body">
-            <div *ngIf="clausulasAgregadas.length === 0" class="alert alert-info">
-              No hay cláusulas agregadas al capítulo
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Cláusulas</h5>
+              <button type="button" class="btn btn-primary" (click)="agregarClausula()">
+                <em class="fa fa-plus mr-1"></em> Agregar cláusula
+              </button>
             </div>
 
             <div *ngIf="clausulasAgregadas.length > 0" class="table-responsive">
-              <table class="table table-striped table-bordered">
+              <table class="table table-bordered table-hover">
                 <thead>
                   <tr>
                     <th style="width: 10%">Orden</th>
                     <th style="width: 60%">Denominación</th>
                     <th style="width: 10%">Versión</th>
-                    <th style="width: 20%">Acciones</th>
+                    <th class="text-center" style="width: 20%">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -103,58 +76,32 @@
                     <td>{{ clausula.orden }}</td>
                     <td>{{ clausula.denominacion }}</td>
                     <td>{{ clausula.version }}</td>
-                    <td>
-                      <div class="btn-group" role="group">
-                        <button
-                          *ngFor="let accion of obtenerAccionesClausula(clausula)"
-                          type="button"
-                          [class]="accion.clase"
-                          [attr.aria-label]="accion.ariaLabel"
-                          (click)="accion.accion && accion.accion()"
-                        >
-                          <i [class]="accion.icono" aria-hidden="true"></i>
-                          <span class="d-none d-md-inline ms-1">{{ accion.nombre }}</span>
-                        </button>
-                      </div>
+                    <td class="text-center">
+                      <button
+                        *ngFor="let accion of obtenerAccionesClausula(clausula)"
+                        type="button"
+                        [class]="accion.clase"
+                        [attr.aria-label]="accion.ariaLabel"
+                        (click)="accion.accion && accion.accion()">
+                        <em [class]="accion.icono"></em>
+                      </button>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
+
+            <div *ngIf="clausulasAgregadas.length === 0" class="alert alert-info">
+              No hay cláusulas agregadas al capítulo
+            </div>
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-12">
-            <div class="d-flex justify-content-end gap-2">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                (click)="volver()"
-              >
-                <i class="fa fa-times" aria-hidden="true"></i>
-                Cancelar
-              </button>
-
-              <button
-                *ngIf="!modoIngreso"
-                type="button"
-                class="btn btn-success"
-                (click)="aprobar()"
-              >
-                <i class="fa fa-check" aria-hidden="true"></i>
-                Aprobar
-              </button>
-
-              <button
-                type="button"
-                class="btn btn-primary"
-                (click)="guardar()"
-              >
-                <i class="fa fa-save" aria-hidden="true"></i>
-                Guardar
-              </button>
-            </div>
+        <div class="d-flex justify-content-end mb-4">
+          <button *ngIf="!modoIngreso" class="btn btn-primary mr-3" type="button" (click)="aprobar()">Aprobar</button>
+          <button class="btn btn-primary" type="button" (click)="guardar()">Guardar</button>
+          <div class="btn-back d-flex justify-content-end">
+            <button class="btn btn-link" type="button" (click)="volver()">Cancelar</button>
           </div>
         </div>
       </form>
