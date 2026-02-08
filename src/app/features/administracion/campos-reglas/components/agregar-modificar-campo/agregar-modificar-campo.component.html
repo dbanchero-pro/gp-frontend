@@ -1,17 +1,15 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12">
-            <div class="form-row">
-             <div class="col-9">
-                <h3>{{ titulo }}</h3>
-            </div>
-            <div class="col-3 text-md-right text-muted">
-                <span>Los campos con * son obligatorios</span>
-            </div>
+        <div class="col-md-8">
+            <h4>{{ titulo }}</h4>
         </div>
+        <div class="col-md-4">
+            <span class="float-right text-muted">Los campos con * son obligatorios</span>
         </div>
     </div>
 
+ <div class="row">
+    <div class="col-12">
     <form [formGroup]="form" (submit)="guardar()" class="row pr-0 mr-0">
         <div class="col-12 table-bordered">
             <div class="container-fluid pt-4 pb-4 pr-0 pl-0 pr-md-4 pl-md-4">
@@ -139,4 +137,6 @@
             </div>
         </div>
     </form>
+    </div>
+    </div>
 </div>

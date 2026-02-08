@@ -1,8 +1,15 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-12">
-      <h4 class="mb-4">{{ titulo }}</h4>
+      <div class="col-md-8">
+        <h4>{{ titulo }}</h4>
+      </div>
+      <div class="col-md-4">
+        <span class="float-right text-muted">Los campos con * son obligatorios</span>
+      </div>
+  </div>
 
+  <div class="row">
+    <div class="col-12">
       <form [formGroup]="form">
         <div class="card mb-3">
           <div class="card-body">

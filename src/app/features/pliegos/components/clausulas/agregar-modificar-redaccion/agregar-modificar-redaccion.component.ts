@@ -28,6 +28,7 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
   colapsado = true;
   idClausula?: number;
   idRedaccion?: number;
+  titulo: string = 'Agregar redacción';
 
   override form!: FormGroup<{
     prioridad: FormControl<number | null>;
@@ -47,6 +48,9 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
 
     this.cargarDatosTemporales();
     this.inicializarFormulario();
+
+    if (!this.modoIngreso)
+      this.titulo = 'Modificar redacción';
 
     console.log('Redacción cargada:', this.redaccion);
     console.log('Valores del formulario - Prioridad:', this.form.value.prioridad, 'Redacción length:', this.form.value.redaccion?.length);
