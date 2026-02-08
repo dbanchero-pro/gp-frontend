@@ -1,7 +1,7 @@
 <ng-container *ngIf="orientacion === 'horizontal'">
   <div [formGroup]="form" class="row">
     <div class="col-12">
-      <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-4 px-0">
+      <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-4 px-3">
         <label for="fechaDesde" class="col-form-label col-12 pl-0"
           [class.field-error]="campoError('fechaDesde') || campoError('fechaHasta')">
           {{ !etiquetaFechaDesde ? etiquetaRango : '* ' + etiquetaRango }}
