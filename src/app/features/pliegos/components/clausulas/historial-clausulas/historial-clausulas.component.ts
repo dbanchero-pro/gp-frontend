@@ -1,6 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Clausula } from '../../../models/clausula.model';
 import { ClausulaService } from '../../../services/clausula.service';
 import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden.model';
@@ -13,8 +12,8 @@ import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
   standalone: false
 })
 export class HistorialClausulasComponent implements OnInit {
-  private location = inject(Location);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private clausulaService = inject(ClausulaService);
   private fechaPipe = inject(FechaPipe);
 
@@ -259,6 +258,6 @@ export class HistorialClausulasComponent implements OnInit {
   }
 
   volver(): void {
-    this.location.back();
+    this.router.navigate(['/pliegos/clausulas'], { queryParams: { volver: 1 } });
   }
 }
