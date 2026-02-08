@@ -270,4 +270,35 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
       : 'Indefinido';
     return `${desde} - ${hasta}`;
   }
+
+  esBorrador(capitulo: Capitulo): boolean {
+    return capitulo.estado === 'BORRADOR';
+  }
+
+  esVigente(capitulo: Capitulo): boolean {
+    return capitulo.estado === 'VIGENTE';
+  }
+
+  obtenerEstadoVigencia(capitulo: Capitulo): string {
+    if (capitulo.estado === 'BORRADOR') {
+      const hoy = new Date();
+      const desde = capitulo.fechaVigenciaDesde ? new Date(capitulo.fechaVigenciaDesde) : null;
+      const hasta = capitulo.fechaVigenciaHasta ? new Date(capitulo.fechaVigenciaHasta) : null;
+
+      if (desde && hoy < desde) {
+        return 'NO_VIGENTE';
+      }
+      if (hasta && hoy > hasta) {
+        return 'NO_VIGENTE';
+      }
+      return 'VIGENTE';
+    }
+    return capitulo.estado;
+  }
+
+  obtenerTextoEstadoVigencia(capitulo: Capitulo): string {
+    const estado = this.obtenerEstadoVigencia(capitulo);
+    const version = capitulo.version || 'N/A';
+    return estado === 'VIGENTE' ? `Vigente - V${version}` : `No vigente - V${version}`;
+  }
 }

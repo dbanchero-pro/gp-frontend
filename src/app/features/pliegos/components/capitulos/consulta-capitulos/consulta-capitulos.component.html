@@ -63,11 +63,13 @@
             <div>
               <span class="font-weight-bold">{{ capitulo.denominacion }}</span>
               <span class="badge ml-2" [ngClass]="{
-                'badge-success': capitulo.estado === 'VIGENTE',
-                'badge-warning': capitulo.estado === 'NO_VIGENTE',
-                'badge-info': capitulo.estado === 'BORRADOR'
+                'badge-success': obtenerEstadoVigencia(capitulo) === 'VIGENTE',
+                'badge-warning': obtenerEstadoVigencia(capitulo) === 'NO_VIGENTE'
               }">
-                {{ capitulo.estado === 'VIGENTE' ? 'Vigente - V' + (capitulo.version || 'N/A') : capitulo.estado === 'NO_VIGENTE' ? 'No vigente - V' + (capitulo.version || 'N/A') : 'Borrador - V' + (capitulo.version || 'N/A') }}
+                {{ obtenerTextoEstadoVigencia(capitulo) }}
+              </span>
+              <span *ngIf="esBorrador(capitulo)" class="badge badge-info ml-1">
+                Borrador
               </span>
             </div>
             <div class="d-flex" *ngIf="!mostrarSoloSeleccion">
