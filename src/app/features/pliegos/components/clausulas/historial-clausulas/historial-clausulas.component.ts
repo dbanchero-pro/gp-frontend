@@ -37,7 +37,6 @@ export class HistorialClausulasComponent implements OnInit {
     { id: 'fechaModificacion', nombre: 'Fecha de aprobación' },
     { id: 'fechaVigenciaDesde', nombre: 'Fecha vigencia desde' },
     { id: 'fechaVigenciaHasta', nombre: 'Fecha vigencia hasta' },
-    { id: 'estado', nombre: 'Estado' }
   ];
 
   ngOnInit(): void {
