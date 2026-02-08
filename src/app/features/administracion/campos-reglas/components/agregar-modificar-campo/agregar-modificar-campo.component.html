@@ -93,13 +93,13 @@
                 <div class="col-12">
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h5 class="card-title mb-3">Reglas</h5>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title mb-0">Reglas</h5>
+                                <button class="btn btn-primary" type="button" (click)="abrirAgregarRegla()">
+                                    <em class="fa fa-plus mr-1"></em>Agregar regla
+                                </button>
+                            </div>
                                 <div class="col-12">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <button class="btn btn-primary" type="button" (click)="abrirAgregarRegla()">
-                                            <em class="fa fa-plus mr-1"></em>Agregar regla
-                                        </button>
-                                    </div>
 
                                     <div *ngIf="reglas.length === 0" class="Alert">
                                         No hay reglas asociadas a este campo
