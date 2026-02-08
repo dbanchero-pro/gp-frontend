@@ -298,7 +298,10 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
 
   obtenerTextoEstadoVigencia(capitulo: Capitulo): string {
     const estado = this.obtenerEstadoVigencia(capitulo);
-    const version = capitulo.version || 'N/A';
-    return estado === 'VIGENTE' ? `Vigente - V${version}` : `No vigente - V${version}`;
+    if (estado === 'VIGENTE') {
+      const version = capitulo.version || 'N/A';
+      return `Vigente - V${version}`;
+    }
+    return 'No vigente';
   }
 }
