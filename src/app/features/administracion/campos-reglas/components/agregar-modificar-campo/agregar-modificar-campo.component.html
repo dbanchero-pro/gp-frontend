@@ -10,109 +10,122 @@
 
  <div class="row">
     <div class="col-12">
-    <form [formGroup]="form" (submit)="guardar()" class="row pr-0 mr-0">
-        <div class="col-12 table-bordered">
-            <div class="container-fluid pt-4 pb-4 pr-0 pl-0 pr-md-4 pl-md-4">
+        <form [formGroup]="form" (submit)="guardar()">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Datos generales</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div [class.field-error]="form.get('etiqueta')?.invalid && form.get('etiqueta')?.touched">
+                                    <label for="etiqueta">* Etiqueta</label>
+                                    <input id="etiqueta" type="text" class="form-control" formControlName="etiqueta"
+                                        maxlength="50" />
+                                    <span class="texto-error m-0"
+                                        [style.visibility]="form.get('etiqueta')?.hasError('required') && form.get('etiqueta')?.touched ? 'visible' : 'hidden'">
+                                        La etiqueta no puede estar vacía
+                                    </span>
+                                </div>
+
+                                <div [class.field-error]="form.get('fuente')?.invalid && form.get('fuente')?.touched">
+                                    <label for="fuente">* Fuente</label>
+                                    <select id="fuente" class="form-control" formControlName="fuente">
+                                        <option value="">Seleccione una fuente</option>
+                                        <option *ngFor="let tipo of tiposFuente" [value]="tipo.id">{{ tipo.nombre }}</option>
+                                    </select>
+                                    <span class="texto-error m-0"
+                                        [style.visibility]="form.get('fuente')?.hasError('required') && form.get('fuente')?.touched ? 'visible' : 'hidden'">
+                                        La fuente no puede estar vacía
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6" [class.field-error]="form.get('tipoDato')?.invalid && form.get('tipoDato')?.touched">
+                                    <label for="tipoDato">* Tipo de dato</label>
+                                    <select id="tipoDato" class="form-control" formControlName="tipoDato">
+                                        <option value="">Seleccione un tipo de dato</option>
+                                        <option *ngFor="let tipo of tiposDato" [value]="tipo.id">{{ tipo.nombre }}</option>
+                                    </select>
+                                    <span class="texto-error m-0"
+                                        [style.visibility]="form.get('tipoDato')?.hasError('required') && form.get('tipoDato')?.touched ? 'visible' : 'hidden'">
+                                        El tipo de dato no puede estar vacío
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                        <div class="col-md-6">
+                                <div class="form-group col-md-6" [class.field-error]="form.get('sePuedeEliminar')?.invalid && form.get('sePuedeEliminar')?.touched">
+                                    <label for="sePuedeEliminar">* Se puede eliminar</label>
+                                    <select id="sePuedeEliminar" class="form-control" formControlName="sePuedeEliminar">
+                                        <option *ngFor="let opcion of opcionesSiNo" [value]="opcion.id">{{ opcion.nombre }}</option>
+                                    </select>
+                                    <span class="texto-error m-0"
+                                        [style.visibility]="form.get('sePuedeEliminar')?.hasError('required') && form.get('sePuedeEliminar')?.touched ? 'visible' : 'hidden'">
+                                        Debe indicar si se puede eliminar
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-12" [class.field-error]="form.get('descripcion')?.invalid && form.get('descripcion')?.touched">
+                                    <label for="descripcion">* Descripción</label>
+                                    <textarea id="descripcion" class="form-control" formControlName="descripcion"
+                                        rows="3"></textarea>
+                                    <span class="texto-error m-0"
+                                        [style.visibility]="form.get('descripcion')?.hasError('required') && form.get('descripcion')?.touched ? 'visible' : 'hidden'">
+                                        La descripción no puede estar vacía
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="col-12">
-                    <div class="form-row">
-                            <div class="form-group col-md-6" [class.field-error]="form.get('etiqueta')?.invalid && form.get('etiqueta')?.touched">
-                                <label for="etiqueta">* Etiqueta</label>
-                                <input id="etiqueta" type="text" class="form-control" formControlName="etiqueta"
-                                    maxlength="50" />
-                                <span class="texto-error m-0"
-                                    [style.visibility]="form.get('etiqueta')?.hasError('required') && form.get('etiqueta')?.touched ? 'visible' : 'hidden'">
-                                    La etiqueta no puede estar vacía
-                                </span>
-                            </div>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">Reglas</h5>
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <button class="btn btn-primary" type="button" (click)="abrirAgregarRegla()">
+                                            <em class="fa fa-plus mr-1"></em>Agregar regla
+                                        </button>
+                                    </div>
 
-                            <div class="form-group col-md-6" [class.field-error]="form.get('fuente')?.invalid && form.get('fuente')?.touched">
-                                <label for="fuente">* Fuente</label>
-                                <select id="fuente" class="form-control" formControlName="fuente">
-                                    <option value="">Seleccione una fuente</option>
-                                    <option *ngFor="let tipo of tiposFuente" [value]="tipo.id">{{ tipo.nombre }}</option>
-                                </select>
-                                <span class="texto-error m-0"
-                                    [style.visibility]="form.get('fuente')?.hasError('required') && form.get('fuente')?.touched ? 'visible' : 'hidden'">
-                                    La fuente no puede estar vacía
-                                </span>
-                            </div>
-                        </div>
+                                    <div *ngIf="reglas.length === 0" class="Alert">
+                                        No hay reglas asociadas a este campo
+                                    </div>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-6" [class.field-error]="form.get('tipoDato')?.invalid && form.get('tipoDato')?.touched">
-                                <label for="tipoDato">* Tipo de dato</label>
-                                <select id="tipoDato" class="form-control" formControlName="tipoDato">
-                                    <option value="">Seleccione un tipo de dato</option>
-                                    <option *ngFor="let tipo of tiposDato" [value]="tipo.id">{{ tipo.nombre }}</option>
-                                </select>
-                                <span class="texto-error m-0"
-                                    [style.visibility]="form.get('tipoDato')?.hasError('required') && form.get('tipoDato')?.touched ? 'visible' : 'hidden'">
-                                    El tipo de dato no puede estar vacío
-                                </span>
-                            </div>
-
-                            <div class="form-group col-md-6" [class.field-error]="form.get('sePuedeEliminar')?.invalid && form.get('sePuedeEliminar')?.touched">
-                                <label for="sePuedeEliminar">* Se puede eliminar</label>
-                                <select id="sePuedeEliminar" class="form-control" formControlName="sePuedeEliminar">
-                                    <option *ngFor="let opcion of opcionesSiNo" [value]="opcion.id">{{ opcion.nombre }}</option>
-                                </select>
-                                <span class="texto-error m-0"
-                                    [style.visibility]="form.get('sePuedeEliminar')?.hasError('required') && form.get('sePuedeEliminar')?.touched ? 'visible' : 'hidden'">
-                                    Debe indicar si se puede eliminar
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-12" [class.field-error]="form.get('descripcion')?.invalid && form.get('descripcion')?.touched">
-                                <label for="descripcion">* Descripción</label>
-                                <textarea id="descripcion" class="form-control" formControlName="descripcion"
-                                    rows="3"></textarea>
-                                <span class="texto-error m-0"
-                                    [style.visibility]="form.get('descripcion')?.hasError('required') && form.get('descripcion')?.touched ? 'visible' : 'hidden'">
-                                    La descripción no puede estar vacía
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="form-row mt-3">
-                            <div class="col-12">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <span class="mb-0 subtitle">Reglas</span>
-                                    <button class="btn btn-primary" type="button" (click)="abrirAgregarRegla()">
-                                        <em class="fa fa-plus mr-1"></em>Agregar regla
-                                    </button>
-                                </div>
-
-                                <div *ngIf="reglas.length === 0" class="Alert">
-                                    No hay reglas asociadas a este campo
-                                </div>
-
-                                <div *ngIf="reglas.length > 0" class="table-responsive">
-                                    <table class="table table-striped table-hover mb-0 align-middle"
-                                        aria-label="Tabla de reglas del campo">
-                                        <thead class="table-light sticky-top">
-                                            <tr>
-                                                <th>Código</th>
-                                                <th>Nombre</th>
-                                                <th>Tipo</th>
-                                                <th>Operador</th>
-                                                <th>Valor</th>
-                                                <th>Campo</th>
-                                                <th>Mensaje error</th>
-                                                <th style="width: 200px;" aria-label="Acciones">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let regla of reglas">
-                                                <td>{{ regla.codigo }}</td>
-                                                <td>{{ regla.nombre }}</td>
-                                                <td>{{ obtenerEtiquetaTipoRegla(regla.tipoRegla) }}</td>
-                                                <td>{{ obtenerNombreOperador(regla) }}</td>
-                                                <td>{{ regla.tipoRegla === 'VALOR' ? (regla.valor || '-') : '-' }}</td>
-                                                <td>{{ regla.tipoRegla === 'CAMPO' ? (regla.etiquetaCampoComparar || '-') : '-' }}</td>
-                                                <td>{{ regla.mensajeError }}</td>
-                                                <td class="text-center align-middle">
+                                    <div *ngIf="reglas.length > 0" class="table-responsive">
+                                        <table class="table table-striped table-hover mb-0 align-middle"
+                                            aria-label="Tabla de reglas del campo">
+                                            <thead class="table-light sticky-top">
+                                                <tr>
+                                                    <th>Código</th>
+                                                    <th>Nombre</th>
+                                                    <th>Tipo</th>
+                                                    <th>Operador</th>
+                                                    <th>Valor</th>
+                                                    <th>Campo</th>
+                                                    <th>Mensaje error</th>
+                                                    <th style="width: 200px;" aria-label="Acciones">Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let regla of reglas">
+                                                    <td>{{ regla.codigo }}</td>
+                                                    <td>{{ regla.nombre }}</td>
+                                                    <td>{{ obtenerEtiquetaTipoRegla(regla.tipoRegla) }}</td>
+                                                    <td>{{ obtenerNombreOperador(regla) }}</td>
+                                                    <td>{{ regla.tipoRegla === 'VALOR' ? (regla.valor || '-') : '-' }}</td>
+                                                    <td>{{ regla.tipoRegla === 'CAMPO' ? (regla.etiquetaCampoComparar || '-') : '-' }}</td>
+                                                    <td>{{ regla.mensajeError }}</td>
+                                                    <td class="text-center align-middle">
                                                     <app-boton-accion [acciones]="obtenerAccionesRegla(regla)"
                                                         [ariaLabelMasOpciones]="'Mas opciones de la regla ' + regla.nombre"
                                                         (accionEjecutada)="ejecutarAccionRegla($event)">
@@ -124,19 +137,20 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-12">
-            <div class="d-flex justify-content-end mt-3 pe-3">
-                <button class="btn btn-primary" type="submit" (click)="guardar()">Guardar</button>
-                <div class="btn-back d-flex justify-content-end">   
-                    <button class="btn btn-link" type="button" (click)="volver()">Cancelar</button>
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex justify-content-end mt-3 pe-3">
+                        <button class="btn btn-primary" type="submit" (click)="guardar()">Guardar</button>
+                        <div class="btn-back d-flex justify-content-end">   
+                            <button class="btn btn-link" type="button" (click)="volver()">Cancelar</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </form>
-    </div>
+            </div>   
+        </form>
     </div>
 </div>
