@@ -324,7 +324,7 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
     });
 
     acciones.push({
-      nombre: 'Eliminar',
+      nombre: 'Eliminar borrador',
       clase: 'btn btn-success',
       icono: 'fa fa-trash',
       ariaLabel: 'Eliminar cláusula ' + clausula.denominacion,
