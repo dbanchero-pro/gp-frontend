@@ -5,17 +5,26 @@ import {
     OnChanges,
     OnInit,
     Output,
+    forwardRef,
+    OnDestroy
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Editor, Toolbar, Validators, schema } from 'ngx-editor';
 
 @Component({
     selector: 'app-text-editor',
     templateUrl: './text-editor.component.html',
     styleUrls: [],
-    standalone: false
+    standalone: false,
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => TextEditorComponent),
+            multi: true
+        }
+    ]
 })
-export class TextEditorComponent implements OnInit, OnChanges {
+export class TextEditorComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
     editor!: Editor;
     @Input() toolbar: Toolbar = [
         ['bold', 'italic'],
@@ -31,6 +40,9 @@ export class TextEditorComponent implements OnInit, OnChanges {
     @Input() required = false;
     @Output() valueChange = new EventEmitter<string>();
 
+    private onChange: (value: any) => void = () => {};
+    private onTouched: () => void = () => {};
+
     ngOnInit(): void {
         this.editor = new Editor({
             inputRules: true,
@@ -40,18 +52,23 @@ export class TextEditorComponent implements OnInit, OnChanges {
                 Validators.required(schema),
             ]);
         }
-        this.control.valueChanges.subscribe(() => {
+        this.control.valueChanges.subscribe((value) => {
             this.emitValue();
+            this.onChange(value);
+            this.onTouched();
         });
     }
+
     ngOnChanges() {
         if (this.value) {
-            this.control.setValue(this.value);
+            this.control.setValue(this.value, { emitEvent: false });
         }
     }
+
     ngOnDestroy(): void {
         this.editor.destroy();
     }
+
     emitValue() {
         const value = this.control.valid ? this.control.value : '';
         this.valueChange.emit(value);
@@ -59,5 +76,29 @@ export class TextEditorComponent implements OnInit, OnChanges {
 
     fieldError(): boolean {
         return this.control.invalid && this.control.dirty;
+    }
+
+    writeValue(value: any): void {
+        if (value !== undefined && value !== null) {
+            this.control.setValue(value, { emitEvent: false });
+        } else {
+            this.control.setValue('', { emitEvent: false });
+        }
+    }
+
+    registerOnChange(fn: any): void {
+        this.onChange = fn;
+    }
+
+    registerOnTouched(fn: any): void {
+        this.onTouched = fn;
+    }
+
+    setDisabledState?(isDisabled: boolean): void {
+        if (isDisabled) {
+            this.control.disable();
+        } else {
+            this.control.enable();
+        }
     }
 }
