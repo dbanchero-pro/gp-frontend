@@ -46,8 +46,12 @@ export class AgregarModificarCapituloComponent extends FormularioBaseComponent i
     }
 
     this.inicializarFormulario();
-    this.cargarDatosCapitulo();
-    this.verificarClausulaSeleccionada();
+
+    if (this.modoIngreso) {
+      this.verificarClausulaSeleccionada();
+    } else {
+      this.cargarDatosCapitulo();
+    }
   }
 
   private verificarClausulaSeleccionada(): void {
@@ -134,6 +138,8 @@ export class AgregarModificarCapituloComponent extends FormularioBaseComponent i
         setTimeout(() => {
           this.form.markAsPristine();
         }, 500);
+
+        this.verificarClausulaSeleccionada();
       },
       error: (err) => {
         this.actualizarService.mensajeError('Error al cargar el capítulo');
