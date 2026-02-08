@@ -160,6 +160,11 @@ export class CapituloService {
     return of(capitulo).pipe(delay(200));
   }
 
+  obtenerCapituloPorId(id: number): Observable<Capitulo | undefined> {
+    const capitulo = this.capitulosMock.find(c => c.id === id);
+    return of(capitulo).pipe(delay(200));
+  }
+
   crearCapitulo(capitulo: Capitulo): Observable<Capitulo> {
     const nuevoId = Math.max(...this.capitulosMock.map(c => c.id || 0)) + 1;
     const nuevoCapitulo = {
@@ -190,6 +195,42 @@ export class CapituloService {
       return of(capituloActualizado).pipe(delay(300));
     }
     return of(capitulo).pipe(delay(300));
+  }
+
+  aprobarCapitulo(id: number): Observable<Capitulo> {
+    const index = this.capitulosMock.findIndex(c => c.id === id);
+    if (index !== -1) {
+      const capituloActual = this.capitulosMock[index];
+
+      const versionAprobada = {
+        ...capituloActual,
+        estado: EstadoClausula.VIGENTE,
+        versionada: true,
+        version: (capituloActual.version || 1),
+        fechaModificacion: new Date().toISOString().split('T')[0],
+        usuarioModificacion: 'usuario_actual'
+      };
+      this.capitulosMock[index] = versionAprobada;
+
+      const nuevoId = Math.max(...this.capitulosMock.map(c => c.id || 0)) + 1;
+      const versionEditable = {
+        ...versionAprobada,
+        id: nuevoId,
+        estado: EstadoClausula.BORRADOR,
+        version: (versionAprobada.version || 1) + 1,
+        versionada: false,
+        fechaVigenciaDesde: '',
+        fechaVigenciaHasta: null,
+        fechaCreacion: new Date().toISOString().split('T')[0],
+        usuarioCreacion: 'usuario_actual',
+        fechaModificacion: null,
+        usuarioModificacion: null
+      };
+      this.capitulosMock.push(versionEditable);
+
+      return of(versionAprobada).pipe(delay(300));
+    }
+    throw new Error('Capítulo no encontrado');
   }
 
   guardarCapitulo(capitulo: Capitulo): Observable<Capitulo> {

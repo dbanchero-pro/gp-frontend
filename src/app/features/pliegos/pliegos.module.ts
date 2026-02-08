@@ -11,6 +11,7 @@ import { AgregarModificarRedaccionPopupComponent } from './components/clausulas/
 import { AgregarModificarRedaccionComponent } from './components/clausulas/agregar-modificar-redaccion/agregar-modificar-redaccion.component';
 import { HistorialClausulasComponent } from './components/clausulas/historial-clausulas/historial-clausulas.component';
 import { ConsultaCapitulosComponent } from './components/capitulos/consulta-capitulos/consulta-capitulos.component';
+import { AgregarModificarCapituloComponent } from './components/capitulos/agregar-modificar-capitulo/agregar-modificar-capitulo.component';
 
 export const routes: Routes = [
     {
@@ -58,6 +59,16 @@ export const routes: Routes = [
     {
         path: 'capitulos',
         component: ConsultaCapitulosComponent
+    },
+    {
+        path: 'capitulos/agregar',
+        component: AgregarModificarCapituloComponent,
+        canDeactivate: [DeactivateGuard]
+    },
+    {
+        path: 'capitulos/modificar/:idCapitulo',
+        component: AgregarModificarCapituloComponent,
+        canDeactivate: [DeactivateGuard]
     }
 ];
 
@@ -73,7 +84,8 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
         AgregarModificarRedaccionPopupComponent,
         AgregarModificarRedaccionComponent,
         HistorialClausulasComponent,
-        ConsultaCapitulosComponent
+        ConsultaCapitulosComponent,
+        AgregarModificarCapituloComponent
     ], imports: [
         CommonModule,
         SharedModule,
