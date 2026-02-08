@@ -11,7 +11,7 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="denominacion">Denominación <span class="text-danger">*</span></label>
+                  <label for="denominacion">* Denominación</label>
                   <input type="text" class="form-control" id="denominacion" formControlName="denominacion"
                     placeholder="Ingrese denominación">
                   <div *ngIf="form.controls.denominacion.invalid && form.controls.denominacion.touched" class="text-danger">
@@ -23,7 +23,7 @@
 
               <div class="col-md-3">
                 <div class="form-group">
-                  <label for="fechaVigenciaDesde">Fecha vigencia desde <span class="text-danger">*</span></label>
+                  <label for="fechaVigenciaDesde">* Fecha vigencia desde</label>
                   <input type="date" class="form-control" id="fechaVigenciaDesde" formControlName="fechaVigenciaDesde">
                   <div *ngIf="form.controls.fechaVigenciaDesde.invalid && form.controls.fechaVigenciaDesde.touched" class="text-danger">
                     <small>La fecha de vigencia desde es obligatoria</small>
@@ -69,7 +69,7 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="esObligatoria">Es obligatoria <span class="text-danger">*</span></label>
+                  <label for="esObligatoria">* Es obligatoria</label>
                   <select class="form-control" id="esObligatoria" formControlName="esObligatoria">
                     <option *ngFor="let opcion of opcionesSiNo" [ngValue]="opcion.id">
                       {{ opcion.nombre }}
@@ -80,7 +80,7 @@
 
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="aperturaElectronica">Apertura electrónica <span class="text-danger">*</span></label>
+                  <label for="aperturaElectronica">* Apertura electrónica</label>
                   <select class="form-control" id="aperturaElectronica" formControlName="aperturaElectronica">
                     <option *ngFor="let opcion of opcionesSiNo" [ngValue]="opcion.id">
                       {{ opcion.nombre }}
@@ -99,7 +99,7 @@
             <div [formGroup]="formTipoCompra" class="row align-items-end mb-3">
               <div class="col-md-5">
                 <div class="form-group">
-                  <label for="tipoCompraId">Tipo de compra</label>
+                  <label for="tipoCompraId">* Tipo de compra</label>
                   <select class="form-control" id="tipoCompraId" formControlName="tipoCompraId">
                     <option [ngValue]="null">Seleccionar tipo de compra</option>
                     <option *ngFor="let tipo of tiposCompra" [ngValue]="tipo.id">
@@ -111,7 +111,7 @@
 
               <div class="col-md-5">
                 <div class="form-group">
-                  <label for="subtipoCompraId">Subtipo de compra</label>
+                  <label for="subtipoCompraId">* Subtipo de compra</label>
                   <select class="form-control" id="subtipoCompraId" formControlName="subtipoCompraId"
                     [disabled]="!formTipoCompra.value.tipoCompraId">
                     <option [ngValue]="null">Seleccionar subtipo de compra</option>
@@ -135,7 +135,7 @@
                   <tr>
                     <th>Descripción tipo de compra</th>
                     <th>Descripción subtipo de compra</th>
-                    <th class="text-center" style="width: 100px;">Acciones</th>
+                    <th class="text-center" style="width: 100px;"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -178,7 +178,7 @@
             <div [formGroup]="formObjetoCompra" class="row mb-3">
               <div class="col-md-2">
                 <div class="form-group">
-                  <label for="familiaId">Familia</label>
+                  <label for="familiaId">* Familia</label>
                   <select class="form-control" id="familiaId" formControlName="familiaId">
                     <option [ngValue]="null">Seleccionar</option>
                     <option *ngFor="let familia of familias" [ngValue]="familia.id">
@@ -293,7 +293,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5 class="card-title mb-0">Redacciones</h5>
               <button type="button" class="btn btn-primary" (click)="abrirAgregarRedaccion()">
-                <em class="fa fa-plus mr-1"></em> Agregar redacción
+                <em class="fa fa-plus mr-1"></em> Agregar
               </button>
             </div>
 
@@ -323,15 +323,11 @@
         </div>
 
         <div class="d-flex justify-content-end mb-4">
-          <button type="button" class="btn btn-secondary mr-2" (click)="volver()">
-            <em class="fa fa-arrow-left mr-1"></em> Volver
-          </button>
-          <button type="button" class="btn btn-success mr-2" (click)="guardar()">
-            <em class="fa fa-save mr-1"></em> Guardar
-          </button>
-          <button *ngIf="!modoIngreso" type="button" class="btn btn-primary" (click)="aprobar()">
-            <em class="fa fa-check mr-1"></em> Aprobar
-          </button>
+          <button class="btn btn-primary mr-3" type="submit" (click)="aprobar()">Aprobar</button>
+          <button class="btn btn-primary" type="submit" (click)="guardar()">Guardar</button>
+           <div class="btn-back d-flex justify-content-end">   
+                    <button class="btn btn-link" type="button" (click)="volver()">Cancelar</button>
+          </div>
         </div>
       </form>
     </div>
