@@ -47,6 +47,40 @@ export class AgregarModificarCapituloComponent extends FormularioBaseComponent i
 
     this.inicializarFormulario();
     this.cargarDatosCapitulo();
+    this.verificarClausulaSeleccionada();
+  }
+
+  private verificarClausulaSeleccionada(): void {
+    setTimeout(() => {
+      const navigation = this.router.getCurrentNavigation();
+      const state = navigation?.extras.state;
+
+      if (state && state['clausulaSeleccionada']) {
+        this.agregarClausulaDesdeSeleccion(state['clausulaSeleccionada']);
+      } else {
+        const historyState = window.history.state;
+        if (historyState?.clausulaSeleccionada) {
+          this.agregarClausulaDesdeSeleccion(historyState.clausulaSeleccionada);
+          const newState = { ...historyState };
+          delete newState.clausulaSeleccionada;
+          window.history.replaceState(newState, '');
+        }
+      }
+    }, 100);
+  }
+
+  private agregarClausulaDesdeSeleccion(clausula: ClausulaCapitulo): void {
+    const yaExiste = this.clausulasAgregadas.some(c => c.clausulaId === clausula.clausulaId);
+
+    if (yaExiste) {
+      this.actualizarService.mensajeError('La cláusula ya está agregada al capítulo');
+      return;
+    }
+
+    clausula.orden = this.clausulasAgregadas.length + 1;
+    this.clausulasAgregadas.push(clausula);
+    this.marcarFormularioTocado();
+    this.actualizarService.mensajeCorrecto('Cláusula agregada exitosamente');
   }
 
   private inicializarFormulario(): void {

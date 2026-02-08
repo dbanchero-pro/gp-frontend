@@ -41,6 +41,8 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
   clausulas: Clausula[] = [];
   cargando = false;
   mostrarSoloSeleccion = false;
+  origenNavegacion: string | null = null;
+  idCapituloOrigen: string | null = null;
 
   colFiltro = 'col-lg-3';
   colTabla = 'col-lg-9';
@@ -142,6 +144,13 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.origenNavegacion = this.route.snapshot.queryParamMap.get('origen');
+    this.idCapituloOrigen = this.route.snapshot.queryParamMap.get('idCapitulo');
+
+    if (this.origenNavegacion === 'capitulo') {
+      this.mostrarSoloSeleccion = true;
+    }
+
     this.configurarCambiosFiltros();
   }
 
@@ -315,6 +324,10 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
   obtenerAccionesClausula(clausula: Clausula): AccionBoton[] {
     const acciones: AccionBoton[] = [];
 
+    if (this.mostrarSoloSeleccion) {
+      return acciones;
+    }
+
     acciones.push({
       nombre: 'Modificar',
       clase: 'btn btn-success',
@@ -351,7 +364,15 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
   }
 
   volver(): void {
-    this.location.back();
+    if (this.origenNavegacion === 'capitulo') {
+      if (this.idCapituloOrigen && this.idCapituloOrigen !== 'nuevo') {
+        this.router.navigate(['/pliegos/capitulos/modificar', this.idCapituloOrigen]);
+      } else {
+        this.router.navigate(['/pliegos/capitulos/agregar']);
+      }
+    } else {
+      this.location.back();
+    }
   }
 
   agregarClausula(): void {
@@ -400,7 +421,26 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
   }
 
   seleccionarClausula(clausula: Clausula): void {
-    console.log('Cláusula seleccionada:', clausula);
+    if (this.origenNavegacion === 'capitulo') {
+      const clausulaParaCapitulo = {
+        clausulaId: clausula.id!,
+        denominacion: clausula.denominacion,
+        version: clausula.version,
+        orden: 0
+      };
+
+      if (this.idCapituloOrigen && this.idCapituloOrigen !== 'nuevo') {
+        this.router.navigate(['/pliegos/capitulos/modificar', this.idCapituloOrigen], {
+          state: { clausulaSeleccionada: clausulaParaCapitulo }
+        });
+      } else {
+        this.router.navigate(['/pliegos/capitulos/agregar'], {
+          state: { clausulaSeleccionada: clausulaParaCapitulo }
+        });
+      }
+    } else {
+      console.log('Cláusula seleccionada:', clausula);
+    }
   }
 
   obtenerResumenTiposCompra(clausula: Clausula): string {
