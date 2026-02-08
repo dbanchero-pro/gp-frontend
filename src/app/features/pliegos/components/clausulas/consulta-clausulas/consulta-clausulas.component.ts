@@ -367,35 +367,26 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
     }
 
     const clausulaId = clausula.id;
+    const mensaje =  `¿Está seguro que desea eliminar el borrador de la cláusula "${clausula.denominacion}"?`
 
-    // Verificar si tiene versión editable
-    this.clausulaService.verificarTieneVersionEditable(clausulaId).subscribe({
-      next: (tieneVersionEditable) => {
-        const mensaje = tieneVersionEditable
-          ? `¿Está seguro que desea volver a la versión anteriormente aprobada de la cláusula "${clausula.denominacion}"?`
-          : `¿Está seguro que desea eliminar la cláusula "${clausula.denominacion}"?`;
-
-        this.actualizarService.confirmar(
-          mensaje,
-          () => {
-            this.clausulaService.eliminarClausula(clausulaId).subscribe({
-              next: (response) => {
-                if (response.exitoso) {
-                  this.actualizarService.mensajeCorrecto(response.mensaje);
-                  this.buscar();
-                } else {
-                  this.actualizarService.mensajeError(response.mensaje);
-                }
-              },
-              error: () => {
-                this.actualizarService.mensajeError('Ocurrió un error al eliminar la cláusula.');
-              }
-            });
+    this.actualizarService.confirmar(
+      mensaje,
+      () => {
+        this.clausulaService.eliminarClausula(clausulaId).subscribe({
+          next: (response) => {
+            if (response.exitoso) {
+              this.actualizarService.mensajeCorrecto(response.mensaje);
+              this.buscar();
+            } else {
+              this.actualizarService.mensajeError(response.mensaje);
+            }
+          },
+          error: () => {
+            this.actualizarService.mensajeError('Ocurrió un error al eliminar la cláusula.');
           }
-        );
-      }
-    });
-  }
+        });
+      });
+    }
 
   verHistorial(clausula: Clausula): void {
     console.log('Ver historial de cláusula:', clausula);

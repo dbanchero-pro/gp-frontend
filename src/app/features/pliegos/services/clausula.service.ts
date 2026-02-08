@@ -416,49 +416,20 @@ export class ClausulaService {
   }
 
   private eliminarVersionAprobada(id: number, clausula: Clausula): Observable<EliminarClausulaResponse> {
-    const estaUsadaPorModelo = this.verificarUsoPorModelo(id);
 
-    if (estaUsadaPorModelo) {
-      // Baja lógica: cambiar estado a NO_VIGENTE
-      const index = this.clausulasMock.findIndex(c => c.id === id);
-      if (index !== -1) {
-        this.clausulasMock[index] = {
-          ...clausula,
-          estado: EstadoClausula.NO_VIGENTE
-        };
-      }
-
-      const response: EliminarClausulaResponse = {
-        exitoso: true,
-        mensaje: 'La cláusula está siendo utilizada por modelos. Se realizó baja lógica (estado: NO VIGENTE).',
-        tipoEliminacion: 'LOGICA'
-      };
-      return of(response).pipe(delay(300));
-    } else {
-      // Baja física: eliminar completamente
-      const index = this.clausulasMock.findIndex(c => c.id === id);
-      if (index !== -1) {
-        this.clausulasMock.splice(index, 1);
-      }
-
-      const response: EliminarClausulaResponse = {
-        exitoso: true,
-        mensaje: 'La cláusula se eliminó completamente (baja física).',
-        tipoEliminacion: 'FISICA'
-      };
-      return of(response).pipe(delay(300));
+    // Baja física: eliminar completamente
+    const index = this.clausulasMock.findIndex(c => c.id === id);
+    if (index !== -1) {
+      this.clausulasMock.splice(index, 1);
     }
-  }
 
-  private verificarUsoPorModelo(clausulaId: number): boolean {
-    // Simular verificación de uso en modelos
-    // En la implementación real, esto consultaría a la base de datos
-    // Por ahora, retornamos false para permitir bajas físicas en testing
-    return false;
-  }
-
-  verificarTieneVersionEditable(id: number): Observable<boolean> {
-    const clausula = this.clausulasMock.find(c => c.id === id);
-    return of(clausula?.estado === EstadoClausula.BORRADOR || false).pipe(delay(100));
+    const response: EliminarClausulaResponse = {
+      exitoso: true,
+      mensaje: 'La cláusula se eliminó completamente (baja física).',
+      tipoEliminacion: 'FISICA'
+    };
+    return of(response).pipe(delay(300));
   }
 }
+  
+  

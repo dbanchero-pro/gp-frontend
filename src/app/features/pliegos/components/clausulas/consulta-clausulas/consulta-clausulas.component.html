@@ -150,20 +150,20 @@
   </div>
 
   <div [ngClass]="colTabla">
-    <div class="row mb-2" *ngIf="!mostrarSoloSeleccion">
-      <div class="col-12 d-flex justify-content-end btn-group">
-        <button class="btn btn-primary btn-ancho-fijo-one" type="button" (click)="agregarClausula()">
-          <em class="fa fa-plus mr-1"></em> Agregar
-        </button>
-      </div>
-    </div>
 
-    <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total===-1">
-      <div class="card-body py-sm-2 mb-sm-2 col-12 text-center pt-sm-4 pb-sm-4">
-        <em class="fa fa-search fa-2x d-block mb-4"></em>
-        <h6>Ingresa las opciones de búsqueda y presiona buscar para consultar cláusulas</h6>
+      <div class="row justify-content-end pr-2 mb-2" *ngIf="!mostrarSoloSeleccion">
+          <button class="btn btn-primary mr-2" (click)="agregarClausula()">
+              <em class="fa fa-plus mr-1"></em>
+              Agregar cláusula
+          </button>
       </div>
-    </div>
+       
+      <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total===-1">
+          <div class="card-body py-sm-2 mb-sm-2 col-12 text-center  pt-sm-4 pb-sm-4" >
+          <em class=" fa fa-search  fa-2x  d-block mb-4"></em>
+              <h6>Ingresa las opciones de búsqueda y presiona buscar para consultar cláusulas</h6>
+          </div>
+      </div>
 
     <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden"
       [columnaOrden]="parametros.sort" [orden]="parametros.order"
