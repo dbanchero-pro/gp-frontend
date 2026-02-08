@@ -7,6 +7,7 @@ import { RedaccionClausula } from './redaccion-clausula.model';
 export interface Clausula {
   id: NumeroNulo;
   denominacion: string;
+  esObligatoria?: boolean;
   aperturaElectronica: boolean;
   tiposCompra: TipoCompraClausula[];
   objetosCompra: ObjetoCompraClausula[];
@@ -16,6 +17,7 @@ export interface Clausula {
   estado: EstadoClausula;
   redacciones: RedaccionClausula[];
   versionada: boolean;
+  version?: number;
   fechaCreacion: FechaStringNulo;
   usuarioCreacion: string | null;
   fechaModificacion: FechaStringNulo;
@@ -23,13 +25,13 @@ export interface Clausula {
 }
 
 export interface TipoCompraClausula {
-  tipoCompraId: number;
+  tipoCompraId: number | string;
   tipoCompraDescripcion: string;
   subtipos: SubtipoCompraClausula[];
 }
 
 export interface SubtipoCompraClausula {
-  subtipoCompraId: number;
+  subtipoCompraId: number | string;
   subtipoCompraDescripcion: string;
 }
 
@@ -37,16 +39,17 @@ export interface ObjetoCompraClausula {
   familiaId: number;
   familiaDescripcion: string;
   subfamiliaId: NumeroNulo;
-  subfamiliaDescripcion: string;
+  subfamiliaDescripcion: string | null;
   claseId: NumeroNulo;
-  claseDescripcion: string;
+  claseDescripcion: string | null;
   subclaseId: NumeroNulo;
-  subclaseDescripcion: string;
+  subclaseDescripcion: string | null;
+  articuloId?: NumeroNulo;
   articulo?: ArticuloClausula | null;
 }
 
 export interface ArticuloClausula {
-  articuloId: number;
+  articuloId?: number;
   articuloCodigo: string;
   articuloDescripcion: string;
 }

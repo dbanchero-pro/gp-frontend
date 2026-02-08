@@ -349,23 +349,85 @@ export class ClausulaService {
     return of(clausula).pipe(delay(200));
   }
 
+  obtenerClausulaPorId(id: number): Observable<Clausula | undefined> {
+    const clausula = this.clausulasMock.find(c => c.id === id);
+    return of(clausula).pipe(delay(200));
+  }
+
+  crearClausula(clausula: Clausula): Observable<Clausula> {
+    const nuevoId = Math.max(...this.clausulasMock.map(c => c.id || 0)) + 1;
+    const nuevaClausula = {
+      ...clausula,
+      id: nuevoId,
+      estado: EstadoClausula.BORRADOR,
+      version: 1,
+      versionada: false,
+      fechaCreacion: new Date().toISOString().split('T')[0],
+      usuarioCreacion: 'usuario_actual',
+      fechaModificacion: null,
+      usuarioModificacion: null
+    };
+    this.clausulasMock.push(nuevaClausula);
+    return of(nuevaClausula).pipe(delay(300));
+  }
+
+  actualizarClausula(id: number, clausula: Clausula): Observable<Clausula> {
+    const index = this.clausulasMock.findIndex(c => c.id === id);
+    if (index !== -1) {
+      const clausulaActualizada = {
+        ...clausula,
+        id,
+        fechaModificacion: new Date().toISOString().split('T')[0],
+        usuarioModificacion: 'usuario_actual'
+      };
+      this.clausulasMock[index] = clausulaActualizada;
+      return of(clausulaActualizada).pipe(delay(300));
+    }
+    return of(clausula).pipe(delay(300));
+  }
+
+  aprobarClausula(id: number): Observable<Clausula> {
+    const index = this.clausulasMock.findIndex(c => c.id === id);
+    if (index !== -1) {
+      const clausulaActual = this.clausulasMock[index];
+
+      const versionAprobada = {
+        ...clausulaActual,
+        estado: EstadoClausula.VIGENTE,
+        versionada: true,
+        version: (clausulaActual.version || 1),
+        fechaModificacion: new Date().toISOString().split('T')[0],
+        usuarioModificacion: 'usuario_actual'
+      };
+      this.clausulasMock[index] = versionAprobada;
+
+      const nuevoId = Math.max(...this.clausulasMock.map(c => c.id || 0)) + 1;
+      const versionEditable = {
+        ...versionAprobada,
+        id: nuevoId,
+        estado: EstadoClausula.BORRADOR,
+        version: (versionAprobada.version || 1) + 1,
+        versionada: false,
+        fechaVigenciaDesde: '',
+        fechaVigenciaHasta: null,
+        fechaCreacion: new Date().toISOString().split('T')[0],
+        usuarioCreacion: 'usuario_actual',
+        fechaModificacion: null,
+        usuarioModificacion: null
+      };
+      this.clausulasMock.push(versionEditable);
+
+      return of(versionAprobada).pipe(delay(300));
+    }
+    throw new Error('Cláusula no encontrada');
+  }
+
   guardarClausula(clausula: Clausula): Observable<Clausula> {
     if (clausula.id) {
-      // Actualizar
-      const index = this.clausulasMock.findIndex(c => c.id === clausula.id);
-      if (index !== -1) {
-        this.clausulasMock[index] = { ...clausula };
-        return of(this.clausulasMock[index]).pipe(delay(300));
-      }
+      return this.actualizarClausula(clausula.id, clausula);
     } else {
-      // Crear nuevo
-      const nuevoId = Math.max(...this.clausulasMock.map(c => c.id || 0)) + 1;
-      const nuevaClausula = { ...clausula, id: nuevoId };
-      this.clausulasMock.push(nuevaClausula);
-      return of(nuevaClausula).pipe(delay(300));
+      return this.crearClausula(clausula);
     }
-
-    return of(clausula).pipe(delay(300));
   }
 
   eliminarClausula(id: number): Observable<EliminarClausulaResponse> {

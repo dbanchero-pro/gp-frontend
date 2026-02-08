@@ -1,0 +1,16 @@
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.card-header {
+  background-color: #f8f9fa !important;
+}
+
+.card-header:hover {
+  background-color: #e9ecef !important;
+}
+
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}

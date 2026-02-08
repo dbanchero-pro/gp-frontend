@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Clausula } from '../../../models/clausula.model';
 import { FiltroClausula } from '../../../models/filtro-clausula.model';
 import { ClausulaService } from '../../../services/clausula.service';
@@ -32,6 +32,7 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
   private clausulaService = inject(ClausulaService);
   private location = inject(Location);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private fechaPipe = inject(FechaPipe);
   private actualizarService = inject(ActualizarService);
   private snapshotGenericService = inject(SnapshotGenericService);
@@ -354,11 +355,14 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
   }
 
   agregarClausula(): void {
-    console.log('Agregar nueva cláusula');
+    this.router.navigate(['/pliegos/clausulas/agregar']);
   }
 
   modificarClausula(clausula: Clausula): void {
-    console.log('Modificar cláusula:', clausula);
+    if (!clausula.id) {
+      return;
+    }
+    this.router.navigate(['/pliegos/clausulas/modificar', clausula.id]);
   }
 
   eliminarClausula(clausula: Clausula): void {

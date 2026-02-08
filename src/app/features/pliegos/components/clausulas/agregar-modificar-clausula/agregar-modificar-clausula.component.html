@@ -1,0 +1,339 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <h4 class="mb-4">{{ titulo }}</h4>
+
+      <form [formGroup]="form">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Datos generales</h5>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="denominacion">Denominación <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="denominacion" formControlName="denominacion"
+                    placeholder="Ingrese denominación">
+                  <div *ngIf="form.controls.denominacion.invalid && form.controls.denominacion.touched" class="text-danger">
+                    <small *ngIf="form.controls.denominacion.errors?.['required']">La denominación es obligatoria</small>
+                    <small *ngIf="form.controls.denominacion.errors?.['maxlength']">La denominación no puede exceder los 200 caracteres</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="fechaVigenciaDesde">Fecha vigencia desde <span class="text-danger">*</span></label>
+                  <input type="date" class="form-control" id="fechaVigenciaDesde" formControlName="fechaVigenciaDesde">
+                  <div *ngIf="form.controls.fechaVigenciaDesde.invalid && form.controls.fechaVigenciaDesde.touched" class="text-danger">
+                    <small>La fecha de vigencia desde es obligatoria</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="fechaVigenciaHasta">Fecha vigencia hasta</label>
+                  <input type="date" class="form-control" id="fechaVigenciaHasta" formControlName="fechaVigenciaHasta">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="incisoId">Inciso</label>
+                  <select class="form-control" id="incisoId" formControlName="incisoId">
+                    <option [ngValue]="null">Seleccionar inciso</option>
+                    <option *ngFor="let inciso of incisos" [ngValue]="inciso.id">
+                      {{ inciso.id }} - {{ inciso.descInciso }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="unidadEjecutoraId">Unidad ejecutora</label>
+                  <select class="form-control" id="unidadEjecutoraId" formControlName="unidadEjecutoraId"
+                    [disabled]="!form.value.incisoId">
+                    <option [ngValue]="null">Seleccionar unidad ejecutora</option>
+                    <option *ngFor="let ue of unidadesEjecutoras" [ngValue]="ue.id">
+                      {{ ue.idUnidadEjecutora }} - {{ ue.descUnidadEjecutora }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="esObligatoria">Es obligatoria <span class="text-danger">*</span></label>
+                  <select class="form-control" id="esObligatoria" formControlName="esObligatoria">
+                    <option *ngFor="let opcion of opcionesSiNo" [ngValue]="opcion.id">
+                      {{ opcion.nombre }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="aperturaElectronica">Apertura electrónica <span class="text-danger">*</span></label>
+                  <select class="form-control" id="aperturaElectronica" formControlName="aperturaElectronica">
+                    <option *ngFor="let opcion of opcionesSiNo" [ngValue]="opcion.id">
+                      {{ opcion.nombre }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Tipos y subtipos de compra</h5>
+
+            <div [formGroup]="formTipoCompra" class="row align-items-end mb-3">
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label for="tipoCompraId">Tipo de compra</label>
+                  <select class="form-control" id="tipoCompraId" formControlName="tipoCompraId">
+                    <option [ngValue]="null">Seleccionar tipo de compra</option>
+                    <option *ngFor="let tipo of tiposCompra" [ngValue]="tipo.id">
+                      {{ tipo.descTipoCompra }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label for="subtipoCompraId">Subtipo de compra</label>
+                  <select class="form-control" id="subtipoCompraId" formControlName="subtipoCompraId"
+                    [disabled]="!formTipoCompra.value.tipoCompraId">
+                    <option [ngValue]="null">Seleccionar subtipo de compra</option>
+                    <option *ngFor="let subtipo of subtiposCompra" [ngValue]="subtipo.idSubtipoCompra">
+                      {{ subtipo.descSubtipoCompra }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <button type="button" class="btn btn-primary btn-block" (click)="agregarTipoCompra()">
+                  <em class="fa fa-plus mr-1"></em> Agregar
+                </button>
+              </div>
+            </div>
+
+            <div *ngIf="tiposCompraAgregados.length > 0" class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Descripción tipo de compra</th>
+                    <th>Descripción subtipo de compra</th>
+                    <th class="text-center" style="width: 100px;">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let tipoCompra of tiposCompraAgregados">
+                    <tr *ngIf="tipoCompra.subtipos.length === 0">
+                      <td>{{ tipoCompra.tipoCompraDescripcion }}</td>
+                      <td>Todos los subtipos</td>
+                      <td class="text-center">
+                        <button type="button" class="btn btn-danger btn-sm" (click)="eliminarTipoCompra(tipoCompra)"
+                          [attr.aria-label]="'Eliminar tipo de compra ' + tipoCompra.tipoCompraDescripcion">
+                          <em class="fa fa-trash"></em>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr *ngFor="let subtipo of tipoCompra.subtipos">
+                      <td>{{ tipoCompra.tipoCompraDescripcion }}</td>
+                      <td>{{ subtipo.subtipoCompraDescripcion }}</td>
+                      <td class="text-center">
+                        <button type="button" class="btn btn-danger btn-sm" (click)="eliminarTipoCompra(tipoCompra, subtipo)"
+                          [attr.aria-label]="'Eliminar subtipo de compra ' + subtipo.subtipoCompraDescripcion">
+                          <em class="fa fa-trash"></em>
+                        </button>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+
+            <div *ngIf="tiposCompraAgregados.length === 0" class="alert alert-info">
+              No hay tipos de compra agregados
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Objetos de compra</h5>
+
+            <div [formGroup]="formObjetoCompra" class="row mb-3">
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="familiaId">Familia</label>
+                  <select class="form-control" id="familiaId" formControlName="familiaId">
+                    <option [ngValue]="null">Seleccionar</option>
+                    <option *ngFor="let familia of familias" [ngValue]="familia.id">
+                      {{ familia.descFamilia }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="subfamiliaId">Subfamilia</label>
+                  <select class="form-control" id="subfamiliaId" formControlName="subfamiliaId"
+                    [disabled]="!formObjetoCompra.value.familiaId">
+                    <option [ngValue]="null">Seleccionar</option>
+                    <option *ngFor="let subfamilia of subfamilias" [ngValue]="subfamilia.id">
+                      {{ subfamilia.descSubfamilia }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="claseId">Clase</label>
+                  <select class="form-control" id="claseId" formControlName="claseId"
+                    [disabled]="!formObjetoCompra.value.subfamiliaId">
+                    <option [ngValue]="null">Seleccionar</option>
+                    <option *ngFor="let clase of clases" [ngValue]="clase.id">
+                      {{ clase.descClase }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="subclaseId">Subclase</label>
+                  <select class="form-control" id="subclaseId" formControlName="subclaseId"
+                    [disabled]="!formObjetoCompra.value.claseId">
+                    <option [ngValue]="null">Seleccionar</option>
+                    <option *ngFor="let subclase of subclases" [ngValue]="subclase.id">
+                      {{ subclase.descSubclase }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="articuloId">Artículo</label>
+                  <select class="form-control" id="articuloId" formControlName="articuloId"
+                    [disabled]="!formObjetoCompra.value.subclaseId">
+                    <option [ngValue]="null">Seleccionar</option>
+                    <option *ngFor="let articulo of articulos" [ngValue]="articulo.id">
+                      {{ articulo.descArticuloServObra }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-2 d-flex align-items-end">
+                <button type="button" class="btn btn-primary btn-block" (click)="agregarObjetoCompra()">
+                  <em class="fa fa-plus mr-1"></em> Agregar
+                </button>
+              </div>
+            </div>
+
+            <div *ngIf="objetosCompraAgregados.length > 0" class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Familia</th>
+                    <th>Subfamilia</th>
+                    <th>Clase</th>
+                    <th>Subclase</th>
+                    <th>Artículos</th>
+                    <th class="text-center" style="width: 100px;">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let objeto of objetosCompraAgregados">
+                    <td>{{ objeto.familiaDescripcion }}</td>
+                    <td>{{ objeto.subfamiliaDescripcion || '-' }}</td>
+                    <td>{{ objeto.claseDescripcion || '-' }}</td>
+                    <td>{{ objeto.subclaseDescripcion || '-' }}</td>
+                    <td>
+                      <span *ngIf="objeto.articulo">
+                        {{ objeto.articulo.articuloDescripcion }} ({{ objeto.articulo.articuloCodigo }})
+                      </span>
+                      <span *ngIf="!objeto.articulo">-</span>
+                    </td>
+                    <td class="text-center">
+                      <button type="button" class="btn btn-danger btn-sm" (click)="eliminarObjetoCompra(objeto)"
+                        [attr.aria-label]="'Eliminar objeto de compra'">
+                        <em class="fa fa-trash"></em>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div *ngIf="objetosCompraAgregados.length === 0" class="alert alert-info">
+              No hay objetos de compra agregados
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Redacciones</h5>
+              <button type="button" class="btn btn-primary" (click)="abrirAgregarRedaccion()">
+                <em class="fa fa-plus mr-1"></em> Agregar redacción
+              </button>
+            </div>
+
+            <div *ngIf="redacciones.length > 0">
+              <div *ngFor="let redaccion of redacciones" class="card mb-3">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <span class="badge badge-primary">Prioridad: {{ redaccion.prioridad }}</span>
+                    </div>
+                    <app-boton-accion [acciones]="obtenerAccionesRedaccion(redaccion)"
+                      [ariaLabelMasOpciones]="'Acciones de redacción con prioridad ' + redaccion.prioridad">
+                    </app-boton-accion>
+                  </div>
+                  <div [innerHTML]="truncarRedaccion(redaccion.redaccion) | safeHtml"></div>
+                  <small *ngIf="esRedaccionTruncada(redaccion.redaccion)" class="text-muted">
+                    <i class="fa fa-info-circle"></i> Texto truncado a 500 caracteres
+                  </small>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="redacciones.length === 0" class="alert alert-info">
+              No hay redacciones agregadas
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end mb-4">
+          <button type="button" class="btn btn-secondary mr-2" (click)="volver()">
+            <em class="fa fa-arrow-left mr-1"></em> Volver
+          </button>
+          <button type="button" class="btn btn-success mr-2" (click)="guardar()">
+            <em class="fa fa-save mr-1"></em> Guardar
+          </button>
+          <button *ngIf="!modoIngreso" type="button" class="btn btn-primary" (click)="aprobar()">
+            <em class="fa fa-check mr-1"></em> Aprobar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
