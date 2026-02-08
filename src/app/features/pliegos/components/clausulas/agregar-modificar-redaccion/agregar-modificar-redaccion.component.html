@@ -1,5 +1,5 @@
 <div class="container-fluid p-4">
-  <div class="row mb-4">
+  <div class="row">
     <div class="col-12">
       <h2 class="h4">{{ modoIngreso ? 'Agregar' : 'Modificar' }} redacción</h2>
     </div>
@@ -14,7 +14,7 @@
         <span class="subtitle mb-0">{{ clausulaInfo?.denominacion || 'Sin especificar' }}</span>
         </div>
 
-        <div class="card mb-4">
+        <div class="card">
           <div class="card-body">
             <div class="form-group">
               <label for="prioridad">* Prioridad</label>
@@ -24,9 +24,6 @@
                 <small *ngIf="form.controls.prioridad.errors?.['required']">La prioridad es obligatoria</small>
                 <small *ngIf="form.controls.prioridad.errors?.['min']">La prioridad debe ser mayor a 0</small>
               </div>
-              <small class="form-text text-muted">
-                El número de prioridad determina el orden de las redacciones
-              </small>
             </div>
 
             <div class="form-group">

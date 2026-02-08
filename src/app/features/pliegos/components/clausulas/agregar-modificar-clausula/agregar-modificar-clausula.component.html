@@ -123,7 +123,7 @@
               </div>
 
               <div class="col-md-2">
-                <button type="button" class="btn btn-primary btn-block" (click)="agregarTipoCompra()">
+                <button type="button" class="btn btn-primary" (click)="agregarTipoCompra()">
                   <em class="fa fa-plus mr-1"></em> Agregar
                 </button>
               </div>
@@ -144,7 +144,7 @@
                       <td>{{ tipoCompra.tipoCompraDescripcion }}</td>
                       <td>Todos los subtipos</td>
                       <td class="text-center">
-                        <button type="button" class="btn btn-danger btn-sm" (click)="eliminarTipoCompra(tipoCompra)"
+                        <button type="button" class="btn btn-sm" (click)="eliminarTipoCompra(tipoCompra)"
                           [attr.aria-label]="'Eliminar tipo de compra ' + tipoCompra.tipoCompraDescripcion">
                           <em class="fa fa-trash"></em>
                         </button>
@@ -154,7 +154,7 @@
                       <td>{{ tipoCompra.tipoCompraDescripcion }}</td>
                       <td>{{ subtipo.subtipoCompraDescripcion }}</td>
                       <td class="text-center">
-                        <button type="button" class="btn btn-danger btn-sm" (click)="eliminarTipoCompra(tipoCompra, subtipo)"
+                        <button type="button" class="btn btn-sm" (click)="eliminarTipoCompra(tipoCompra, subtipo)"
                           [attr.aria-label]="'Eliminar subtipo de compra ' + subtipo.subtipoCompraDescripcion">
                           <em class="fa fa-trash"></em>
                         </button>
@@ -241,7 +241,7 @@
               </div>
 
               <div class="col-md-2 d-flex align-items-end">
-                <button type="button" class="btn btn-primary btn-block" (click)="agregarObjetoCompra()">
+                <button type="button" class="btn btn-primary" (click)="agregarObjetoCompra()">
                   <em class="fa fa-plus mr-1"></em> Agregar
                 </button>
               </div>
@@ -272,7 +272,7 @@
                       <span *ngIf="!objeto.articulo">-</span>
                     </td>
                     <td class="text-center">
-                      <button type="button" class="btn btn-danger btn-sm" (click)="eliminarObjetoCompra(objeto)"
+                      <button type="button" class="btn btn-sm" (click)="eliminarObjetoCompra(objeto)"
                         [attr.aria-label]="'Eliminar objeto de compra'">
                         <em class="fa fa-trash"></em>
                       </button>
