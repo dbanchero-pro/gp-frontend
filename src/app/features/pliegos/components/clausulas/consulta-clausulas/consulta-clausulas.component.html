@@ -178,13 +178,11 @@
               <span class="font-weight-bold">{{ clausula.denominacion }}</span>
               <span class="badge ml-2" [ngClass]="{
                 'badge-success': obtenerEstadoVigencia(clausula) === 'VIGENTE',
-                'badge-warning': obtenerEstadoVigencia(clausula) === 'NO_VIGENTE',
-                'badge-info': clausula.estado === 'BORRADOR'
+                'badge-warning': obtenerEstadoVigencia(clausula) === 'NO_VIGENTE'
               }">
-                {{ obtenerEstadoVigencia(clausula) === 'VIGENTE' ? obtenerTextoEstadoVigencia(clausula) :
-                   obtenerEstadoVigencia(clausula) === 'NO_VIGENTE' ? 'No vigente' : 'Borrador' }}
+                {{ obtenerTextoEstadoVigencia(clausula) }}
               </span>
-              <span *ngIf="esBorradorVigente(clausula)" class="badge badge-primary ml-1">
+              <span *ngIf="esBorrador(clausula)" class="badge badge-info ml-1">
                 Borrador
               </span>
             </div>

@@ -258,7 +258,63 @@ export class ClausulaService {
       usuarioCreacion: 'admin',
       fechaModificacion: null,
       usuarioModificacion: null
-    }
+    },
+     {
+      id: 5,
+      denominacion: 'Evaluación económica',
+      aperturaElectronica: true,
+      tiposCompra: [
+        {
+          tipoCompraId: 1,
+          tipoCompraDescripcion: 'Licitación Pública',
+          subtipos: [
+            { subtipoCompraId: 1, subtipoCompraDescripcion: 'Común' },
+          ]
+        }
+      ],
+      objetosCompra: [
+        {
+          familiaId: 1,
+          familiaDescripcion: 'Equipos de computación',
+          subfamiliaId: 1,
+          subfamiliaDescripcion: 'Computadoras',
+          claseId: 1,
+          claseDescripcion: 'Notebooks',
+          subclaseId: 1,
+          subclaseDescripcion: 'Portátiles',
+          articulo: { articuloId: 1, articuloCodigo: 'ART001', articuloDescripcion: 'Notebook HP' }
+        }
+      ],
+      incisos: [
+        {
+          incisoId: 1,
+          incisoCodigo: '01',
+          incisoDescripcion: 'Poder Ejecutivo',
+          unidadEjecutora: { unidadEjecutoraId: 1, unidadEjecutoraCodigo: '001', unidadEjecutoraDescripcion: 'Ministerio de Economía' }
+        }
+      ],
+      fechaVigenciaDesde: '2024-01-01',
+      fechaVigenciaHasta: '2027-01-01',
+      estado: EstadoClausula.BORRADOR,
+      versionada: true,
+      version: 3,
+      redacciones: [
+        {
+          id: 1,
+          clausulaId: 1,
+          prioridad: 1,
+          redaccion: '<p>La propuesta será evaluada por el organismo comprador teniendo en cuenta el valor hora presentado</p>',
+          fechaCreacion: '2024-01-01',
+          usuarioCreacion: 'admin',
+          fechaModificacion: null,
+          usuarioModificacion: null
+        }
+      ],
+      fechaCreacion: '2024-01-01',
+      usuarioCreacion: 'admin',
+      fechaModificacion: null,
+      usuarioModificacion: null
+    },
   ];
 
   constructor() {}

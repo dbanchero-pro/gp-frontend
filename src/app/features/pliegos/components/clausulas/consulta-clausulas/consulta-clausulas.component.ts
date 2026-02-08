@@ -573,43 +573,33 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
   }
 
   obtenerEstadoVigencia(clausula: Clausula): string {
-    if (clausula.estado === 'VIGENTE') {
-      const hoy = new Date();
-      hoy.setHours(0, 0, 0, 0);
-
-      const fechaDesde = clausula.fechaVigenciaDesde ? new Date(clausula.fechaVigenciaDesde) : null;
-      const fechaHasta = clausula.fechaVigenciaHasta ? new Date(clausula.fechaVigenciaHasta) : null;
-
-      if (fechaDesde) {
-        fechaDesde.setHours(0, 0, 0, 0);
+      if (clausula.estado === 'BORRADOR') {
+        const hoy = new Date();
+        const desde = clausula.fechaVigenciaDesde ? new Date(clausula.fechaVigenciaDesde) : null;
+        const hasta = clausula.fechaVigenciaHasta ? new Date(clausula.fechaVigenciaHasta) : null;
+  
+        if (desde && hoy < desde) {
+          return 'NO_VIGENTE';
+        }
+        if (hasta && hoy > hasta) {
+          return 'NO_VIGENTE';
+        }
+        return 'VIGENTE';
       }
-      if (fechaHasta) {
-        fechaHasta.setHours(0, 0, 0, 0);
-      }
-
-      if (fechaDesde && hoy < fechaDesde) {
-        return 'NO_VIGENTE';
-      }
-      if (fechaHasta && hoy > fechaHasta) {
-        return 'NO_VIGENTE';
-      }
-
-      return 'VIGENTE';
+      return clausula.estado;
     }
-    return clausula.estado;
-  }
+
+  esBorrador(clausula: Clausula): boolean {
+     return clausula.estado === 'BORRADOR';
+   }
 
   obtenerTextoEstadoVigencia(clausula: Clausula): string {
-    const estado = this.obtenerEstadoVigencia(clausula);
-    if (estado === 'VIGENTE') {
-      const version = clausula.version || 'N/A';
-      return `Vigente - V${version}`;
+      const estado = this.obtenerEstadoVigencia(clausula);
+      if (estado === 'VIGENTE') {
+        const version = clausula.version || 'N/A';
+        return `Vigente - V${version}`;
+      }
+      return 'No vigente';
     }
-    return 'No vigente';
-  }
-
-  esBorradorVigente(clausula: Clausula): boolean {
-    return clausula.estado === 'BORRADOR' && this.obtenerEstadoVigencia(clausula) === 'VIGENTE';
-  }
 
 }
