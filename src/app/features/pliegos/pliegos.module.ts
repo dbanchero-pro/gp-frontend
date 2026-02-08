@@ -8,6 +8,7 @@ import { AgregarDocumentoRepositorioPopupComponent } from './components/reposito
 import { ConsultaClausulasComponent } from './components/clausulas/consulta-clausulas/consulta-clausulas.component';
 import { AgregarModificarClausulaComponent } from './components/clausulas/agregar-modificar-clausula/agregar-modificar-clausula.component';
 import { AgregarModificarRedaccionPopupComponent } from './components/clausulas/agregar-modificar-redaccion-popup/agregar-modificar-redaccion-popup.component';
+import { AgregarModificarRedaccionComponent } from './components/clausulas/agregar-modificar-redaccion/agregar-modificar-redaccion.component';
 
 export const routes: Routes = [
     {
@@ -24,8 +25,28 @@ export const routes: Routes = [
         canDeactivate: [DeactivateGuard]
     },
     {
+        path: 'clausulas/agregar/redaccion/agregar',
+        component: AgregarModificarRedaccionComponent,
+        canDeactivate: [DeactivateGuard]
+    },
+    {
+        path: 'clausulas/agregar/redaccion/modificar/:idRedaccion',
+        component: AgregarModificarRedaccionComponent,
+        canDeactivate: [DeactivateGuard]
+    },
+    {
         path: 'clausulas/modificar/:idClausula',
         component: AgregarModificarClausulaComponent,
+        canDeactivate: [DeactivateGuard]
+    },
+    {
+        path: 'clausulas/modificar/:idClausula/redaccion/agregar',
+        component: AgregarModificarRedaccionComponent,
+        canDeactivate: [DeactivateGuard]
+    },
+    {
+        path: 'clausulas/modificar/:idClausula/redaccion/modificar/:idRedaccion',
+        component: AgregarModificarRedaccionComponent,
         canDeactivate: [DeactivateGuard]
     }
 ];
@@ -39,7 +60,8 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
         AgregarDocumentoRepositorioPopupComponent,
         ConsultaClausulasComponent,
         AgregarModificarClausulaComponent,
-        AgregarModificarRedaccionPopupComponent
+        AgregarModificarRedaccionPopupComponent,
+        AgregarModificarRedaccionComponent
     ], imports: [
         CommonModule,
         SharedModule,

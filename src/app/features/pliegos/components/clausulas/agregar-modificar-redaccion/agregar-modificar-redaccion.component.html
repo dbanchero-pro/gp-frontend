@@ -1,0 +1,86 @@
+<div class="container-fluid p-4">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2 class="h4">{{ modoIngreso ? 'Agregar' : 'Modificar' }} redacción</h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header bg-light cursor-pointer" (click)="toggleColapsado()"
+          [attr.aria-label]="colapsado ? 'Expandir información de la cláusula' : 'Colapsar información de la cláusula'">
+          <div class="d-flex justify-content-between align-items-center">
+            <h6 class="mb-0">Información de la cláusula</h6>
+            <em [ngClass]="colapsado ? 'fa fa-chevron-down' : 'fa fa-chevron-up'"></em>
+          </div>
+        </div>
+        <div class="card-body" [hidden]="colapsado">
+          <div class="row mb-2">
+            <div class="col-md-3 font-weight-bold">Denominación:</div>
+            <div class="col-md-9">{{ clausulaInfo?.denominacion || 'Sin especificar' }}</div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 font-weight-bold">Apertura electrónica:</div>
+            <div class="col-md-9">{{ clausulaInfo?.aperturaElectronica ? 'Sí' : 'No' }}</div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 font-weight-bold">Tipos y subtipos de compra:</div>
+            <div class="col-md-9">{{ obtenerResumenTiposCompra() }}</div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 font-weight-bold">Objetos de compra:</div>
+            <div class="col-md-9">{{ obtenerResumenObjetosCompra() }}</div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-3 font-weight-bold">Vigencia:</div>
+            <div class="col-md-9">{{ obtenerTextoVigencia() }}</div>
+          </div>
+        </div>
+      </div>
+
+      <form [formGroup]="form">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="form-group">
+              <label for="prioridad">Prioridad <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" id="prioridad" formControlName="prioridad"
+                placeholder="Ingrese la prioridad (número entero)">
+              <div *ngIf="form.controls.prioridad.invalid && form.controls.prioridad.touched" class="text-danger">
+                <small *ngIf="form.controls.prioridad.errors?.['required']">La prioridad es obligatoria</small>
+                <small *ngIf="form.controls.prioridad.errors?.['min']">La prioridad debe ser mayor a 0</small>
+              </div>
+              <small class="form-text text-muted">
+                El número de prioridad determina el orden de las redacciones
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label for="redaccion">Redacción <span class="text-danger">*</span></label>
+              <app-text-editor formControlName="redaccion"></app-text-editor>
+              <div *ngIf="form.controls.redaccion.invalid && form.controls.redaccion.touched" class="text-danger">
+                <small>La redacción es obligatoria</small>
+              </div>
+              <small class="form-text text-muted">
+                Para incluir campos personalizados en la redacción, use la sintaxis [[NOMBRE_CAMPO]]
+              </small>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-secondary mr-2" (click)="volver()">
+          <em class="fa fa-arrow-left mr-1"></em> Volver
+        </button>
+        <button type="button" class="btn btn-primary" (click)="aceptar()">
+          <em class="fa fa-check mr-1"></em> Aceptar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

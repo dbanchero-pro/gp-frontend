@@ -15,10 +15,10 @@ import { SubfamiliaDTO } from '../../../../../shared/models/cbso/subfamilia.mode
 import { ClaseDTO } from '../../../../../shared/models/cbso/clase.model';
 import { SubclaseDTO } from '../../../../../shared/models/cbso/subclase.model';
 import { ArticuloServObraDTO } from '../../../../../shared/models/cbso/articulo-serv-obra.model';
-import { AgregarModificarRedaccionPopupComponent } from '../agregar-modificar-redaccion-popup/agregar-modificar-redaccion-popup.component';
 import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
 import { SiNoValor } from '../../../../../shared/enum/si-no-valor.enum';
 import { EstadoClausula } from '../../../enum/estado-clausula.enum';
+import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
 
 @Component({
   selector: 'app-agregar-modificar-clausula',
@@ -31,6 +31,7 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly clausulaService = inject(ClausulaService);
+  private readonly snapshotService = inject(SnapshotGenericService);
 
   idClausula!: number;
   modoIngreso = false;
@@ -146,6 +147,16 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
     this.inicializarFormularios();
     this.configurarCambiosFiltros();
     this.cargarDatosClausula();
+    this.restaurarDatosTemporales();
+  }
+
+  private restaurarDatosTemporales(): void {
+    const datos = this.snapshotService.load<any>('clausula_temporal');
+    if (datos && datos.redacciones) {
+      this.redacciones = datos.redacciones;
+      const maxId = Math.max(0, ...this.redacciones.map(r => r.id || 0));
+      this.siguienteIdRedaccion = maxId + 1;
+    }
   }
 
   private inicializarFormularios(): void {
@@ -427,44 +438,32 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
   }
 
   abrirAgregarRedaccion(): void {
-    const popup = this.abrirPopupXXL(AgregarModificarRedaccionPopupComponent, 'Aceptar', {
-      backdrop: 'static',
-      keyboard: false,
-      initialState: {
-        clausulaInfo: this.obtenerInfoClausulaParaRedaccion(),
-        redaccionesExistentes: this.redacciones
-      }
-    });
+    this.guardarDatosTemporales();
 
-    if (popup.redaccionGuardada) {
-      popup.redaccionGuardada.subscribe((redaccion: RedaccionClausula) => {
-        redaccion.id = this.siguienteIdRedaccion++;
-        this.redacciones.push(redaccion);
-        this.marcarFormularioTocado();
-      });
-    }
+    const ruta = this.modoIngreso
+      ? ['/pliegos/clausulas/agregar/redaccion/agregar']
+      : ['/pliegos/clausulas/modificar', this.idClausula, 'redaccion', 'agregar'];
+
+    this.router.navigate(ruta);
   }
 
   abrirModificarRedaccion(redaccion: RedaccionClausula): void {
-    const popup = this.abrirPopupXXL(AgregarModificarRedaccionPopupComponent, 'Aceptar', {
-      backdrop: 'static',
-      keyboard: false,
-      initialState: {
-        clausulaInfo: this.obtenerInfoClausulaParaRedaccion(),
-        redaccion: { ...redaccion },
-        redaccionesExistentes: this.redacciones.filter(r => r.id !== redaccion.id)
-      }
-    });
+    this.guardarDatosTemporales();
 
-    if (popup.redaccionGuardada) {
-      popup.redaccionGuardada.subscribe((redaccionModificada: RedaccionClausula) => {
-        const index = this.redacciones.findIndex(r => r.id === redaccion.id);
-        if (index > -1) {
-          this.redacciones[index] = { ...redaccionModificada, id: redaccion.id };
-          this.marcarFormularioTocado();
-        }
-      });
-    }
+    const ruta = this.modoIngreso
+      ? ['/pliegos/clausulas/agregar/redaccion/modificar', redaccion.id]
+      : ['/pliegos/clausulas/modificar', this.idClausula, 'redaccion', 'modificar', redaccion.id];
+
+    this.router.navigate(ruta);
+  }
+
+  private guardarDatosTemporales(): void {
+    const datos = {
+      clausulaInfo: this.obtenerInfoClausulaParaRedaccion(),
+      redacciones: this.redacciones
+    };
+
+    this.snapshotService.save('clausula_temporal', datos);
   }
 
   eliminarRedaccion(redaccion: RedaccionClausula): void {
