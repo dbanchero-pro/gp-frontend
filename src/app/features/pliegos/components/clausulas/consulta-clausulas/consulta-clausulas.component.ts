@@ -572,4 +572,44 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
     return resultadoHTML;
   }
 
+  obtenerEstadoVigencia(clausula: Clausula): string {
+    if (clausula.estado === 'VIGENTE') {
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
+
+      const fechaDesde = clausula.fechaVigenciaDesde ? new Date(clausula.fechaVigenciaDesde) : null;
+      const fechaHasta = clausula.fechaVigenciaHasta ? new Date(clausula.fechaVigenciaHasta) : null;
+
+      if (fechaDesde) {
+        fechaDesde.setHours(0, 0, 0, 0);
+      }
+      if (fechaHasta) {
+        fechaHasta.setHours(0, 0, 0, 0);
+      }
+
+      if (fechaDesde && hoy < fechaDesde) {
+        return 'NO_VIGENTE';
+      }
+      if (fechaHasta && hoy > fechaHasta) {
+        return 'NO_VIGENTE';
+      }
+
+      return 'VIGENTE';
+    }
+    return clausula.estado;
+  }
+
+  obtenerTextoEstadoVigencia(clausula: Clausula): string {
+    const estado = this.obtenerEstadoVigencia(clausula);
+    if (estado === 'VIGENTE') {
+      const version = clausula.version || 'N/A';
+      return `Vigente - V${version}`;
+    }
+    return 'No vigente';
+  }
+
+  esBorradorVigente(clausula: Clausula): boolean {
+    return clausula.estado === 'BORRADOR' && this.obtenerEstadoVigencia(clausula) === 'VIGENTE';
+  }
+
 }
