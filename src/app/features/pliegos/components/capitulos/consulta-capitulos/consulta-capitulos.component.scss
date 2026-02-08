@@ -1,0 +1,22 @@
+.resultado-item {
+  transition: box-shadow 0.2s ease;
+  background-color: #fff;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  strong {
+    font-weight: 600;
+    color: #333;
+  }
+
+  .badge {
+    font-size: 0.85rem;
+    padding: 0.35rem 0.65rem;
+  }
+}
+
+.z-index-10 {
+  z-index: 10;
+}

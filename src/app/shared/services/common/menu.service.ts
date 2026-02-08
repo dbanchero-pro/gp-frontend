@@ -389,7 +389,7 @@ export class MenuService {
                     permisos: [
                         'GC_GESTION_USU.CONSULTA'
                     ],
-                    url: '/administracion/auditoria/conformidad',
+                    url: '/pliegos/capitulos',
                 },
                 {
                     nombre: 'Cláusulas',
