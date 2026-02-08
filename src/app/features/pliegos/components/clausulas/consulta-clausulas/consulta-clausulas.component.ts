@@ -236,16 +236,6 @@ export class ConsultaClausulasComponent implements OnInit {
     this.actualizarFiltrosYBuscar();
   }
 
-  aplicarColapso(): void {
-    if (this.colFiltro === 'col-lg-3') {
-      this.colFiltro = 'col-lg-1';
-      this.colTabla = 'col-lg-11';
-    } else {
-      this.colFiltro = 'col-lg-3';
-      this.colTabla = 'col-lg-9';
-    }
-  }
-
   cambioPagina(pagina: number): void {
     this.parametros.pagina = pagina - 1;
     this.buscar();
