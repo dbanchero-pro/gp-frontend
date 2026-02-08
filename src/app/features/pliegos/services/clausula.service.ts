@@ -49,6 +49,7 @@ export class ClausulaService {
       fechaVigenciaHasta: '2025-12-31',
       estado: EstadoClausula.VIGENTE,
       versionada: true,
+      version: 3,
       redacciones: [
         {
           id: 1,
@@ -104,6 +105,7 @@ export class ClausulaService {
       fechaVigenciaHasta: null,
       estado: EstadoClausula.VIGENTE,
       versionada: true,
+      version: 1,
       redacciones: [
         {
           id: 2,
@@ -169,6 +171,7 @@ export class ClausulaService {
       fechaVigenciaHasta: '2023-12-31',
       estado: EstadoClausula.NO_VIGENTE,
       versionada: true,
+      version: 1,
       redacciones: [
         {
           id: 4,
@@ -238,6 +241,7 @@ export class ClausulaService {
       fechaVigenciaHasta: null,
       estado: EstadoClausula.VIGENTE,
       versionada: true,
+      version: 2,
       redacciones: [
         {
           id: 5,
