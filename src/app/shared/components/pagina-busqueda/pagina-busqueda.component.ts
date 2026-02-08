@@ -7,8 +7,8 @@ export abstract class PaginaBusquedaComponent<T> extends FormularioBaseComponent
 
     subTituloCantidadDatos = 'No se encontraron resultados.';
 
-    colFiltro: string = 'col-lg-3';
-    colTabla: string = 'col-lg-9';
+    colFiltro: string = 'col-lg-4';
+    colTabla: string = 'col-lg-8';
 
     abstract get columnaOrdenInicial(): string;
     abstract get ordenInicial(): 'asc' | 'desc';
@@ -74,12 +74,12 @@ export abstract class PaginaBusquedaComponent<T> extends FormularioBaseComponent
 
 
     aplicarColapso() {
-        if (this.colFiltro === 'col-lg-3') {
+        if (this.colFiltro === 'col-lg-4') {
             this.colFiltro = 'col-lg-1';
             this.colTabla = 'col-lg-11';
         } else {
-            this.colFiltro = 'col-lg-3';
-            this.colTabla = 'col-lg-9';
+            this.colFiltro = 'col-lg-4';
+            this.colTabla = 'col-lg-8';
         }
     } 
 }
