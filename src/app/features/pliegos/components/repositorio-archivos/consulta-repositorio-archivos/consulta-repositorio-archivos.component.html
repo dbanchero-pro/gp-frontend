@@ -65,26 +65,26 @@
                     <div class="row">
                         <div class="col-12 py-2 px-4">
                             <div class="row g-0 py-1 px-3">
-                                <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta">Nombre</div>
-                                <div class="col-9 col-sm-5 col-md-6 col-lg-7 font-weight-bold">{{ doc.nombreDocumento }}</div>
-                                <div class="col-3 col-sm-3 col-md-3 col-lg-3 d-flex justify-content-end align-items-start">
+                                <div class="col-3 col-xl-3 fw-semibold etiqueta">Nombre</div>
+                                <div class="col-7 col-xl-7 font-weight-bold">{{ doc.nombreDocumento }}</div>
+                                <div class="col-2 d-flex justify-content-end align-items-start">
                                     <app-boton-accion [acciones]="obtenerAcciones(doc)"
                                         [ariaLabelMasOpciones]="'Mas opciones del documento ' + doc.nombreDocumento"
                                         (accionEjecutada)="ejecutarAccion($event)">
                                     </app-boton-accion>
-                                 </div>
+                                 </div>   
                             </div>
                              <div class="row g-0 py-1 px-3">
-                                <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta">Descripción</div>
-                                <div class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold">{{ doc.descripcionDocumento }}</div>
+                                <div class="col-3 col-xl-3 fw-semibold etiqueta">Descripción</div>
+                                <div class="col-7 col-xl-7 font-weight-bold">{{ doc.descripcionDocumento }}</div>
                             </div>
                              <div class="row g-0 py-1 px-3">
-                                <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta">Tipo archivo</div>
-                                <div class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold">{{ obtenerEtiquetaTipoArchivo(doc.tipoArchivo) }}</div>
+                                <div class="col-3 col-xl-3 fw-semibold etiqueta">Tipo archivo</div>
+                                <div class="col-7 col-xl-7 font-weight-bold">{{ obtenerEtiquetaTipoArchivo(doc.tipoArchivo) }}</div>
                             </div>
                             <div class="row g-0 py-1 px-3">
-                                <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta">Organismo</div>
-                                <div class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold">{{ doc.nombreInciso }} | {{ doc.nombreUnidadEjecutora }}</div>
+                                <div class="col-3 col-xl-3 fw-semibold etiqueta">Organismo</div>
+                                <div class="col-7 col-xl-7 font-weight-bold">{{ doc.nombreInciso }} | {{ doc.nombreUnidadEjecutora }}</div>
                             </div>
                         </div>
                         

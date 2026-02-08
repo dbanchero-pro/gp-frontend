@@ -1,15 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { FormularioBaseComponent } from '../../../../../shared/components/base/formulario-base.component';
+import { PopupBaseComponent } from '../../../../../shared/components/popup-base/popup-base.component';
 import { DocumentoRepositorioService } from '../../../services/documento-repositorio.service';
 import { DocumentoRepositorioDTO } from '../../../models/documento-repositorio.model';
 import { TipoArchivoRepositorio } from '../../../enum/tipo-archivo-repositorio.enum';
 import { ArchivoDTO } from '../../../../../shared/models/common/archivo.model';
 import { IFiltroOrganismoDTO } from '../../../../../shared/models/filtros/filtro-organismo.model';
-import { CanComponentDeactivate } from '../../../../../shared/utils/can-component-deactivate';
-import { formularioTocado } from '../../../../../shared/utils/functions';
+import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
 
 @Component({
   selector: 'app-agregar-documento-repositorio-popup',
@@ -17,14 +14,15 @@ import { formularioTocado } from '../../../../../shared/utils/functions';
   styleUrls: ['./agregar-documento-repositorio-popup.component.scss'],
   standalone: false
 })
-export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
+export class AgregarDocumentoRepositorioPopupComponent extends PopupBaseComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
-  private readonly router = inject(Router);
-  private readonly activatedRoute = inject(ActivatedRoute);
   private readonly documentoService = inject(DocumentoRepositorioService);
+  protected readonly actualizarServ = inject(ActualizarService);
 
-  idDocumento!: number;
-  modoIngreso = false;
+  @Output() documentoGuardado = new EventEmitter<DocumentoRepositorioDTO>();
+
+  documentoExistente?: DocumentoRepositorioDTO;
+  esModificacion = false;
   titulo = 'Agregar archivo';
 
   override form!: FormGroup<{
@@ -47,16 +45,11 @@ export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseCom
   readonly MAX_FILE_SIZE_KB = 100;
   readonly MAX_FILE_SIZE_BYTES = this.MAX_FILE_SIZE_KB * 1024;
 
-  constructor() {
-    super();
-    this.activatedRoute.params.subscribe(params => {
-      this.idDocumento = +params['idDocumento'];
-      this.modoIngreso = !this.idDocumento;
-    });
-  }
+  override ngOnInit(): void {
+    super.ngOnInit();
 
-  ngOnInit(): void {
-    if (!this.modoIngreso) {
+    if (this.documentoExistente) {
+      this.esModificacion = true;
       this.titulo = 'Modificar archivo';
     }
 
@@ -65,7 +58,7 @@ export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseCom
   }
 
   private inicializarFormulario(): void {
-    const archivoValidators = this.modoIngreso ? [Validators.required] : [];
+    const archivoValidators = this.esModificacion ? [] : [Validators.required];
 
     this.form = this.fb.nonNullable.group({
       organismo: this.fb.control<IFiltroOrganismoDTO | null>(null, Validators.required),
@@ -77,41 +70,23 @@ export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseCom
   }
 
   private cargarDatosDocumento(): void {
-    if (this.modoIngreso) {
+    if (!this.documentoExistente) {
       return;
     }
 
-    this.documentoService.obtenerPorId(this.idDocumento).subscribe({
-      next: (documento: DocumentoRepositorioDTO | undefined) => {
-        if (!documento) {
-          this.actualizarService.mensajeError('Documento no encontrado');
-          this.volver();
-          return;
-        }
-
-        this.form.patchValue({
-          organismo: {
-            idInciso: documento.idInciso,
-            idUnidadEjecutora: documento.idUnidadEjecutora
-          },
-          nombreDocumento: documento.nombreDocumento || '',
-          descripcionDocumento: documento.descripcionDocumento || '',
-          tipoArchivo: documento.tipoArchivo
-        });
-
-        if (documento.archivo) {
-          this.nombreArchivoMostrar = documento.archivo.nombre || 'Archivo actual';
-        }
-
-        setTimeout(() => {
-          this.form.markAsPristine();
-        }, 500);
+    this.form.patchValue({
+      organismo: {
+        idInciso: this.documentoExistente.idInciso,
+        idUnidadEjecutora: this.documentoExistente.idUnidadEjecutora
       },
-      error: (err) => {
-        this.actualizarService.mensajeError('Error al cargar el documento');
-        console.error('Error al cargar documento:', err);
-      }
+      nombreDocumento: this.documentoExistente.nombreDocumento || '',
+      descripcionDocumento: this.documentoExistente.descripcionDocumento || '',
+      tipoArchivo: this.documentoExistente.tipoArchivo
     });
+
+    if (this.documentoExistente.archivo) {
+      this.nombreArchivoMostrar = this.documentoExistente.archivo.nombre || 'Archivo actual';
+    }
   }
 
   onFileSelected(event: Event): void {
@@ -129,7 +104,7 @@ export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseCom
       ];
 
       if (!tiposPermitidos.includes(file.type)) {
-        this.actualizarService.mensajeError(
+        this.mostrarError(
           'Tipo de archivo no permitido. Solo se permiten archivos PDF, Word y Excel.'
         );
         input.value = '';
@@ -141,7 +116,7 @@ export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseCom
 
       // Validar tamaño
       if (file.size > this.MAX_FILE_SIZE_BYTES) {
-        this.actualizarService.mensajeError(
+        this.mostrarError(
           `El archivo excede el tamaño máximo permitido de ${this.MAX_FILE_SIZE_KB} KB.`
         );
         input.value = '';
@@ -165,18 +140,18 @@ export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseCom
     this.form.markAllAsTouched();
 
     if (!this.form.valid) {
-      this.actualizarService.mensajeError('Por favor complete todos los campos requeridos');
+      this.mostrarError('Por favor complete todos los campos requeridos');
       return;
     }
 
     const organismo = this.form.value.organismo;
     if (!organismo || !organismo.idInciso || !organismo.idUnidadEjecutora) {
-      this.actualizarService.mensajeError('Debe seleccionar un Inciso y una Unidad Ejecutora');
+      this.mostrarError('Debe seleccionar un Inciso y una Unidad Ejecutora');
       return;
     }
 
-    if (this.modoIngreso && !this.archivoSeleccionado) {
-      this.actualizarService.mensajeError('Debe seleccionar un archivo');
+    if (!this.esModificacion && !this.archivoSeleccionado) {
+      this.mostrarError('Debe seleccionar un archivo');
       return;
     }
 
@@ -200,7 +175,7 @@ export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseCom
       };
 
       reader.onerror = () => {
-        this.actualizarService.mensajeError('Error al leer el archivo');
+        this.mostrarError('Error al leer el archivo');
       };
 
       reader.readAsDataURL(this.archivoSeleccionado);
@@ -210,80 +185,40 @@ export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseCom
   }
 
   private procesarGuardado(organismo: IFiltroOrganismoDTO, archivo?: ArchivoDTO): void {
-    if (this.modoIngreso) {
-      const documento = new DocumentoRepositorioDTO(
-        undefined,
-        organismo.idInciso!,
-        '',
-        organismo.idUnidadEjecutora!,
-        '',
-        this.form.value.nombreDocumento || '',
-        this.form.value.descripcionDocumento || '',
-        this.form.value.tipoArchivo as TipoArchivoRepositorio,
-        archivo,
-        new Date(),
-        new Date()
-      );
+    const documento = new DocumentoRepositorioDTO(
+      this.documentoExistente?.id,
+      organismo.idInciso!,
+      this.documentoExistente?.nombreInciso || '',
+      organismo.idUnidadEjecutora!,
+      this.documentoExistente?.nombreUnidadEjecutora || '',
+      this.form.value.nombreDocumento || '',
+      this.form.value.descripcionDocumento || '',
+      this.form.value.tipoArchivo as TipoArchivoRepositorio,
+      archivo || this.documentoExistente?.archivo,
+      this.documentoExistente?.fechaCreacion || new Date(),
+      new Date()
+    );
 
-      try {
-        this.documentoService.crear(documento).subscribe({
-          next: () => {
-            this.form.markAsPristine();
-            this.volver();
-            window.setTimeout(() => {
-              this.actualizarService.mensajeCorrecto('Documento agregado correctamente');
-            }, 1000);
-          },
-          error: (err) => {
-            this.actualizarService.mensajeError(err.message || 'Error al guardar el documento');
-            console.error('Error al guardar el documento:', err);
-          }
-        });
-      } catch (error: any) {
-        this.actualizarService.mensajeError(error.message || 'Error al guardar el documento');
-        console.error('Error al guardar el documento:', error);
-      }
-    } else {
-      this.documentoService.obtenerPorId(this.idDocumento).subscribe({
-        next: (documentoActual: DocumentoRepositorioDTO | undefined) => {
-          const documento = new DocumentoRepositorioDTO(
-            this.idDocumento,
-            organismo.idInciso!,
-            documentoActual?.nombreInciso || '',
-            organismo.idUnidadEjecutora!,
-            documentoActual?.nombreUnidadEjecutora || '',
-            this.form.value.nombreDocumento || '',
-            this.form.value.descripcionDocumento || '',
-            this.form.value.tipoArchivo as TipoArchivoRepositorio,
-            archivo || documentoActual?.archivo,
-            documentoActual?.fechaCreacion || new Date(),
-            new Date()
-          );
+    try {
+      const operacion = this.esModificacion
+        ? this.documentoService.actualizar(documento)
+        : this.documentoService.crear(documento);
 
-          try {
-            this.documentoService.actualizar(documento).subscribe({
-              next: () => {
-                this.form.markAsPristine();
-                this.volver();
-                window.setTimeout(() => {
-                  this.actualizarService.mensajeCorrecto('Documento modificado correctamente');
-                }, 1000);
-              },
-              error: (err) => {
-                this.actualizarService.mensajeError(err.message || 'Error al guardar el documento');
-                console.error('Error al guardar el documento:', err);
-              }
-            });
-          } catch (error: any) {
-            this.actualizarService.mensajeError(error.message || 'Error al guardar el documento');
-            console.error('Error al guardar el documento:', error);
-          }
+      operacion.subscribe({
+        next: (documentoGuardado) => {
+          const mensaje = this.esModificacion
+            ? 'Documento modificado correctamente'
+            : 'Documento agregado correctamente';
+          this.actualizarServ.mensajeCorrecto(mensaje);
+          this.documentoGuardado.emit(documentoGuardado);
+          this.cerrarPopup();
         },
         error: (err) => {
-          this.actualizarService.mensajeError('Error al cargar el documento actual');
-          console.error('Error al obtener documento actual:', err);
+          this.mostrarError(err, 'Error al guardar el documento');
         }
       });
+    } catch (error: any) {
+      this.mostrarError(error, 'Error al guardar el documento');
     }
   }
 
@@ -291,11 +226,7 @@ export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseCom
     // Este método se ejecuta cuando el filtro-organismo termina de cargar los datos
   }
 
-  volver(): void {
-    this.router.navigate(['/pliegos/repositorio-archivos'], { queryParams: { volver: 1 } });
-  }
-
-  canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
-    return !formularioTocado(this.form);
+  cancelar(): void {
+    this.cancelarConConfirmacion();
   }
 }
