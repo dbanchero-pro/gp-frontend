@@ -9,6 +9,7 @@ import { ConsultaClausulasComponent } from './components/clausulas/consulta-clau
 import { AgregarModificarClausulaComponent } from './components/clausulas/agregar-modificar-clausula/agregar-modificar-clausula.component';
 import { AgregarModificarRedaccionPopupComponent } from './components/clausulas/agregar-modificar-redaccion-popup/agregar-modificar-redaccion-popup.component';
 import { AgregarModificarRedaccionComponent } from './components/clausulas/agregar-modificar-redaccion/agregar-modificar-redaccion.component';
+import { HistorialClausulasComponent } from './components/clausulas/historial-clausulas/historial-clausulas.component';
 
 export const routes: Routes = [
     {
@@ -18,6 +19,10 @@ export const routes: Routes = [
     {
         path: 'clausulas',
         component: ConsultaClausulasComponent
+    },
+    {
+        path: 'clausulas/historial/:id',
+        component: HistorialClausulasComponent
     },
     {
         path: 'clausulas/agregar',
@@ -61,7 +66,8 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
         ConsultaClausulasComponent,
         AgregarModificarClausulaComponent,
         AgregarModificarRedaccionPopupComponent,
-        AgregarModificarRedaccionComponent
+        AgregarModificarRedaccionComponent,
+        HistorialClausulasComponent
     ], imports: [
         CommonModule,
         SharedModule,

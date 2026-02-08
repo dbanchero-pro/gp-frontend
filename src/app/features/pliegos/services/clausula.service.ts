@@ -492,6 +492,180 @@ export class ClausulaService {
     };
     return of(response).pipe(delay(300));
   }
+
+  obtenerHistorialVersiones(clausulaId: number): Observable<Clausula[]> {
+    const historialMock: Clausula[] = [
+      {
+        id: 101,
+        denominacion: 'Cláusula de garantía de cumplimiento',
+        aperturaElectronica: true,
+        tiposCompra: [
+          {
+            tipoCompraId: 1,
+            tipoCompraDescripcion: 'Licitación Pública',
+            subtipos: [
+              { subtipoCompraId: 1, subtipoCompraDescripcion: 'Nacional' }
+            ]
+          }
+        ],
+        objetosCompra: [
+          {
+            familiaId: 1,
+            familiaDescripcion: 'Equipos de computación',
+            subfamiliaId: 1,
+            subfamiliaDescripcion: 'Computadoras',
+            claseId: 1,
+            claseDescripcion: 'Notebooks',
+            subclaseId: 1,
+            subclaseDescripcion: 'Portátiles',
+            articulo: { articuloId: 1, articuloCodigo: 'ART001', articuloDescripcion: 'Notebook HP' }
+          }
+        ],
+        incisos: [
+          {
+            incisoId: 1,
+            incisoCodigo: '01',
+            incisoDescripcion: 'Poder Ejecutivo',
+            unidadEjecutora: { unidadEjecutoraId: 1, unidadEjecutoraCodigo: '001', unidadEjecutoraDescripcion: 'Ministerio de Economía' }
+          }
+        ],
+        fechaVigenciaDesde: '2024-01-01',
+        fechaVigenciaHasta: '2025-12-31',
+        estado: EstadoClausula.VIGENTE,
+        versionada: true,
+        version: 3,
+        redacciones: [
+          {
+            id: 1,
+            clausulaId: 101,
+            prioridad: 1,
+            redaccion: '<p>El proveedor deberá presentar una <strong>garantía de cumplimiento</strong> por el <em>10% del monto total del contrato</em>.</p>',
+            fechaCreacion: '2024-01-01',
+            usuarioCreacion: 'admin',
+            fechaModificacion: null,
+            usuarioModificacion: null
+          }
+        ],
+        fechaCreacion: '2024-10-15',
+        usuarioCreacion: 'admin',
+        fechaModificacion: '2024-10-15',
+        usuarioModificacion: 'admin'
+      },
+      {
+        id: 102,
+        denominacion: 'Cláusula de garantía de cumplimiento',
+        aperturaElectronica: true,
+        tiposCompra: [
+          {
+            tipoCompraId: 1,
+            tipoCompraDescripcion: 'Licitación Pública',
+            subtipos: [
+              { subtipoCompraId: 1, subtipoCompraDescripcion: 'Nacional' }
+            ]
+          }
+        ],
+        objetosCompra: [
+          {
+            familiaId: 1,
+            familiaDescripcion: 'Equipos de computación',
+            subfamiliaId: 1,
+            subfamiliaDescripcion: 'Computadoras',
+            claseId: null,
+            claseDescripcion: null,
+            subclaseId: null,
+            subclaseDescripcion: null,
+            articulo: null
+          }
+        ],
+        incisos: [
+          {
+            incisoId: 1,
+            incisoCodigo: '01',
+            incisoDescripcion: 'Poder Ejecutivo',
+            unidadEjecutora: null
+          }
+        ],
+        fechaVigenciaDesde: '2023-06-01',
+        fechaVigenciaHasta: '2024-12-31',
+        estado: EstadoClausula.NO_VIGENTE,
+        versionada: true,
+        version: 2,
+        redacciones: [
+          {
+            id: 2,
+            clausulaId: 102,
+            prioridad: 1,
+            redaccion: '<p>El proveedor deberá presentar una <strong>garantía de cumplimiento</strong> por el <em>8% del monto total del contrato</em>.</p>',
+            fechaCreacion: '2023-06-01',
+            usuarioCreacion: 'admin',
+            fechaModificacion: null,
+            usuarioModificacion: null
+          }
+        ],
+        fechaCreacion: '2023-06-01',
+        usuarioCreacion: 'admin',
+        fechaModificacion: '2023-06-01',
+        usuarioModificacion: 'admin'
+      },
+      {
+        id: 103,
+        denominacion: 'Cláusula de garantía de cumplimiento',
+        aperturaElectronica: false,
+        tiposCompra: [
+          {
+            tipoCompraId: 1,
+            tipoCompraDescripcion: 'Licitación Pública',
+            subtipos: [
+              { subtipoCompraId: 1, subtipoCompraDescripcion: 'Nacional' }
+            ]
+          }
+        ],
+        objetosCompra: [
+          {
+            familiaId: 1,
+            familiaDescripcion: 'Equipos de computación',
+            subfamiliaId: null,
+            subfamiliaDescripcion: null,
+            claseId: null,
+            claseDescripcion: null,
+            subclaseId: null,
+            subclaseDescripcion: null,
+            articulo: null
+          }
+        ],
+        incisos: [
+          {
+            incisoId: 1,
+            incisoCodigo: '01',
+            incisoDescripcion: 'Poder Ejecutivo',
+            unidadEjecutora: null
+          }
+        ],
+        fechaVigenciaDesde: '2022-01-01',
+        fechaVigenciaHasta: '2023-05-31',
+        estado: EstadoClausula.NO_VIGENTE,
+        versionada: true,
+        version: 1,
+        redacciones: [
+          {
+            id: 3,
+            clausulaId: 103,
+            prioridad: 1,
+            redaccion: '<p>El proveedor deberá presentar una <strong>garantía de cumplimiento</strong> por el <em>5% del monto total del contrato</em>.</p>',
+            fechaCreacion: '2022-01-01',
+            usuarioCreacion: 'admin',
+            fechaModificacion: null,
+            usuarioModificacion: null
+          }
+        ],
+        fechaCreacion: '2022-01-01',
+        usuarioCreacion: 'admin',
+        fechaModificacion: '2022-01-01',
+        usuarioModificacion: 'admin'
+      }
+    ];
+
+    return of(historialMock).pipe(delay(300));
+  }
 }
-  
-  
+

@@ -1,0 +1,97 @@
+<div class="container-fluid">
+  <div class="row mb-3">
+    <div class="col-12">
+      <h4>Historial de versiones aprobadas</h4>
+      <p class="text-muted" *ngIf="denominacionClausula">{{ denominacionClausula }}</p>
+    </div>
+  </div>
+
+  <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden"
+    [columnaOrden]="parametros.sort" [orden]="parametros.order"
+    (orderChange)="cambioOrden($event)" (sortChange)="cambioColumnaOrden($event)">
+  </app-cabezal-consulta>
+
+  <div *ngFor="let version of versionesFiltradas" class="row">
+    <div class="col-12 my-1">
+      <div class="card">
+        <div class="d-flex justify-content-between align-items-center bg-light border-bottom px-3 py-2">
+          <div>
+            <span class="font-weight-bold">Versión {{ version.version }}</span>
+            <span class="badge ml-2" [ngClass]="{
+              'badge-success': version.estado === 'VIGENTE',
+              'badge-warning': version.estado === 'NO_VIGENTE',
+              'badge-info': version.estado === 'BORRADOR'
+            }">
+              {{ version.estado === 'VIGENTE' ? 'Vigente' : version.estado === 'NO_VIGENTE' ? 'No vigente' : 'Borrador' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="px-3 py-2">
+          <div class="row g-0 py-1 px-3">
+            <div class="col-md-3 col-lg-2 etiqueta">Fecha de aprobación</div>
+            <div class="col-md-3 col-lg-4 font-weight-bold">{{ obtenerFechaAprobacion(version) }}</div>
+            <div class="col-md-3 col-lg-2 etiqueta">Apertura electrónica</div>
+            <div class="col-md-3 col-lg-4 font-weight-bold">{{ version.aperturaElectronica ? 'Sí' : 'No' }}</div>
+          </div>
+
+          <div class="row g-0 py-1 px-3">
+            <div class="col-md-3 col-lg-2 etiqueta">Vigencia</div>
+            <div class="col font-weight-bold">{{ obtenerTextoVigencia(version) }}</div>
+          </div>
+
+          <div class="row g-0 py-1 px-3">
+            <div class="col-md-3 col-lg-2 etiqueta">Tipos de compra</div>
+            <div class="col font-weight-bold">{{ obtenerResumenTiposCompra(version) }}</div>
+          </div>
+
+          <div class="row g-0 py-1 px-3">
+            <div class="col-md-3 col-lg-2 etiqueta">Organismo</div>
+            <div class="col font-weight-bold">{{ obtenerResumenIncisos(version) }}</div>
+          </div>
+
+          <div class="row g-0 py-1 px-3">
+            <div class="col-md-3 col-lg-2 etiqueta">Objetos de compra</div>
+            <div class="col font-weight-bold">{{ obtenerResumenObjetosCompra(version) }}</div>
+          </div>
+
+          <div *ngIf="version.redacciones.length > 0" class="row g-0 py-2">
+            <div class="col-12">
+              <app-grupo-colapsable
+                [colapsado]="true"
+                class="w-100"
+                classContenido="p-0"
+                [ariaLabel]="'Mostrar u ocultar redacciones de la versión ' + version.version">
+                <titulo>Redacciones ({{ version.redacciones.length }})</titulo>
+                <contenido>
+                  <div class="px-3 py-2">
+                    <div *ngFor="let redaccion of version.redacciones" class="card mb-2">
+                      <div class="card-body">
+                        <span class="badge badge-secondary mb-2">Prioridad: {{ redaccion.prioridad }}</span>
+                        <div class="mb-0" [innerHTML]="truncarRedaccion(redaccion.redaccion) | safeHtml"></div>
+                        <small *ngIf="esRedaccionTruncada(redaccion.redaccion)" class="text-muted">
+                          <i class="fa fa-info-circle"></i> Texto truncado
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </contenido>
+              </app-grupo-colapsable>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina"
+    [paginaActual]="parametros.pagina + 1" (cambioPagina)="cambioPagina($event)"
+    (cambioItemsPorPagina)="cambioPorPagina($event)">
+  </app-paginado>
+
+  <div class="btn-back d-flex justify-content-end mt-3">
+    <button class="btn btn-link" type="button" (click)="volver()">
+      <em class="fa fa-arrow-left mr-1"></em>Volver
+    </button>
+  </div>
+</div>

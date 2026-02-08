@@ -393,7 +393,10 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
     }
 
   verHistorial(clausula: Clausula): void {
-    console.log('Ver historial de cláusula:', clausula);
+    if (!clausula.id) {
+      return;
+    }
+    this.router.navigate(['/pliegos/clausulas/historial', clausula.id]);
   }
 
   seleccionarClausula(clausula: Clausula): void {
