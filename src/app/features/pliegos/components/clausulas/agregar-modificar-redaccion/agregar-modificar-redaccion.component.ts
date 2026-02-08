@@ -41,8 +41,15 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
 
     this.modoIngreso = !this.idRedaccion;
 
+    console.log('Inicializando redacción - Modo:', this.modoIngreso ? 'INGRESO' : 'MODIFICACIÓN');
+    console.log('ID Cláusula:', this.idClausula);
+    console.log('ID Redacción:', this.idRedaccion, 'Tipo:', typeof this.idRedaccion);
+
     this.cargarDatosTemporales();
     this.inicializarFormulario();
+
+    console.log('Redacción cargada:', this.redaccion);
+    console.log('Valores del formulario - Prioridad:', this.form.value.prioridad, 'Redacción length:', this.form.value.redaccion?.length);
   }
 
   private cargarDatosTemporales(): void {
@@ -53,7 +60,12 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
       this.redaccionesExistentes = datos.redacciones || [];
 
       if (this.idRedaccion) {
-        this.redaccion = this.redaccionesExistentes.find(r => r.id === this.idRedaccion);
+        this.redaccion = this.redaccionesExistentes.find(r => Number(r.id) === Number(this.idRedaccion));
+
+        if (!this.redaccion) {
+          console.error('No se encontró la redacción con ID:', this.idRedaccion);
+          console.log('Redacciones disponibles:', this.redaccionesExistentes.map(r => ({ id: r.id, prioridad: r.prioridad })));
+        }
       }
     }
   }
@@ -81,7 +93,7 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
     const prioridad = this.form.value.prioridad;
 
     const yaExiste = this.redaccionesExistentes.some(r =>
-      r.prioridad === prioridad && r.id !== this.idRedaccion
+      r.prioridad === prioridad && Number(r.id) !== Number(this.idRedaccion)
     );
 
     if (yaExiste) {
@@ -102,9 +114,11 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
         redaccionNueva.id = this.obtenerNuevoId(datos.redacciones);
         datos.redacciones.push(redaccionNueva);
       } else {
-        const index = datos.redacciones.findIndex((r: RedaccionClausula) => r.id === this.idRedaccion);
+        const index = datos.redacciones.findIndex((r: RedaccionClausula) => Number(r.id) === Number(this.idRedaccion));
         if (index > -1) {
           datos.redacciones[index] = redaccionNueva;
+        } else {
+          console.error('No se pudo encontrar la redacción para actualizar. ID:', this.idRedaccion);
         }
       }
 
