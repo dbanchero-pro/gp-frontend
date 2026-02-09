@@ -347,7 +347,7 @@ export class MenuService {
 
     private menuRoles(): IMenuItem {
         return {
-            nombre: 'Gestión de roles',
+            nombre: 'Usuarios y roles',
             titulo: 'Gestión Usuarios Roles',
             subtitulo: 'Asigna o elimina roles a los usuarios, a nivel de unidades de compra, compra o tipo de compra',
             visible: true,
