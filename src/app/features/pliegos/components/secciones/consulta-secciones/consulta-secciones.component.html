@@ -112,7 +112,7 @@
                             <div class="col-md-8">
                               <span class="font-weight-bold">{{ capitulo.denominacion }}</span>
                             </div>
-                            <div class="col-md-3 text-right text-muted">
+                            <div class="col-md-3 text-right">
                               <span>Versión: {{ capitulo.version }}</span>
                             </div>
                           </div>
@@ -124,12 +124,8 @@
                                   <div class="col-md-1">
                                     <span class="badge badge-info badge-sm">Orden: {{ clausula.orden }}</span>
                                   </div>
-                                  <div class="col-md-8">
-                                    <small>{{ clausula.denominacion }}</small>
-                                  </div>
-                                  <div class="col-md-3 text-right">
-                                    <small class="text-muted">Versión: {{ clausula.version }}</small>
-                                  </div>
+                                  <div class="col-md-8"> {{ clausula.denominacion }}</div>
+                                  <div class="col-md-3 text-right">Versión: {{ clausula.version }}</div>
                                 </div>
                               </div>
                             </div>
@@ -158,12 +154,8 @@
                             <div class="col-md-1">
                               <span class="badge badge-secondary">Orden: {{ clausula.orden }}</span>
                             </div>
-                            <div class="col-md-8">
-                              <span class="font-weight-bold">{{ clausula.denominacion }}</span>
-                            </div>
-                            <div class="col-md-3 text-right">
-                              <span class="text-muted">Versión: {{ clausula.version }}</span>
-                            </div>
+                            <div class="col-md-8">{{ clausula.denominacion }}</div>
+                            <div class="col-md-3 text-right">Versión: {{ clausula.version }}</div>
                           </div>
                         </div>
                       </div>
