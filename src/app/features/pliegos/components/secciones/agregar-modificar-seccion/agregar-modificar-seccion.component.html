@@ -1,0 +1,155 @@
+<div class="container-fluid">
+  <div class="row">
+      <div class="col-md-8">
+        <h4>{{ titulo }}</h4>
+      </div>
+      <div class="col-md-4">
+        <span class="float-right text-muted">Los campos con * son obligatorios</span>
+      </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <form [formGroup]="form">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Datos generales</h5>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="denominacion">* Denominación</label>
+                  <input type="text" class="form-control" id="denominacion" formControlName="denominacion"
+                    placeholder="Ingrese denominación" maxlength="500">
+                  <div *ngIf="form.controls.denominacion.invalid && form.controls.denominacion.touched" class="text-danger">
+                    <small *ngIf="form.controls.denominacion.errors?.['required']">La denominación es obligatoria</small>
+                    <small *ngIf="form.controls.denominacion.errors?.['maxlength']">La denominación no puede exceder los 500 caracteres</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="fechaVigenciaDesde">Fecha vigencia desde</label>
+                  <input type="date" class="form-control" id="fechaVigenciaDesde" formControlName="fechaVigenciaDesde">
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="fechaVigenciaHasta">Fecha vigencia hasta</label>
+                  <input type="date" class="form-control" id="fechaVigenciaHasta" formControlName="fechaVigenciaHasta">
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="form.errors?.['fechasInvalidas'] && (form.controls.fechaVigenciaDesde.touched || form.controls.fechaVigenciaHasta.touched)" class="row">
+              <div class="col-12">
+                <div class="alert alert-danger">
+                  La fecha vigencia desde debe ser anterior a la fecha vigencia hasta
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Capítulos</h5>
+              <button type="button" class="btn btn-primary" (click)="agregarCapitulo()">
+                <em class="fa fa-plus mr-1"></em> Agregar capítulo
+              </button>
+            </div>
+
+            <div *ngIf="capitulosAgregados.length > 0" class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th style="width: 10%">Orden</th>
+                    <th style="width: 60%">Denominación</th>
+                    <th style="width: 10%">Versión</th>
+                    <th class="text-center" style="width: 20%">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let capitulo of capitulosAgregados">
+                    <td>{{ capitulo.orden }}</td>
+                    <td>{{ capitulo.denominacion }}</td>
+                    <td>{{ capitulo.version }}</td>
+                    <td class="text-center">
+                      <button
+                        *ngFor="let accion of obtenerAccionesCapitulo(capitulo)"
+                        type="button"
+                        [class]="accion.clase"
+                        [attr.aria-label]="accion.ariaLabel"
+                        (click)="accion.accion && accion.accion()">
+                        <em [class]="accion.icono"></em>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div *ngIf="capitulosAgregados.length === 0" class="alert alert-info">
+              No hay capítulos agregados a la sección
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Cláusulas</h5>
+              <button type="button" class="btn btn-primary" (click)="agregarClausula()">
+                <em class="fa fa-plus mr-1"></em> Agregar cláusula
+              </button>
+            </div>
+
+            <div *ngIf="clausulasAgregadas.length > 0" class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th style="width: 10%">Orden</th>
+                    <th style="width: 60%">Denominación</th>
+                    <th style="width: 10%">Versión</th>
+                    <th class="text-center" style="width: 20%">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let clausula of clausulasAgregadas">
+                    <td>{{ clausula.orden }}</td>
+                    <td>{{ clausula.denominacion }}</td>
+                    <td>{{ clausula.version }}</td>
+                    <td class="text-center">
+                      <button
+                        *ngFor="let accion of obtenerAccionesClausula(clausula)"
+                        type="button"
+                        [class]="accion.clase"
+                        [attr.aria-label]="accion.ariaLabel"
+                        (click)="accion.accion && accion.accion()">
+                        <em [class]="accion.icono"></em>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div *ngIf="clausulasAgregadas.length === 0" class="alert alert-info">
+              No hay cláusulas agregadas a la sección
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end mb-4">
+          <button *ngIf="!modoIngreso" class="btn btn-primary mr-3" type="button" (click)="aprobar()">Aprobar</button>
+          <button class="btn btn-primary" type="button" (click)="guardar()">Guardar</button>
+          <div class="btn-back d-flex justify-content-end">
+            <button class="btn btn-link" type="button" (click)="volver()">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

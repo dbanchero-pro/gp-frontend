@@ -1,0 +1,190 @@
+<div class="row">
+  <div [ngClass]="colFiltro" class="sidebar">
+    <app-filtro title="Búsqueda" titleBtn="Buscar" iconTitle="fa fa-search"
+      (evFilter)="actualizarFiltrosYBuscar()">
+      <div [formGroup]="formularioFiltro" class="col-12 ml-0 pl-0 mr-0 pr-0">
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0">
+            <label for="denominacion" class="col-form-label col-12">Denominación sección</label>
+            <input type="text" class="form-control col-12" id="denominacion"
+              formControlName="denominacion" placeholder="Ingrese denominación">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0 px-0">
+            <app-rango-fechas
+              formControlName="rangoFechasVigencia"
+              orientacion="horizontal"
+              etiquetaRango="Fecha desde y hasta vigencia"
+              [requiereFechaDesde]="false"
+              [requiereFechaHasta]="false"
+              [permiteFechaFutura]="true">
+            </app-rango-fechas>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="clean-filter col-12">
+            <button type="button" class="btn btn-link" (click)="nuevaConsulta()">
+              Nueva consulta
+            </button>
+          </div>
+        </div>
+      </div>
+    </app-filtro>
+  </div>
+
+  <div [ngClass]="colTabla">
+
+      <div class="row justify-content-end pr-2 mb-2" *ngIf="!mostrarSoloSeleccion">
+          <button class="btn btn-primary mr-2" (click)="agregarSeccion()">
+              <em class="fa fa-plus mr-1"></em>
+              Agregar sección
+          </button>
+      </div>
+
+      <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total===-1">
+          <div class="card-body py-sm-2 mb-sm-2 col-12 text-center  pt-sm-4 pb-sm-4" >
+          <em class=" fa fa-search  fa-2x  d-block mb-4"></em>
+              <h6>Ingresa las opciones de búsqueda y presiona buscar para consultar secciones</h6>
+          </div>
+      </div>
+
+    <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden"
+      [columnaOrden]="parametros.sort" [orden]="parametros.order"
+      (orderChange)="cambioOrden($event)" (sortChange)="cambioColumnaOrden($event)">
+    </app-cabezal-consulta>
+
+    <div *ngFor="let seccion of secciones" class="row">
+      <div class="col-12 my-1">
+        <div class="card">
+          <div class="d-flex justify-content-between align-items-center bg-light border-bottom px-3 py-2">
+            <div>
+              <span class="font-weight-bold">{{ seccion.denominacion }}</span>
+              <span class="badge ml-2" [ngClass]="{
+                'badge-success': obtenerEstadoVigencia(seccion) === 'VIGENTE',
+                'badge-warning': obtenerEstadoVigencia(seccion) === 'NO_VIGENTE'
+              }">
+                {{ obtenerTextoEstadoVigencia(seccion) }}
+              </span>
+              <span *ngIf="esBorrador(seccion)" class="badge badge-info ml-1">
+                Borrador
+              </span>
+            </div>
+            <div class="d-flex" *ngIf="!mostrarSoloSeleccion">
+              <div class="z-index-10">
+                <app-boton-accion [acciones]="obtenerAccionesSeccion(seccion)"
+                  [ariaLabelMasOpciones]="'Mas opciones de la sección ' + seccion.denominacion">
+                </app-boton-accion>
+              </div>
+            </div>
+            <div *ngIf="mostrarSoloSeleccion">
+              <button type="button" class="btn btn-primary btn-sm" (click)="seleccionarSeccion(seccion)">
+                <em class="fa fa-check mr-1"></em> Seleccionar
+              </button>
+            </div>
+          </div>
+
+          <div class="px-3 py-2">
+            <div class="row g-0 py-1 px-3">
+              <div class="col-md-3 col-lg-2 etiqueta">Vigencia</div>
+              <div class="col-md-9 col-lg-10 font-weight-bold">{{ obtenerTextoVigencia(seccion) }}</div>
+            </div>
+
+            <div *ngIf="seccion.capitulos.length > 0" class="row g-0 py-2">
+              <div class="col-12">
+                <app-grupo-colapsable
+                  [colapsado]="true"
+                  class="w-100"
+                  classContenido="p-0"
+                  [ariaLabel]="'Mostrar u ocultar capítulos de la sección ' + seccion.denominacion">
+                  <titulo>Capítulos ({{ seccion.capitulos.length }})</titulo>
+                  <contenido>
+                    <div class="px-3 py-2">
+                      <div *ngFor="let capitulo of seccion.capitulos" class="card mb-2">
+                        <div class="card-body py-2">
+                          <div class="row g-0 mb-2">
+                            <div class="col-md-2">
+                              <span class="badge badge-secondary">Orden: {{ capitulo.orden }}</span>
+                            </div>
+                            <div class="col-md-7">
+                              <span class="font-weight-bold">{{ capitulo.denominacion }}</span>
+                            </div>
+                            <div class="col-md-3 text-right">
+                              <span class="text-muted">Versión: {{ capitulo.version }}</span>
+                            </div>
+                          </div>
+                          <div *ngIf="capitulo.clausulas && capitulo.clausulas.length > 0" class="pl-3">
+                            <div class="text-muted mb-2">Cláusulas del capítulo:</div>
+                            <div *ngFor="let clausula of capitulo.clausulas" class="card mb-1 bg-light">
+                              <div class="card-body py-1 px-2">
+                                <div class="row g-0">
+                                  <div class="col-md-2">
+                                    <span class="badge badge-info badge-sm">Orden: {{ clausula.orden }}</span>
+                                  </div>
+                                  <div class="col-md-7">
+                                    <small>{{ clausula.denominacion }}</small>
+                                  </div>
+                                  <div class="col-md-3 text-right">
+                                    <small class="text-muted">V{{ clausula.version }}</small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </contenido>
+                </app-grupo-colapsable>
+              </div>
+            </div>
+
+            <div *ngIf="seccion.clausulas.length > 0" class="row g-0 py-2">
+              <div class="col-12">
+                <app-grupo-colapsable
+                  [colapsado]="true"
+                  class="w-100"
+                  classContenido="p-0"
+                  [ariaLabel]="'Mostrar u ocultar cláusulas de la sección ' + seccion.denominacion">
+                  <titulo>Cláusulas ({{ seccion.clausulas.length }})</titulo>
+                  <contenido>
+                    <div class="px-3 py-2">
+                      <div *ngFor="let clausula of seccion.clausulas" class="card mb-2">
+                        <div class="card-body py-2">
+                          <div class="row g-0">
+                            <div class="col-md-2">
+                              <span class="badge badge-secondary">Orden: {{ clausula.orden }}</span>
+                            </div>
+                            <div class="col-md-7">
+                              <span class="font-weight-bold">{{ clausula.denominacion }}</span>
+                            </div>
+                            <div class="col-md-3 text-right">
+                              <span class="text-muted">Versión: {{ clausula.version }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </contenido>
+                </app-grupo-colapsable>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina"
+      [paginaActual]="parametros.pagina + 1" (cambioPagina)="cambioPagina($event)"
+      (cambioItemsPorPagina)="cambioPorPagina($event)">
+    </app-paginado>
+
+    <div class="btn-back d-flex justify-content-end" *ngIf="mostrarSoloSeleccion">
+      <button class="btn btn-link" type="button" (click)="volver()">
+        <em class="fa fa-arrow-left mr-1"></em>Volver
+      </button>
+    </div>
+  </div>
+</div>
