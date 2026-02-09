@@ -336,6 +336,14 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
       accion: () => this.modificarClausula(clausula)
     });
 
+      acciones.push({
+      nombre: 'Ver diferencias',
+      clase: 'btn btn-success',
+      icono: 'fa fa-exchange',
+      ariaLabel: 'Ver diferencias con versión anterior ' + clausula.denominacion,
+      accion: () => this.verHistorial(clausula)
+    });
+
     if (this.esBorrador(clausula)) {
       acciones.push({
         nombre: 'Eliminar borrador',

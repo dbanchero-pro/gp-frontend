@@ -587,7 +587,7 @@ export class ConsultaUsuariosRolesComponent
             {
                 nombre: 'Modificar',
                 ariaLabel: 'Modificar rol',
-                clase: 'btn btn-success',
+                clase: 'btn btn-sm',
                 icono: 'fa fa-edit',
                 permisos: ['GC_GESTION_USU.MODIFICACION'],
                 accion: () => this.modificarRolUsuarioEspecifico(permiso)
@@ -595,7 +595,7 @@ export class ConsultaUsuariosRolesComponent
             {
                 nombre: 'Eliminar',
                 ariaLabel: 'Eliminar rol',
-                clase: 'btn btn-success',
+                clase: 'btn btn-sm',
                 icono: 'fa fa-trash',
                 permisos: ['GC_GESTION_USU.BAJA'],
                 accion: () => this.eliminarRolUsuarioEspecifico(permiso)

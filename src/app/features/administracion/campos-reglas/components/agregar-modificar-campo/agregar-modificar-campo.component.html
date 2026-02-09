@@ -109,18 +109,28 @@
                                     aria-label="Tabla de reglas del campo">
                                     <thead class="table-light sticky-top">
                                         <tr>
-                                            <th>Código</th>
+                                            <th style="width: 10%">Acciones</th>
+                                            <th style="width: 10%">Código</th>
                                             <th>Nombre</th>
                                             <th>Tipo</th>
                                             <th>Operador</th>
                                             <th>Valor</th>
                                             <th>Campo</th>
                                             <th>Mensaje error</th>
-                                            <th style="width: 200px;" aria-label="Acciones">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let regla of reglas">
+                                              <td class="text-center align-middle">
+                                             <button
+                                                *ngFor="let accion of obtenerAccionesRegla(regla)"
+                                                type="button"
+                                                [class]="accion.clase"
+                                                [attr.aria-label]="accion.ariaLabel"
+                                                (click)="accion.accion && accion.accion()">
+                                                <em [class]="accion.icono"></em>
+                                            </button>
+                                            </td>
                                             <td>{{ regla.codigo }}</td>
                                             <td>{{ regla.nombre }}</td>
                                             <td>{{ obtenerEtiquetaTipoRegla(regla.tipoRegla) }}</td>
@@ -128,12 +138,7 @@
                                             <td>{{ regla.tipoRegla === 'VALOR' ? (regla.valor || '-') : '-' }}</td>
                                             <td>{{ regla.tipoRegla === 'CAMPO' ? (regla.etiquetaCampoComparar || '-') : '-' }}</td>
                                             <td>{{ regla.mensajeError }}</td>
-                                            <td class="text-center align-middle">
-                                            <app-boton-accion [acciones]="obtenerAccionesRegla(regla)"
-                                                [ariaLabelMasOpciones]="'Mas opciones de la regla ' + regla.nombre"
-                                                (accionEjecutada)="ejecutarAccionRegla($event)">
-                                            </app-boton-accion>
-                                            </td>
+                                          
                                         </tr>
                                     </tbody>
                                 </table>

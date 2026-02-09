@@ -149,14 +149,14 @@ export class AgregarModificarCampoComponent extends FormularioBaseComponent impl
 
     acciones.push({
       nombre: 'Modificar',
-      clase: 'btn btn-success',
+      clase: 'btn btn-sm',
       icono: 'fa fa-edit',
       accion: () => this.modificarRegla(regla)
     });
 
     acciones.push({
       nombre: 'Eliminar',
-      clase: 'btn btn-success',
+      clase: 'btn btn-sm',
       icono: 'fa fa-trash',
       accion: () => this.eliminarRegla(regla)
     });

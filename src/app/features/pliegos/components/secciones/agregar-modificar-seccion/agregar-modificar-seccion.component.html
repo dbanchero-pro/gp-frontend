@@ -65,18 +65,15 @@
               <table class="table table-bordered table-hover">
                 <thead>
                   <tr>
-                    <th style="width: 10%">Orden</th>
-                    <th style="width: 60%">Denominación</th>
-                    <th style="width: 10%">Versión</th>
-                    <th class="text-center" style="width: 20%">Acciones</th>
+                    <th class="text-center" style="width: 10%">Acciones</th>
+                    <th style="width: 5%">Orden</th>
+                    <th style="width: 70%">Denominación</th>
+                    <th style="width: 5%">Versión</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let capitulo of capitulosAgregados">
-                    <td>{{ capitulo.orden }}</td>
-                    <td>{{ capitulo.denominacion }}</td>
-                    <td>{{ capitulo.version }}</td>
-                    <td class="text-center">
+                     <td class="text-center">
                       <button
                         *ngFor="let accion of obtenerAccionesCapitulo(capitulo)"
                         type="button"
@@ -86,6 +83,9 @@
                         <em [class]="accion.icono"></em>
                       </button>
                     </td>
+                    <td>{{ capitulo.orden }}</td>
+                    <td>{{ capitulo.denominacion }}</td>
+                    <td>{{ capitulo.version }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -110,18 +110,15 @@
               <table class="table table-bordered table-hover">
                 <thead>
                   <tr>
-                    <th style="width: 10%">Orden</th>
-                    <th style="width: 60%">Denominación</th>
-                    <th style="width: 10%">Versión</th>
-                    <th class="text-center" style="width: 20%">Acciones</th>
+                    <th class="text-center" style="width: 10%">Acciones</th>
+                    <th style="width: 5%">Orden</th>
+                    <th style="width: 70%">Denominación</th>
+                    <th style="width: 5%">Versión</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let clausula of clausulasAgregadas">
-                    <td>{{ clausula.orden }}</td>
-                    <td>{{ clausula.denominacion }}</td>
-                    <td>{{ clausula.version }}</td>
-                    <td class="text-center">
+                     <td class="text-center">
                       <button
                         *ngFor="let accion of obtenerAccionesClausula(clausula)"
                         type="button"
@@ -131,6 +128,9 @@
                         <em [class]="accion.icono"></em>
                       </button>
                     </td>
+                    <td>{{ clausula.orden }}</td>
+                    <td>{{ clausula.denominacion }}</td>
+                    <td>{{ clausula.version }}</td>
                   </tr>
                 </tbody>
               </table>
