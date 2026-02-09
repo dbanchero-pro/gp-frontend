@@ -14,6 +14,8 @@ import { ConsultaCapitulosComponent } from './components/capitulos/consulta-capi
 import { AgregarModificarCapituloComponent } from './components/capitulos/agregar-modificar-capitulo/agregar-modificar-capitulo.component';
 import { ConsultaSeccionesComponent } from './components/secciones/consulta-secciones/consulta-secciones.component';
 import { AgregarModificarSeccionComponent } from './components/secciones/agregar-modificar-seccion/agregar-modificar-seccion.component';
+import { ConsultaModelosComponent } from './components/modelos/consulta-modelos/consulta-modelos.component';
+import { AgregarModificarModeloComponent } from './components/modelos/agregar-modificar-modelo/agregar-modificar-modelo.component';
 
 export const routes: Routes = [
     {
@@ -103,7 +105,9 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
         ConsultaCapitulosComponent,
         AgregarModificarCapituloComponent,
         ConsultaSeccionesComponent,
-        AgregarModificarSeccionComponent
+        AgregarModificarSeccionComponent,
+        ConsultaModelosComponent,
+        AgregarModificarModeloComponent
     ], imports: [
         CommonModule,
         SharedModule,

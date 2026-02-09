@@ -403,13 +403,13 @@ export class MenuService {
                 },
                 {
                     nombre: 'Modelos',
-                    titulo: 'Administración de las modelos',
+                    titulo: 'Administración de los modelos',
                     subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar los modelos',
                     visible: true,
                     permisos: [
                         'GC_GESTION_USU.CONSULTA'
                     ],
-                    url: '/administracion/auditoria/conformidad',
+                    url: '/pliegos/modelos',
                 },
                 {
                     nombre: 'Repositorio archivos',

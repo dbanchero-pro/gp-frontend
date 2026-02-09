@@ -1,0 +1,155 @@
+<div class="container-fluid">
+  <div class="row">
+      <div class="col-md-8">
+        <h4>{{ titulo }}</h4>
+      </div>
+      <div class="col-md-4">
+        <span class="float-right text-muted">Los campos con * son obligatorios</span>
+      </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <form [formGroup]="form">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Datos generales</h5>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="denominacion">* Denominación</label>
+                  <input type="text" class="form-control" id="denominacion" formControlName="denominacion"
+                    placeholder="Ingrese denominación" maxlength="500">
+                  <div *ngIf="form.controls.denominacion.invalid && form.controls.denominacion.touched" class="text-danger">
+                    <small *ngIf="form.controls.denominacion.errors?.['required']">La denominación es obligatoria</small>
+                    <small *ngIf="form.controls.denominacion.errors?.['maxlength']">La denominación no puede exceder los 500 caracteres</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="fechaVigenciaDesde">Fecha vigencia desde</label>
+                  <input type="date" class="form-control" id="fechaVigenciaDesde" formControlName="fechaVigenciaDesde">
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="fechaVigenciaHasta">Fecha vigencia hasta</label>
+                  <input type="date" class="form-control" id="fechaVigenciaHasta" formControlName="fechaVigenciaHasta">
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="form.errors?.['fechasInvalidas'] && (form.controls.fechaVigenciaDesde.touched || form.controls.fechaVigenciaHasta.touched)" class="row">
+              <div class="col-12">
+                <div class="alert alert-danger">
+                  La fecha vigencia desde debe ser anterior a la fecha vigencia hasta
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Secciones</h5>
+              <button type="button" class="btn btn-primary" (click)="agregarSeccion()">
+                <em class="fa fa-plus mr-1"></em> Agregar sección
+              </button>
+            </div>
+
+            <div *ngIf="seccionesAgregadas.length > 0" class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 10%">Acciones</th>
+                    <th style="width: 5%">Orden</th>
+                    <th style="width: 70%">Denominación</th>
+                    <th style="width: 5%">Versión</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let seccion of seccionesAgregadas">
+                     <td class="text-center">
+                      <button
+                        *ngFor="let accion of obtenerAccionesSeccion(seccion)"
+                        type="button"
+                        [class]="accion.clase"
+                        [attr.aria-label]="accion.ariaLabel"
+                        (click)="accion.accion && accion.accion()">
+                        <em [class]="accion.icono"></em>
+                      </button>
+                    </td>
+                    <td>{{ seccion.orden }}</td>
+                    <td>{{ seccion.denominacion }}</td>
+                    <td>{{ seccion.version }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div *ngIf="seccionesAgregadas.length === 0" class="alert alert-info">
+              No hay secciones agregadas al modelo
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0">Cláusulas</h5>
+              <button type="button" class="btn btn-primary" (click)="agregarClausula()">
+                <em class="fa fa-plus mr-1"></em> Agregar cláusula
+              </button>
+            </div>
+
+            <div *ngIf="clausulasAgregadas.length > 0" class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 10%">Acciones</th>
+                    <th style="width: 5%">Orden</th>
+                    <th style="width: 70%">Denominación</th>
+                    <th style="width: 5%">Versión</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let clausula of clausulasAgregadas">
+                     <td class="text-center">
+                      <button
+                        *ngFor="let accion of obtenerAccionesClausula(clausula)"
+                        type="button"
+                        [class]="accion.clase"
+                        [attr.aria-label]="accion.ariaLabel"
+                        (click)="accion.accion && accion.accion()">
+                        <em [class]="accion.icono"></em>
+                      </button>
+                    </td>
+                    <td>{{ clausula.orden }}</td>
+                    <td>{{ clausula.denominacion }}</td>
+                    <td>{{ clausula.version }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div *ngIf="clausulasAgregadas.length === 0" class="alert alert-info">
+              No hay cláusulas agregadas al modelo
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end mb-4">
+          <button *ngIf="!modoIngreso" class="btn btn-primary mr-3" type="button" (click)="aprobar()">Aprobar</button>
+          <button class="btn btn-primary" type="button" (click)="guardar()">Guardar</button>
+          <div class="btn-back d-flex justify-content-end">
+            <button class="btn btn-link" type="button" (click)="volver()">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
