@@ -7,6 +7,12 @@ import { ModeloService } from '../../../services/modelo.service';
 import { Modelo, SeccionModelo, ClausulaModelo } from '../../../models/modelo.model';
 import { EstadoClausula } from '../../../enum/estado-clausula.enum';
 import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
+import { IncisoDTO } from 'src/app/shared/models/sice/inciso.model';
+import { UnidadEjecutoraDTO } from 'src/app/shared/models/sice/unidad-ejecutora.model';
+import { TipoCompraDTO } from 'src/app/shared/models/sice/tipo-compra.model';
+import { SubtipoCompraDTO } from 'src/app/shared/models/sice/subtipo-compra.model';
+import { SiNoValor } from 'src/app/shared/enum/si-no-valor.enum';
+import { TipoCompraClausula } from '../../../models/clausula.model';
 
 @Component({
   selector: 'app-agregar-modificar-modelo',
@@ -28,10 +34,56 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
     denominacion: FormControl<string>;
     fechaVigenciaDesde: FormControl<string>;
     fechaVigenciaHasta: FormControl<string>;
+    incisoId: FormControl<number | null>;
+    unidadEjecutoraId: FormControl<number | null>;
   }>;
+  
+  formTipoCompra!: FormGroup<{
+    tipoCompraId: FormControl<string | null>;
+    subtipoCompraId: FormControl<string | null>;
+  }>;
+  
+  formObjetoCompra!: FormGroup<{
+    familiaId: FormControl<number | null>;
+    subfamiliaId: FormControl<number | null>;
+    claseId: FormControl<number | null>;
+    subclaseId: FormControl<number | null>;
+    articuloId: FormControl<number | null>;
+  }>;
+  
+  opcionesSiNo: { id: string; nombre: string }[] = [
+    { id: SiNoValor.SI, nombre: 'Sí' },
+    { id: SiNoValor.NO, nombre: 'No' }
+  ];
+  
+  incisos: IncisoDTO[] = [
+    new IncisoDTO(1, 'Poder Ejecutivo'),
+    new IncisoDTO(2, 'Poder Legislativo'),
+    new IncisoDTO(3, 'Poder Judicial')
+  ];
+
+  unidadesEjecutoras: UnidadEjecutoraDTO[] = [];
+  unidadesEjecutorasMock: UnidadEjecutoraDTO[] = [
+    new UnidadEjecutoraDTO(1, new IncisoDTO(1, 'Poder Ejecutivo'), 1, 'Ministerio de Economía'),
+    new UnidadEjecutoraDTO(2, new IncisoDTO(2, 'Poder Legislativo'), 2, 'Cámara de Diputados'),
+    new UnidadEjecutoraDTO(3, new IncisoDTO(1, 'Poder Ejecutivo'), 3, 'Ministerio de Salud')
+  ];
+
+  tiposCompra: TipoCompraDTO[] = [
+    new TipoCompraDTO('1', 'Licitación Pública'),
+    new TipoCompraDTO('2', 'Contratación Directa'),
+    new TipoCompraDTO('3', 'Licitación Abreviada')
+  ];
+
+  subtiposCompra: SubtipoCompraDTO[] = [];
+  subtiposCompraMock: SubtipoCompraDTO[] = [
+    new SubtipoCompraDTO('1', '1', 'Nacional', 'Licitación Pública'),
+    new SubtipoCompraDTO('1', '2', 'Internacional', 'Licitación Pública'),
+    new SubtipoCompraDTO('2', '3', 'Por excepción', 'Contratación Directa')
+  ];
 
   seccionesAgregadas: SeccionModelo[] = [];
-  clausulasAgregadas: ClausulaModelo[] = [];
+  tiposCompraAgregados: TipoCompraClausula[] = [];
 
   constructor() {
     super();
@@ -46,11 +98,10 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
       this.titulo = 'Modificar modelo';
     }
 
-    this.inicializarFormulario();
+    this.inicializarFormularios();
 
     if (this.modoIngreso) {
       this.verificarSeccionSeleccionada();
-      this.verificarClausulaSeleccionada();
     } else {
       this.cargarDatosModelo();
     }
@@ -75,25 +126,6 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
     }, 100);
   }
 
-  private verificarClausulaSeleccionada(): void {
-    setTimeout(() => {
-      const navigation = this.router.getCurrentNavigation();
-      const state = navigation?.extras.state;
-
-      if (state && state['clausulaSeleccionada']) {
-        this.agregarClausulaDesdeSeleccion(state['clausulaSeleccionada']);
-      } else {
-        const historyState = window.history.state;
-        if (historyState?.clausulaSeleccionada) {
-          this.agregarClausulaDesdeSeleccion(historyState.clausulaSeleccionada);
-          const newState = { ...historyState };
-          delete newState.clausulaSeleccionada;
-          window.history.replaceState(newState, '');
-        }
-      }
-    }, 100);
-  }
-
   private agregarSeccionDesdeSeleccion(seccion: SeccionModelo): void {
     const yaExiste = this.seccionesAgregadas.some(s => s.seccionId === seccion.seccionId);
 
@@ -108,39 +140,29 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
     this.actualizarService.mensajeCorrecto('Sección agregada exitosamente');
   }
 
-  private agregarClausulaDesdeSeleccion(clausula: ClausulaModelo): void {
-    const yaExiste = this.clausulasAgregadas.some(c => c.clausulaId === clausula.clausulaId);
-
-    if (yaExiste) {
-      this.actualizarService.mensajeError('La cláusula ya está agregada al modelo');
-      return;
-    }
-
-    clausula.orden = this.clausulasAgregadas.length + 1;
-    this.clausulasAgregadas.push(clausula);
-    this.marcarFormularioTocado();
-    this.actualizarService.mensajeCorrecto('Cláusula agregada exitosamente');
-  }
-
-  private inicializarFormulario(): void {
+  private inicializarFormularios(): void {
     const hoy = new Date().toISOString().split('T')[0];
 
     this.form = this.fb.nonNullable.group({
-      denominacion: this.fb.nonNullable.control<string>('', [Validators.required, Validators.maxLength(500)]),
-      fechaVigenciaDesde: this.fb.nonNullable.control<string>(this.modoIngreso ? hoy : ''),
-      fechaVigenciaHasta: this.fb.nonNullable.control<string>('')
-    }, { validators: this.validarFechas.bind(this) });
-  }
+      denominacion: this.fb.nonNullable.control<string>('', [Validators.required, Validators.maxLength(200)]),
+      fechaVigenciaDesde: this.fb.nonNullable.control<string>(this.modoIngreso ? hoy : '', Validators.required),
+      fechaVigenciaHasta: this.fb.nonNullable.control<string>(''),
+      incisoId: this.fb.control<number | null>(null),
+      unidadEjecutoraId: this.fb.control<number | null>(null),
+    });
 
-  private validarFechas(control: any): { [key: string]: boolean } | null {
-    const desde = control.get('fechaVigenciaDesde')?.value;
-    const hasta = control.get('fechaVigenciaHasta')?.value;
+    this.formTipoCompra = this.fb.nonNullable.group({
+      tipoCompraId: this.fb.control<string | null>(null),
+      subtipoCompraId: this.fb.control<string | null>(null)
+    });
 
-    if (desde && hasta && desde > hasta) {
-      return { fechasInvalidas: true };
-    }
-
-    return null;
+    this.formObjetoCompra = this.fb.nonNullable.group({
+      familiaId: this.fb.control<number | null>(null),
+      subfamiliaId: this.fb.control<number | null>(null),
+      claseId: this.fb.control<number | null>(null),
+      subclaseId: this.fb.control<number | null>(null),
+      articuloId: this.fb.control<number | null>(null)
+    });
   }
 
   private cargarDatosModelo(): void {
@@ -175,7 +197,6 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
         }, 500);
 
         this.verificarSeccionSeleccionada();
-        this.verificarClausulaSeleccionada();
       },
       error: (err) => {
         this.actualizarService.mensajeError('Error al cargar el modelo');
@@ -193,29 +214,11 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
     });
   }
 
-  agregarClausula(): void {
-    this.router.navigate(['/pliegos/clausulas'], {
-      queryParams: {
-        origen: 'modelo',
-        idModelo: this.idModelo || 'nuevo'
-      }
-    });
-  }
-
   eliminarSeccion(seccion: SeccionModelo): void {
     const index = this.seccionesAgregadas.findIndex(s => s.seccionId === seccion.seccionId);
     if (index > -1) {
       this.seccionesAgregadas.splice(index, 1);
       this.reordenarSecciones();
-      this.marcarFormularioTocado();
-    }
-  }
-
-  eliminarClausula(clausula: ClausulaModelo): void {
-    const index = this.clausulasAgregadas.findIndex(c => c.clausulaId === clausula.clausulaId);
-    if (index > -1) {
-      this.clausulasAgregadas.splice(index, 1);
-      this.reordenarClausulas();
       this.marcarFormularioTocado();
     }
   }
@@ -240,35 +243,9 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
     }
   }
 
-  moverClausulaArriba(clausula: ClausulaModelo): void {
-    const index = this.clausulasAgregadas.findIndex(c => c.clausulaId === clausula.clausulaId);
-    if (index > 0) {
-      [this.clausulasAgregadas[index - 1], this.clausulasAgregadas[index]] =
-        [this.clausulasAgregadas[index], this.clausulasAgregadas[index - 1]];
-      this.reordenarClausulas();
-      this.marcarFormularioTocado();
-    }
-  }
-
-  moverClausulaAbajo(clausula: ClausulaModelo): void {
-    const index = this.clausulasAgregadas.findIndex(c => c.clausulaId === clausula.clausulaId);
-    if (index < this.clausulasAgregadas.length - 1) {
-      [this.clausulasAgregadas[index], this.clausulasAgregadas[index + 1]] =
-        [this.clausulasAgregadas[index + 1], this.clausulasAgregadas[index]];
-      this.reordenarClausulas();
-      this.marcarFormularioTocado();
-    }
-  }
-
   private reordenarSecciones(): void {
     this.seccionesAgregadas.forEach((seccion, index) => {
       seccion.orden = index + 1;
-    });
-  }
-
-  private reordenarClausulas(): void {
-    this.clausulasAgregadas.forEach((clausula, index) => {
-      clausula.orden = index + 1;
     });
   }
 
@@ -308,42 +285,82 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
     return acciones;
   }
 
-  obtenerAccionesClausula(clausula: ClausulaModelo): AccionBoton[] {
-    const acciones: AccionBoton[] = [];
+  agregarTipoCompra(): void {
+    const tipoCompraId = this.formTipoCompra.value.tipoCompraId;
+    const subtipoCompraId = this.formTipoCompra.value.subtipoCompraId;
 
-    const index = this.clausulasAgregadas.findIndex(c => c.clausulaId === clausula.clausulaId);
-
-    if (index > 0) {
-      acciones.push({
-        nombre: 'Subir',
-        clase: 'btn btn-sm',
-        icono: 'fa fa-arrow-up',
-        ariaLabel: 'Subir cláusula ' + clausula.denominacion,
-        accion: () => this.moverClausulaArriba(clausula)
-      });
+    if (!tipoCompraId) {
+      this.actualizarService.mensajeError('Debe seleccionar un tipo de compra');
+      return;
     }
 
-    if (index < this.clausulasAgregadas.length - 1) {
-      acciones.push({
-        nombre: 'Bajar',
-        clase: 'btn btn-sm',
-        icono: 'fa fa-arrow-down',
-        ariaLabel: 'Bajar cláusula ' + clausula.denominacion,
-        accion: () => this.moverClausulaAbajo(clausula)
-      });
+    const tipoCompra = this.tiposCompra.find(tc => tc.id === tipoCompraId);
+    if (!tipoCompra) {
+      return;
     }
 
-    acciones.push({
-      nombre: 'Eliminar',
-      clase: 'btn btn-sm',
-      icono: 'fa fa-trash',
-      ariaLabel: 'Eliminar cláusula ' + clausula.denominacion,
-      accion: () => this.eliminarClausula(clausula)
-    });
+    const yaExiste = this.tiposCompraAgregados.some(tc =>
+      tc.tipoCompraId === tipoCompraId &&
+      (subtipoCompraId ? tc.subtipos.some(st => st.subtipoCompraId === subtipoCompraId) : !subtipoCompraId)
+    );
 
-    return acciones;
+    if (yaExiste) {
+      this.actualizarService.mensajeError('Este tipo y subtipo de compra ya fue agregado');
+      return;
+    }
+
+    if (!tipoCompra.descTipoCompra) {
+      this.actualizarService.mensajeError('Error al obtener la descripción del tipo de compra');
+      return;
+    }
+
+    let tipoCompraExistente = this.tiposCompraAgregados.find(tc => tc.tipoCompraId === tipoCompraId);
+
+    if (!tipoCompraExistente) {
+      tipoCompraExistente = {
+        tipoCompraId: tipoCompraId,
+        tipoCompraDescripcion: tipoCompra.descTipoCompra,
+        subtipos: []
+      };
+      this.tiposCompraAgregados.push(tipoCompraExistente);
+    }
+
+    if (subtipoCompraId && tipoCompraExistente) {
+      const subtipo = this.subtiposCompra.find(st => st.idSubtipoCompra === subtipoCompraId);
+      if (subtipo && subtipo.descSubtipoCompra) {
+        tipoCompraExistente.subtipos.push({
+          subtipoCompraId: subtipoCompraId,
+          subtipoCompraDescripcion: subtipo.descSubtipoCompra
+        });
+      }
+    }
+
+    this.formTipoCompra.reset();
+    this.marcarFormularioTocado();
   }
 
+  eliminarTipoCompra(tipoCompra: TipoCompraClausula, subtipo?: any): void {
+    if (subtipo) {
+      const index = tipoCompra.subtipos.findIndex(st => st.subtipoCompraId === subtipo.subtipoCompraId);
+      if (index > -1) {
+        tipoCompra.subtipos.splice(index, 1);
+      }
+
+      if (tipoCompra.subtipos.length === 0) {
+        const indexTipo = this.tiposCompraAgregados.findIndex(tc => tc.tipoCompraId === tipoCompra.tipoCompraId);
+        if (indexTipo > -1) {
+          this.tiposCompraAgregados.splice(indexTipo, 1);
+        }
+      }
+    } else {
+      const index = this.tiposCompraAgregados.findIndex(tc => tc.tipoCompraId === tipoCompra.tipoCompraId);
+      if (index > -1) {
+        this.tiposCompraAgregados.splice(index, 1);
+      }
+    }
+    this.marcarFormularioTocado();
+  }
+  
   private marcarFormularioTocado(): void {
     this.form.markAsDirty();
   }

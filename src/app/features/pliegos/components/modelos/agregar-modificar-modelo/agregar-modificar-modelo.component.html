@@ -49,6 +49,113 @@
                 </div>
               </div>
             </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="incisoId">Inciso</label>
+                  <select class="form-control" id="incisoId" formControlName="incisoId">
+                    <option [ngValue]="null">Seleccionar inciso</option>
+                    <option *ngFor="let inciso of incisos" [ngValue]="inciso.id">
+                      {{ inciso.id }} - {{ inciso.descInciso }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="unidadEjecutoraId">Unidad ejecutora</label>
+                  <select class="form-control" id="unidadEjecutoraId" formControlName="unidadEjecutoraId"
+                    [disabled]="!form.value.incisoId">
+                    <option [ngValue]="null">Seleccionar unidad ejecutora</option>
+                    <option *ngFor="let ue of unidadesEjecutoras" [ngValue]="ue.id">
+                      {{ ue.idUnidadEjecutora }} - {{ ue.descUnidadEjecutora }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+         <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Tipos y subtipos de compra</h5>
+
+            <div [formGroup]="formTipoCompra" class="row align-items-end mb-3">
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label for="tipoCompraId">* Tipo de compra</label>
+                  <select class="form-control" id="tipoCompraId" formControlName="tipoCompraId">
+                    <option [ngValue]="null">Seleccionar tipo de compra</option>
+                    <option *ngFor="let tipo of tiposCompra" [ngValue]="tipo.id">
+                      {{ tipo.descTipoCompra }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label for="subtipoCompraId">* Subtipo de compra</label>
+                  <select class="form-control" id="subtipoCompraId" formControlName="subtipoCompraId"
+                    [disabled]="!formTipoCompra.value.tipoCompraId">
+                    <option [ngValue]="null">Seleccionar subtipo de compra</option>
+                    <option *ngFor="let subtipo of subtiposCompra" [ngValue]="subtipo.idSubtipoCompra">
+                      {{ subtipo.descSubtipoCompra }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <button type="button" class="btn btn-primary" (click)="agregarTipoCompra()">
+                  <em class="fa fa-plus mr-1"></em> Agregar
+                </button>
+              </div>
+            </div>
+
+            <div *ngIf="tiposCompraAgregados.length > 0" class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 5%">Acciones</th>
+                    <th>Descripción tipo de compra</th>
+                    <th>Descripción subtipo de compra</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let tipoCompra of tiposCompraAgregados">
+                    <tr *ngIf="tipoCompra.subtipos.length === 0">
+                      <td class="text-center">
+                        <button type="button" class="btn btn-sm" (click)="eliminarTipoCompra(tipoCompra)"
+                          [attr.aria-label]="'Eliminar tipo de compra ' + tipoCompra.tipoCompraDescripcion">
+                          <em class="fa fa-trash"></em>
+                        </button>
+                      </td>
+                      <td>{{ tipoCompra.tipoCompraDescripcion }}</td>
+                      <td>Todos los subtipos</td>
+                    </tr>
+                    <tr *ngFor="let subtipo of tipoCompra.subtipos">
+                      <td>{{ tipoCompra.tipoCompraDescripcion }}</td>
+                      <td>{{ subtipo.subtipoCompraDescripcion }}</td>
+                      <td class="text-center">
+                        <button type="button" class="btn btn-sm" (click)="eliminarTipoCompra(tipoCompra, subtipo)"
+                          [attr.aria-label]="'Eliminar subtipo de compra ' + subtipo.subtipoCompraDescripcion">
+                          <em class="fa fa-trash"></em>
+                        </button>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+
+            <div *ngIf="tiposCompraAgregados.length === 0" class="alert alert-info">
+              No hay tipos de compra agregados
+            </div>
           </div>
         </div>
 
@@ -65,7 +172,7 @@
               <table class="table table-bordered table-hover">
                 <thead>
                   <tr>
-                    <th class="text-center" style="width: 10%">Acciones</th>
+                    <th class="text-center" style="width: 5%">Acciones</th>
                     <th style="width: 5%">Orden</th>
                     <th style="width: 70%">Denominación</th>
                     <th style="width: 5%">Versión</th>

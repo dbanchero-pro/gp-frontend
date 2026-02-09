@@ -139,32 +139,32 @@
               <table class="table table-bordered table-hover">
                 <thead>
                   <tr>
+                    <th class="text-center" style="width: 100px;">Acciones</th>
                     <th>Descripción tipo de compra</th>
                     <th>Descripción subtipo de compra</th>
-                    <th class="text-center" style="width: 100px;"></th>
                   </tr>
                 </thead>
                 <tbody>
                   <ng-container *ngFor="let tipoCompra of tiposCompraAgregados">
                     <tr *ngIf="tipoCompra.subtipos.length === 0">
-                      <td>{{ tipoCompra.tipoCompraDescripcion }}</td>
-                      <td>Todos los subtipos</td>
-                      <td class="text-center">
+                       <td class="text-center">
                         <button type="button" class="btn btn-sm" (click)="eliminarTipoCompra(tipoCompra)"
                           [attr.aria-label]="'Eliminar tipo de compra ' + tipoCompra.tipoCompraDescripcion">
                           <em class="fa fa-trash"></em>
                         </button>
                       </td>
+                      <td>{{ tipoCompra.tipoCompraDescripcion }}</td>
+                      <td>Todos los subtipos</td>
                     </tr>
                     <tr *ngFor="let subtipo of tipoCompra.subtipos">
-                      <td>{{ tipoCompra.tipoCompraDescripcion }}</td>
-                      <td>{{ subtipo.subtipoCompraDescripcion }}</td>
-                      <td class="text-center">
+                       <td class="text-center">
                         <button type="button" class="btn btn-sm" (click)="eliminarTipoCompra(tipoCompra, subtipo)"
                           [attr.aria-label]="'Eliminar subtipo de compra ' + subtipo.subtipoCompraDescripcion">
                           <em class="fa fa-trash"></em>
                         </button>
                       </td>
+                      <td>{{ tipoCompra.tipoCompraDescripcion }}</td>
+                      <td>{{ subtipo.subtipoCompraDescripcion }}</td>
                     </tr>
                   </ng-container>
                 </tbody>
@@ -257,16 +257,22 @@
               <table class="table table-bordered table-hover">
                 <thead>
                   <tr>
+                    <th class="text-center" style="width: 100px;">Acciones</th>
                     <th>Familia</th>
                     <th>Subfamilia</th>
                     <th>Clase</th>
                     <th>Subclase</th>
                     <th>Artículos</th>
-                    <th class="text-center" style="width: 100px;">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let objeto of objetosCompraAgregados">
+                     <td class="text-center">
+                      <button type="button" class="btn btn-sm" (click)="eliminarObjetoCompra(objeto)"
+                        [attr.aria-label]="'Eliminar objeto de compra'">
+                        <em class="fa fa-trash"></em>
+                      </button>
+                    </td>
                     <td>{{ objeto.familiaDescripcion }}</td>
                     <td>{{ objeto.subfamiliaDescripcion || '-' }}</td>
                     <td>{{ objeto.claseDescripcion || '-' }}</td>
@@ -276,12 +282,6 @@
                         {{ objeto.articulo.articuloDescripcion }} ({{ objeto.articulo.articuloCodigo }})
                       </span>
                       <span *ngIf="!objeto.articulo">-</span>
-                    </td>
-                    <td class="text-center">
-                      <button type="button" class="btn btn-sm" (click)="eliminarObjetoCompra(objeto)"
-                        [attr.aria-label]="'Eliminar objeto de compra'">
-                        <em class="fa fa-trash"></em>
-                      </button>
                     </td>
                   </tr>
                 </tbody>
