@@ -180,7 +180,7 @@
                   class="w-100"
                   classContenido="p-0"
                   [ariaLabel]="'Mostrar u ocultar secciones del modelo ' + modelo.denominacion">
-                  <titulo>Cuerpo</titulo>
+                  <titulo>Secciones ({{ modelo.secciones.length }})</titulo>
                   <contenido>
                     <div class="px-3 py-2">
                       <div *ngFor="let seccion of modelo.secciones" class="card mb-2">
