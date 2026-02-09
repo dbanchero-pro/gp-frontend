@@ -169,7 +169,6 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
         });
 
         this.seccionesAgregadas = [...(modelo.secciones || [])];
-        this.clausulasAgregadas = [...(modelo.clausulas || [])];
 
         setTimeout(() => {
           this.form.markAsPristine();
@@ -369,7 +368,6 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
       fechaVigenciaDesde: valores.fechaVigenciaDesde || null,
       fechaVigenciaHasta: valores.fechaVigenciaHasta || null,
       secciones: this.seccionesAgregadas,
-      clausulas: this.clausulasAgregadas,
       tiposCompra: [],
       organismos: [],
       estado: EstadoClausula.BORRADOR,

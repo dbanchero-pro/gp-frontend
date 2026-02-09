@@ -58,7 +58,6 @@ export interface Modelo {
   versionada: boolean;
   version: number | undefined;
   secciones: SeccionModelo[];
-  clausulas: ClausulaModelo[];
   tiposCompra: TipoCompraModelo[];
   organismos: OrganismoModelo[];
   fechaCreacion: string | null;

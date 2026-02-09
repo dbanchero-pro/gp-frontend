@@ -51,7 +51,6 @@ export class ModeloService {
           clausulas: []
         }
       ],
-      clausulas: [],
       tiposCompra: [
         {
           tipoCompraId: 1,
@@ -82,20 +81,50 @@ export class ModeloService {
       estado: 'ACTIVO',
       versionada: true,
       version: 2,
-      secciones: [],
-      clausulas: [
+      secciones: [
         {
-          clausulaId: 10,
+          seccionId: 1,
           orden: 1,
-          denominacion: 'Plazo de entrega',
+          denominacion: 'Objetivo del llamado',
           version: 1,
-          redacciones: [
-            {
-              redaccionId: 10,
-              prioridad: 1,
-              redaccion: 'El proveedor deberá entregar los bienes o servicios en un plazo máximo de 30 días corridos desde la firma del contrato.'
-            }
-          ]
+          capitulos: [],
+          clausulas: [
+                {
+                  clausulaId: 1,
+                  orden: 1,
+                  denominacion: 'Objeto de la licitación',
+                  version: 1,
+                  redacciones: [
+                    {
+                      redaccionId: 1,
+                      prioridad: 1,
+                      redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
+                    }
+                  ]
+                }
+              ]
+        },
+        {
+          seccionId: 1,
+          orden: 1,
+          denominacion: 'Condiciones generales',
+          version: 1,
+          capitulos: [],
+          clausulas: [
+                {
+                  clausulaId: 1,
+                  orden: 1,
+                  denominacion: 'Resumen',
+                  version: 1,
+                  redacciones: [
+                    {
+                      redaccionId: 1,
+                      prioridad: 1,
+                      redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
+                    }
+                  ]
+                }
+              ]
         }
       ],
       tiposCompra: [
@@ -128,8 +157,16 @@ export class ModeloService {
       estado: 'BORRADOR',
       versionada: false,
       version: 1,
-      secciones: [],
-      clausulas: [],
+       secciones: [
+        {
+          seccionId: 1,
+          orden: 1,
+          denominacion: 'Objetivo del llamado',
+          version: 1,
+          capitulos: [],
+          clausulas: []
+        }
+      ],
       tiposCompra: [],
       organismos: [],
       fechaCreacion: '2024-12-01',
