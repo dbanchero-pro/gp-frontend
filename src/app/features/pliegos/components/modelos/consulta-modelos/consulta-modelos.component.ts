@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Modelo } from '../../../models/modelo.model';
+import { ClausulaModelo, Modelo } from '../../../models/modelo.model';
 import { FiltroModelo } from '../../../models/filtro-modelo.model';
 import { ModeloService } from '../../../services/modelo.service';
 import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
@@ -10,6 +10,7 @@ import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden
 import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
 import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
 import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
+import { Clausula } from '../../../models/clausula.model';
 
 interface Inciso {
   id: number;
@@ -303,6 +304,20 @@ export class ConsultaModelosComponent implements OnInit, AfterViewInit {
     return acciones;
   }
 
+  obtenerAccionesClausula(clausula: ClausulaModelo): AccionBoton[] {
+      const acciones: AccionBoton[] = [];
+  
+      acciones.push({
+        nombre: 'Ver',
+        clase: 'btn btn-sm',
+        icono: 'fa fa-binoculars',
+        ariaLabel: `Ver redacciones de cláusula ${clausula.denominacion}`,
+        //accion: () => this.eliminarClausula(clausula)
+      });
+  
+      return acciones;
+  }
+  
   volver(): void {
     this.location.back();
   }

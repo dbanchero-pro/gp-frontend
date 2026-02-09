@@ -180,7 +180,7 @@
                   class="w-100"
                   classContenido="p-0"
                   [ariaLabel]="'Mostrar u ocultar secciones del modelo ' + modelo.denominacion">
-                  <titulo>Secciones ({{ modelo.secciones.length }})</titulo>
+                  <titulo>Cuerpo</titulo>
                   <contenido>
                     <div class="px-3 py-2">
                       <div *ngFor="let seccion of modelo.secciones" class="card mb-2">
@@ -209,7 +209,17 @@
                                   <div *ngFor="let clausula of capitulo.clausulas" class="card mb-1">
                                     <div class="card-body py-1 px-2">
                                       <div class="row g-0">
-                                        <div class="col-md-8">{{ clausula.denominacion }}</div>
+                                        <div class="col-md-1 text-center">
+                                            <button
+                                            *ngFor="let accion of obtenerAccionesClausula(clausula)"
+                                            type="button"
+                                            [class]="accion.clase"
+                                            [attr.aria-label]="accion.ariaLabel"
+                                            (click)="accion.accion && accion.accion()">
+                                            <em [class]="accion.icono"></em>
+                                          </button>
+                                        </div>
+                                        <div class="col-md-7">{{ clausula.denominacion }}</div>
                                         <div class="col-md-4 text-right">Versión: {{ clausula.version }}</div>
                                       </div>
                                     </div>
@@ -228,30 +238,6 @@
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </contenido>
-                </app-grupo-colapsable>
-              </div>
-            </div>
-
-            <div *ngIf="modelo.clausulas && modelo.clausulas.length > 0" class="row g-0 py-2">
-              <div class="col-12">
-                <app-grupo-colapsable
-                  [colapsado]="true"
-                  class="w-100"
-                  classContenido="p-0"
-                  [ariaLabel]="'Mostrar u ocultar cláusulas del modelo ' + modelo.denominacion">
-                  <titulo>Cláusulas ({{ modelo.clausulas.length }})</titulo>
-                  <contenido>
-                    <div class="px-3 py-2">
-                      <div *ngFor="let clausula of modelo.clausulas" class="card mb-2">
-                        <div class="card-body py-2">
-                          <div class="row g-0">
-                            <div class="col-md-8">{{ clausula.denominacion }}</div>
-                            <div class="col-md-4 text-right">Versión: {{ clausula.version }}</div>
                           </div>
                         </div>
                       </div>
