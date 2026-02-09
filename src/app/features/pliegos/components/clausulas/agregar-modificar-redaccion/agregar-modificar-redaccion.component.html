@@ -19,8 +19,7 @@
           <div class="card-body">
             <div class="form-group col-2">
               <label for="prioridad">* Prioridad</label>
-              <input type="number" class="form-control" id="prioridad" formControlName="prioridad"
-                placeholder="Ingrese la prioridad (número entero)">
+              <input type="number" class="form-control" id="prioridad" formControlName="prioridad">
               <div *ngIf="form.controls.prioridad.invalid && form.controls.prioridad.touched" class="text-danger">
                 <small *ngIf="form.controls.prioridad.errors?.['required']">La prioridad es obligatoria</small>
                 <small *ngIf="form.controls.prioridad.errors?.['min']">La prioridad debe ser mayor a 0</small>
