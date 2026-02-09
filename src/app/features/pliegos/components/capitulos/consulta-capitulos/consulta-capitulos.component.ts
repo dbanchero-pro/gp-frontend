@@ -177,13 +177,16 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
       accion: () => this.modificarCapitulo(capitulo)
     });
 
-    acciones.push({
-      nombre: 'Eliminar borrador',
-      clase: 'btn btn-success',
-      icono: 'fa fa-trash',
+
+    if (capitulo.estado === 'BORRADOR') {
+      acciones.push({
+        nombre: 'Eliminar borrador',
+        clase: 'btn btn-success',
+        icono: 'fa fa-trash',
       ariaLabel: 'Eliminar capítulo ' + capitulo.denominacion,
       accion: () => this.eliminarCapitulo(capitulo)
-    });
+      });
+     }
 
     acciones.push({
       nombre: 'Ver historial',

@@ -335,14 +335,16 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
       ariaLabel: 'Modificar cláusula ' + clausula.denominacion,
       accion: () => this.modificarClausula(clausula)
     });
-
-    acciones.push({
-      nombre: 'Eliminar borrador',
-      clase: 'btn btn-success',
-      icono: 'fa fa-trash',
-      ariaLabel: 'Eliminar cláusula ' + clausula.denominacion,
-      accion: () => this.eliminarClausula(clausula)
-    });
+    
+    if (clausula.estado === 'BORRADOR') {
+      acciones.push({
+        nombre: 'Eliminar borrador',
+        clase: 'btn btn-success',
+        icono: 'fa fa-trash',
+        ariaLabel: 'Eliminar cláusula ' + clausula.denominacion,
+        accion: () => this.eliminarClausula(clausula)
+      });
+     }
 
     acciones.push({
       nombre: 'Ver historial',
