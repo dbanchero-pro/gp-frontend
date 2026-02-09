@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Seccion } from '../../../models/seccion.model';
+import { ClausulaSeccion, Seccion } from '../../../models/seccion.model';
 import { FiltroSeccion } from '../../../models/filtro-seccion.model';
 import { SeccionService } from '../../../services/seccion.service';
 import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
@@ -10,6 +10,7 @@ import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden
 import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
 import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
 import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
+import { ClausulaCapitulo } from '../../../models/capitulo.model';
 
 @Component({
   selector: 'app-consulta-secciones',
@@ -204,6 +205,20 @@ export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
     });
 
     return acciones;
+  }
+
+  obtenerAccionesClausula(clausula: ClausulaSeccion): AccionBoton[] {
+      const acciones: AccionBoton[] = [];
+  
+      acciones.push({
+        nombre: 'Ver',
+        clase: 'btn btn-sm',
+        icono: 'fa fa-binoculars',
+        ariaLabel: `Ver redacciones de cláusula ${clausula.denominacion}`,
+        //accion: () => this.eliminarClausula(clausula)
+      });
+  
+      return acciones;
   }
 
   volver(): void {

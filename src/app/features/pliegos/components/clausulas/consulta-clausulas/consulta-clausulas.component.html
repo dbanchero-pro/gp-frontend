@@ -240,6 +240,16 @@
                       <div *ngFor="let redaccion of clausula.redacciones" class="card mb-2">
                         <div class="card-body">
                           <span class="badge badge-secondary mb-2">Prioridad: {{ redaccion.prioridad }}</span>
+                          <span class="text-center">
+                            <button
+                              *ngFor="let accion of obtenerAccionesRedaccion(redaccion)"
+                              type="button"
+                              [class]="accion.clase"
+                              [attr.aria-label]="accion.ariaLabel"
+                              (click)="accion.accion && accion.accion()">
+                              <em [class]="accion.icono"></em>
+                            </button>
+                        </span>
                           <div class="mb-0" [innerHTML]="truncarRedaccion(redaccion.redaccion) | safeHtml"></div>
                           <small *ngIf="esRedaccionTruncada(redaccion.redaccion)" class="text-muted">
                             <i class="fa fa-info-circle"></i> Texto truncado

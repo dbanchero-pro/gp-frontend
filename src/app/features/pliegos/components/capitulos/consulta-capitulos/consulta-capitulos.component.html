@@ -106,7 +106,17 @@
                       <div *ngFor="let clausula of capitulo.clausulas" class="card mb-2">
                         <div class="card-body py-2">
                           <div class="row g-0">
-                            <div class="col-md-9">
+                            <div class="col-md-1 text-center">
+                              <button
+                              *ngFor="let accion of obtenerAccionesClausula(clausula)"
+                              type="button"
+                              [class]="accion.clase"
+                              [attr.aria-label]="accion.ariaLabel"
+                              (click)="accion.accion && accion.accion()">
+                              <em [class]="accion.icono"></em>
+                            </button>
+                            </div>
+                            <div class="col-md-8">
                               <span >{{ clausula.denominacion }}</span>
                             </div>
                             <div class="col-md-3 text-right">

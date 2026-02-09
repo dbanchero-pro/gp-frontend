@@ -150,16 +150,14 @@
                 <div *ngIf="modelo.tiposCompra && modelo.tiposCompra.length > 0">
                   <div *ngFor="let tc of modelo.tiposCompra" class="mb-1">
                     <span class="font-weight-bold">{{ tc.descripcion }}</span>
-                    <span *ngIf="tc.subtipos && tc.subtipos.length > 0"> |
+                    <span class="font-weight-bold" *ngIf="tc.subtipos && tc.subtipos.length > 0"> |
                       <span *ngFor="let st of tc.subtipos; let last = last">
                         {{ st.descripcion }}<span *ngIf="!last">, </span>
                       </span>
                     </span>
                   </div>
                 </div>
-                <span *ngIf="!modelo.tiposCompra || modelo.tiposCompra.length === 0" class="text-muted">
-                  Sin tipos de compra asignados
-                </span>
+                <span *ngIf="!modelo.tiposCompra || modelo.tiposCompra.length === 0" class="font-weight-bold"> Todas</span>
               </div>
             </div>
 
@@ -167,13 +165,11 @@
               <div class="col-md-2 col-lg-2 etiqueta">Organismos</div>
               <div class="col-md-10 col-lg-10">
                 <div *ngIf="modelo.organismos && modelo.organismos.length > 0">
-                  <div *ngFor="let org of modelo.organismos" class="mb-1">
+                  <div *ngFor="let org of modelo.organismos" class="mb-1 font-weight-bold">
                     {{ org.incisoDescripcion }} | {{ org.unidadEjecutoraDescripcion }}
                   </div>
                 </div>
-                <span *ngIf="!modelo.organismos || modelo.organismos.length === 0" class="text-muted">
-                  Sin organismos asignados
-                </span>
+                <span *ngIf="!modelo.organismos || modelo.organismos.length === 0" class="font-weight-bold"> Todos</span>
               </div>
             </div>
 
@@ -193,8 +189,6 @@
                         <div *ngFor="let seccion of modelo.secciones" class="card mb-3">
                           <div class="card-header bg-light py-2">
                             <div class="row g-0">
-                              <div class="col-md-2 col-lg-1 etiqueta-small">Orden:</div>
-                              <div class="col-md-2 col-lg-2 font-weight-bold">{{ seccion.orden }}</div>
                               <div class="col-md-8 col-lg-9">
                                 <span class="font-weight-bold">{{ seccion.denominacion }}</span>
                                 <span class="ml-2 text-muted">(Versión: {{ seccion.version }})</span>
@@ -208,8 +202,6 @@
                               <div *ngFor="let capitulo of seccion.capitulos" class="card mb-2 border-secondary">
                                 <div class="card-body py-2 px-3">
                                   <div class="row g-0 mb-2">
-                                    <div class="col-md-1 etiqueta-small">Orden:</div>
-                                    <div class="col-md-1 font-weight-bold">{{ capitulo.orden }}</div>
                                     <div class="col-md-8">
                                       <span class="font-weight-bold">{{ capitulo.denominacion }}</span>
                                       <span class="ml-2 text-muted">(Versión: {{ capitulo.version }})</span>
@@ -221,8 +213,6 @@
                                     <div *ngFor="let clausula of capitulo.clausulas" class="card mb-2 border-info">
                                       <div class="card-body py-2 px-2">
                                         <div class="row g-0 mb-1">
-                                          <div class="col-md-1 etiqueta-small">Orden:</div>
-                                          <div class="col-md-1 font-weight-bold">{{ clausula.orden }}</div>
                                           <div class="col-md-8">
                                             <span>{{ clausula.denominacion }}</span>
                                             <span class="ml-2 text-muted small">(Versión: {{ clausula.version }})</span>
@@ -252,8 +242,6 @@
                               <div *ngFor="let clausula of seccion.clausulas" class="card mb-2 border-info">
                                 <div class="card-body py-2 px-2">
                                   <div class="row g-0 mb-1">
-                                    <div class="col-md-1 etiqueta-small">Orden:</div>
-                                    <div class="col-md-1 font-weight-bold">{{ clausula.orden }}</div>
                                     <div class="col-md-8">
                                       <span>{{ clausula.denominacion }}</span>
                                       <span class="ml-2 text-muted small">(Versión: {{ clausula.version }})</span>
@@ -283,8 +271,6 @@
                         <div *ngFor="let clausula of modelo.clausulas" class="card mb-2 border-info">
                           <div class="card-body py-2 px-3">
                             <div class="row g-0 mb-1">
-                              <div class="col-md-1 etiqueta-small">Orden:</div>
-                              <div class="col-md-1 font-weight-bold">{{ clausula.orden }}</div>
                               <div class="col-md-8">
                                 <span>{{ clausula.denominacion }}</span>
                                 <span class="ml-2 text-muted small">(Versión: {{ clausula.version }})</span>
@@ -305,7 +291,6 @@
                           </div>
                         </div>
                       </div>
-
                     </div>
                   </contenido>
                 </app-grupo-colapsable>

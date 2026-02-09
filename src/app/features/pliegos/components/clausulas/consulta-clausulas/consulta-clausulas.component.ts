@@ -20,6 +20,7 @@ import { NumeroNulo } from '../../../../../shared/types/numero-nulo.type';
 import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
 import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
 import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
+import { RedaccionClausula } from '../../../models/redaccion-clausula.model';
 
 @Component({
   selector: 'app-consulta-clausulas',
@@ -368,6 +369,21 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
       icono: 'fa fa-copy',
       ariaLabel: 'Ver modelos que usan la cláusula ' + clausula.denominacion,
       accion: () => this.verHistorial(clausula)
+    });
+
+    return acciones;
+  }
+
+
+   obtenerAccionesRedaccion(redaccion: RedaccionClausula): AccionBoton[] {
+    const acciones: AccionBoton[] = [];
+
+    acciones.push({
+      nombre: 'Ver',
+      clase: 'btn btn-sm',
+      icono: 'fa fa-binoculars',
+      ariaLabel: `Ver redacción prioridad ${redaccion.prioridad}`,
+      //accion: () => this.eliminarClausula(clausula)
     });
 
     return acciones;

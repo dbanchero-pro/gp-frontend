@@ -7,6 +7,7 @@ import { CapituloService } from '../../../services/capitulo.service';
 import { Capitulo, ClausulaCapitulo } from '../../../models/capitulo.model';
 import { EstadoClausula } from '../../../enum/estado-clausula.enum';
 import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
+import { RedaccionClausula } from '../../../models/redaccion-clausula.model';
 
 @Component({
   selector: 'app-agregar-modificar-capitulo',
@@ -223,6 +224,14 @@ export class AgregarModificarCapituloComponent extends FormularioBaseComponent i
       icono: 'fa fa-trash',
       ariaLabel: `Eliminar cláusula ${clausula.denominacion}`,
       accion: () => this.eliminarClausula(clausula)
+    });
+
+     acciones.push({
+      nombre: 'Ver',
+      clase: 'btn btn-sm',
+      icono: 'fa fa-binoculars',
+      ariaLabel: `Ver redacciones de cláusula ${clausula.denominacion}`,
+      //accion: () => this.eliminarClausula(clausula)
     });
 
     return acciones;

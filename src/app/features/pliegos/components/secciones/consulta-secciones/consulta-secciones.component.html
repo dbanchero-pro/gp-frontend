@@ -117,7 +117,17 @@
                             <div *ngFor="let clausula of capitulo.clausulas" class="card mb-1">
                               <div class="card-body py-1 px-2">
                                 <div class="row g-0">
-                                  <div class="col-md-9"> {{ clausula.denominacion }}</div>
+                                   <div class="col-md-1 text-center">
+                                    <button
+                                      *ngFor="let accion of obtenerAccionesClausula(clausula)"
+                                      type="button"
+                                      [class]="accion.clase"
+                                      [attr.aria-label]="accion.ariaLabel"
+                                      (click)="accion.accion && accion.accion()">
+                                      <em [class]="accion.icono"></em>
+                                    </button>
+                                  </div>
+                                  <div class="col-md-8"> {{ clausula.denominacion }}</div>
                                   <div class="col-md-3 text-right">Versión: {{ clausula.version }}</div>
                                 </div>
                               </div>
@@ -144,7 +154,17 @@
                       <div *ngFor="let clausula of seccion.clausulas" class="card mb-2">
                         <div class="card-body py-2">
                           <div class="row g-0">
-                            <div class="col-md-9 font-weight-bold">{{ clausula.denominacion }}</div>
+                            <div class="col-md-1 font-weight-bold">
+                              <button
+                                *ngFor="let accion of obtenerAccionesClausula(clausula)"
+                                type="button"
+                                [class]="accion.clase"
+                                [attr.aria-label]="accion.ariaLabel"
+                                (click)="accion.accion && accion.accion()">
+                                <em [class]="accion.icono"></em>
+                              </button>
+                            </div>
+                            <div class="col-md-8">{{ clausula.denominacion }}</div>
                             <div class="col-md-3 text-right">Versión: {{ clausula.version }}</div>
                           </div>
                         </div>
