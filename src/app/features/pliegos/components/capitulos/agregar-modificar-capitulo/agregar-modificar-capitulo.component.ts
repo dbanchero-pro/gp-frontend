@@ -158,17 +158,12 @@ export class AgregarModificarCapituloComponent extends FormularioBaseComponent i
   }
 
   eliminarClausula(clausula: ClausulaCapitulo): void {
-    this.actualizarService.confirmar(
-      `¿Está seguro que desea eliminar la cláusula "${clausula.denominacion}" del capítulo?`,
-      () => {
-        const index = this.clausulasAgregadas.findIndex(c => c.clausulaId === clausula.clausulaId);
-        if (index > -1) {
-          this.clausulasAgregadas.splice(index, 1);
-          this.reordenarClausulas();
-          this.marcarFormularioTocado();
-        }
+      const index = this.clausulasAgregadas.findIndex(c => c.clausulaId === clausula.clausulaId);
+      if (index > -1) {
+        this.clausulasAgregadas.splice(index, 1);
+        this.reordenarClausulas();
+        this.marcarFormularioTocado();
       }
-    );
   }
 
   moverClausulaArriba(clausula: ClausulaCapitulo): void {

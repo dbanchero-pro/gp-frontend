@@ -467,16 +467,11 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
   }
 
   eliminarRedaccion(redaccion: RedaccionClausula): void {
-    this.actualizarService.confirmar(
-      `¿Está seguro que desea eliminar la redacción con prioridad ${redaccion.prioridad}?`,
-      () => {
-        const index = this.redacciones.findIndex(r => r.id === redaccion.id);
-        if (index > -1) {
-          this.redacciones.splice(index, 1);
-          this.marcarFormularioTocado();
-        }
+      const index = this.redacciones.findIndex(r => r.id === redaccion.id);
+      if (index > -1) {
+        this.redacciones.splice(index, 1);
+        this.marcarFormularioTocado();
       }
-    );
   }
 
   obtenerAccionesRedaccion(redaccion: RedaccionClausula): AccionBoton[] {

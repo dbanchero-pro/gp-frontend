@@ -204,31 +204,21 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
   }
 
   eliminarCapitulo(capitulo: CapituloSeccion): void {
-    this.actualizarService.confirmar(
-      `¿Está seguro que desea eliminar el capítulo "${capitulo.denominacion}" de la sección?`,
-      () => {
-        const index = this.capitulosAgregados.findIndex(c => c.capituloId === capitulo.capituloId);
-        if (index > -1) {
-          this.capitulosAgregados.splice(index, 1);
-          this.reordenarCapitulos();
-          this.marcarFormularioTocado();
-        }
+      const index = this.capitulosAgregados.findIndex(c => c.capituloId === capitulo.capituloId);
+      if (index > -1) {
+        this.capitulosAgregados.splice(index, 1);
+        this.reordenarCapitulos();
+        this.marcarFormularioTocado();
       }
-    );
   }
 
   eliminarClausula(clausula: ClausulaSeccion): void {
-    this.actualizarService.confirmar(
-      `¿Está seguro que desea eliminar la cláusula "${clausula.denominacion}" de la sección?`,
-      () => {
-        const index = this.clausulasAgregadas.findIndex(c => c.clausulaId === clausula.clausulaId);
-        if (index > -1) {
-          this.clausulasAgregadas.splice(index, 1);
-          this.reordenarClausulas();
-          this.marcarFormularioTocado();
-        }
+      const index = this.clausulasAgregadas.findIndex(c => c.clausulaId === clausula.clausulaId);
+      if (index > -1) {
+        this.clausulasAgregadas.splice(index, 1);
+        this.reordenarClausulas();
+        this.marcarFormularioTocado();
       }
-    );
   }
 
   moverCapituloArriba(capitulo: CapituloSeccion): void {
