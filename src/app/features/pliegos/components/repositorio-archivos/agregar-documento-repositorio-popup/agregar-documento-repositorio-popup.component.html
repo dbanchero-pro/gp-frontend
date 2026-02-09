@@ -17,6 +17,8 @@
     <div class="row">
         <div class="col-12">
             <form [formGroup]="form" (submit)="guardar()">
+                 <div class="card mb-3">
+          <div class="card-body">
                 <div class="row mb-3">
                     <div class="col-12">
                         <app-filtro-organismo formControlName="organismo"
@@ -89,6 +91,8 @@
                         <button class="btn btn-link ml-3" type="button" (click)="cancelar()">Cancelar</button>
                     </div>
                 </div>
+                </div>
+    </div>
             </form>
         </div>
     </div>
