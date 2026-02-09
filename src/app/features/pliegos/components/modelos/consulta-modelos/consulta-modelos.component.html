@@ -173,121 +173,85 @@
               </div>
             </div>
 
-            <div class="row g-0 py-2" *ngIf="(modelo.secciones && modelo.secciones.length > 0) || (modelo.clausulas && modelo.clausulas.length > 0)">
+            <div *ngIf="modelo.secciones && modelo.secciones.length > 0" class="row g-0 py-2">
               <div class="col-12">
                 <app-grupo-colapsable
                   [colapsado]="true"
                   class="w-100"
                   classContenido="p-0"
-                  [ariaLabel]="'Mostrar u ocultar cuerpo del modelo ' + modelo.denominacion">
-                  <titulo>Cuerpo</titulo>
+                  [ariaLabel]="'Mostrar u ocultar secciones del modelo ' + modelo.denominacion">
+                  <titulo>Secciones ({{ modelo.secciones.length }})</titulo>
                   <contenido>
                     <div class="px-3 py-2">
-
-                      <div *ngIf="modelo.secciones && modelo.secciones.length > 0">
-                        <h6 class="font-weight-bold mb-3">Secciones</h6>
-                        <div *ngFor="let seccion of modelo.secciones" class="card mb-3">
-                          <div class="card-header bg-light py-2">
-                            <div class="row g-0">
-                              <div class="col-md-8 col-lg-9">
-                                <span class="font-weight-bold">{{ seccion.denominacion }}</span>
-                                <span class="ml-2 text-muted">(Versión: {{ seccion.version }})</span>
-                              </div>
+                      <div *ngFor="let seccion of modelo.secciones" class="card mb-2">
+                        <div class="card-body py-2">
+                          <div class="row g-0 mb-2">
+                            <div class="col-md-9">
+                              <span class="font-weight-bold">{{ seccion.denominacion }}</span>
+                            </div>
+                            <div class="col-md-3 text-right">
+                              <span>Versión: {{ seccion.version }}</span>
                             </div>
                           </div>
-                          <div class="card-body py-2">
 
-                            <div *ngIf="seccion.capitulos && seccion.capitulos.length > 0" class="mb-3">
-                              <h6 class="font-weight-bold mb-2">Capítulos</h6>
-                              <div *ngFor="let capitulo of seccion.capitulos" class="card mb-2 border-secondary">
-                                <div class="card-body py-2 px-3">
-                                  <div class="row g-0 mb-2">
-                                    <div class="col-md-8">
-                                      <span class="font-weight-bold">{{ capitulo.denominacion }}</span>
-                                      <span class="ml-2 text-muted">(Versión: {{ capitulo.version }})</span>
-                                    </div>
+                          <div *ngIf="seccion.capitulos && seccion.capitulos.length > 0" class="pl-3">
+                            <div *ngFor="let capitulo of seccion.capitulos" class="card mb-2">
+                              <div class="card-body py-2">
+                                <div class="row g-0 mb-2">
+                                  <div class="col-md-9">
+                                    <span class="font-weight-bold">{{ capitulo.denominacion }}</span>
                                   </div>
-
-                                  <div *ngIf="capitulo.clausulas && capitulo.clausulas.length > 0" class="pl-3">
-                                    <h6 class="font-weight-bold mb-2 small">Cláusulas</h6>
-                                    <div *ngFor="let clausula of capitulo.clausulas" class="card mb-2 border-info">
-                                      <div class="card-body py-2 px-2">
-                                        <div class="row g-0 mb-1">
-                                          <div class="col-md-8">
-                                            <span>{{ clausula.denominacion }}</span>
-                                            <span class="ml-2 text-muted small">(Versión: {{ clausula.version }})</span>
-                                          </div>
-                                        </div>
-
-                                        <div *ngIf="clausula.redacciones && clausula.redacciones.length > 0" class="pl-3 mt-2">
-                                          <div *ngFor="let redaccion of clausula.redacciones" class="mb-2 p-2 bg-light border rounded">
-                                            <div class="small mb-1">
-                                              <span class="font-weight-bold">Prioridad:</span> {{ redaccion.prioridad }}
-                                            </div>
-                                            <div class="small">
-                                              <span class="font-weight-bold">Redacción:</span>
-                                              <div [innerHTML]="truncarTexto(redaccion.redaccion, 500)"></div>
-                                            </div>
-                                          </div>
-                                        </div>
+                                  <div class="col-md-3 text-right">
+                                    <span>Versión: {{ capitulo.version }}</span>
+                                  </div>
+                                </div>
+                                <div *ngIf="capitulo.clausulas && capitulo.clausulas.length > 0" class="pl-3">
+                                  <div *ngFor="let clausula of capitulo.clausulas" class="card mb-1">
+                                    <div class="card-body py-1 px-2">
+                                      <div class="row g-0">
+                                        <div class="col-md-8">{{ clausula.denominacion }}</div>
+                                        <div class="col-md-4 text-right">Versión: {{ clausula.version }}</div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
+                          </div>
 
-                            <div *ngIf="seccion.clausulas && seccion.clausulas.length > 0">
-                              <h6 class="font-weight-bold mb-2">Cláusulas</h6>
-                              <div *ngFor="let clausula of seccion.clausulas" class="card mb-2 border-info">
-                                <div class="card-body py-2 px-2">
-                                  <div class="row g-0 mb-1">
-                                    <div class="col-md-8">
-                                      <span>{{ clausula.denominacion }}</span>
-                                      <span class="ml-2 text-muted small">(Versión: {{ clausula.version }})</span>
-                                    </div>
-                                  </div>
-
-                                  <div *ngIf="clausula.redacciones && clausula.redacciones.length > 0" class="pl-3 mt-2">
-                                    <div *ngFor="let redaccion of clausula.redacciones" class="mb-2 p-2 bg-light border rounded">
-                                      <div class="small mb-1">
-                                        <span class="font-weight-bold">Prioridad:</span> {{ redaccion.prioridad }}
-                                      </div>
-                                      <div class="small">
-                                        <span class="font-weight-bold">Redacción:</span>
-                                        <div [innerHTML]="truncarTexto(redaccion.redaccion, 500)"></div>
-                                      </div>
-                                    </div>
-                                  </div>
+                          <div *ngIf="seccion.clausulas && seccion.clausulas.length > 0" class="pl-3">
+                            <div *ngFor="let clausula of seccion.clausulas" class="card mb-1">
+                              <div class="card-body py-1 px-2">
+                                <div class="row g-0">
+                                  <div class="col-md-8">{{ clausula.denominacion }}</div>
+                                  <div class="col-md-4 text-right">Versión: {{ clausula.version }}</div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
+                    </div>
+                  </contenido>
+                </app-grupo-colapsable>
+              </div>
+            </div>
 
-                      <div *ngIf="modelo.clausulas && modelo.clausulas.length > 0">
-                        <h6 class="font-weight-bold mb-3">Cláusulas</h6>
-                        <div *ngFor="let clausula of modelo.clausulas" class="card mb-2 border-info">
-                          <div class="card-body py-2 px-3">
-                            <div class="row g-0 mb-1">
-                              <div class="col-md-8">
-                                <span>{{ clausula.denominacion }}</span>
-                                <span class="ml-2 text-muted small">(Versión: {{ clausula.version }})</span>
-                              </div>
-                            </div>
-
-                            <div *ngIf="clausula.redacciones && clausula.redacciones.length > 0" class="pl-3 mt-2">
-                              <div *ngFor="let redaccion of clausula.redacciones" class="mb-2 p-2 bg-light border rounded">
-                                <div class="small mb-1">
-                                  <span class="font-weight-bold">Prioridad:</span> {{ redaccion.prioridad }}
-                                </div>
-                                <div class="small">
-                                  <span class="font-weight-bold">Redacción:</span>
-                                  <div [innerHTML]="truncarTexto(redaccion.redaccion, 500)"></div>
-                                </div>
-                              </div>
-                            </div>
+            <div *ngIf="modelo.clausulas && modelo.clausulas.length > 0" class="row g-0 py-2">
+              <div class="col-12">
+                <app-grupo-colapsable
+                  [colapsado]="true"
+                  class="w-100"
+                  classContenido="p-0"
+                  [ariaLabel]="'Mostrar u ocultar cláusulas del modelo ' + modelo.denominacion">
+                  <titulo>Cláusulas ({{ modelo.clausulas.length }})</titulo>
+                  <contenido>
+                    <div class="px-3 py-2">
+                      <div *ngFor="let clausula of modelo.clausulas" class="card mb-2">
+                        <div class="card-body py-2">
+                          <div class="row g-0">
+                            <div class="col-md-8">{{ clausula.denominacion }}</div>
+                            <div class="col-md-4 text-right">Versión: {{ clausula.version }}</div>
                           </div>
                         </div>
                       </div>
