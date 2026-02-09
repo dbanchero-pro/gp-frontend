@@ -87,6 +87,20 @@ export const routes: Routes = [
         path: 'secciones/modificar/:idSeccion',
         component: AgregarModificarSeccionComponent,
         canDeactivate: [DeactivateGuard]
+    },
+    {
+        path: 'modelos',
+        component: ConsultaModelosComponent
+    },
+    {
+        path: 'modelos/agregar',
+        component: AgregarModificarModeloComponent,
+        canDeactivate: [DeactivateGuard]
+    },
+    {
+        path: 'modelos/modificar/:idModelo',
+        component: AgregarModificarModeloComponent,
+        canDeactivate: [DeactivateGuard]
     }
 ];
 
