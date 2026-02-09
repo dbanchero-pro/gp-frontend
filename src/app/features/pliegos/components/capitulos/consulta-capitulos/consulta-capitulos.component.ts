@@ -267,10 +267,10 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
   obtenerTextoVigencia(capitulo: Capitulo): string {
     const desde = capitulo.fechaVigenciaDesde
       ? this.fechaPipe.transform(capitulo.fechaVigenciaDesde)
-      : 'N/A';
+      : ' ';
     const hasta = capitulo.fechaVigenciaHasta
       ? this.fechaPipe.transform(capitulo.fechaVigenciaHasta)
-      : 'Indefinido';
+      : ' ';
     return `${desde} - ${hasta}`;
   }
 

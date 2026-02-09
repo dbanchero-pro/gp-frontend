@@ -115,7 +115,7 @@ export class SeccionService {
     {
       id: 4,
       denominacion: 'Sección de Modificaciones al Contrato',
-      fechaVigenciaDesde: null,
+      fechaVigenciaDesde: '2024-01-01',
       fechaVigenciaHasta: null,
       estado: EstadoClausula.BORRADOR,
       versionada: false,

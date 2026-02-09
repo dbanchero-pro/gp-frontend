@@ -62,7 +62,7 @@
           <div class="d-flex justify-content-between align-items-center bg-light border-bottom px-3 py-2">
             <div>
               <span class="font-weight-bold">{{ seccion.denominacion }}</span>
-              <span class="badge ml-2" [ngClass]="{
+              <span class="badge ml-2" *ngIf="!esBorrador(seccion)" [ngClass]="{
                 'badge-success': obtenerEstadoVigencia(seccion) === 'VIGENTE',
                 'badge-warning': obtenerEstadoVigencia(seccion) === 'NO_VIGENTE'
               }">
@@ -106,10 +106,7 @@
                       <div *ngFor="let capitulo of seccion.capitulos" class="card mb-2">
                         <div class="card-body py-2">
                           <div class="row g-0 mb-2">
-                            <div class="col-md-1">
-                              <span class="badge badge-secondary">Orden: {{ capitulo.orden }}</span>
-                            </div>
-                            <div class="col-md-8">
+                            <div class="col-md-9">
                               <span class="font-weight-bold">{{ capitulo.denominacion }}</span>
                             </div>
                             <div class="col-md-3 text-right">
@@ -120,10 +117,7 @@
                             <div *ngFor="let clausula of capitulo.clausulas" class="card mb-1">
                               <div class="card-body py-1 px-2">
                                 <div class="row g-0">
-                                  <div class="col-md-1">
-                                    <span class="badge badge-info badge-sm">Orden: {{ clausula.orden }}</span>
-                                  </div>
-                                  <div class="col-md-8"> {{ clausula.denominacion }}</div>
+                                  <div class="col-md-9"> {{ clausula.denominacion }}</div>
                                   <div class="col-md-3 text-right">Versión: {{ clausula.version }}</div>
                                 </div>
                               </div>
@@ -150,10 +144,7 @@
                       <div *ngFor="let clausula of seccion.clausulas" class="card mb-2">
                         <div class="card-body py-2">
                           <div class="row g-0">
-                            <div class="col-md-1">
-                              <span class="badge badge-secondary">Orden: {{ clausula.orden }}</span>
-                            </div>
-                            <div class="col-md-8 font-weight-bold">{{ clausula.denominacion }}</div>
+                            <div class="col-md-9 font-weight-bold">{{ clausula.denominacion }}</div>
                             <div class="col-md-3 text-right">Versión: {{ clausula.version }}</div>
                           </div>
                         </div>

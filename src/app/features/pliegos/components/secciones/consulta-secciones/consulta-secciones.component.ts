@@ -266,10 +266,10 @@ export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
   obtenerTextoVigencia(seccion: Seccion): string {
     const desde = seccion.fechaVigenciaDesde
       ? this.fechaPipe.transform(seccion.fechaVigenciaDesde)
-      : 'N/A';
+      : ' ';
     const hasta = seccion.fechaVigenciaHasta
       ? this.fechaPipe.transform(seccion.fechaVigenciaHasta)
-      : 'Indefinido';
+      : ' ';
     return `${desde} - ${hasta}`;
   }
 
