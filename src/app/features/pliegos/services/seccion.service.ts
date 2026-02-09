@@ -54,14 +54,7 @@ export class SeccionService {
           ]
         }
       ],
-      clausulas: [
-        {
-          clausulaId: 5,
-          orden: 1,
-          denominacion: 'Cláusula de confidencialidad',
-          version: 1
-        }
-      ],
+      clausulas: [],
       fechaCreacion: '2024-01-01',
       usuarioCreacion: 'admin',
       fechaModificacion: null,

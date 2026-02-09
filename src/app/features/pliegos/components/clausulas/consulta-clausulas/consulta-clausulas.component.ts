@@ -335,8 +335,8 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
       ariaLabel: 'Modificar cláusula ' + clausula.denominacion,
       accion: () => this.modificarClausula(clausula)
     });
-    
-    if (clausula.estado === 'BORRADOR') {
+
+    if (this.esBorrador(clausula)) {
       acciones.push({
         nombre: 'Eliminar borrador',
         clase: 'btn btn-success',
@@ -598,8 +598,7 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
   obtenerTextoEstadoVigencia(clausula: Clausula): string {
       const estado = this.obtenerEstadoVigencia(clausula);
       if (estado === 'VIGENTE') {
-        const version = clausula.version || 'N/A';
-        return `Vigente - V${version}`;
+        return 'Vigente';
       }
       return 'No vigente';
     }

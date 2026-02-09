@@ -301,8 +301,7 @@ export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
   obtenerTextoEstadoVigencia(seccion: Seccion): string {
     const estado = this.obtenerEstadoVigencia(seccion);
     if (estado === 'VIGENTE') {
-      const version = seccion.version || 'N/A';
-      return `Vigente - V${version}`;
+      return 'Vigente';
     }
     return 'No vigente';
   }

@@ -178,7 +178,7 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
     });
 
 
-    if (capitulo.estado === 'BORRADOR') {
+    if (this.esBorrador(capitulo)) {
       acciones.push({
         nombre: 'Eliminar borrador',
         clase: 'btn btn-success',
@@ -302,8 +302,7 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
   obtenerTextoEstadoVigencia(capitulo: Capitulo): string {
     const estado = this.obtenerEstadoVigencia(capitulo);
     if (estado === 'VIGENTE') {
-      const version = capitulo.version || 'N/A';
-      return `Vigente - V${version}`;
+      return 'Vigente';
     }
     return 'No vigente';
   }

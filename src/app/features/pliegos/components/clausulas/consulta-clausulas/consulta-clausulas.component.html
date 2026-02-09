@@ -202,10 +202,9 @@
 
           <div class="px-3 py-2">
             <div class="row g-0 py-1 px-3">
-              <div class="col-md-3 col-lg-2 etiqueta">Apertura electrónica</div>
-              <div class="col-md-3 col-lg-4 font-weight-bold">{{ clausula.aperturaElectronica ? 'Sí' : 'No' }}</div>
-              <div class="col-md-3 col-lg-2 etiqueta">Vigencia</div>
-              <div class="col-md-3 col-lg-4 font-weight-bold">{{ obtenerTextoVigencia(clausula) }}</div>
+              <div class="col-md-2 col-lg-2 etiqueta">Vigencia</div>
+              <div class="col-md-8 col-lg-8 font-weight-bold">{{ obtenerTextoVigencia(clausula) }}</div>
+              <div class="col-md-2 col-lg-2 font-weight-bold text-right" *ngIf="!esBorrador(clausula)">Version: {{ clausula.version }}</div>
             </div>
 
             <div class="row g-0 py-1 px-3">
@@ -221,6 +220,11 @@
             <div class="row g-0 py-1 px-3">
               <div class="col-md-3 col-lg-2 etiqueta">Objetos de compra</div>
               <div class="col font-weight-bold">{{ obtenerResumenObjetosCompra(clausula) }}</div>
+            </div>
+
+            <div class="row g-0 py-1 px-3">
+              <div class="col-md-3 col-lg-2 etiqueta">Apertura electrónica</div>
+              <div class="col font-weight-bold">{{ clausula.aperturaElectronica ? 'Sí' : 'No' }}</div>
             </div>
 
             <div *ngIf="clausula.redacciones.length > 0" class="row g-0 py-2">

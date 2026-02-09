@@ -88,8 +88,9 @@
 
           <div class="px-3 py-2">
             <div class="row g-0 py-1 px-3">
-              <div class="col-md-3 col-lg-2 etiqueta">Vigencia</div>
-              <div class="col-md-9 col-lg-10 font-weight-bold">{{ obtenerTextoVigencia(seccion) }}</div>
+              <div class="col-md-2 col-lg-2 etiqueta">Vigencia</div>
+              <div class="col-md-8 col-lg-8 font-weight-bold">{{ obtenerTextoVigencia(seccion) }}</div>
+              <div class="col-md-2 col-lg-2 font-weight-bold text-right" *ngIf="!esBorrador(seccion)">Version: {{ seccion.version }}</div>
             </div>
 
             <div *ngIf="seccion.capitulos.length > 0" class="row g-0 py-2">
@@ -111,12 +112,12 @@
                             <div class="col-md-7">
                               <span class="font-weight-bold">{{ capitulo.denominacion }}</span>
                             </div>
-                            <div class="col-md-3 text-right">
-                              <span class="text-muted">Versión: {{ capitulo.version }}</span>
+                            <div class="col-md-3 text-right text-muted">
+                              <span>Versión: {{ capitulo.version }}</span>
                             </div>
                           </div>
                           <div *ngIf="capitulo.clausulas && capitulo.clausulas.length > 0" class="pl-3">
-                            <div class="text-muted mb-2">Cláusulas del capítulo:</div>
+                            <div class="mb-2">Cláusulas del capítulo ({{ capitulo.clausulas.length }}) : </div>
                             <div *ngFor="let clausula of capitulo.clausulas" class="card mb-1 bg-light">
                               <div class="card-body py-1 px-2">
                                 <div class="row g-0">
@@ -127,7 +128,7 @@
                                     <small>{{ clausula.denominacion }}</small>
                                   </div>
                                   <div class="col-md-3 text-right">
-                                    <small class="text-muted">V{{ clausula.version }}</small>
+                                    <small class="text-muted">Versión: {{ clausula.version }}</small>
                                   </div>
                                 </div>
                               </div>
