@@ -1,12 +1,15 @@
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { PopupBaseComponent } from '../../../../../shared/components/popup-base/popup-base.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormularioBaseComponent } from '../../../../../shared/components/base/formulario-base.component';
 import { DocumentoRepositorioService } from '../../../services/documento-repositorio.service';
 import { DocumentoRepositorioDTO } from '../../../models/documento-repositorio.model';
 import { TipoArchivoRepositorio } from '../../../enum/tipo-archivo-repositorio.enum';
 import { ArchivoDTO } from '../../../../../shared/models/common/archivo.model';
 import { IFiltroOrganismoDTO } from '../../../../../shared/models/filtros/filtro-organismo.model';
 import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
+import { CanComponentDeactivate } from '../../../../../shared/utils/can-component-deactivate';
+import { TipoMensajeEnum } from '../../../../../shared/enum/tipo-mensaje.enum';
 
 @Component({
   selector: 'app-agregar-documento-repositorio-popup',
@@ -14,16 +17,20 @@ import { ActualizarService } from '../../../../../shared/services/common/actuali
   styleUrls: ['./agregar-documento-repositorio-popup.component.scss'],
   standalone: false
 })
-export class AgregarDocumentoRepositorioPopupComponent extends PopupBaseComponent implements OnInit {
+export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);
   private readonly documentoService = inject(DocumentoRepositorioService);
   protected readonly actualizarServ = inject(ActualizarService);
-
-  @Output() documentoGuardado = new EventEmitter<DocumentoRepositorioDTO>();
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   documentoExistente?: DocumentoRepositorioDTO;
   esModificacion = false;
   titulo = 'Agregar archivo';
+  resultMsg: string[] = [];
+  showMsg = false;
+  typeMsg: TipoMensajeEnum = TipoMensajeEnum.info;
+  guardadoExitoso = false;
 
   override form!: FormGroup<{
     organismo: FormControl<IFiltroOrganismoDTO | null>;
@@ -45,16 +52,38 @@ export class AgregarDocumentoRepositorioPopupComponent extends PopupBaseComponen
   readonly MAX_FILE_SIZE_KB = 100;
   readonly MAX_FILE_SIZE_BYTES = this.MAX_FILE_SIZE_KB * 1024;
 
-  override ngOnInit(): void {
-    super.ngOnInit();
+  ngOnInit(): void {
+    const idDocumento = this.route.snapshot.paramMap.get('idDocumento');
 
-    if (this.documentoExistente) {
+    if (idDocumento) {
       this.esModificacion = true;
       this.titulo = 'Modificar archivo';
+      this.cargarDocumento(Number(idDocumento));
+    } else {
+      this.inicializarFormulario();
     }
+  }
 
-    this.inicializarFormulario();
-    this.cargarDatosDocumento();
+  canDeactivate(): boolean {
+    if (this.guardadoExitoso) {
+      return true;
+    }
+    return !this.form.dirty || confirm('Tiene cambios sin guardar. ¿Está seguro que desea salir?');
+  }
+
+  private cargarDocumento(idDocumento: number): void {
+    this.documentoService.obtenerPorId(idDocumento).subscribe({
+      next: (documento) => {
+        this.documentoExistente = documento;
+        this.inicializarFormulario();
+        this.cargarDatosDocumento();
+      },
+      error: (err) => {
+        this.mostrarError('Error al cargar el documento');
+        console.error('Error al cargar documento:', err);
+        this.volverAConsulta();
+      }
+    });
   }
 
   private inicializarFormulario(): void {
@@ -104,9 +133,7 @@ export class AgregarDocumentoRepositorioPopupComponent extends PopupBaseComponen
       ];
 
       if (!tiposPermitidos.includes(file.type)) {
-        this.mostrarError(
-          'Tipo de archivo no permitido. Solo se permiten archivos PDF, Word y Excel.'
-        );
+        this.mostrarError('Tipo de archivo no permitido. Solo se permiten archivos PDF, Word y Excel.');
         input.value = '';
         this.archivoSeleccionado = null;
         this.nombreArchivoMostrar = '';
@@ -116,9 +143,7 @@ export class AgregarDocumentoRepositorioPopupComponent extends PopupBaseComponen
 
       // Validar tamaño
       if (file.size > this.MAX_FILE_SIZE_BYTES) {
-        this.mostrarError(
-          `El archivo excede el tamaño máximo permitido de ${this.MAX_FILE_SIZE_KB} KB.`
-        );
+        this.mostrarError(`El archivo excede el tamaño máximo permitido de ${this.MAX_FILE_SIZE_KB} KB.`);
         input.value = '';
         this.archivoSeleccionado = null;
         this.nombreArchivoMostrar = '';
@@ -210,16 +235,27 @@ export class AgregarDocumentoRepositorioPopupComponent extends PopupBaseComponen
             ? 'Documento modificado correctamente'
             : 'Documento agregado correctamente';
           this.actualizarServ.mensajeCorrecto(mensaje);
-          this.documentoGuardado.emit(documentoGuardado);
-          this.cerrarPopup();
+          this.guardadoExitoso = true;
+          this.volverAConsulta();
         },
         error: (err) => {
-          this.mostrarError(err, 'Error al guardar el documento');
+          this.mostrarError('Error al guardar el documento');
+          console.error('Error al guardar documento:', err);
         }
       });
     } catch (error: any) {
-      this.mostrarError(error, 'Error al guardar el documento');
+      this.mostrarError('Error al guardar el documento');
+      console.error('Error al guardar documento:', error);
     }
+  }
+
+  mostrarError(mensaje: string): void {
+    this.resultMsg = [mensaje];
+    this.showMsg = true;
+    this.typeMsg = TipoMensajeEnum.error;
+    setTimeout(() => {
+      this.showMsg = false;
+    }, 5000);
   }
 
   onDatosCargados(): void {
@@ -227,6 +263,10 @@ export class AgregarDocumentoRepositorioPopupComponent extends PopupBaseComponen
   }
 
   cancelar(): void {
-    this.cancelarConConfirmacion();
+    this.volverAConsulta();
+  }
+
+  private volverAConsulta(): void {
+    this.router.navigate(['../../'], { relativeTo: this.route });
   }
 }

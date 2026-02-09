@@ -11,8 +11,6 @@ import { ActualizarService } from '../../../../../shared/services/common/actuali
 import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
 import { SeguridadService } from '../../../../../shared/services/common/seguridad.service';
 import { ArchivoService } from '../../../../../shared/services/common/archivo.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { AgregarDocumentoRepositorioPopupComponent } from '../agregar-documento-repositorio-popup/agregar-documento-repositorio-popup.component';
 import { IFiltroOrganismoDTO } from '../../../../../shared/models/filtros/filtro-organismo.model';
 import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
 
@@ -34,7 +32,6 @@ export class ConsultaRepositorioArchivosComponent
   private readonly snapshotGenericService = inject(SnapshotGenericService);
   protected readonly seguridad = inject(SeguridadService);
   private readonly archivoService = inject(ArchivoService);
-  protected override readonly modalService = inject(BsModalService);
 
   listaOrden: IColumnaOrden[] = [
     { id: 'nombreDocumento', nombre: 'Nombre documento' },
@@ -149,15 +146,7 @@ export class ConsultaRepositorioArchivosComponent
   }
 
   abrirAgregarDocumento(): void {
-    const popup = this.abrirPopupGrande(AgregarDocumentoRepositorioPopupComponent, 'Guardar', {
-      class: 'modal-lg',
-      backdrop: 'static',
-      keyboard: false
-    });
-
-    popup.documentoGuardado.subscribe(() => {
-      this.buscar();
-    });
+    this.router.navigate(['agregar'], { relativeTo: this.route });
   }
 
   obtenerAcciones(documento: DocumentoRepositorioDTO): AccionBoton[] {
@@ -249,18 +238,8 @@ export class ConsultaRepositorioArchivosComponent
   }
 
   modificarDocumento(documento: DocumentoRepositorioDTO): void {
-    const popup = this.abrirPopupGrande(AgregarDocumentoRepositorioPopupComponent, 'Guardar', {
-      class: 'modal-lg',
-      backdrop: 'static',
-      keyboard: false,
-
-      initialState: {
-        documentoExistente: documento
-      }
-    });
-
-    popup.documentoGuardado.subscribe(() => {
-      this.buscar();
-    });
+    if (documento.id) {
+      this.router.navigate(['modificar', documento.id], { relativeTo: this.route });
+    }
   }
 }

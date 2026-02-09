@@ -23,6 +23,16 @@ export const routes: Routes = [
         component: ConsultaRepositorioArchivosComponent
     },
     {
+        path: 'repositorio-archivos/agregar',
+        component: AgregarDocumentoRepositorioPopupComponent,
+        canDeactivate: [DeactivateGuard]
+    },
+    {
+        path: 'repositorio-archivos/modificar/:idDocumento',
+        component: AgregarDocumentoRepositorioPopupComponent,
+        canDeactivate: [DeactivateGuard]
+    },
+    {
         path: 'clausulas',
         component: ConsultaClausulasComponent
     },

@@ -1,86 +1,95 @@
-<div class="modal-header d-flex justify-content-between align-items-center" #modalRoot>
-    <h1 class="modal-title mb-0" id="tituloPopup">{{ titulo }}</h1>
-    <div class="d-flex align-items-center">
-        <small class="text-muted mr-3">Los campos con * son obligatorios</small>
-        <button type="button" aria-label="Cerrar" class="close" (click)="cancelar()">&times;</button>
-    </div>
-</div>
-
-<div class="modal-body">
-    <div>
-        <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
+<div class="container-fluid p-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="h3 mb-0">{{ titulo }}</h1>
+                <small class="text-muted">Los campos con * son obligatorios</small>
+            </div>
+        </div>
     </div>
 
-    <form [formGroup]="form" (submit)="guardar()">
-        <div class="row mb-3">
-            <div class="col-12">
-                <app-filtro-organismo formControlName="organismo"
-                    (cambioFiltro)="onFiltroOrganismo($event)"
-                    (limpiarFiltro)="onFiltroOrganismo(null)"
-                    (datosCargados)="onDatosCargados()"
-                    [requeridoInciso]="false"
-                    [requeridoUE]="false"
-                    [requeridoUC]="false">
-                </app-filtro-organismo>
-            </div>
+    <div class="row">
+        <div class="col-12">
+            <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
         </div>
+    </div>
 
-        <div class="form-row">
-            <div class="form-group col-md-6" [class.field-error]="form.get('nombreDocumento')?.invalid && form.get('nombreDocumento')?.touched">
-                <label for="nombreDocumento">* Nombre documento</label>
-                <input id="nombreDocumento" type="text" class="form-control" formControlName="nombreDocumento"
-                    maxlength="200" />
-                <span class="texto-error m-0 position-absolute"
-                    *ngIf="form.get('nombreDocumento')?.hasError('required') && form.get('nombreDocumento')?.touched">
-                    El nombre del documento no puede estar vacío
-                </span>
-            </div>
-
-            <div class="form-group col-md-6" [class.field-error]="form.get('tipoArchivo')?.invalid && form.get('tipoArchivo')?.touched">
-                <label for="tipoArchivo">* Tipo archivo</label>
-                <select id="tipoArchivo" class="form-control" formControlName="tipoArchivo">
-                    <option value="">Seleccione un tipo</option>
-                    <option *ngFor="let tipo of tiposArchivo" [value]="tipo.id">{{ tipo.nombre }}</option>
-                </select>
-                <span class="texto-error m-0 position-absolute"
-                    *ngIf="form.get('tipoArchivo')?.hasError('required') && form.get('tipoArchivo')?.touched">
-                    El tipo de archivo no puede estar vacío
-                </span>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group col-12">
-                <label for="descripcionDocumento">Descripción documento</label>
-                <textarea id="descripcionDocumento" class="form-control" formControlName="descripcionDocumento"
-                    rows="3" maxlength="500"></textarea>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group col-12" [class.field-error]="form.get('archivo')?.invalid && form.get('archivo')?.touched">
-                <label for="archivo">{{ esModificacion ? '' : '* ' }}Archivo (máximo {{ MAX_FILE_SIZE_KB }} KB)</label>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="archivo"
-                        accept=".pdf,.doc,.docx,.xls,.xlsx"
-                        (change)="onFileSelected($event)" />
-                    <label class="custom-file-label" for="archivo">
-                        {{ nombreArchivoMostrar || 'Seleccionar archivo...' }}
-                    </label>
+    <div class="row">
+        <div class="col-12">
+            <form [formGroup]="form" (submit)="guardar()">
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <app-filtro-organismo formControlName="organismo"
+                            (cambioFiltro)="onFiltroOrganismo($event)"
+                            (limpiarFiltro)="onFiltroOrganismo(null)"
+                            (datosCargados)="onDatosCargados()"
+                            [requeridoInciso]="false"
+                            [requeridoUE]="false"
+                            [requeridoUC]="false">
+                        </app-filtro-organismo>
+                    </div>
                 </div>
-                <small class="form-text text-muted">
-                    {{ esModificacion ? 'Tipos permitidos: PDF, Word, Excel. Opcional: solo si desea reemplazar el archivo actual.' : 'Tipos permitidos: PDF, Word, Excel' }}
-                </small>
-                <span class="texto-error m-0 position-absolute"
-                    *ngIf="form.get('archivo')?.hasError('required') && form.get('archivo')?.touched">
-                    Debe seleccionar un archivo
-                </span>
-            </div>
-        </div>
 
-        <div class="d-flex justify-content-end mt-3 pe-3">
-            <button class="btn btn-primary" type="submit" (click)="guardar()">Guardar</button>
-            <button class="btn btn-link ml-3" type="button" (click)="cancelar()">Cancelar</button>
+                <div class="form-row">
+                    <div class="form-group col-md-6" [class.field-error]="form.get('nombreDocumento')?.invalid && form.get('nombreDocumento')?.touched">
+                        <label for="nombreDocumento">* Nombre documento</label>
+                        <input id="nombreDocumento" type="text" class="form-control" formControlName="nombreDocumento"
+                            maxlength="200" />
+                        <span class="texto-error m-0 position-absolute"
+                            *ngIf="form.get('nombreDocumento')?.hasError('required') && form.get('nombreDocumento')?.touched">
+                            El nombre del documento no puede estar vacío
+                        </span>
+                    </div>
+
+                    <div class="form-group col-md-6" [class.field-error]="form.get('tipoArchivo')?.invalid && form.get('tipoArchivo')?.touched">
+                        <label for="tipoArchivo">* Tipo archivo</label>
+                        <select id="tipoArchivo" class="form-control" formControlName="tipoArchivo">
+                            <option value="">Seleccione un tipo</option>
+                            <option *ngFor="let tipo of tiposArchivo" [value]="tipo.id">{{ tipo.nombre }}</option>
+                        </select>
+                        <span class="texto-error m-0 position-absolute"
+                            *ngIf="form.get('tipoArchivo')?.hasError('required') && form.get('tipoArchivo')?.touched">
+                            El tipo de archivo no puede estar vacío
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-12">
+                        <label for="descripcionDocumento">Descripción documento</label>
+                        <textarea id="descripcionDocumento" class="form-control" formControlName="descripcionDocumento"
+                            rows="3" maxlength="500"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-12" [class.field-error]="form.get('archivo')?.invalid && form.get('archivo')?.touched">
+                        <label for="archivo">{{ esModificacion ? '' : '* ' }}Archivo (máximo {{ MAX_FILE_SIZE_KB }} KB)</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="archivo"
+                                accept=".pdf,.doc,.docx,.xls,.xlsx"
+                                (change)="onFileSelected($event)" />
+                            <label class="custom-file-label" for="archivo">
+                                {{ nombreArchivoMostrar || 'Seleccionar archivo...' }}
+                            </label>
+                        </div>
+                        <small class="form-text text-muted">
+                            {{ esModificacion ? 'Tipos permitidos: PDF, Word, Excel. Opcional: solo si desea reemplazar el archivo actual.' : 'Tipos permitidos: PDF, Word, Excel' }}
+                        </small>
+                        <span class="texto-error m-0 position-absolute"
+                            *ngIf="form.get('archivo')?.hasError('required') && form.get('archivo')?.touched">
+                            Debe seleccionar un archivo
+                        </span>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-12 d-flex justify-content-end">
+                        <button class="btn btn-primary" type="submit" (click)="guardar()">Guardar</button>
+                        <button class="btn btn-link ml-3" type="button" (click)="cancelar()">Cancelar</button>
+                    </div>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
