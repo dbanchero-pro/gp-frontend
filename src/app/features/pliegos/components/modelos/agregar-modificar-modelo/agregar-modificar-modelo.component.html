@@ -95,52 +95,7 @@
               No hay secciones agregadas al modelo
             </div>
           </div>
-        </div>
-
-        <div class="card mb-3">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5 class="card-title mb-0">Cláusulas</h5>
-              <button type="button" class="btn btn-primary" (click)="agregarClausula()">
-                <em class="fa fa-plus mr-1"></em> Agregar cláusula
-              </button>
-            </div>
-
-            <div *ngIf="clausulasAgregadas.length > 0" class="table-responsive">
-              <table class="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th class="text-center" style="width: 10%">Acciones</th>
-                    <th style="width: 5%">Orden</th>
-                    <th style="width: 70%">Denominación</th>
-                    <th style="width: 5%">Versión</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let clausula of clausulasAgregadas">
-                     <td class="text-center">
-                      <button
-                        *ngFor="let accion of obtenerAccionesClausula(clausula)"
-                        type="button"
-                        [class]="accion.clase"
-                        [attr.aria-label]="accion.ariaLabel"
-                        (click)="accion.accion && accion.accion()">
-                        <em [class]="accion.icono"></em>
-                      </button>
-                    </td>
-                    <td>{{ clausula.orden }}</td>
-                    <td>{{ clausula.denominacion }}</td>
-                    <td>{{ clausula.version }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div *ngIf="clausulasAgregadas.length === 0" class="alert alert-info">
-              No hay cláusulas agregadas al modelo
-            </div>
-          </div>
-        </div>
+        </div>        
 
         <div class="d-flex justify-content-end mb-4">
           <button *ngIf="!modoIngreso" class="btn btn-primary mr-3" type="button" (click)="aprobar()">Aprobar</button>

@@ -46,10 +46,124 @@ export class ModeloService {
                   ]
                 }
               ]
+            },
+            {
+              capituloId: 2,
+              orden: 1,
+              denominacion: 'Aclaraciones',
+              version: 1,
+              clausulas: [
+                {
+                  clausulaId: 1,
+                  orden: 1,
+                  denominacion: 'Importante',
+                  version: 1,
+                  redacciones: [
+                    {
+                      redaccionId: 1,
+                      prioridad: 1,
+                      redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              capituloId: 2,
+              orden: 1,
+              denominacion: 'Opcional',
+              version: 1,
+              clausulas: [
+                {
+                  clausulaId: 1,
+                  orden: 1,
+                  denominacion: 'Sugerencias',
+                  version: 1,
+                  redacciones: [
+                    {
+                      redaccionId: 1,
+                      prioridad: 1,
+                      redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
+                    }
+                  ]
+                }
+              ]
             }
           ],
           clausulas: []
-        }
+        },
+        {
+          seccionId: 2,
+          orden: 1,
+          denominacion: 'Condiciones Generales 2',
+          version: 1,
+          capitulos: [
+            {
+              capituloId: 1,
+              orden: 1,
+              denominacion: 'Objeto del llamado 2',
+              version: 1,
+              clausulas: [
+                {
+                  clausulaId: 1,
+                  orden: 1,
+                  denominacion: 'Objeto de la licitación 2',
+                  version: 1,
+                  redacciones: [
+                    {
+                      redaccionId: 1,
+                      prioridad: 1,
+                      redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              capituloId: 2,
+              orden: 1,
+              denominacion: 'Aclaraciones',
+              version: 1,
+              clausulas: [
+                {
+                  clausulaId: 1,
+                  orden: 1,
+                  denominacion: 'Importante',
+                  version: 1,
+                  redacciones: [
+                    {
+                      redaccionId: 1,
+                      prioridad: 1,
+                      redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              capituloId: 2,
+              orden: 1,
+              denominacion: 'Opcional',
+              version: 1,
+              clausulas: [
+                {
+                  clausulaId: 1,
+                  orden: 1,
+                  denominacion: 'Sugerencias',
+                  version: 1,
+                  redacciones: [
+                    {
+                      redaccionId: 1,
+                      prioridad: 1,
+                      redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          clausulas: []
+        },
       ],
       tiposCompra: [
         {
