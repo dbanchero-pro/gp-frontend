@@ -56,14 +56,43 @@ export class ConsultaRepositorioArchivosComponent
   }
 
   override ngOnInit(): void {
-
     super.ngOnInit();
-    this.tiposArchivo = this.documentoService.obtenerTiposArchivo();   
-    this.nuevaConsulta();
+    this.tiposArchivo = this.documentoService.obtenerTiposArchivo();
+
+    const snapshot = this.snapshotGenericService.load<any>(
+      ConsultaRepositorioArchivosComponent.SNAPSHOT_KEY
+    );
+
+    if (snapshot) {
+      this.restaurarSnapshot(snapshot);
+    } else {
+      this.nuevaConsulta();
+    }
   }
 
   onFiltroOrganismo(filtro: IFiltroOrganismoDTO | null): void {
     this.form.patchValue({ organismo: filtro });
+  }
+
+  private restaurarSnapshot(snapshot: any): void {
+    this.parametros = snapshot;
+
+    const filtro = snapshot.filtro;
+    const organismoFiltro: IFiltroOrganismoDTO | null =
+      filtro?.idInciso || filtro?.idUnidadEjecutora
+        ? {
+            idInciso: filtro.idInciso,
+            idUnidadEjecutora: filtro.idUnidadEjecutora
+          }
+        : null;
+
+    this.form.patchValue({
+      organismo: organismoFiltro,
+      nombreDocumento: filtro?.nombreDocumento || '',
+      tipoArchivo: filtro?.tipoArchivo || ''
+    });
+
+    this.buscar();
   }
 
   actualizarFiltrosYBuscar(): void {
