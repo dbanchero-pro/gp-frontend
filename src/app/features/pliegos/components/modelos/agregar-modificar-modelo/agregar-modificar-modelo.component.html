@@ -29,8 +29,11 @@
 
               <div class="col-md-3">
                 <div class="form-group">
-                  <label for="fechaVigenciaDesde">Fecha vigencia desde</label>
+                  <label for="fechaVigenciaDesde">* Fecha vigencia desde</label>
                   <input type="date" class="form-control" id="fechaVigenciaDesde" formControlName="fechaVigenciaDesde">
+                   <div *ngIf="form.controls.denominacion.invalid && form.controls.fechaVigenciaDesde.touched" class="text-danger">
+                    <small *ngIf="form.controls.denominacion.errors?.['required']">La fecha de vigencia desde es obligatoria</small>
+                  </div>
                 </div>
               </div>
 

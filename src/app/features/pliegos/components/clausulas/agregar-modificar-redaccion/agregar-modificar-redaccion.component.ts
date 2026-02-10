@@ -188,10 +188,10 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
   obtenerTextoVigencia(): string {
     const desde = this.clausulaInfo?.fechaVigenciaDesde
       ? this.fechaPipe.transform(this.clausulaInfo.fechaVigenciaDesde)
-      : 'N/A';
+      : '';
     const hasta = this.clausulaInfo?.fechaVigenciaHasta
       ? this.fechaPipe.transform(this.clausulaInfo.fechaVigenciaHasta)
-      : 'Indefinido';
+      : '';
     return `${desde} - ${hasta}`;
   }
 

@@ -79,7 +79,7 @@ export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseCom
         this.cargarDatosDocumento();
       },
       error: (err) => {
-        this.mostrarError('Error al cargar el documento');
+        this.actualizarService.mensajeError('Error al cargar el documento');
         console.error('Error al cargar documento:', err);
         this.volverAConsulta();
       }
@@ -133,7 +133,7 @@ export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseCom
       ];
 
       if (!tiposPermitidos.includes(file.type)) {
-        this.mostrarError('Tipo de archivo no permitido. Solo se permiten archivos PDF, Word y Excel.');
+        this.actualizarService.mensajeError('Tipo de archivo no permitido. Solo se permiten archivos PDF, Word y Excel.');
         input.value = '';
         this.archivoSeleccionado = null;
         this.nombreArchivoMostrar = '';
@@ -143,7 +143,7 @@ export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseCom
 
       // Validar tamaño
       if (file.size > this.MAX_FILE_SIZE_BYTES) {
-        this.mostrarError(`El archivo excede el tamaño máximo permitido de ${this.MAX_FILE_SIZE_KB} KB.`);
+        this.actualizarService.mensajeError(`El archivo excede el tamaño máximo permitido de ${this.MAX_FILE_SIZE_KB} KB.`);
         input.value = '';
         this.archivoSeleccionado = null;
         this.nombreArchivoMostrar = '';
@@ -164,19 +164,13 @@ export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseCom
   guardar(): void {
     this.form.markAllAsTouched();
 
-    if (!this.form.valid) {
-      this.mostrarError('Por favor complete todos los campos requeridos');
-      return;
-    }
-
     const organismo = this.form.value.organismo;
     if (!organismo || !organismo.idInciso || !organismo.idUnidadEjecutora) {
-      this.mostrarError('Debe seleccionar un Inciso y una Unidad Ejecutora');
       return;
     }
 
     if (!this.esModificacion && !this.archivoSeleccionado) {
-      this.mostrarError('Debe seleccionar un archivo');
+      this.actualizarService.mensajeError('Debe seleccionar un archivo');
       return;
     }
 
@@ -200,7 +194,7 @@ export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseCom
       };
 
       reader.onerror = () => {
-        this.mostrarError('Error al leer el archivo');
+        this.actualizarService.mensajeError('Error al leer el archivo');
       };
 
       reader.readAsDataURL(this.archivoSeleccionado);
@@ -239,23 +233,14 @@ export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseCom
           this.volverAConsulta();
         },
         error: (err) => {
-          this.mostrarError('Error al guardar el documento');
+          this.actualizarService.mensajeError(err.message || 'Error al guardar el campo');
           console.error('Error al guardar documento:', err);
         }
       });
     } catch (error: any) {
-      this.mostrarError('Error al guardar el documento');
+     this.actualizarService.mensajeError(error.message || 'Error al guardar el campo');
       console.error('Error al guardar documento:', error);
     }
-  }
-
-  mostrarError(mensaje: string): void {
-    this.resultMsg = [mensaje];
-    this.showMsg = true;
-    this.typeMsg = TipoMensajeEnum.error;
-    setTimeout(() => {
-      this.showMsg = false;
-    }, 5000);
   }
 
   onDatosCargados(): void {

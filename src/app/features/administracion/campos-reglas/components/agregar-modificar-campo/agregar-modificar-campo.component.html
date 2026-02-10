@@ -19,7 +19,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group" [class.field-error]="form.get('etiqueta')?.invalid && form.get('etiqueta')?.touched">
-                                <label for="etiqueta">* Etiqueta</label>
+                                <label for="etiqueta" class="etiqueta">* Etiqueta</label>
                                 <input id="etiqueta" type="text" class="form-control" formControlName="etiqueta"
                                     maxlength="50" />
                                 <span class="texto-error m-0"

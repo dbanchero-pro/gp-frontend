@@ -244,7 +244,6 @@ export class AgregarModificarCapituloComponent extends FormularioBaseComponent i
   guardar(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this.actualizarService.mensajeError('Por favor complete todos los campos obligatorios correctamente');
       return;
     }
 

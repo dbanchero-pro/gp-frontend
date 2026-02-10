@@ -156,12 +156,8 @@ export class MenuService {
             visible: true,
             tipoUsuario: TipoUsuario.AMBOS,
             items: [
-             //   this.menuConformidad(),
-                this.menuRoles(),
                 this.menuPliegos(),
-               // this.menuRecepcion(),
-                //this.menuSeguimientoProveedores(),
-                //this.menuPuntosRecepcion(),
+                this.menuRoles(),
             ],
         };
     }

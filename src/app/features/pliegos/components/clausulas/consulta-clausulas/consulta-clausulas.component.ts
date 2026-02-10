@@ -512,10 +512,10 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
   obtenerTextoVigencia(clausula: Clausula): string {
     const desde = clausula.fechaVigenciaDesde
       ? this.fechaPipe.transform(clausula.fechaVigenciaDesde)
-      : 'N/A';
+      : '';
     const hasta = clausula.fechaVigenciaHasta
       ? this.fechaPipe.transform(clausula.fechaVigenciaHasta)
-      : 'Indefinido';
+      : '';
     return `${desde} - ${hasta}`;
   }
 
