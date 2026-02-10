@@ -660,6 +660,16 @@ export class ClausulaService {
             usuarioCreacion: 'admin',
             fechaModificacion: null,
             usuarioModificacion: null
+          },
+          {
+            id: 6,
+            clausulaId: 102,
+            prioridad: 2,
+            redaccion: '<p>La garantía deberá mantenerse vigente durante:</p><ul><li>Toda la ejecución del contrato</li><li>Hasta 60 días posteriores a la recepción definitiva de los bienes</li></ul><p>La garantía podrá presentarse en cualquiera de las siguientes formas:</p><ol><li>Póliza de seguro de caución</li><li>Garantía bancaria</li></ol>',
+            fechaCreacion: '2023-06-01',
+            usuarioCreacion: 'admin',
+            fechaModificacion: null,
+            usuarioModificacion: null
           }
         ],
         fechaCreacion: '2023-06-01',
