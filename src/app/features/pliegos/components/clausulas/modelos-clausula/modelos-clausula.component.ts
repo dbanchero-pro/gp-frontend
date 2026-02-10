@@ -35,9 +35,6 @@ export class ModelosClausulaComponent implements OnInit {
 
   listaOrden: IColumnaOrden[] = [
     { id: 'denominacion', nombre: 'Denominación' },
-    { id: 'version', nombre: 'Versión' },
-    { id: 'fechaVigenciaDesde', nombre: 'Fecha vigencia desde' },
-    { id: 'fechaVigenciaHasta', nombre: 'Fecha vigencia hasta' },
   ];
 
   ngOnInit(): void {
