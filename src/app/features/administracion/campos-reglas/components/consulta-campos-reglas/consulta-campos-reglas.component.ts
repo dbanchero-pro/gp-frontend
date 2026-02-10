@@ -39,6 +39,7 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   listaOrden: IColumnaOrden[] = [
     { id: 'etiqueta', nombre: 'Etiqueta' },
     { id: 'fuente', nombre: 'Fuente' },
+    { id: 'tipoDato', nombre: 'Tipo de dato' }
   ];
 
   columnaOrdenInicial = 'etiqueta';
