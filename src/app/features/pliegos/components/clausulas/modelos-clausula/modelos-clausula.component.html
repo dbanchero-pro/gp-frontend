@@ -39,27 +39,15 @@
                 <span *ngIf="esBorrador(modelo)" class="badge badge-info ml-1">
                   Borrador
                 </span>
-              </div>
+                 </div>
+                <span class="text-right font-weight-bold">Versión: {{ modelo.version }}</span>
+             
             </div>
 
             <div class="px-3 py-2">
-              <div class="row g-0 py-1 px-3">
-                <div class="col-md-2 col-lg-2 etiqueta">Vigencia</div>
-                <div class="col-md-8 col-lg-8 font-weight-bold">{{ obtenerTextoVigencia(modelo) }}</div>
-                <div class="col-md-2 col-lg-2 font-weight-bold text-right" *ngIf="!esBorrador(modelo)">
-                  Versión: {{ modelo.version }}
-                </div>
-              </div>
-
               <div *ngIf="modelo.secciones && modelo.secciones.length > 0" class="row g-0 py-2">
                 <div class="col-12">
-                  <app-grupo-colapsable
-                    [colapsado]="true"
-                    class="w-100"
-                    classContenido="p-0"
-                    [ariaLabel]="'Mostrar u ocultar secciones del modelo ' + modelo.denominacion">
-                    <titulo>Secciones ({{ modelo.secciones.length }})</titulo>
-                    <contenido>
+                  
                       <div class="px-3 py-2">
                         <div *ngFor="let seccion of modelo.secciones" class="card mb-2">
                           <div class="card-body py-2">
@@ -93,8 +81,6 @@
                           </div>
                         </div>
                       </div>
-                    </contenido>
-                  </app-grupo-colapsable>
                 </div>
               </div>
             </div>
