@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, Version, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Clausula } from '../../../models/clausula.model';
 import { ClausulaService } from '../../../services/clausula.service';
@@ -260,4 +260,33 @@ export class HistorialClausulasComponent implements OnInit {
   volver(): void {
     this.router.navigate(['/pliegos/clausulas'], { queryParams: { volver: 1 } });
   }
+
+  obtenerEstadoVigencia(clausula: Clausula): string {
+      if (clausula.estado === 'BORRADOR') {
+        const hoy = new Date();
+        const desde = clausula.fechaVigenciaDesde ? new Date(clausula.fechaVigenciaDesde) : null;
+        const hasta = clausula.fechaVigenciaHasta ? new Date(clausula.fechaVigenciaHasta) : null;
+  
+        if (desde && hoy < desde) {
+          return 'NO_VIGENTE';
+        }
+        if (hasta && hoy > hasta) {
+          return 'NO_VIGENTE';
+        }
+        return 'VIGENTE';
+      }
+      return clausula.estado;
+    }
+
+   esBorrador(clausula: Clausula): boolean {
+     return clausula.estado === 'BORRADOR';
+   }
+
+  obtenerTextoEstadoVigencia(clausula: Clausula): string {
+      const estado = this.obtenerEstadoVigencia(clausula);
+      if (estado === 'VIGENTE') {
+        return 'Vigente';
+      }
+      return 'No vigente';
+    }
 }

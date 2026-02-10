@@ -15,6 +15,16 @@
         <div class="d-flex justify-content-between align-items-center bg-light border-bottom px-3 py-2">
           <div>
             <span class="font-weight-bold">Versión {{ version.version }}</span>
+
+            <span class="badge ml-2" *ngIf="!esBorrador(version)" [ngClass]="{
+                'badge-success': obtenerEstadoVigencia(version) === 'VIGENTE',
+                'badge-warning': obtenerEstadoVigencia(version) === 'NO_VIGENTE'
+              }">
+                {{ obtenerTextoEstadoVigencia(version) }}
+              </span>
+              <span *ngIf="esBorrador(version)" class="badge badge-info ml-1">
+                Borrador
+              </span>
           </div>
         </div>
 
