@@ -47,8 +47,6 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
   listaOrden: IColumnaOrden[] = [
     { id: 'denominacion', nombre: 'Denominación' },
     { id: 'estado', nombre: 'Estado' },
-    { id: 'fechaVigenciaDesde', nombre: 'Fecha vigencia desde' },
-    { id: 'fechaVigenciaHasta', nombre: 'Fecha vigencia hasta' }
   ];
 
   public static readonly SNAPSHOT_KEY = 'CONSULTA_CAPITULOS';
@@ -214,7 +212,7 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
       acciones.push({
         nombre: 'Ver',
         clase: 'btn btn-sm',
-        icono: 'fa fa-binoculars',
+        icono: 'fa fa-eye',
         ariaLabel: `Ver redacciones de cláusula ${clausula.denominacion}`,
         //accion: () => this.eliminarClausula(clausula)
       });

@@ -10,6 +10,51 @@ import { EliminarClausulaResponse } from '../models/eliminar-clausula-response.m
 })
 export class ClausulaService {
   private clausulasMock: Clausula[] = [
+     {
+      id: 100,
+      denominacion: 'Cláusula vacía',
+      aperturaElectronica: false,
+      tiposCompra: [
+        {
+          tipoCompraId: 1,
+          tipoCompraDescripcion: 'Licitación Pública',
+          subtipos: [
+            { subtipoCompraId: 1, subtipoCompraDescripcion: 'Común' }
+          ]
+        }
+      ],
+      objetosCompra: [
+        {
+          familiaId: 1,
+          familiaDescripcion: 'Equipos de computación',
+          subfamiliaId: 1,
+          subfamiliaDescripcion: 'Computadoras',
+          claseId: 1,
+          claseDescripcion: 'Notebooks',
+          subclaseId: 1,
+          subclaseDescripcion: 'Portátiles',
+          articulo: { articuloId: 1, articuloCodigo: 'ART001', articuloDescripcion: 'Notebook HP' }
+        }
+      ],
+      incisos: [
+        {
+          incisoId: 1,
+          incisoCodigo: '01',
+          incisoDescripcion: 'Poder Ejecutivo',
+          unidadEjecutora: { unidadEjecutoraId: 1, unidadEjecutoraCodigo: '001', unidadEjecutoraDescripcion: 'Ministerio de Economía' }
+        }
+      ],
+      fechaVigenciaDesde: '2023-01-01',
+      fechaVigenciaHasta: '2023-12-31',
+      estado: EstadoClausula.NO_VIGENTE,
+      versionada: true,
+      version: 1,
+      redacciones: [],
+      fechaCreacion: '2023-01-01',
+      usuarioCreacion: 'admin',
+      fechaModificacion: null,
+      usuarioModificacion: null
+    },
     {
       id: 1,
       denominacion: 'Cláusula de garantía de cumplimiento',
@@ -555,6 +600,51 @@ export class ClausulaService {
 
   obtenerHistorialVersiones(clausulaId: number): Observable<Clausula[]> {
     const historialMock: Clausula[] = [
+      {
+        id: 101,
+        denominacion: 'Cláusula vacía',
+        aperturaElectronica: true,
+        tiposCompra: [
+          {
+            tipoCompraId: 1,
+            tipoCompraDescripcion: 'Licitación Pública',
+            subtipos: [
+              { subtipoCompraId: 1, subtipoCompraDescripcion: 'Nacional' }
+            ]
+          }
+        ],
+        objetosCompra: [
+          {
+            familiaId: 1,
+            familiaDescripcion: 'Equipos de computación',
+            subfamiliaId: 1,
+            subfamiliaDescripcion: 'Computadoras',
+            claseId: 1,
+            claseDescripcion: 'Notebooks',
+            subclaseId: 1,
+            subclaseDescripcion: 'Portátiles',
+            articulo: { articuloId: 1, articuloCodigo: 'ART001', articuloDescripcion: 'Notebook HP' }
+          }
+        ],
+        incisos: [
+          {
+            incisoId: 1,
+            incisoCodigo: '01',
+            incisoDescripcion: 'Poder Ejecutivo',
+            unidadEjecutora: { unidadEjecutoraId: 1, unidadEjecutoraCodigo: '001', unidadEjecutoraDescripcion: 'Ministerio de Economía' }
+          }
+        ],
+        fechaVigenciaDesde: '2024-01-01',
+        fechaVigenciaHasta: '2025-12-31',
+        estado: EstadoClausula.VIGENTE,
+        versionada: true,
+        version: 3,
+        redacciones: [],
+        fechaCreacion: '2024-10-15',
+        usuarioCreacion: 'admin',
+        fechaModificacion: '2024-10-15',
+        usuarioModificacion: 'admin'
+      },
       {
         id: 101,
         denominacion: 'Cláusula de garantía de cumplimiento',

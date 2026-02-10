@@ -58,9 +58,7 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
 
   listaOrden: IColumnaOrden[] = [
     { id: 'denominacion', nombre: 'Denominación' },
-    { id: 'estado', nombre: 'Estado' },
-    { id: 'fechaVigenciaDesde', nombre: 'Fecha vigencia desde' },
-    { id: 'fechaVigenciaHasta', nombre: 'Fecha vigencia hasta' }
+    { id: 'estado', nombre: 'Estado' }
   ];
 
   // Datos mock para filtros
@@ -381,7 +379,7 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
     acciones.push({
       nombre: 'Ver',
       clase: 'btn btn-sm',
-      icono: 'fa fa-binoculars',
+      icono: 'fa fa-eye',
       ariaLabel: `Ver redacción prioridad ${redaccion.prioridad}`,
       //accion: () => this.eliminarClausula(clausula)
     });

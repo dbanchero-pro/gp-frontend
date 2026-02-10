@@ -45,7 +45,37 @@
               </div>
             </div>
 
+           
             <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="esObligatoria">* Es obligatoria</label>
+                  <select class="form-control" id="esObligatoria" formControlName="esObligatoria">
+                    <option *ngFor="let opcion of opcionesSiNo" [ngValue]="opcion.id">
+                      {{ opcion.nombre }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="aperturaElectronica">* Apertura electrónica</label>
+                  <select class="form-control" id="aperturaElectronica" formControlName="aperturaElectronica">
+                    <option *ngFor="let opcion of opcionesSiNo" [ngValue]="opcion.id">
+                      {{ opcion.nombre }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Organismos compradores</h5>
+              <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="incisoId">Inciso</label>
@@ -72,30 +102,7 @@
               </div>
             </div>
 
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="esObligatoria">* Es obligatoria</label>
-                  <select class="form-control" id="esObligatoria" formControlName="esObligatoria">
-                    <option *ngFor="let opcion of opcionesSiNo" [ngValue]="opcion.id">
-                      {{ opcion.nombre }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="aperturaElectronica">* Apertura electrónica</label>
-                  <select class="form-control" id="aperturaElectronica" formControlName="aperturaElectronica">
-                    <option *ngFor="let opcion of opcionesSiNo" [ngValue]="opcion.id">
-                      {{ opcion.nombre }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
+             </div>
         </div>
 
         <div class="card mb-3">

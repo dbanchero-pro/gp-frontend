@@ -116,6 +116,19 @@ export class ModeloService {
                       redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
                     }
                   ]
+                },
+                 {
+                  clausulaId: 2,
+                  orden: 1,
+                  denominacion: 'Objeto de la licitación 3',
+                  version: 1,
+                  redacciones: [
+                    {
+                      redaccionId: 1,
+                      prioridad: 1,
+                      redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
+                    }
+                  ]
                 }
               ]
             },
@@ -135,6 +148,32 @@ export class ModeloService {
                       redaccionId: 1,
                       prioridad: 1,
                       redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
+                    }
+                  ]
+                },
+                {
+                  clausulaId: 2,
+                  orden: 1,
+                  denominacion: 'Importante 2',
+                  version: 1,
+                  redacciones: [
+                    {
+                      redaccionId: 1,
+                      prioridad: 1,
+                      redaccion: 'La presente licitación 2 tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
+                    }
+                  ]
+                },
+                {
+                  clausulaId: 3,
+                  orden: 1,
+                  denominacion: 'Importante 3',
+                  version: 1,
+                  redacciones: [
+                    {
+                      redaccionId: 1,
+                      prioridad: 1,
+                      redaccion: 'La presente licitación 3 tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
                     }
                   ]
                 }

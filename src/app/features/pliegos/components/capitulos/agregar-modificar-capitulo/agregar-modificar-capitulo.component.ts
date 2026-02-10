@@ -229,7 +229,7 @@ export class AgregarModificarCapituloComponent extends FormularioBaseComponent i
      acciones.push({
       nombre: 'Ver',
       clase: 'btn btn-sm',
-      icono: 'fa fa-binoculars',
+      icono: 'fa fa-eye',
       ariaLabel: `Ver redacciones de cláusula ${clausula.denominacion}`,
       //accion: () => this.eliminarClausula(clausula)
     });

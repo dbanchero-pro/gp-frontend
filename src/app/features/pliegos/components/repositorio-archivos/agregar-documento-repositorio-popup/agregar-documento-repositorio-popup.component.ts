@@ -10,6 +10,9 @@ import { IFiltroOrganismoDTO } from '../../../../../shared/models/filtros/filtro
 import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
 import { CanComponentDeactivate } from '../../../../../shared/utils/can-component-deactivate';
 import { TipoMensajeEnum } from '../../../../../shared/enum/tipo-mensaje.enum';
+import { TipoCompraDTO } from 'src/app/shared/models/sice/tipo-compra.model';
+import { SubtipoCompraDTO } from 'src/app/shared/models/sice/subtipo-compra.model';
+import { TipoCompraClausula } from '../../../models/clausula.model';
 
 @Component({
   selector: 'app-agregar-documento-repositorio-popup',
@@ -45,6 +48,22 @@ export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseCom
     { id: TipoArchivoRepositorio.FORMULARIO, nombre: 'Formulario' },
     { id: TipoArchivoRepositorio.OTRO, nombre: 'Otro' }
   ];
+
+
+   tiposCompra: TipoCompraDTO[] = [
+      new TipoCompraDTO('1', 'Licitación Pública'),
+      new TipoCompraDTO('2', 'Contratación Directa'),
+      new TipoCompraDTO('3', 'Licitación Abreviada')
+    ];
+  
+    subtiposCompra: SubtipoCompraDTO[] = [];
+    subtiposCompraMock: SubtipoCompraDTO[] = [
+      new SubtipoCompraDTO('1', '1', 'Nacional', 'Licitación Pública'),
+      new SubtipoCompraDTO('1', '2', 'Internacional', 'Licitación Pública'),
+      new SubtipoCompraDTO('2', '3', 'Por excepción', 'Contratación Directa')
+    ];
+  
+    tiposCompraAgregados: TipoCompraClausula[] = [];
 
   archivoSeleccionado: File | null = null;
   nombreArchivoMostrar: string = '';
