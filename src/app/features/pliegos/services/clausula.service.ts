@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, delay } from 'rxjs';
+import { Observable, of, delay, map } from 'rxjs';
 import { Clausula } from '../models/clausula.model';
 import { FiltroClausula } from '../models/filtro-clausula.model';
 import { EstadoClausula } from '../enum/estado-clausula.enum';
@@ -726,6 +726,19 @@ export class ClausulaService {
     ];
 
     return of(historialMock).pipe(delay(300));
+  }
+
+  obtenerVersionAnterior(clausulaId: number): Observable<Clausula | null> {
+    return this.obtenerHistorialVersiones(clausulaId).pipe(
+      delay(300),
+      map(versiones => {
+        if (versiones.length < 2) {
+          return null;
+        }
+        const versionesOrdenadas = versiones.sort((a, b) => (b.version || 0) - (a.version || 0));
+        return versionesOrdenadas[1];
+      })
+    );
   }
 }
 

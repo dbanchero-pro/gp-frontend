@@ -1,0 +1,214 @@
+<div class="container-fluid px-4 py-3">
+  <div class="row mb-3">
+    <div class="col-12">
+      <h4 class="mb-1">
+        <em class="fa fa-exchange mr-2"></em>
+        Comparación de versiones
+      </h4>
+      <p class="text-muted mb-0" *ngIf="versionActual">
+        {{ versionActual.denominacion }}
+      </p>
+    </div>
+  </div>
+
+  <div *ngIf="cargando" class="row">
+    <div class="col-12 text-center py-5">
+      <em class="fa fa-spinner fa-spin fa-3x text-primary"></em>
+      <p class="mt-3 text-muted">Cargando comparación...</p>
+    </div>
+  </div>
+
+  <div *ngIf="errorCarga && !cargando" class="row">
+    <div class="col-12">
+      <div class="alert alert-warning" role="alert">
+        <em class="fa fa-exclamation-triangle mr-2"></em>
+        {{ mensajeError }}
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!cargando && !errorCarga && versionActual && versionAnterior">
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-light">
+            <strong>Información de versiones</strong>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="version-info">
+                  <span class="badge badge-success mb-2">Versión {{ versionActual.version }}</span>
+                  <h6 class="mb-2">Versión actual</h6>
+                  <p class="mb-1 text-muted small">
+                    <strong>Fecha de modificación:</strong>
+                    {{ versionActual.fechaModificacion | fechaPipe }}
+                  </p>
+                  <p class="mb-0 text-muted small" *ngIf="versionActual.usuarioModificacion">
+                    <strong>Usuario:</strong>
+                    {{ versionActual.usuarioModificacion }}
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="version-info">
+                  <span class="badge badge-secondary mb-2">Versión {{ versionAnterior.version }}</span>
+                  <h6 class="mb-2">Versión anterior</h6>
+                  <p class="mb-1 text-muted small">
+                    <strong>Fecha de modificación:</strong>
+                    {{ versionAnterior.fechaModificacion | fechaPipe }}
+                  </p>
+                  <p class="mb-0 text-muted small" *ngIf="versionAnterior.usuarioModificacion">
+                    <strong>Usuario:</strong>
+                    {{ versionAnterior.usuarioModificacion }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!hayDiferencias()" class="row mb-4">
+      <div class="col-12">
+        <div class="alert alert-info" role="alert">
+          <em class="fa fa-info-circle mr-2"></em>
+          No se encontraron diferencias entre las dos versiones.
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-4" *ngIf="diferenciasAtributos.length > 0">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-light">
+            <strong>
+              <em class="fa fa-list-alt mr-2"></em>
+              Diferencias en atributos
+            </strong>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead class="thead-light">
+                  <tr>
+                    <th style="width: 25%;">Atributo</th>
+                    <th style="width: 37.5%;">
+                      <span class="badge badge-success">Versión {{ versionActual.version }}</span>
+                      Valor actual
+                    </th>
+                    <th style="width: 37.5%;">
+                      <span class="badge badge-secondary">Versión {{ versionAnterior.version }}</span>
+                      Valor anterior
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let diferencia of diferenciasAtributos"
+                      [class.table-warning]="diferencia.cambiado">
+                    <td class="font-weight-bold">
+                      <em *ngIf="diferencia.cambiado" class="fa fa-exclamation-circle text-warning mr-2"></em>
+                      {{ diferencia.nombre }}
+                    </td>
+                    <td [class.diferencia-cambiada]="diferencia.cambiado">
+                      {{ diferencia.valorActual || 'Sin definir' }}
+                    </td>
+                    <td [class.diferencia-cambiada]="diferencia.cambiado">
+                      {{ diferencia.valorAnterior || 'Sin definir' }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-4" *ngIf="diferenciasRedacciones.length > 0">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-light">
+            <strong>
+              <em class="fa fa-file-text mr-2"></em>
+              Diferencias en redacciones
+            </strong>
+          </div>
+          <div class="card-body">
+            <div *ngFor="let diferencia of diferenciasRedacciones" class="mb-4 pb-3 border-bottom">
+              <div class="d-flex align-items-center mb-3">
+                <span class="badge badge-primary mr-2">Prioridad {{ diferencia.prioridad }}</span>
+                <span *ngIf="diferencia.nueva" class="badge badge-success">
+                  <em class="fa fa-plus-circle mr-1"></em>
+                  Nueva redacción
+                </span>
+                <span *ngIf="diferencia.eliminada" class="badge badge-danger">
+                  <em class="fa fa-minus-circle mr-1"></em>
+                  Redacción eliminada
+                </span>
+                <span *ngIf="diferencia.cambiada" class="badge badge-warning">
+                  <em class="fa fa-edit mr-1"></em>
+                  Redacción modificada
+                </span>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6" *ngIf="diferencia.redaccionActual">
+                  <div class="redaccion-container" [class.redaccion-nueva]="diferencia.nueva" [class.redaccion-cambiada]="diferencia.cambiada">
+                    <div class="redaccion-header">
+                      <span class="badge badge-success">Versión {{ versionActual.version }}</span>
+                      <strong class="ml-2">Redacción actual</strong>
+                    </div>
+                    <div class="redaccion-content" [innerHTML]="diferencia.redaccionActual | safeHtml"></div>
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="!diferencia.redaccionActual && diferencia.eliminada">
+                  <div class="redaccion-container redaccion-eliminada">
+                    <div class="redaccion-header">
+                      <span class="badge badge-success">Versión {{ versionActual.version }}</span>
+                      <strong class="ml-2">Redacción actual</strong>
+                    </div>
+                    <div class="redaccion-content text-muted">
+                      <em>Redacción eliminada en esta versión</em>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6" *ngIf="diferencia.redaccionAnterior">
+                  <div class="redaccion-container" [class.redaccion-eliminada]="diferencia.eliminada" [class.redaccion-cambiada]="diferencia.cambiada">
+                    <div class="redaccion-header">
+                      <span class="badge badge-secondary">Versión {{ versionAnterior.version }}</span>
+                      <strong class="ml-2">Redacción anterior</strong>
+                    </div>
+                    <div class="redaccion-content" [innerHTML]="diferencia.redaccionAnterior | safeHtml"></div>
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="!diferencia.redaccionAnterior && diferencia.nueva">
+                  <div class="redaccion-container">
+                    <div class="redaccion-header">
+                      <span class="badge badge-secondary">Versión {{ versionAnterior.version }}</span>
+                      <strong class="ml-2">Redacción anterior</strong>
+                    </div>
+                    <div class="redaccion-content text-muted">
+                      <em>Esta redacción no existía en la versión anterior</em>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12 d-flex justify-content-end">
+      <button type="button" class="btn btn-link" (click)="volver()">
+        <em class="fa fa-arrow-left mr-1"></em>
+        Volver
+      </button>
+    </div>
+  </div>
+</div>

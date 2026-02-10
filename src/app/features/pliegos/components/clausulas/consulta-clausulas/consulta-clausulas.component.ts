@@ -337,12 +337,12 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
       accion: () => this.modificarClausula(clausula)
     });
 
-      acciones.push({
+    acciones.push({
       nombre: 'Ver diferencias',
       clase: 'btn btn-success',
       icono: 'fa fa-exchange',
       ariaLabel: 'Ver diferencias con versión anterior ' + clausula.denominacion,
-      accion: () => this.verHistorial(clausula)
+      accion: () => this.verDiferencias(clausula)
     });
 
     if (this.esBorrador(clausula)) {
@@ -444,6 +444,13 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
       return;
     }
     this.router.navigate(['/pliegos/clausulas/historial', clausula.id]);
+  }
+
+  verDiferencias(clausula: Clausula): void {
+    if (!clausula.id) {
+      return;
+    }
+    this.router.navigate(['/pliegos/clausulas/diferencias', clausula.id]);
   }
 
   seleccionarClausula(clausula: Clausula): void {
