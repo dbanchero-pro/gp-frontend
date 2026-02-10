@@ -170,7 +170,7 @@ export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
 
     acciones.push({
       nombre: 'Modificar',
-      clase: 'btn btn-success',
+      clase: 'btn btn-success btn-ancho-fijo',
       icono: 'fa fa-edit',
       ariaLabel: 'Modificar sección ' + seccion.denominacion,
       accion: () => this.modificarSeccion(seccion)
@@ -197,7 +197,7 @@ export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
     acciones.push({
       nombre: 'Ver modelos',
       clase: 'btn btn-success',
-      icono: 'fa fa-copy',
+      icono: 'fa fa-list',
       ariaLabel: 'Ver modelos que usan la sección ' + seccion.denominacion,
       accion: () => this.verModelos(seccion)
     });

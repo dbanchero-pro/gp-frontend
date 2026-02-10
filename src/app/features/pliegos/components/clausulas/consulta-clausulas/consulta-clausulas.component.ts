@@ -329,7 +329,7 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
 
     acciones.push({
       nombre: 'Modificar',
-      clase: 'btn btn-success',
+      clase: 'btn btn-success btn-ancho-fijo',
       icono: 'fa fa-edit',
       ariaLabel: 'Modificar cláusula ' + clausula.denominacion,
       accion: () => this.modificarClausula(clausula)
@@ -364,7 +364,7 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
     acciones.push({
       nombre: 'Ver modelos',
       clase: 'btn btn-success',
-      icono: 'fa fa-copy',
+      icono: 'fa fa-list',
       ariaLabel: 'Ver modelos que usan la cláusula ' + clausula.denominacion,
       accion: () => this.verModelos(clausula)
     });

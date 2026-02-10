@@ -170,7 +170,7 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
 
     acciones.push({
       nombre: 'Modificar',
-      clase: 'btn btn-success',
+      clase: 'btn btn-success btn-ancho-fijo',
       icono: 'fa fa-edit',
       ariaLabel: 'Modificar capítulo ' + capitulo.denominacion,
       accion: () => this.modificarCapitulo(capitulo)
@@ -198,7 +198,7 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
     acciones.push({
       nombre: 'Ver modelos',
       clase: 'btn btn-success',
-      icono: 'fa fa-copy',
+      icono: 'fa fa-list',
       ariaLabel: 'Ver modelos que usan el capítulo ' + capitulo.denominacion,
       accion: () => this.verModelos(capitulo)
     });
