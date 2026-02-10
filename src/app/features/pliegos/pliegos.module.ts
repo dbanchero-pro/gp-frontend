@@ -11,6 +11,7 @@ import { AgregarModificarRedaccionPopupComponent } from './components/clausulas/
 import { AgregarModificarRedaccionComponent } from './components/clausulas/agregar-modificar-redaccion/agregar-modificar-redaccion.component';
 import { HistorialClausulasComponent } from './components/clausulas/historial-clausulas/historial-clausulas.component';
 import { DiferenciasClausulasComponent } from './components/clausulas/diferencias-clausulas/diferencias-clausulas';
+import { ModelosClausulaComponent } from './components/clausulas/modelos-clausula/modelos-clausula.component';
 import { ConsultaCapitulosComponent } from './components/capitulos/consulta-capitulos/consulta-capitulos.component';
 import { AgregarModificarCapituloComponent } from './components/capitulos/agregar-modificar-capitulo/agregar-modificar-capitulo.component';
 import { ConsultaSeccionesComponent } from './components/secciones/consulta-secciones/consulta-secciones.component';
@@ -44,6 +45,10 @@ export const routes: Routes = [
     {
         path: 'clausulas/diferencias/:id',
         component: DiferenciasClausulasComponent
+    },
+    {
+        path: 'clausulas/modelos/:id',
+        component: ModelosClausulaComponent
     },
     {
         path: 'clausulas/agregar',
@@ -132,6 +137,7 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
         AgregarModificarRedaccionComponent,
         HistorialClausulasComponent,
         DiferenciasClausulasComponent,
+        ModelosClausulaComponent,
         ConsultaCapitulosComponent,
         AgregarModificarCapituloComponent,
         ConsultaSeccionesComponent,

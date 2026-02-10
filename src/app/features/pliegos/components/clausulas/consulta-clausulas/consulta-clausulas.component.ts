@@ -366,7 +366,7 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
       clase: 'btn btn-success',
       icono: 'fa fa-copy',
       ariaLabel: 'Ver modelos que usan la cláusula ' + clausula.denominacion,
-      accion: () => this.verHistorial(clausula)
+      accion: () => this.verModelos(clausula)
     });
 
     return acciones;
@@ -449,6 +449,13 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
       return;
     }
     this.router.navigate(['/pliegos/clausulas/diferencias', clausula.id]);
+  }
+
+  verModelos(clausula: Clausula): void {
+    if (!clausula.id) {
+      return;
+    }
+    this.router.navigate(['/pliegos/clausulas/modelos', clausula.id]);
   }
 
   seleccionarClausula(clausula: Clausula): void {

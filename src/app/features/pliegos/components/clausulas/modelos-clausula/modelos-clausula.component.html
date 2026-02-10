@@ -1,0 +1,104 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <h4 class="mb-3">
+        Modelos que usan la cláusula: <strong>{{ denominacionClausula }}</strong>
+      </h4>
+
+      <div *ngIf="cargando" class="text-center py-5">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Cargando...</span>
+        </div>
+      </div>
+
+      <div *ngIf="!cargando && modelos.length === 0" class="alert alert-info">
+        <em class="fa fa-info-circle mr-2"></em>
+        No se encontraron modelos que utilicen esta cláusula.
+      </div>
+
+      <div *ngFor="let modelo of modelos" class="row mb-3">
+        <div class="col-12">
+          <div class="card">
+            <div class="d-flex justify-content-between align-items-center border-bottom px-3 py-2">
+              <div>
+                <span class="font-weight-bold">{{ modelo.denominacion }}</span>
+                <span class="badge ml-2" *ngIf="!esBorrador(modelo)" [ngClass]="{
+                  'badge-success': obtenerEstadoVigencia(modelo) === 'VIGENTE',
+                  'badge-warning': obtenerEstadoVigencia(modelo) === 'NO_VIGENTE'
+                }">
+                  {{ obtenerTextoEstadoVigencia(modelo) }}
+                </span>
+                <span *ngIf="esBorrador(modelo)" class="badge badge-info ml-1">
+                  Borrador
+                </span>
+              </div>
+            </div>
+
+            <div class="px-3 py-2">
+              <div class="row g-0 py-1 px-3">
+                <div class="col-md-2 col-lg-2 etiqueta">Vigencia</div>
+                <div class="col-md-8 col-lg-8 font-weight-bold">{{ obtenerTextoVigencia(modelo) }}</div>
+                <div class="col-md-2 col-lg-2 font-weight-bold text-right" *ngIf="!esBorrador(modelo)">
+                  Versión: {{ modelo.version }}
+                </div>
+              </div>
+
+              <div *ngIf="modelo.secciones && modelo.secciones.length > 0" class="row g-0 py-2">
+                <div class="col-12">
+                  <app-grupo-colapsable
+                    [colapsado]="true"
+                    class="w-100"
+                    classContenido="p-0"
+                    [ariaLabel]="'Mostrar u ocultar secciones del modelo ' + modelo.denominacion">
+                    <titulo>Secciones ({{ modelo.secciones.length }})</titulo>
+                    <contenido>
+                      <div class="px-3 py-2">
+                        <div *ngFor="let seccion of modelo.secciones" class="card mb-2">
+                          <div class="card-body py-2">
+                            <div class="row g-0 mb-2">
+                              <div class="col-md-9">
+                                <span class="font-weight-bold">
+                                  <em class="fa fa-caret-right m-2"></em> {{ seccion.denominacion }}
+                                </span>
+                              </div>
+                              <div class="col-md-3 text-right">
+                                <span>Versión: {{ seccion.version }}</span>
+                              </div>
+                            </div>
+
+                            <div *ngIf="seccion.capitulos && seccion.capitulos.length > 0" class="pl-3">
+                              <div *ngFor="let capitulo of seccion.capitulos" class="card mb-2">
+                                <div class="card-body py-2">
+                                  <div class="row g-0">
+                                    <div class="col-md-9">
+                                      <span class="font-weight-bold">
+                                        <em class="fa fa-angle-right m-2"></em> {{ capitulo.denominacion }}
+                                      </span>
+                                    </div>
+                                    <div class="col-md-3 text-right">
+                                      <span>Versión: {{ capitulo.version }}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </contenido>
+                  </app-grupo-colapsable>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-back d-flex justify-content-end mt-4">
+        <button class="btn btn-link" type="button" (click)="volver()">
+          <em class="fa fa-arrow-left mr-1"></em>Volver
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -840,5 +840,113 @@ export class ClausulaService {
       })
     );
   }
+
+  obtenerModelosPorClausula(clausulaId: number): Observable<any[]> {
+    const modelosMock = [
+      {
+        id: 1,
+        denominacion: 'Modelo de Licitación Pública Nacional',
+        fechaVigenciaDesde: '2024-01-01',
+        fechaVigenciaHasta: '2025-12-31',
+        estado: 'ACTIVO',
+        versionada: true,
+        version: 1,
+        secciones: [
+          {
+            seccionId: 1,
+            orden: 1,
+            denominacion: 'Condiciones Generales',
+            version: 1,
+            capitulos: [
+              {
+                capituloId: 1,
+                orden: 1,
+                denominacion: 'Objeto del llamado',
+                version: 1
+              },
+              {
+                capituloId: 2,
+                orden: 2,
+                denominacion: 'Garantías',
+                version: 1
+              }
+            ]
+          },
+          {
+            seccionId: 2,
+            orden: 2,
+            denominacion: 'Condiciones Particulares',
+            version: 1,
+            capitulos: [
+              {
+                capituloId: 3,
+                orden: 1,
+                denominacion: 'Plazos de entrega',
+                version: 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 2,
+        denominacion: 'Modelo de Contratación Directa',
+        fechaVigenciaDesde: '2024-06-01',
+        fechaVigenciaHasta: null,
+        estado: 'ACTIVO',
+        versionada: true,
+        version: 2,
+        secciones: [
+          {
+            seccionId: 3,
+            orden: 1,
+            denominacion: 'Objetivo del llamado',
+            version: 1,
+            capitulos: [
+              {
+                capituloId: 4,
+                orden: 1,
+                denominacion: 'Descripción',
+                version: 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 3,
+        denominacion: 'Modelo Borrador - Obras Públicas',
+        fechaVigenciaDesde: '2025-01-01',
+        fechaVigenciaHasta: '2025-12-31',
+        estado: 'BORRADOR',
+        versionada: false,
+        version: 1,
+        secciones: [
+          {
+            seccionId: 4,
+            orden: 1,
+            denominacion: 'Generalidades',
+            version: 1,
+            capitulos: [
+              {
+                capituloId: 5,
+                orden: 1,
+                denominacion: 'Especificaciones técnicas',
+                version: 1
+              },
+              {
+                capituloId: 6,
+                orden: 2,
+                denominacion: 'Requisitos de seguridad',
+                version: 1
+              }
+            ]
+          }
+        ]
+      }
+    ];
+
+    return of(modelosMock).pipe(delay(300));
+  }
 }
 
