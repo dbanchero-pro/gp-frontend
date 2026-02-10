@@ -1,22 +1,30 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-12">
-      <h4 class="mb-3">
-        Modelos que usan la cláusula: <strong>{{ denominacionClausula }}</strong>
-      </h4>
+  <div><h4><em class="fa fa-list mr-2"></em>Modelos que utilizan la cláusula</h4></div>
+  <div class="Box Box--colorInfo">
+    <span class="subtitle">{{ denominacionClausula }}</span>
+  </div>
 
-      <div *ngIf="cargando" class="text-center py-5">
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Cargando...</span>
-        </div>
-      </div>
+  <div *ngIf="cargando" class="text-center py-5">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Cargando...</span>
+    </div>
+  </div>
 
-      <div *ngIf="!cargando && modelos.length === 0" class="alert alert-info">
-        <em class="fa fa-info-circle mr-2"></em>
-        No se encontraron modelos que utilicen esta cláusula.
-      </div>
+  <div *ngIf="!cargando && modelos.length === 0" class="alert alert-info">
+    <em class="fa fa-info-circle mr-2"></em>
+    No se encontraron modelos que utilicen esta cláusula.
+  </div>
 
-      <div *ngFor="let modelo of modelos" class="row mb-3">
+  <app-cabezal-consulta *ngIf="!cargando && modelos.length > 0"
+    [totalItems]="total"
+    [listaOrden]="listaOrden"
+    [columnaOrden]="parametros.sort"
+    [orden]="parametros.order"
+    (orderChange)="cambioOrden($event)"
+    (sortChange)="cambioColumnaOrden($event)">
+  </app-cabezal-consulta>
+
+  <div *ngFor="let modelo of modelosFiltrados" class="row mb-3">
         <div class="col-12">
           <div class="card">
             <div class="d-flex justify-content-between align-items-center border-bottom px-3 py-2">
@@ -94,11 +102,17 @@
         </div>
       </div>
 
-      <div class="btn-back d-flex justify-content-end mt-4">
-        <button class="btn btn-link" type="button" (click)="volver()">
-          <em class="fa fa-arrow-left mr-1"></em>Volver
-        </button>
-      </div>
-    </div>
+  <app-paginado *ngIf="!cargando && modelos.length > 0"
+    [totalItems]="total"
+    [itemsPorPagina]="parametros.tamanoPagina"
+    [paginaActual]="parametros.pagina + 1"
+    (cambioPagina)="cambioPagina($event)"
+    (cambioItemsPorPagina)="cambioPorPagina($event)">
+  </app-paginado>
+
+  <div class="btn-back d-flex justify-content-end mt-3">
+    <button class="btn btn-link" type="button" (click)="volver()">
+      <em class="fa fa-arrow-left mr-1"></em>Volver
+    </button>
   </div>
 </div>

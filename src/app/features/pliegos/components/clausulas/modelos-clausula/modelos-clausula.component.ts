@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 import { Modelo } from '../../../models/modelo.model';
 import { ClausulaService } from '../../../services/clausula.service';
 import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
+import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden.model';
 
 @Component({
   selector: 'app-modelos-clausula',
@@ -21,7 +22,23 @@ export class ModelosClausulaComponent implements OnInit {
   clausulaId: number | null = null;
   denominacionClausula = '';
   modelos: Modelo[] = [];
+  modelosFiltrados: Modelo[] = [];
   cargando = false;
+
+  total = 0;
+  parametros = {
+    pagina: 0,
+    tamanoPagina: 10,
+    sort: 'denominacion',
+    order: 'asc' as 'asc' | 'desc'
+  };
+
+  listaOrden: IColumnaOrden[] = [
+    { id: 'denominacion', nombre: 'Denominación' },
+    { id: 'version', nombre: 'Versión' },
+    { id: 'fechaVigenciaDesde', nombre: 'Fecha vigencia desde' },
+    { id: 'fechaVigenciaHasta', nombre: 'Fecha vigencia hasta' },
+  ];
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -49,12 +66,66 @@ export class ModelosClausulaComponent implements OnInit {
     this.clausulaService.obtenerModelosPorClausula(this.clausulaId).subscribe({
       next: (modelos) => {
         this.modelos = modelos;
+        this.aplicarOrdenYPaginacion();
         this.cargando = false;
       },
       error: () => {
         this.cargando = false;
       }
     });
+  }
+
+  aplicarOrdenYPaginacion(): void {
+    let modelosOrdenados = [...this.modelos];
+
+    modelosOrdenados.sort((a, b) => {
+      let valorA: any = (a as any)[this.parametros.sort];
+      let valorB: any = (b as any)[this.parametros.sort];
+
+      if (valorA === null || valorA === undefined) valorA = '';
+      if (valorB === null || valorB === undefined) valorB = '';
+
+      if (typeof valorA === 'string') {
+        valorA = valorA.toLowerCase();
+        valorB = valorB.toLowerCase();
+      }
+
+      let comparacion = 0;
+      if (valorA < valorB) {
+        comparacion = -1;
+      } else if (valorA > valorB) {
+        comparacion = 1;
+      }
+
+      return this.parametros.order === 'asc' ? comparacion : -comparacion;
+    });
+
+    this.total = modelosOrdenados.length;
+
+    const inicio = this.parametros.pagina * this.parametros.tamanoPagina;
+    const fin = inicio + this.parametros.tamanoPagina;
+    this.modelosFiltrados = modelosOrdenados.slice(inicio, fin);
+  }
+
+  cambioPagina(pagina: number): void {
+    this.parametros.pagina = pagina - 1;
+    this.aplicarOrdenYPaginacion();
+  }
+
+  cambioPorPagina(tamanoPagina: number): void {
+    this.parametros.tamanoPagina = tamanoPagina;
+    this.parametros.pagina = 0;
+    this.aplicarOrdenYPaginacion();
+  }
+
+  cambioOrden(orden: 'asc' | 'desc'): void {
+    this.parametros.order = orden;
+    this.aplicarOrdenYPaginacion();
+  }
+
+  cambioColumnaOrden(columna: string): void {
+    this.parametros.sort = columna;
+    this.aplicarOrdenYPaginacion();
   }
 
   volver(): void {
