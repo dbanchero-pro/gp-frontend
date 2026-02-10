@@ -1,34 +1,18 @@
 <div class="container-fluid px-4 py-3">
-  <div class="row mb-3">
+  <div class="row">
     <div class="col-12">
-      <h4 class="mb-1">
+      <h4 class="mb-2">
         <em class="fa fa-exchange mr-2"></em>
         Comparación de versiones
       </h4>
-      <p class="text-muted mb-0" *ngIf="versionActual">
-        {{ versionActual.denominacion }}
-      </p>
-    </div>
-  </div>
-
-  <div *ngIf="cargando" class="row">
-    <div class="col-12 text-center py-5">
-      <em class="fa fa-spinner fa-spin fa-3x text-primary"></em>
-      <p class="mt-3 text-muted">Cargando comparación...</p>
-    </div>
-  </div>
-
-  <div *ngIf="errorCarga && !cargando" class="row">
-    <div class="col-12">
-      <div class="alert alert-warning" role="alert">
-        <em class="fa fa-exclamation-triangle mr-2"></em>
-        {{ mensajeError }}
-      </div>
+       <div class="Box Box--colorInfo">
+          <span class="subtitle mb-0">{{ versionActual?.denominacion }}</span>
+        </div>
     </div>
   </div>
 
   <div *ngIf="!cargando && !errorCarga && versionActual && versionAnterior">
-    <div class="row mb-4">
+    <div class="row mb-2">
       <div class="col-12">
         <div class="card">
           <div class="card-header bg-light">
@@ -38,13 +22,13 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="version-info">
-                  <span class="badge badge-success mb-2">Versión {{ versionActual.version }}</span>
+                  <span class="badge badge-info mb-2">Versión {{ versionActual.version }}</span>
                   <h6 class="mb-2">Versión actual</h6>
                   <p class="mb-1 text-muted small">
-                    <strong>Fecha de modificación:</strong>
+                    <strong>Fecha de aprobación:</strong>
                     {{ versionActual.fechaModificacion | fechaPipe }}
                   </p>
-                  <p class="mb-0 text-muted small" *ngIf="versionActual.usuarioModificacion">
+                  <p class="mb-0 text-muted small">
                     <strong>Usuario:</strong>
                     {{ versionActual.usuarioModificacion }}
                   </p>
@@ -55,7 +39,7 @@
                   <span class="badge badge-secondary mb-2">Versión {{ versionAnterior.version }}</span>
                   <h6 class="mb-2">Versión anterior</h6>
                   <p class="mb-1 text-muted small">
-                    <strong>Fecha de modificación:</strong>
+                    <strong>Fecha de aprobación:</strong>
                     {{ versionAnterior.fechaModificacion | fechaPipe }}
                   </p>
                   <p class="mb-0 text-muted small" *ngIf="versionAnterior.usuarioModificacion">
@@ -95,7 +79,7 @@
                   <tr>
                     <th style="width: 25%;">Atributo</th>
                     <th style="width: 37.5%;">
-                      <span class="badge badge-success">Versión {{ versionActual.version }}</span>
+                      <span class="badge badge-info">Versión {{ versionActual.version }}</span>
                       Valor actual
                     </th>
                     <th style="width: 37.5%;">
