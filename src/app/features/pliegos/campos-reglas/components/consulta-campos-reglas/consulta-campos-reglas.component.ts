@@ -170,7 +170,7 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   }
 
   abrirAgregarCampo(): void {
-    this.router.navigate(['/administracion/campos-reglas/agregar']);
+    this.router.navigate(['/pliegos/campos-reglas/agregar']);
   }
 
   obtenerAcciones(campo: CampoDTO): AccionBoton[] {
@@ -204,7 +204,7 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   }
 
   modificarCampo(campo: CampoDTO): void {
-    this.router.navigate(['/administracion/campos-reglas/modificar', campo.id]);
+    this.router.navigate(['/pliegos/campos-reglas/modificar', campo.id]);
   }
 
   eliminarCampo(campo: CampoDTO): void {

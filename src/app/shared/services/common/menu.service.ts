@@ -398,7 +398,7 @@ export class MenuService {
                         'GC_GESTION_USU.MODIFICACION',
                         'GC_GESTION_USU.CONSULTA',
                     ],
-                    url: '/administracion/campos-reglas',
+                    url: '/pliegos/campos-reglas',
                 },
                 {
                     nombre: 'Capítulos',

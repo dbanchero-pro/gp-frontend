@@ -277,7 +277,7 @@ export class AgregarModificarCampoComponent extends FormularioBaseComponent impl
   }
 
   volver(): void {
-    this.router.navigate(['/administracion/campos-reglas'], { queryParams: { volver: 1 } });
+    this.router.navigate(['/pliegos/campos-reglas'], { queryParams: { volver: 1 } });
   }
 
   canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {

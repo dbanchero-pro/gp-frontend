@@ -3,6 +3,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DeactivateGuard } from '../../shared/guards/deactivate-guard';
+import { AuthGuard } from '../../shared/guards/auth-guard';
 import { ConsultaRepositorioArchivosComponent } from './components/repositorio-archivos/consulta-repositorio-archivos/consulta-repositorio-archivos.component';
 import { AgregarModificarRepositorioArchivoComponent } from './components/repositorio-archivos/agregar-modificar-repositorio-archivo/agregar-modificar-repositorio-archivo.component';
 import { ConsultaClausulasComponent } from './components/clausulas/consulta-clausulas/consulta-clausulas.component';
@@ -22,6 +23,14 @@ import { BandejaEntradaComponent } from './components/bandeja-entrada/bandeja-en
 import { CancelarPliegoPopupComponent } from './components/bandeja-entrada/cancelar-pliego-popup/cancelar-pliego-popup';
 
 export const routes: Routes = [
+    {
+        path: 'campos-reglas',
+        loadChildren: () =>
+            import('./campos-reglas/campos-reglas.module').then(
+                (m) => m.CamposReglasModule
+            ),
+        canActivate: [AuthGuard],
+    },
     {
         path: 'bandeja-entrada',
         component: BandejaEntradaComponent
