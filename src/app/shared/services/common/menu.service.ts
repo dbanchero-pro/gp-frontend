@@ -368,7 +368,7 @@ export class MenuService {
                 {
                     nombre: 'Bandeja de entrada',
                     titulo: 'Bandeja de entrada',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para consultar procesos de pliegos',
+                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar procesos de elaboración de pliegos para trabajar',
                     visible: true,
                     tipoUsuario: TipoUsuario.ORGANISMO,
                     permisos: [

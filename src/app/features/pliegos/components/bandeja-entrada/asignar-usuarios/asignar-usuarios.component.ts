@@ -216,14 +216,14 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     return [
       {
         nombre: 'Modificar',
-        clase: 'btn btn-success btn-sm',
+        clase: 'btn btn-success',
         icono: 'fa fa-edit',
-        ariaLabel: 'Modificar usuario ' + usuario.nombre,
+        ariaLabel: 'Modificar roles ' + usuario.nombre,
         accion: () => this.modificarUsuario(usuario)
       },
       {
         nombre: 'Eliminar',
-        clase: 'btn btn-danger btn-sm',
+        clase: 'btn btn-success',
         icono: 'fa fa-trash',
         ariaLabel: 'Eliminar usuario ' + usuario.nombre,
         accion: () => this.eliminarUsuario(usuario)
