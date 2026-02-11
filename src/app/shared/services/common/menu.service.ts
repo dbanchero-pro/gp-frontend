@@ -56,6 +56,7 @@ export class MenuService {
 
     private obtenerMenuItems(tipoUsuario?: TipoUsuario): IMenuItem[] {
         return this.filtrarPorTipoUsuario([
+            this.menuBandejaEntrada(),
             this.menuAdministracion(tipoUsuario),
           //  this.menuEntregas(tipoUsuario),
         ], tipoUsuario);
@@ -357,23 +358,26 @@ export class MenuService {
         };
     }
 
+     private menuBandejaEntrada(): IMenuItem {
+        return {
+            nombre: 'Bandeja de entrada',
+            titulo: 'Bandeja de entrada',
+            subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para consultar procesos de pliegos',
+            visible: true,
+            tipoUsuario: TipoUsuario.ORGANISMO,
+            permisos: [
+                'GC_GESTION_USU.CONSULTA'
+            ],
+            url: '/pliegos/bandeja-entrada',
+        };
+    }
+
      private menuPliegos(): IMenuItem {
          return {
             nombre: 'Pliegos',
             visible: true,
             tipoUsuario: TipoUsuario.ORGANISMO,
             items: [
-                {
-                    nombre: 'Bandeja de entrada',
-                    titulo: 'Bandeja de entrada',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para consultar procesos de pliegos',
-                    visible: true,
-                    tipoUsuario: TipoUsuario.ORGANISMO,
-                    permisos: [
-                        'GC_GESTION_USU.CONSULTA'
-                    ],
-                    url: '/pliegos/bandeja-entrada',
-                },
                  {
                     nombre: 'Campos y reglas',
                     titulo: 'Administración de campos y sus reglas',
