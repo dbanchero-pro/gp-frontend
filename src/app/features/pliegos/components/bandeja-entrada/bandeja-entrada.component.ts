@@ -321,16 +321,12 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
   }
 
   cancelarProceso(proceso: ProcesoPliego): void {
-    const initialState = {
-      proceso: proceso
-    };
+     const modalRef = this.abrirPopupGrande(CancelarPliegoPopupComponent, 'Guardar', {
+          backdrop: 'static',
+          keyboard: false,
+          initialState: { proceso: proceso}
+        });
 
-    const modalRef = this.modalService.show(CancelarPliegoPopupComponent, {
-      initialState,
-      class: 'modal-lg',
-      backdrop: 'static',
-      keyboard: false
-    });
 
     modalRef.onHide?.subscribe(() => {
       // Aquí se puede refrescar la lista si es necesario
