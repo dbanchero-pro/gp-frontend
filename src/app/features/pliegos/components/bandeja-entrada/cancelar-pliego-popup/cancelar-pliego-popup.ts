@@ -38,6 +38,20 @@ export class CancelarPliegoPopupComponent implements OnInit {
     return estados[estado] || '';
   }
 
+  obtenerClaseBadgeEstado(estado: EstadoProcesoPliego): string {
+    const clases: { [key in EstadoProcesoPliego]: string } = {
+      [EstadoProcesoPliego.PENDIENTE]: 'badge-info',
+      [EstadoProcesoPliego.ASIGNADO]: 'badge-info',
+      [EstadoProcesoPliego.EN_PROCESO]: 'badge-warning',
+      [EstadoProcesoPliego.PENDIENTE_VALIDACION]: 'badge-warning',
+      [EstadoProcesoPliego.PENDIENTE_APROBACION]: 'badge-warning',
+      [EstadoProcesoPliego.APROBADO]: 'badge-warning',
+      [EstadoProcesoPliego.PUBLICADO]: 'badge-success',
+      [EstadoProcesoPliego.CANCELADO]: 'badge-cancel'
+    };
+    return clases[estado];
+  }
+  
   guardar(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
