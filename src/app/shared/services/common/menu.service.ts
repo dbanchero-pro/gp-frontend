@@ -363,6 +363,17 @@ export class MenuService {
             visible: true,
             tipoUsuario: TipoUsuario.ORGANISMO,
             items: [
+                {
+                    nombre: 'Bandeja de entrada',
+                    titulo: 'Bandeja de entrada',
+                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para consultar procesos de pliegos',
+                    visible: true,
+                    tipoUsuario: TipoUsuario.ORGANISMO,
+                    permisos: [
+                        'GC_GESTION_USU.CONSULTA'
+                    ],
+                    url: '/pliegos/bandeja-entrada',
+                },
                  {
                     nombre: 'Campos y reglas',
                     titulo: 'Administración de campos y sus reglas',

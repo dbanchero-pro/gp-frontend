@@ -18,8 +18,13 @@ import { ConsultaSeccionesComponent } from './components/secciones/consulta-secc
 import { AgregarModificarSeccionComponent } from './components/secciones/agregar-modificar-seccion/agregar-modificar-seccion.component';
 import { ConsultaModelosComponent } from './components/modelos/consulta-modelos/consulta-modelos.component';
 import { AgregarModificarModeloComponent } from './components/modelos/agregar-modificar-modelo/agregar-modificar-modelo.component';
+import { BandejaEntradaComponent } from './components/bandeja-entrada/bandeja-entrada.component';
 
 export const routes: Routes = [
+    {
+        path: 'bandeja-entrada',
+        component: BandejaEntradaComponent
+    },
     {
         path: 'repositorio-archivos',
         component: ConsultaRepositorioArchivosComponent
@@ -143,7 +148,8 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
         ConsultaSeccionesComponent,
         AgregarModificarSeccionComponent,
         ConsultaModelosComponent,
-        AgregarModificarModeloComponent
+        AgregarModificarModeloComponent,
+        BandejaEntradaComponent
     ], imports: [
         CommonModule,
         SharedModule,
