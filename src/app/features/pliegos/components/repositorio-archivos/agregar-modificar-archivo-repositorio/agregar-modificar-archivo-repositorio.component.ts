@@ -15,12 +15,12 @@ import { SubtipoCompraDTO } from 'src/app/shared/models/sice/subtipo-compra.mode
 import { TipoCompraClausula } from '../../../models/clausula.model';
 
 @Component({
-  selector: 'app-agregar-documento-repositorio-popup',
-  templateUrl: './agregar-documento-repositorio-popup.component.html',
-  styleUrls: ['./agregar-documento-repositorio-popup.component.scss'],
+  selector: 'app-agregar-modificar-archivo-repositorio',
+  templateUrl: './agregar-modificar-archivo-repositorio.component.html',
+  styleUrls: ['./agregar-modificar-archivo-repositorio.component.scss'],
   standalone: false
 })
-export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
+export class AgregarModificarArchivoRepositorioComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);
   private readonly documentoService = inject(DocumentoRepositorioService);
   protected readonly actualizarServ = inject(ActualizarService);
@@ -55,14 +55,14 @@ export class AgregarDocumentoRepositorioPopupComponent extends FormularioBaseCom
       new TipoCompraDTO('2', 'Contratación Directa'),
       new TipoCompraDTO('3', 'Licitación Abreviada')
     ];
-  
+
     subtiposCompra: SubtipoCompraDTO[] = [];
     subtiposCompraMock: SubtipoCompraDTO[] = [
       new SubtipoCompraDTO('1', '1', 'Nacional', 'Licitación Pública'),
       new SubtipoCompraDTO('1', '2', 'Internacional', 'Licitación Pública'),
       new SubtipoCompraDTO('2', '3', 'Por excepción', 'Contratación Directa')
     ];
-  
+
     tiposCompraAgregados: TipoCompraClausula[] = [];
 
   archivoSeleccionado: File | null = null;
