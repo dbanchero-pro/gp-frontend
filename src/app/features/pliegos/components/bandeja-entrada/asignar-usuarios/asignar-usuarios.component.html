@@ -15,7 +15,10 @@
           {{ proceso.incisoDescripcion }} | {{ proceso.unidadEjecutoraDescripcion }}
         </div>
         <div class="mb-2 font-weight-bold">
-          {{ proceso.tipoCompraDescripcion }} | {{ proceso.subtipoCompraDescripcion }} | {{ proceso.numeroCompra }}/{{ proceso.anioCompra }}
+          {{ proceso.tipoCompraDescripcion }} | {{ proceso.subtipoCompraDescripcion }} N° {{ proceso.numeroCompra }}/{{ proceso.anioCompra }}
+        </div>
+         <div class="mb-2">
+            Modelo: <strong> Denominación Modelo 1</strong>
         </div>
         <div class="m-0">
           <span class="badge" [ngClass]="obtenerClaseBadgeEstado(proceso.estado)">
