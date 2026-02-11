@@ -11,35 +11,34 @@
   <div class="row">
     <div class="col-12">
       <form [formGroup]="form">
-        <div class="card mb-3">
+        <div class="card mb-2">
           <div class="card-body">
             <h5 class="card-title mb-3">Datos generales</h5>
             <div class="row">
               <div class="col-md-6">
-                <div class="form-group">
-                  <label for="denominacion">* Denominación</label>
-                  <input type="text" class="form-control" id="denominacion" formControlName="denominacion"
+                <div class="form-group" [class.field-error]="form.get('denominacion')?.invalid && form.get('denominacion')?.touched">
+                  <label for="denominacion" class="etiqueta">* Denominación</label>
+                  <input type="text" class="form-control" id="denominacion" formControlName="denominacion" maxlength="200"
                     placeholder="Ingrese denominación">
-                  <div *ngIf="form.controls.denominacion.invalid && form.controls.denominacion.touched" class="text-danger">
-                    <small *ngIf="form.controls.denominacion.errors?.['required']">La denominación es obligatoria</small>
-                    <small *ngIf="form.controls.denominacion.errors?.['maxlength']">La denominación no puede exceder los 200 caracteres</small>
-                  </div>
+                    <span class="texto-error m-0" [style.visibility]="form.controls.denominacion.invalid && form.controls.denominacion.touched && form.get('denominacion')?.touched ? 'visible' : 'hidden'">
+                      La denominación es obligatoria
+                    </span>
                 </div>
               </div>
 
               <div class="col-md-3">
-                <div class="form-group">
-                  <label for="fechaVigenciaDesde">* Fecha vigencia desde</label>
+                <div class="form-group" [class.field-error]="form.get('fechaVigenciaDesde')?.invalid && form.get('fechaVigenciaDesde')?.touched">
+                  <label for="fechaVigenciaDesde" class="etiqueta">* Fecha vigencia desde</label>
                   <input type="date" class="form-control" id="fechaVigenciaDesde" formControlName="fechaVigenciaDesde">
-                  <div *ngIf="form.controls.denominacion.invalid && form.controls.fechaVigenciaDesde.touched" class="text-danger">
-                    <small *ngIf="form.controls.denominacion.errors?.['required']">La fecha de vigencia desde es obligatoria</small>
-                  </div>
+                  <span class="texto-error m-0" [style.visibility]="form.controls.fechaVigenciaDesde.invalid && form.controls.fechaVigenciaDesde.touched && form.get('fechaVigenciaDesde')?.touched ? 'visible' : 'hidden'">
+                      La fecha de vigencia desde es obligatoria
+                    </span>
                 </div>
               </div>
 
               <div class="col-md-3">
                 <div class="form-group">
-                  <label for="fechaVigenciaHasta">Fecha vigencia hasta</label>
+                  <label for="fechaVigenciaHasta" class="etiqueta">Fecha vigencia hasta</label>
                   <input type="date" class="form-control" id="fechaVigenciaHasta" formControlName="fechaVigenciaHasta">
                 </div>
               </div>
@@ -49,7 +48,7 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="esObligatoria">* Es obligatoria</label>
+                  <label for="esObligatoria" class="etiqueta">* Es obligatoria</label>
                   <select class="form-control" id="esObligatoria" formControlName="esObligatoria">
                     <option *ngFor="let opcion of opcionesSiNo" [ngValue]="opcion.id">
                       {{ opcion.nombre }}
@@ -60,7 +59,7 @@
 
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="aperturaElectronica">* Apertura electrónica</label>
+                  <label for="aperturaElectronica" class="etiqueta">* Apertura electrónica</label>
                   <select class="form-control" id="aperturaElectronica" formControlName="aperturaElectronica">
                     <option *ngFor="let opcion of opcionesSiNo" [ngValue]="opcion.id">
                       {{ opcion.nombre }}
@@ -72,15 +71,15 @@
           </div>
         </div>
 
-         <div class="card mb-3">
+         <div class="card mb-2">
           <div class="card-body">
             <h5 class="card-title mb-3">Organismos compradores</h5>
               <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="incisoId">Inciso</label>
+                  <label for="incisoId" class="etiqueta">Inciso</label>
                   <select class="form-control" id="incisoId" formControlName="incisoId">
-                    <option [ngValue]="null">Seleccionar inciso</option>
+                    <option [ngValue]="null">Todos los incisos</option>
                     <option *ngFor="let inciso of incisos" [ngValue]="inciso.id">
                       {{ inciso.id }} - {{ inciso.descInciso }}
                     </option>
@@ -90,10 +89,10 @@
 
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="unidadEjecutoraId">Unidad ejecutora</label>
+                  <label for="unidadEjecutoraId" class="etiqueta">Unidad ejecutora</label>
                   <select class="form-control" id="unidadEjecutoraId" formControlName="unidadEjecutoraId"
                     [disabled]="!form.value.incisoId">
-                    <option [ngValue]="null">Seleccionar unidad ejecutora</option>
+                    <option [ngValue]="null">Todas las unidades ejecutoras</option>
                     <option *ngFor="let ue of unidadesEjecutoras" [ngValue]="ue.id">
                       {{ ue.idUnidadEjecutora }} - {{ ue.descUnidadEjecutora }}
                     </option>
@@ -105,40 +104,45 @@
              </div>
         </div>
 
-        <div class="card mb-3">
+        <div class="card mb-2">
           <div class="card-body">
-            <h5 class="card-title mb-3">Tipos y subtipos de compra</h5>
+            <h5 class="card-title">Tipos y subtipos de compra</h5>
 
-            <div [formGroup]="formTipoCompra" class="row align-items-end mb-3">
-              <div class="col-md-5">
-                <div class="form-group">
-                  <label for="tipoCompraId">* Tipo de compra</label>
-                  <select class="form-control" id="tipoCompraId" formControlName="tipoCompraId">
-                    <option [ngValue]="null">Seleccionar tipo de compra</option>
-                    <option *ngFor="let tipo of tiposCompra" [ngValue]="tipo.id">
-                      {{ tipo.descTipoCompra }}
-                    </option>
-                  </select>
+            <div [formGroup]="formTipoCompra">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group" [class.field-error]="formTipoCompra.get('tipoCompraId')?.invalid && formTipoCompra.get('tipoCompraId')?.touched">
+                    <label for="tipoCompraId" class="etiqueta">* Tipo de compra</label>
+                    <select class="form-control" id="tipoCompraId" formControlName="tipoCompraId">
+                      <option [ngValue]="null">Todos los tipos de compra</option>
+                      <option *ngFor="let tipo of tiposCompra" [ngValue]="tipo.id">
+                        {{ tipo.descTipoCompra }}
+                      </option>
+                    </select>
+                    <span class="texto-error m-0" [style.visibility]="formTipoCompra.controls.tipoCompraId.invalid && formTipoCompra.controls.tipoCompraId.touched && formTipoCompra.get('tipoCompraId')?.touched ? 'visible' : 'hidden'">
+                      El tipo de compra es obligatoria
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              <div class="col-md-5">
-                <div class="form-group">
-                  <label for="subtipoCompraId">* Subtipo de compra</label>
-                  <select class="form-control" id="subtipoCompraId" formControlName="subtipoCompraId"
-                    [disabled]="!formTipoCompra.value.tipoCompraId">
-                    <option [ngValue]="null">Seleccionar subtipo de compra</option>
-                    <option *ngFor="let subtipo of subtiposCompra" [ngValue]="subtipo.idSubtipoCompra">
-                      {{ subtipo.descSubtipoCompra }}
-                    </option>
-                  </select>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="subtipoCompraId" class="etiqueta">Subtipo de compra</label>
+                    <select class="form-control" id="subtipoCompraId" formControlName="subtipoCompraId"
+                      [disabled]="!formTipoCompra.value.tipoCompraId">
+                      <option [ngValue]="null">Todos los subtipos de compra</option>
+                      <option *ngFor="let subtipo of subtiposCompra" [ngValue]="subtipo.idSubtipoCompra">
+                        {{ subtipo.descSubtipoCompra }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
-              </div>
 
-              <div class="col-md-2">
-                <button type="button" class="btn btn-primary" (click)="agregarTipoCompra()">
-                  <em class="fa fa-plus mr-1"></em> Agregar
-                </button>
+                <div class="col-md-2 d-flex justify-content-between align-items-center">
+                  <div class="form-group">
+                  <button type="button" class="btn btn-primary" (click)="agregarTipoCompra()">
+                    <em class="fa fa-plus mr-1"></em>Agregar</button>
+                </div></div>
               </div>
             </div>
 
@@ -184,79 +188,87 @@
           </div>
         </div>
 
-        <div class="card mb-3">
+        <div class="card mb-2">
           <div class="card-body">
             <h5 class="card-title mb-3">Objetos de compra</h5>
 
-            <div [formGroup]="formObjetoCompra" class="row mb-3">
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label for="familiaId">* Familia</label>
-                  <select class="form-control" id="familiaId" formControlName="familiaId">
-                    <option [ngValue]="null">Seleccionar</option>
-                    <option *ngFor="let familia of familias" [ngValue]="familia.id">
-                      {{ familia.descFamilia }}
-                    </option>
-                  </select>
+            <div [formGroup]="formObjetoCompra">
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group" [class.field-error]="formObjetoCompra.get('familiaId')?.invalid && formObjetoCompra.get('familiaId')?.touched">
+                    <label for="familiaId">* Familia</label>
+                    <select class="form-control" id="familiaId" formControlName="familiaId">
+                      <option [ngValue]="null">Todas las familias</option>
+                      <option *ngFor="let familia of familias" [ngValue]="familia.id">
+                        {{ familia.descFamilia }}
+                      </option>
+                    </select>
+                     <span class="texto-error m-0" [style.visibility]="formObjetoCompra.controls.familiaId.errors?.['required'] && formObjetoCompra.get('familiaId')?.touched ? 'visible' : 'hidden'">
+                      La familia es obligatoria
+                    </span>
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="subfamiliaId">Subfamilia</label>
+                    <select class="form-control" id="subfamiliaId" formControlName="subfamiliaId"
+                      [disabled]="!formObjetoCompra.value.familiaId">
+                      <option [ngValue]="null">Todas las subfamilias</option>
+                      <option *ngFor="let subfamilia of subfamilias" [ngValue]="subfamilia.id">
+                        {{ subfamilia.descSubfamilia }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="claseId">Clase</label>
+                    <select class="form-control" id="claseId" formControlName="claseId"
+                      [disabled]="!formObjetoCompra.value.subfamiliaId">
+                      <option [ngValue]="null">Todas las clases</option>
+                      <option *ngFor="let clase of clases" [ngValue]="clase.id">
+                        {{ clase.descClase }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="subclaseId">Subclase</label>
+                    <select class="form-control" id="subclaseId" formControlName="subclaseId"
+                      [disabled]="!formObjetoCompra.value.claseId">
+                      <option [ngValue]="null">Todas las subclases</option>
+                      <option *ngFor="let subclase of subclases" [ngValue]="subclase.id">
+                        {{ subclase.descSubclase }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
               </div>
-
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label for="subfamiliaId">Subfamilia</label>
-                  <select class="form-control" id="subfamiliaId" formControlName="subfamiliaId"
-                    [disabled]="!formObjetoCompra.value.familiaId">
-                    <option [ngValue]="null">Seleccionar</option>
-                    <option *ngFor="let subfamilia of subfamilias" [ngValue]="subfamilia.id">
-                      {{ subfamilia.descSubfamilia }}
-                    </option>
-                  </select>
+ 
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="articuloId">Artículo</label>
+                    <select class="form-control" id="articuloId" formControlName="articuloId"
+                      [disabled]="!formObjetoCompra.value.subclaseId">
+                      <option [ngValue]="null">Todos los artículos</option>
+                      <option *ngFor="let articulo of articulos" [ngValue]="articulo.id">
+                        {{ articulo.descArticuloServObra }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
-              </div>
 
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label for="claseId">Clase</label>
-                  <select class="form-control" id="claseId" formControlName="claseId"
-                    [disabled]="!formObjetoCompra.value.subfamiliaId">
-                    <option [ngValue]="null">Seleccionar</option>
-                    <option *ngFor="let clase of clases" [ngValue]="clase.id">
-                      {{ clase.descClase }}
-                    </option>
-                  </select>
+                <div class="col-md-2">
+                  <div class="form-group align-content-end">
+                  <button type="button" class="btn btn-primary" (click)="agregarObjetoCompra()">
+                    <em class="fa fa-plus mr-1"></em> Agregar </button>
+                    </div>
                 </div>
-              </div>
-
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label for="subclaseId">Subclase</label>
-                  <select class="form-control" id="subclaseId" formControlName="subclaseId"
-                    [disabled]="!formObjetoCompra.value.claseId">
-                    <option [ngValue]="null">Seleccionar</option>
-                    <option *ngFor="let subclase of subclases" [ngValue]="subclase.id">
-                      {{ subclase.descSubclase }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label for="articuloId">Artículo</label>
-                  <select class="form-control" id="articuloId" formControlName="articuloId"
-                    [disabled]="!formObjetoCompra.value.subclaseId">
-                    <option [ngValue]="null">Seleccionar</option>
-                    <option *ngFor="let articulo of articulos" [ngValue]="articulo.id">
-                      {{ articulo.descArticuloServObra }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-2 d-flex align-items-end">
-                <button type="button" class="btn btn-primary" (click)="agregarObjetoCompra()">
-                  <em class="fa fa-plus mr-1"></em> Agregar
-                </button>
               </div>
             </div>
 
@@ -281,14 +293,14 @@
                       </button>
                     </td>
                     <td>{{ objeto.familiaDescripcion }}</td>
-                    <td>{{ objeto.subfamiliaDescripcion || '-' }}</td>
-                    <td>{{ objeto.claseDescripcion || '-' }}</td>
-                    <td>{{ objeto.subclaseDescripcion || '-' }}</td>
+                    <td>{{ objeto.subfamiliaDescripcion || 'Todas las subfamilias' }}</td>
+                    <td>{{ objeto.claseDescripcion || 'Todas las clases' }}</td>
+                    <td>{{ objeto.subclaseDescripcion || 'Todas las subclases' }}</td>
                     <td>
                       <span *ngIf="objeto.articulo">
                         {{ objeto.articulo.articuloDescripcion }} ({{ objeto.articulo.articuloCodigo }})
                       </span>
-                      <span *ngIf="!objeto.articulo">-</span>
+                      <span *ngIf="!objeto.articulo">Todos los artículos</span>
                     </td>
                   </tr>
                 </tbody>
@@ -301,7 +313,7 @@
           </div>
         </div>
 
-        <div class="card mb-3">
+        <div class="card mb-2">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5 class="card-title mb-0">Redacciones</h5>
@@ -311,7 +323,7 @@
             </div>
 
             <div *ngIf="redacciones.length > 0">
-              <div *ngFor="let redaccion of redacciones" class="card mb-3">
+              <div *ngFor="let redaccion of redacciones" class="card mb-2">
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-start mb-2">
                     <div>
@@ -336,7 +348,7 @@
           <button class="btn btn-primary mr-3" type="submit" (click)="aprobar()">Aprobar</button>
           <button class="btn btn-primary" type="submit" (click)="guardar()">Guardar</button>
            <div class="btn-back d-flex justify-content-end">   
-                    <button class="btn btn-link" type="button" (click)="volver()">Cancelar</button>
+            <button class="btn btn-link" type="button" (click)="volver()">Cancelar</button>
           </div>
         </div>
       </form>

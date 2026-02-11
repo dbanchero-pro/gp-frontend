@@ -19,6 +19,7 @@ import { AccionBoton } from '../../../../../shared/models/common/accion-boton.mo
 import { SiNoValor } from '../../../../../shared/enum/si-no-valor.enum';
 import { EstadoClausula } from '../../../enum/estado-clausula.enum';
 import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
+import { SiNoAmbasValor } from 'src/app/shared/enum/si-no-ambas-valor.enum';
 
 @Component({
   selector: 'app-agregar-modificar-clausula',
@@ -61,8 +62,9 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
   }>;
 
   opcionesSiNo: { id: string; nombre: string }[] = [
-    { id: SiNoValor.SI, nombre: 'Sí' },
-    { id: SiNoValor.NO, nombre: 'No' }
+    { id: SiNoAmbasValor.SI, nombre: 'Sí' },
+    { id: SiNoAmbasValor.NO, nombre: 'No' },
+    { id: SiNoAmbasValor.A, nombre: 'Ambas' }
   ];
 
   incisos: IncisoDTO[] = [
@@ -169,16 +171,16 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
       incisoId: this.fb.control<number | null>(null),
       unidadEjecutoraId: this.fb.control<number | null>(null),
       esObligatoria: this.fb.nonNullable.control<string>(SiNoValor.SI, Validators.required),
-      aperturaElectronica: this.fb.nonNullable.control<string>(SiNoValor.NO, Validators.required)
+      aperturaElectronica: this.fb.nonNullable.control<string>(SiNoAmbasValor.NO, Validators.required)
     });
 
     this.formTipoCompra = this.fb.nonNullable.group({
-      tipoCompraId: this.fb.control<string | null>(null),
+      tipoCompraId: this.fb.control<string | null>(null,[Validators.required]),
       subtipoCompraId: this.fb.control<string | null>(null)
     });
 
     this.formObjetoCompra = this.fb.nonNullable.group({
-      familiaId: this.fb.control<number | null>(null),
+      familiaId: this.fb.control<number | null>(null,[Validators.required]),
       subfamiliaId: this.fb.control<number | null>(null),
       claseId: this.fb.control<number | null>(null),
       subclaseId: this.fb.control<number | null>(null),
@@ -304,7 +306,7 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
     const subtipoCompraId = this.formTipoCompra.value.subtipoCompraId;
 
     if (!tipoCompraId) {
-      this.actualizarService.mensajeError('Debe seleccionar un tipo de compra');
+       this.formTipoCompra.markAllAsTouched();
       return;
     }
 
@@ -379,7 +381,7 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
     const valores = this.formObjetoCompra.value;
 
     if (!valores.familiaId) {
-      this.actualizarService.mensajeError('Debe seleccionar al menos una familia');
+       this.formObjetoCompra.markAllAsTouched();
       return;
     }
 

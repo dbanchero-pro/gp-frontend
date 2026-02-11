@@ -153,9 +153,9 @@ export class HistorialClausulasComponent implements OnInit {
   obtenerResumenIncisos(clausula: Clausula): string {
     return clausula.incisos
       .map(i => {
-        const inciso = `${i.incisoCodigo} - ${i.incisoDescripcion}`;
+        const inciso = `${i.incisoDescripcion}`;
         if (i.unidadEjecutora) {
-          return `${inciso} | ${i.unidadEjecutora.unidadEjecutoraCodigo} - ${i.unidadEjecutora.unidadEjecutoraDescripcion}`;
+          return `${inciso} | ${i.unidadEjecutora.unidadEjecutoraDescripcion}`;
         }
         return inciso;
       })
