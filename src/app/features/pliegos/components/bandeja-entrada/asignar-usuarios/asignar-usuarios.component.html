@@ -88,21 +88,21 @@
   <!-- Botones de acción -->
   <div class="row mt-4">
     <div class="col-12 d-flex justify-content-end">
-      <button
-        class="btn btn-link mr-2"
-        type="button"
-        (click)="volver()"
-        [disabled]="guardando">
-        Cancelar
-      </button>
-      <button
-        class="btn btn-primary"
+        <button
+        class="btn btn-success"
         type="button"
         (click)="finalizar()"
         [disabled]="guardando">
-        <em class="fa fa-check mr-1"></em>
-        {{ guardando ? 'Finalizando...' : 'Finalizar' }}
+        Finalizar
       </button>
+
+      <button
+        class="btn btn-link"
+        type="button"
+        (click)="volver()">
+        Cancelar
+      </button>
+    
     </div>
   </div>
 </div>
