@@ -1,299 +1,141 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-md-8">
-      <h4>Asignar usuarios</h4>
+  <!-- Información del proceso -->
+  <div class="card mb-4" *ngIf="proceso">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Asignar usuarios al proceso</h5>
     </div>
-    <div class="col-md-4">
-      <span class="float-right text-muted">Los campos con * son obligatorios</span>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12">
-      <div *ngIf="proceso" class="Box Box--colorInfo p-3 mb-3">
-        <div class="mb-2 font-weight-bold">
-          {{ proceso.incisoDescripcion }} | {{ proceso.unidadEjecutoraDescripcion }}
-        </div>
-        <div class="mb-2 font-weight-bold">
-          {{ proceso.tipoCompraDescripcion }} | {{ proceso.subtipoCompraDescripcion }} N° {{ proceso.numeroCompra }}/{{ proceso.anioCompra }}
-        </div>
-         <div class="mb-2">
-            Modelo: <strong> Denominación Modelo 1</strong>
-        </div>
-        <div class="m-0">
+    <div class="card-body">
+      <div class="row g-0 py-1">
+        <div class="col-md-3 col-lg-2 etiqueta">Estado</div>
+        <div class="col font-weight-bold">
           <span class="badge" [ngClass]="obtenerClaseBadgeEstado(proceso.estado)">
             {{ obtenerNombreEstado(proceso.estado) }}
           </span>
         </div>
       </div>
+
+      <div class="row g-0 py-1">
+        <div class="col-md-3 col-lg-2 etiqueta">N°/Año compra</div>
+        <div class="col font-weight-bold">{{ proceso.numeroCompra }}/{{ proceso.anioCompra }}</div>
+      </div>
+
+      <div class="row g-0 py-1">
+        <div class="col-md-3 col-lg-2 etiqueta">Organismo</div>
+        <div class="col font-weight-bold">
+          {{ proceso.incisoDescripcion }} | {{ proceso.unidadEjecutoraDescripcion }} | {{ proceso.unidadCompraDescripcion }}
+        </div>
+      </div>
+
+      <div class="row g-0 py-1">
+        <div class="col-md-3 col-lg-2 etiqueta">Tipo de compra</div>
+        <div class="col font-weight-bold">
+          {{ proceso.tipoCompraDescripcion }} | {{ proceso.subtipoCompraDescripcion }}
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-12">
-      <div class="card mb-3">
+  <!-- Lista de usuarios asignados -->
+  <div class="row justify-content-between align-items-center mb-3">
+    <div class="col-auto">
+      <h5 class="mb-0">Usuarios asignados</h5>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" (click)="agregarUsuario()">
+        <em class="fa fa-plus mr-1"></em>
+        Agregar usuario
+      </button>
+    </div>
+  </div>
+
+  <app-cabezal-consulta
+    [totalItems]="total"
+    [listaOrden]="listaOrden"
+    [columnaOrden]="parametros.sort"
+    [orden]="parametros.order"
+    (orderChange)="cambioOrden($event)"
+    (sortChange)="cambioColumnaOrden($event)">
+  </app-cabezal-consulta>
+
+  <!-- Cards de usuarios -->
+  <div *ngFor="let usuario of usuariosAsignadosFiltrados" class="row">
+    <div class="col-12 my-1">
+      <div class="card">
         <div class="card-body">
-          <h5 class="card-title mb-3">Buscar usuario</h5>
-          <form [formGroup]="formBusqueda">
-            <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label for="nroDocumento">Documento</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="nroDocumento"
-                    formControlName="nroDocumento"
-                    placeholder="Ingrese CI sin puntos ni guión"
-                    maxlength="8">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label for="nombre">Nombre</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="nombre"
-                    formControlName="nombre"
-                    placeholder="Ingrese nombre del usuario"
-                    maxlength="100">
-                </div>
-              </div>
-              <div class="col-md-2 d-flex align-items-end">
-                <div class="form-group w-100">
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    (click)="buscarUsuario()"
-                    [disabled]="buscandoUsuario">
-                    <em class="fa fa-search mr-1"></em>Buscar
-                  </button>
-                </div>
+          <div class="row align-items-center">
+            <div class="col-md-3">
+              <div class="mb-2">
+                <span class="etiqueta">CI</span>
+                <div class="font-weight-bold">{{ usuario.numeroDocumento }}</div>
               </div>
             </div>
 
-            <div *ngIf="usuarioEncontrado" class="alert alert-success d-flex justify-content-between align-items-center">
-              <div>
-                <strong>Usuario encontrado:</strong> {{ usuarioEncontrado.nombre }} - CI: {{ usuarioEncontrado.nroDocumento | formatoCi }}
+            <div class="col-md-4">
+              <div class="mb-2">
+                <span class="etiqueta">Nombre</span>
+                <div class="font-weight-bold">{{ obtenerNombreCompleto(usuario) }}</div>
               </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="mb-2">
+                <span class="etiqueta">Roles</span>
+                <div class="font-weight-bold">{{ obtenerRoles(usuario) }}</div>
+              </div>
+            </div>
+
+            <div class="col-md-2 text-right">
               <button
                 type="button"
-                class="btn btn-sm btn-primary"
-                (click)="seleccionarUsuario()"
-                [disabled]="!formRoles.valid">
-                <em class="fa fa-plus mr-1"></em>Agregar
+                class="btn btn-success btn-sm"
+                [attr.aria-label]="'Modificar usuario ' + obtenerNombreCompleto(usuario)"
+                (click)="modificarUsuario(usuario)">
+                <em class="fa fa-edit mr-1"></em>
+                Modificar
               </button>
             </div>
-
-            <div *ngIf="!usuarioEncontrado && busquedaRealizada" class="alert alert-warning">
-              No se encontró ningún usuario con los criterios ingresados
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <div class="card mb-3">
-        <div class="card-body">
-          <h5 class="card-title mb-3">Roles a asignar</h5>
-          <form [formGroup]="formRoles">
-            <div class="row">
-              <div class="form-group form-row col-12" [class.field-error]="!alMenosUnRolSeleccionado() && intentoAgregar">
-                <div class="d-flex justify-content-center w-50 col-12">
-                  <div class="form-check col-3">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      id="esEditorPrincipal"
-                      formControlName="esEditorPrincipal"
-                      [disabled]="editorPrincipalAsignado">
-                    <label class="form-check-label" for="esEditorPrincipal">
-                      Editor principal
-                    </label>
-                  </div>
-                  <div class="form-check col-2">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      id="esEditor"
-                      formControlName="esEditor">
-                    <label class="form-check-label" for="esEditor">
-                      Editor
-                    </label>
-                  </div>
-                  <div class="form-check col-2">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      id="esValidador"
-                      formControlName="esValidador">
-                    <label class="form-check-label" for="esValidador">
-                      Validador
-                    </label>
-                  </div>
-                  <div class="form-check col-2">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      id="esAprobador"
-                      formControlName="esAprobador">
-                    <label class="form-check-label" for="esAprobador">
-                      Aprobador
-                    </label>
-                  </div>
-                </div>
-                <span class="texto-error col-12" [style.visibility]="!alMenosUnRolSeleccionado() && intentoAgregar ? 'visible' : 'hidden'">
-                  Debe seleccionar al menos un rol
-                </span>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <div class="card mb-3">
-        <div class="card-body">
-          <h5 class="card-title mb-3">Usuarios asignados</h5>
-
-          <div *ngIf="editorPrincipal" class="mb-3">
-            <h6 class="font-weight-bold">Editor principal</h6>
-            <div class="table-responsive">
-              <table class="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th class="text-center" style="width: 100px;">Acciones</th>
-                    <th>CI</th>
-                    <th>Nombre</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="text-center">
-                      <button
-                        type="button"
-                        class="btn btn-sm"
-                        (click)="quitarUsuario(editorPrincipal, 'editorPrincipal')"
-                        [attr.aria-label]="'Quitar usuario ' + editorPrincipal.nombre">
-                        <em class="fa fa-trash"></em>
-                      </button>
-                    </td>
-                    <td>{{ editorPrincipal.nroDocumento | formatoCi }}</td>
-                    <td>{{ editorPrincipal.nombre }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div *ngIf="editores.length > 0" class="mb-3">
-            <h6 class="font-weight-bold">Editores</h6>
-            <div class="table-responsive">
-              <table class="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th class="text-center" style="width: 100px;">Acciones</th>
-                    <th>CI</th>
-                    <th>Nombre</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let editor of editores">
-                    <td class="text-center">
-                      <button
-                        type="button"
-                        class="btn btn-sm"
-                        (click)="quitarUsuario(editor, 'editor')"
-                        [attr.aria-label]="'Quitar usuario ' + editor.nombre">
-                        <em class="fa fa-trash"></em>
-                      </button>
-                    </td>
-                    <td>{{ editor.nroDocumento | formatoCi }}</td>
-                    <td>{{ editor.nombre }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div *ngIf="validadores.length > 0" class="mb-3">
-            <h6 class="font-weight-bold">Validadores</h6>
-            <div class="table-responsive">
-              <table class="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th class="text-center" style="width: 100px;">Acciones</th>
-                    <th>CI</th>
-                    <th>Nombre</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let validador of validadores">
-                    <td class="text-center">
-                      <button
-                        type="button"
-                        class="btn btn-sm"
-                        (click)="quitarUsuario(validador, 'validador')"
-                        [attr.aria-label]="'Quitar usuario ' + validador.nombre">
-                        <em class="fa fa-trash"></em>
-                      </button>
-                    </td>
-                    <td>{{ validador.nroDocumento | formatoCi }}</td>
-                    <td>{{ validador.nombre }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div *ngIf="aprobadores.length > 0" class="mb-3">
-            <h6 class="font-weight-bold">Aprobadores</h6>
-            <div class="table-responsive">
-              <table class="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th class="text-center" style="width: 100px;">Acciones</th>
-                    <th>CI</th>
-                    <th>Nombre</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let aprobador of aprobadores">
-                    <td class="text-center">
-                      <button
-                        type="button"
-                        class="btn btn-sm"
-                        (click)="quitarUsuario(aprobador, 'aprobador')"
-                        [attr.aria-label]="'Quitar usuario ' + aprobador.nombre">
-                        <em class="fa fa-trash"></em>
-                      </button>
-                    </td>
-                    <td>{{ aprobador.nroDocumento | formatoCi }}</td>
-                    <td>{{ aprobador.nombre }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div *ngIf="!editorPrincipal && editores.length === 0 && validadores.length === 0 && aprobadores.length === 0" class="alert alert-info">
-            No hay usuarios asignados
           </div>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div class="d-flex justify-content-end mb-4">
-        <button class="btn btn-success mr-3" type="button" (click)="finalizar()" [disabled]="guardando">
-          Finalizar
-        </button>
-        <button class="btn btn-primary mr-3" type="button" (click)="guardar()" [disabled]="guardando">
-          Guardar
-        </button>
-        <div class="btn-back d-flex justify-content-end">
-          <button class="btn btn-link" type="button" (click)="volver()">
-            Cancelar
-          </button>
-        </div>
-      </div>
+  <!-- Mensaje cuando no hay usuarios -->
+  <div class="card row aviso-info-busqueda" *ngIf="total === 0">
+    <div class="card-body py-sm-2 mb-sm-2 col-12 text-center pt-sm-4 pb-sm-4">
+      <em class="fa fa-users fa-2x d-block mb-4"></em>
+      <h6>No hay usuarios asignados a este proceso</h6>
+    </div>
+  </div>
+
+  <!-- Paginado -->
+  <app-paginado
+    *ngIf="total > 0"
+    [totalItems]="total"
+    [itemsPorPagina]="parametros.tamanoPagina"
+    [paginaActual]="parametros.pagina + 1"
+    (cambioPagina)="cambioPagina($event)"
+    (cambioItemsPorPagina)="cambioPorPagina($event)">
+  </app-paginado>
+
+  <!-- Botones de acción -->
+  <div class="row mt-4">
+    <div class="col-12 d-flex justify-content-end">
+      <button
+        class="btn btn-link mr-2"
+        type="button"
+        (click)="volver()"
+        [disabled]="guardando">
+        Cancelar
+      </button>
+      <button
+        class="btn btn-primary"
+        type="button"
+        (click)="finalizar()"
+        [disabled]="guardando">
+        <em class="fa fa-check mr-1"></em>
+        {{ guardando ? 'Finalizando...' : 'Finalizar' }}
+      </button>
     </div>
   </div>
 </div>
