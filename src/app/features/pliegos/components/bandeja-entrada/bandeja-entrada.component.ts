@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProcesoPliego } from '../../models/proceso-pliego.model';
 import { FiltroBandejaEntrada } from '../../models/filtro-bandeja-entrada.model';
@@ -12,6 +12,8 @@ import { TipoCompraDTO } from '../../../../shared/models/sice/tipo-compra.model'
 import { AccionBoton } from '../../../../shared/models/common/accion-boton.model';
 import { IColumnaOrden } from '../../../../shared/models/common/columna-orden.model';
 import { FechaHoraPipe } from '../../../../shared/pipes/fecha-hora.pipe';
+import { PaginaBusquedaComponent } from '../../../../shared/components/pagina-busqueda/pagina-busqueda.component';
+import { PageModel } from '../../../../shared/models/common/page/page.model';
 
 @Component({
   selector: 'app-bandeja-entrada',
@@ -19,26 +21,17 @@ import { FechaHoraPipe } from '../../../../shared/pipes/fecha-hora.pipe';
   styleUrls: ['./bandeja-entrada.component.scss'],
   standalone: false
 })
-export class BandejaEntradaComponent implements OnInit, AfterViewInit {
-  private fb = inject(FormBuilder);
-  private bandejaEntradaService = inject(BandejaEntradaService);
-  private router = inject(Router);
-  private fechaHoraPipe = inject(FechaHoraPipe);
+export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBandejaEntrada> implements OnInit, AfterViewInit {
+  private readonly fb = inject(FormBuilder);
+  private readonly bandejaEntradaService = inject(BandejaEntradaService);
+  private readonly router = inject(Router);
+  private readonly fechaHoraPipe = inject(FechaHoraPipe);
 
-  formularioFiltro: FormGroup;
   procesos: ProcesoPliego[] = [];
   cargando = false;
 
-  colFiltro = 'col-lg-3';
-  colTabla = 'col-lg-9';
-
-  total = -1;
-  parametros = {
-    pagina: 0,
-    tamanoPagina: 10,
-    sort: 'estado',
-    order: 'asc' as 'asc' | 'desc'
-  };
+  columnaOrdenInicial = 'estado';
+  ordenInicial: 'asc' | 'desc' = 'asc';
 
   listaOrden: IColumnaOrden[] = [
     { id: 'estado', nombre: 'Estado' },
@@ -84,7 +77,8 @@ export class BandejaEntradaComponent implements OnInit, AfterViewInit {
   ];
 
   constructor() {
-    this.formularioFiltro = this.fb.nonNullable.group({
+    super();
+    this.form = this.fb.nonNullable.group({
       incisoId: [null],
       unidadEjecutoraId: [null],
       unidadCompraId: [null],
@@ -96,7 +90,8 @@ export class BandejaEntradaComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
+    super.ngOnInit();
     this.configurarCambiosFiltros();
   }
 
@@ -107,37 +102,55 @@ export class BandejaEntradaComponent implements OnInit, AfterViewInit {
   }
 
   configurarCambiosFiltros(): void {
-    this.formularioFiltro.get('incisoId')?.valueChanges.subscribe(incisoId => {
+    this.form.get('incisoId')?.valueChanges.subscribe(incisoId => {
       this.unidadesEjecutoras = incisoId
         ? this.unidadesEjecutorasMock.filter(ue => (ue.inciso as any)?.id === incisoId)
         : [];
-      this.formularioFiltro.patchValue({
+      this.form.patchValue({
         unidadEjecutoraId: null,
         unidadCompraId: null
       });
       this.unidadesCompra = [];
     });
 
-    this.formularioFiltro.get('unidadEjecutoraId')?.valueChanges.subscribe(unidadEjecutoraId => {
+    this.form.get('unidadEjecutoraId')?.valueChanges.subscribe(unidadEjecutoraId => {
       this.unidadesCompra = unidadEjecutoraId
         ? this.unidadesCompraMock.filter(uc => uc.idUnidadEjecutora === unidadEjecutoraId)
         : [];
-      this.formularioFiltro.patchValue({ unidadCompraId: null });
+      this.form.patchValue({ unidadCompraId: null });
     });
   }
 
   buscar(): void {
     this.cargando = true;
-    const filtro: FiltroBandejaEntrada = this.formularioFiltro.value;
+    const v = this.form.value;
+    const filtro = new FiltroBandejaEntrada(
+      v.incisoId || undefined,
+      v.unidadEjecutoraId || undefined,
+      v.unidadCompraId || undefined,
+      v.numeroCompra || undefined,
+      v.anioCompra || undefined,
+      v.tipoCompraId || undefined,
+      v.estado || undefined,
+      v.soloPublicadosVigentes || false
+    );
 
-    this.bandejaEntradaService.buscarProcesos(filtro).subscribe({
-      next: (procesos) => {
-        this.procesos = procesos;
-        this.total = procesos.length;
+    this.bandejaEntradaService.buscarProcesos(
+      filtro,
+      this.parametros.pagina,
+      this.parametros.tamanoPagina,
+      this.parametros.sort,
+      this.parametros.order
+    ).subscribe({
+      next: (page: PageModel<ProcesoPliego>) => {
+        this.procesos = page.content || [];
+        this.total = page.totalElements || 0;
         this.cargando = false;
       },
       error: () => {
         this.cargando = false;
+        this.procesos = [];
+        this.total = 0;
       }
     });
   }
@@ -147,36 +160,19 @@ export class BandejaEntradaComponent implements OnInit, AfterViewInit {
     this.buscar();
   }
 
-  nuevaConsulta(): void {
-    this.formularioFiltro.reset({
+  override nuevaConsulta(): void {
+    this.form.reset({
       soloPublicadosVigentes: false
     });
-    this.parametros.pagina = 0;
-    this.parametros.tamanoPagina = 10;
-    this.parametros.sort = 'estado';
-    this.parametros.order = 'asc';
-    this.buscar();
-  }
-
-  cambioPagina(pagina: number): void {
-    this.parametros.pagina = pagina - 1;
-    this.buscar();
-  }
-
-  cambioPorPagina(tamanoPagina: number): void {
-    this.parametros.tamanoPagina = tamanoPagina;
-    this.parametros.pagina = 0;
-    this.buscar();
-  }
-
-  cambioOrden(orden: 'asc' | 'desc'): void {
-    this.parametros.order = orden;
-    this.buscar();
-  }
-
-  cambioColumnaOrden(columna: string): void {
-    this.parametros.sort = columna;
-    this.buscar();
+    this.parametros = {
+      filtro: new FiltroBandejaEntrada(),
+      pagina: 0,
+      tamanoPagina: 10,
+      sort: this.columnaOrdenInicial,
+      order: this.ordenInicial
+    };
+    this.procesos = [];
+    this.total = -1;
   }
 
   obtenerAccionesProceso(proceso: ProcesoPliego): AccionBoton[] {

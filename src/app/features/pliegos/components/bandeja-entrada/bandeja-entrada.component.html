@@ -2,7 +2,7 @@
   <div [ngClass]="colFiltro" class="sidebar">
     <app-filtro title="Búsqueda" titleBtn="Buscar" iconTitle="fa fa-search"
       (evFilter)="actualizarFiltrosYBuscar()">
-      <div [formGroup]="formularioFiltro" class="col-12 ml-0 pl-0 mr-0 pr-0">
+      <div [formGroup]="form" class="col-12 ml-0 pl-0 mr-0 pr-0">
         <div class="row">
           <div class="form-group form-row col-12">
             <label for="incisoId" class="col-form-label">Inciso</label>
@@ -19,7 +19,7 @@
           <div class="form-group form-row col-12">
             <label for="unidadEjecutoraId" class="col-form-label">Unidad ejecutora</label>
             <select class="form-control" id="unidadEjecutoraId" formControlName="unidadEjecutoraId"
-              [disabled]="!formularioFiltro.value.incisoId">
+              [disabled]="!form.value.incisoId">
               <option [ngValue]="null">Todas las unidades ejecutoras</option>
               <option *ngFor="let ue of unidadesEjecutoras" [ngValue]="ue.id">
                 {{ ue.idUnidadEjecutora }} - {{ ue.descUnidadEjecutora }}
@@ -32,7 +32,7 @@
           <div class="form-group form-row col-12">
             <label for="unidadCompraId" class="col-form-label">Unidad de compra</label>
             <select class="form-control" id="unidadCompraId" formControlName="unidadCompraId"
-              [disabled]="!formularioFiltro.value.unidadEjecutoraId">
+              [disabled]="!form.value.unidadEjecutoraId">
               <option [ngValue]="null">Todas las unidades de compra</option>
               <option *ngFor="let uc of unidadesCompra" [ngValue]="uc.id">
                 {{ uc.descUnidadCompra }}

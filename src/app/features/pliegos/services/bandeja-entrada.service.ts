@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 import { ProcesoPliego } from '../models/proceso-pliego.model';
 import { FiltroBandejaEntrada } from '../models/filtro-bandeja-entrada.model';
 import { EstadoProcesoPliego } from '../enum/estado-proceso-pliego.enum';
+import { PageModel } from '../../../shared/models/common/page/page.model';
 
 @Injectable({
   providedIn: 'root'
@@ -113,7 +114,13 @@ export class BandejaEntradaService {
 
   constructor() { }
 
-  buscarProcesos(filtro: FiltroBandejaEntrada): Observable<ProcesoPliego[]> {
+  buscarProcesos(
+    filtro: FiltroBandejaEntrada,
+    pagina: number,
+    tamanoPagina: number,
+    sort: string,
+    order: 'asc' | 'desc'
+  ): Observable<PageModel<ProcesoPliego>> {
     let resultados = [...this.procesosMock];
 
     if (filtro.incisoId) {
@@ -151,20 +158,51 @@ export class BandejaEntradaService {
     }
 
     resultados.sort((a, b) => {
-      const ordenEstado: { [key in EstadoProcesoPliego]: number } = {
-        [EstadoProcesoPliego.PENDIENTE]: 1,
-        [EstadoProcesoPliego.ASIGNADO]: 2,
-        [EstadoProcesoPliego.EN_PROCESO]: 3,
-        [EstadoProcesoPliego.PENDIENTE_VALIDACION]: 4,
-        [EstadoProcesoPliego.PENDIENTE_APROBACION]: 5,
-        [EstadoProcesoPliego.APROBADO]: 6,
-        [EstadoProcesoPliego.PUBLICADO]: 7,
-        [EstadoProcesoPliego.CANCELADO]: 8
-      };
+      if (sort === 'estado') {
+        const ordenEstado: { [key in EstadoProcesoPliego]: number } = {
+          [EstadoProcesoPliego.PENDIENTE]: 1,
+          [EstadoProcesoPliego.ASIGNADO]: 2,
+          [EstadoProcesoPliego.EN_PROCESO]: 3,
+          [EstadoProcesoPliego.PENDIENTE_VALIDACION]: 4,
+          [EstadoProcesoPliego.PENDIENTE_APROBACION]: 5,
+          [EstadoProcesoPliego.APROBADO]: 6,
+          [EstadoProcesoPliego.PUBLICADO]: 7,
+          [EstadoProcesoPliego.CANCELADO]: 8
+        };
 
-      return ordenEstado[a.estado] - ordenEstado[b.estado];
+        const valorA = ordenEstado[a.estado];
+        const valorB = ordenEstado[b.estado];
+        return order === 'asc' ? valorA - valorB : valorB - valorA;
+      } else if (sort === 'numeroCompra') {
+        const valorA = a.numeroCompra;
+        const valorB = b.numeroCompra;
+        if (valorA < valorB) return order === 'asc' ? -1 : 1;
+        if (valorA > valorB) return order === 'asc' ? 1 : -1;
+        return 0;
+      }
+      return 0;
     });
 
-    return of(resultados).pipe(delay(500));
+    const totalElements = resultados.length;
+    const totalPages = Math.ceil(totalElements / tamanoPagina);
+    const inicio = pagina * tamanoPagina;
+    const fin = inicio + tamanoPagina;
+    const contenidoPaginado = resultados.slice(inicio, fin);
+
+    const page: PageModel<ProcesoPliego> = {
+      page: pagina,
+      content: contenidoPaginado,
+      totalPages: totalPages,
+      totalElements: totalElements,
+      last: pagina >= totalPages - 1,
+      size: tamanoPagina,
+      number: pagina,
+      numberOfElements: contenidoPaginado.length,
+      first: pagina === 0,
+      sort: { sorted: true, unsorted: false, empty: false },
+      empty: contenidoPaginado.length === 0
+    };
+
+    return of(page).pipe(delay(500));
   }
 }
