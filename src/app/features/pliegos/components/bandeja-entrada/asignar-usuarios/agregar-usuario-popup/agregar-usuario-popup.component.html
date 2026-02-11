@@ -38,24 +38,24 @@
 
         <!-- Input de búsqueda por CI -->
         <div class="row mt-3" *ngIf="tipoBusqueda.value === TipoBusquedaUsuario.CI">
-            <div class="col-12">
+            <div class="form-group form-row col-12 m-0">
                 <app-input-documento
                     [id]="'busquedaCI'"
                     [label]="'Cédula de identidad'"
                     [esCedula]="true"
                     [required]="false"
+                    [minLength]="7"
                     [placeholder]="'Ingrese CI para buscar'"
-                    [formControl]="busquedaCI"
-                    (blur)="onBlurCI()">
+                    [formControl]="busquedaCI">
                 </app-input-documento>
 
-                <small class="form-text text-muted mt-1" *ngIf="!cedulaValida">
-                    Ingrese una cédula válida para buscar usuarios
+                <small class="form-text text-muted mt-1 col-12" *ngIf="busquedaCI.value && !cedulaValida">
+                    Ingrese una cédula válida (7-8 dígitos) para buscar usuarios
                 </small>
             </div>
 
             <!-- Lista de usuarios encontrados para CI -->
-            <div class="col-12 mt-2" *ngIf="cedulaValida && usuariosFiltrados.length > 0">
+            <div class="form-group form-row col-12 m-0" *ngIf="cedulaValida && usuariosFiltrados.length > 0">
                 <label class="col-form-label pl-0">Usuarios encontrados</label>
                 <input
                     type="text"
@@ -68,12 +68,12 @@
                     [typeaheadMinLength]="0"
                     [typeaheadOptionsInScrollableView]="10"
                     [typeaheadScrollable]="true"
-                    class="form-control"
+                    class="form-control col-12"
                     placeholder="Seleccione un usuario de la lista" />
             </div>
 
-            <div class="col-12 mt-2" *ngIf="cedulaValida && usuariosFiltrados.length === 0">
-                <div class="alert alert-info">
+            <div class="form-group form-row col-12 m-0" *ngIf="cedulaValida && busquedaRealizada && usuariosFiltrados.length === 0">
+                <div class="alert alert-info col-12">
                     No se encontraron usuarios con la cédula ingresada
                 </div>
             </div>
@@ -81,26 +81,23 @@
 
         <!-- Input de búsqueda por Nombre -->
         <div class="row mt-3" *ngIf="tipoBusqueda.value === TipoBusquedaUsuario.NOMBRE">
-            <div class="col-12">
-                <div class="form-group">
-                    <label for="busquedaNombre" class="col-form-label pl-0">Nombre del usuario</label>
-                    <input
-                        id="busquedaNombre"
-                        type="text"
-                        [formControl]="busquedaNombre"
-                        class="form-control"
-                        placeholder="Ingrese al menos 5 caracteres"
-                        (input)="onBuscarPorNombre($event)"
-                        maxlength="100" />
+            <div class="form-group form-row col-12 m-0">
+                <label for="busquedaNombre" class="col-form-label pl-0">Nombre del usuario</label>
+                <input
+                    id="busquedaNombre"
+                    type="text"
+                    [formControl]="busquedaNombre"
+                    class="form-control col-12"
+                    placeholder="Ingrese al menos 5 caracteres"
+                    maxlength="100" />
 
-                    <small class="form-text text-muted mt-1" *ngIf="!nombreValido">
-                        Debe ingresar al menos 5 caracteres para buscar
-                    </small>
-                </div>
+                <small class="form-text text-muted mt-1 col-12" *ngIf="busquedaNombre.value && !nombreValido">
+                    Debe ingresar al menos 5 caracteres para buscar
+                </small>
             </div>
 
             <!-- Lista de usuarios encontrados para Nombre -->
-            <div class="col-12" *ngIf="nombreValido && usuariosFiltrados.length > 0">
+            <div class="form-group form-row col-12 m-0" *ngIf="nombreValido && usuariosFiltrados.length > 0">
                 <label class="col-form-label pl-0">Usuarios encontrados</label>
                 <input
                     type="text"
@@ -113,12 +110,12 @@
                     [typeaheadMinLength]="0"
                     [typeaheadOptionsInScrollableView]="10"
                     [typeaheadScrollable]="true"
-                    class="form-control"
+                    class="form-control col-12"
                     placeholder="Seleccione un usuario de la lista" />
             </div>
 
-            <div class="col-12 mt-2" *ngIf="nombreValido && usuariosFiltrados.length === 0">
-                <div class="alert alert-info">
+            <div class="form-group form-row col-12 m-0" *ngIf="nombreValido && busquedaRealizada && usuariosFiltrados.length === 0">
+                <div class="alert alert-info col-12">
                     No se encontraron usuarios con el nombre ingresado
                 </div>
             </div>

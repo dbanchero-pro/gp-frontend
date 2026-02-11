@@ -1,7 +1,8 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { PopupBaseComponent } from 'src/app/shared/components/popup-base/popup-base.component';
 import { TipoMensajeEnum } from 'src/app/shared/enum/tipo-mensaje.enum';
 import { UsuarioAsignado } from '../models/usuario-asignado.model';
@@ -24,7 +25,7 @@ interface UsuarioBusqueda {
   styleUrls: ['./agregar-usuario-popup.component.scss'],
   standalone: false,
 })
-export class AgregarUsuarioPopupComponent extends PopupBaseComponent implements OnInit {
+export class AgregarUsuarioPopupComponent extends PopupBaseComponent implements OnInit, OnDestroy {
   @Output() guardarEvento = new EventEmitter<UsuarioAsignado>();
   @Output() cancelarEvento = new EventEmitter<void>();
 
@@ -41,8 +42,11 @@ export class AgregarUsuarioPopupComponent extends PopupBaseComponent implements 
   usuariosFiltrados: UsuarioBusqueda[] = [];
   cedulaValida = false;
   nombreValido = false;
+  busquedaRealizada = false;
 
   TipoBusquedaUsuario = TipoBusquedaUsuario;
+
+  private destroy$ = new Subject<void>();
 
   // Datos mock para pruebas - ampliada la lista
   private usuariosMock: UsuarioBusqueda[] = [
@@ -78,6 +82,51 @@ export class AgregarUsuarioPopupComponent extends PopupBaseComponent implements 
 
     // Inicializar con lista vacía hasta que haya una búsqueda válida
     this.usuariosFiltrados = [];
+
+    // Suscribirse a los cambios del FormControl de CI
+    this.busquedaCI.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(cedula => {
+        this.cedulaValida = this.validarCedula(cedula);
+
+        if (this.cedulaValida) {
+          this.buscarPorCI(cedula);
+        } else {
+          this.usuariosFiltrados = [];
+          this.busquedaRealizada = false;
+          this.usuarioSeleccionado = null;
+          this.busquedaTexto.setValue('', { emitEvent: false });
+        }
+      });
+
+    // Suscribirse a los cambios del FormControl de Nombre
+    this.busquedaNombre.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(texto => {
+        this.nombreValido = texto && texto.trim().length >= 5;
+
+        if (this.nombreValido) {
+          this.buscarPorNombre(texto);
+        } else {
+          this.usuariosFiltrados = [];
+          this.busquedaRealizada = false;
+          this.usuarioSeleccionado = null;
+          this.busquedaTexto.setValue('', { emitEvent: false });
+        }
+      });
+  }
+
+  override ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   /**
@@ -94,22 +143,6 @@ export class AgregarUsuarioPopupComponent extends PopupBaseComponent implements 
   }
 
   /**
-   * Evento que se dispara al salir del campo CI (blur)
-   */
-  onBlurCI(): void {
-    const cedula = this.busquedaCI.value;
-    this.cedulaValida = this.validarCedula(cedula);
-
-    if (this.cedulaValida) {
-      this.buscarPorCI(cedula);
-    } else {
-      this.usuariosFiltrados = [];
-      this.usuarioSeleccionado = null;
-      this.busquedaTexto.setValue('');
-    }
-  }
-
-  /**
    * Busca usuarios por cédula de identidad
    */
   private buscarPorCI(cedula: string): void {
@@ -120,25 +153,11 @@ export class AgregarUsuarioPopupComponent extends PopupBaseComponent implements 
       return ciUsuarioLimpia.includes(ciLimpia);
     });
 
+    this.busquedaRealizada = true;
+
     // Limpiar la selección anterior
     this.usuarioSeleccionado = null;
-    this.busquedaTexto.setValue('');
-  }
-
-  /**
-   * Evento que se dispara al escribir en el campo Nombre
-   */
-  onBuscarPorNombre(event: Event): void {
-    const texto = (event.target as HTMLInputElement).value;
-    this.nombreValido = texto.trim().length >= 5;
-
-    if (this.nombreValido) {
-      this.buscarPorNombre(texto);
-    } else {
-      this.usuariosFiltrados = [];
-      this.usuarioSeleccionado = null;
-      this.busquedaTexto.setValue('');
-    }
+    this.busquedaTexto.setValue('', { emitEvent: false });
   }
 
   /**
@@ -152,20 +171,23 @@ export class AgregarUsuarioPopupComponent extends PopupBaseComponent implements 
       return nombreCompleto.includes(textoBusqueda);
     });
 
+    this.busquedaRealizada = true;
+
     // Limpiar la selección anterior
     this.usuarioSeleccionado = null;
-    this.busquedaTexto.setValue('');
+    this.busquedaTexto.setValue('', { emitEvent: false });
   }
 
   cambioTipoBusqueda(): void {
     // Limpiar todos los campos y flags al cambiar el tipo de búsqueda
-    this.busquedaTexto.setValue('');
-    this.busquedaCI.setValue('');
-    this.busquedaNombre.setValue('');
+    this.busquedaTexto.setValue('', { emitEvent: false });
+    this.busquedaCI.setValue('', { emitEvent: false });
+    this.busquedaNombre.setValue('', { emitEvent: false });
     this.usuarioSeleccionado = null;
     this.usuariosFiltrados = [];
     this.cedulaValida = false;
     this.nombreValido = false;
+    this.busquedaRealizada = false;
   }
 
   onSeleccionarUsuario(event: TypeaheadMatch): void {
