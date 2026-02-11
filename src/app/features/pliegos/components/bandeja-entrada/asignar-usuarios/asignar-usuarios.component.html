@@ -102,7 +102,14 @@
         (click)="volver()">
         Cancelar
       </button>
-    
+
     </div>
   </div>
 </div>
+
+<!-- Popup para agregar usuario -->
+<ng-template #agregarUsuarioTemplate>
+  <app-agregar-usuario-popup
+    (guardarEvento)="guardarNuevoUsuario($event)">
+  </app-agregar-usuario-popup>
+</ng-template>

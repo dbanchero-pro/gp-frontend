@@ -1,6 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
 import { BandejaEntradaService } from '../../../services/bandeja-entrada.service';
 import { ProcesoPliego } from '../../../models/proceso-pliego.model';
@@ -11,6 +12,7 @@ import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden
 import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
 import { CanComponentDeactivate } from '../../../../../shared/utils/can-component-deactivate';
 import { Observable } from 'rxjs';
+import { AgregarUsuarioPopupComponent } from './agregar-usuario-popup/agregar-usuario-popup.component';
 
 @Component({
   selector: 'app-asignar-usuarios',
@@ -24,19 +26,28 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
   private readonly router = inject(Router);
   private readonly actualizarServ = inject(ActualizarService);
   private readonly bandejaEntradaService = inject(BandejaEntradaService);
+  protected override readonly modalService = inject(BsModalService);
+
+  @ViewChild('agregarUsuarioTemplate', { static: false }) agregarUsuarioTemplate: any;
 
   proceso: ProcesoPliego | null = null;
-  usuariosAsignados: UsuarioAsignado[] = [];
-  usuariosAsignadosFiltrados: UsuarioAsignado[] = [];
   guardando = false;
+  modalRef?: BsModalRef;
 
-  columnaOrdenInicial = 'nombre';
-  ordenInicial: 'asc' | 'desc' = 'asc';
+  get columnaOrdenInicial(): string {
+    return 'nombre';
+  }
 
-  listaOrden: IColumnaOrden[] = [
-    { id: 'numeroDocumento', nombre: 'CI' },
-    { id: 'nombre', nombre: 'Nombre' },
-  ];
+  get ordenInicial(): 'asc' | 'desc' {
+    return 'asc';
+  }
+
+  get listaOrden(): IColumnaOrden[] {
+    return [
+      { id: 'numeroDocumento', nombre: 'CI' },
+      { id: 'nombre', nombre: 'Nombre' },
+    ];
+  }
 
   // Datos mock para pruebas
   private usuariosMock: UsuarioAsignado[] = [
@@ -103,9 +114,9 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     this.parametros = {
       filtro: {},
       pagina: 0,
-      tamanoPagina: 5,
-      sort: this.columnaOrdenInicial,
-      order: this.ordenInicial
+      tamanoPagina: 10,
+      sort: 'nombre',
+      order: 'asc'
     };
   }
 
@@ -144,72 +155,36 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     // Los usuarios se cargan en el proceso
   }
 
-  aplicarFiltrosYOrdenamiento(): void {
-    let usuarios = [...this.usuariosAsignados];
-
-    // Ordenamiento
-    usuarios.sort((a, b) => {
-      let valorA: any;
-      let valorB: any;
-
-      if (this.parametros.sort === 'numeroDocumento') {
-        valorA = a.numeroDocumento;
-        valorB = b.numeroDocumento;
-      } else if (this.parametros.sort === 'nombre') {
-        valorA = `${a.nombre} ${a.apellido}`;
-        valorB = `${b.nombre} ${b.apellido}`;
-      } else {
-        return 0;
-      }
-
-      const comparacion = valorA.localeCompare(valorB);
-      return this.parametros.order === 'asc' ? comparacion : -comparacion;
-    });
-
-    this.total = usuarios.length;
-
-    // Paginado
-    const inicio = this.parametros.pagina * this.parametros.tamanoPagina;
-    const fin = inicio + this.parametros.tamanoPagina;
-    this.usuariosAsignadosFiltrados = usuarios.slice(inicio, fin);
-  }
-
   override nuevaConsulta(): void {
     this.parametros = {
       filtro: {},
       pagina: 0,
-      tamanoPagina: 5,
-      sort: this.columnaOrdenInicial,
-      order: this.ordenInicial
+      tamanoPagina: 10,
+      sort: 'nombre',
+      order: 'asc'
     };
-    this.usuariosAsignados = [];
-    this.usuariosAsignadosFiltrados = [];
     this.total = -1;
   }
 
   override cambioPagina(pagina: number): void {
     this.parametros.pagina = pagina - 1;
-    this.aplicarFiltrosYOrdenamiento();
   }
 
   override cambioPorPagina(items: number): void {
     this.parametros.tamanoPagina = items;
     this.parametros.pagina = 0;
-    this.aplicarFiltrosYOrdenamiento();
   }
 
   override cambioOrden(orden: 'asc' | 'desc'): void {
     this.parametros.order = orden;
-    this.aplicarFiltrosYOrdenamiento();
   }
 
   override cambioColumnaOrden(columna: string): void {
     this.parametros.sort = columna;
-    this.aplicarFiltrosYOrdenamiento();
   }
 
   buscar(): void {
-    this.aplicarFiltrosYOrdenamiento();
+    // No se realiza búsqueda ya que se muestran todos los usuarios del proceso
   }
 
   obtenerAcciones(usuario: UsuarioAsignado): AccionBoton[] {
@@ -238,8 +213,38 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
   }
 
   agregarUsuario(): void {
-    console.log('Agregar usuario');
-    // TODO: Implementar lógica de agregar usuario
+    this.modalRef = this.modalService.show(
+      this.agregarUsuarioTemplate,
+      {
+        class: 'modal-lg',
+        backdrop: 'static',
+        keyboard: false
+      }
+    );
+  }
+
+  guardarNuevoUsuario(usuario: UsuarioAsignado): void {
+    if (!this.proceso) {
+      return;
+    }
+
+    // Verificar si el usuario ya está asignado
+    const yaAsignado = this.proceso.usuariosAsignados?.some(u => u.id === usuario.id);
+    if (yaAsignado) {
+      this.actualizarServ.mensajeInformacion('El usuario ya está asignado al proceso');
+      this.modalRef?.hide();
+      return;
+    }
+
+    // Agregar el usuario a la lista
+    if (!this.proceso.usuariosAsignados) {
+      this.proceso.usuariosAsignados = [];
+    }
+
+    this.proceso.usuariosAsignados.push(usuario);
+
+    this.actualizarServ.mensajeCorrecto('Usuario agregado correctamente');
+    this.modalRef?.hide();
   }
 
   modificarUsuario(usuario: UsuarioAsignado): void {

@@ -1,0 +1,121 @@
+<div class="modal-header d-flex justify-content-between align-items-center">
+    <h1 class="modal-title mb-0" id="tituloPopup">Agregar usuario</h1>
+    <button type="button" aria-label="Cerrar" class="close" (click)="cancelar()">&times;</button>
+</div>
+
+<div class="modal-body">
+    <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
+
+    <form [formGroup]="form" (submit)="guardar()">
+        <!-- Búsqueda de usuario -->
+        <div class="row">
+            <div class="col-12">
+                <fieldset class="row p-0 m-0 border-0">
+                    <legend>Búsqueda de usuario</legend>
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <div class="form-check d-flex align-items-center">
+                                <input class="form-check-input" type="radio" name="tipoBusqueda" id="busquedaCI"
+                                    [value]="TipoBusquedaUsuario.CI" [formControl]="tipoBusqueda"
+                                    (click)="cambioTipoBusqueda()" />
+                                <label class="form-check-label col-form-label" for="busquedaCI">
+                                    CI
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="form-check d-flex align-items-center">
+                                <input class="form-check-input" type="radio" name="tipoBusqueda" id="busquedaNombre"
+                                    [value]="TipoBusquedaUsuario.NOMBRE" [formControl]="tipoBusqueda"
+                                    (click)="cambioTipoBusqueda()" />
+                                <label class="form-check-label col-form-label" for="busquedaNombre">
+                                    Nombre
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <!-- Input de búsqueda -->
+        <div class="row mt-3">
+            <div class="form-group form-row col-12 m-0">
+                <label for="busqueda" class="col-form-label pl-0">
+                    {{ tipoBusqueda.value === TipoBusquedaUsuario.CI ? 'CI' : 'Nombre' }}
+                </label>
+                <input id="busqueda" [formControl]="busquedaTexto" [typeahead]="usuarios$"
+                    [typeaheadItemTemplate]="customItemTemplate" (typeaheadOnSelect)="seleccionarUsuario($event)"
+                    autocomplete="off" [typeaheadAsync]="true" [typeaheadOptionsLimit]="999"
+                    [typeaheadOptionsInScrollableView]="10" [typeaheadScrollable]="true" type="text"
+                    [typeaheadSingleWords]="false" class="form-control col-12" (keyup)="buscarUsuario($event)"
+                    (blur)="seleccionarUsuario(null)"
+                    [placeholder]="tipoBusqueda.value === TipoBusquedaUsuario.CI ? 'Ingrese CI' : 'Ingrese nombre'" />
+
+                <ng-template #customItemTemplate let-model="item" let-index="index">
+                    <div class="d-flex justify-content-between w-100">
+                        <span><strong>{{ model.numeroDocumento }}</strong> - {{ model.nombre }} {{ model.apellido }}</span>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+
+        <!-- Usuario seleccionado -->
+        <div *ngIf="usuarioSeleccionado" class="row mt-3">
+            <div class="col-12">
+                <div class="Box Box--colorInfo">
+                    <span class="subtitle">
+                        <strong>CI {{ usuarioSeleccionado.numeroDocumento }}</strong> -
+                        {{ usuarioSeleccionado.nombre }} {{ usuarioSeleccionado.apellido }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Roles -->
+        <div class="row mt-4">
+            <div class="form-group form-row col-12" [class.field-error]="!alMenosUnRolSeleccionado() && intentoGuardar">
+                <label for="roles">* Roles</label>
+                <div class="d-flex justify-content-center w-100 col-12 Box">
+                    <div class="form-check col-3">
+                        <input type="checkbox" class="form-check-input" id="esEditorPrincipal"
+                            formControlName="esEditorPrincipal">
+                        <label class="form-check-label" for="esEditorPrincipal">
+                            Editor principal
+                        </label>
+                    </div>
+                    <div class="form-check col-2">
+                        <input type="checkbox" class="form-check-input" id="esEditor" formControlName="esEditor">
+                        <label class="form-check-label" for="esEditor">
+                            Editor
+                        </label>
+                    </div>
+                    <div class="form-check col-2">
+                        <input type="checkbox" class="form-check-input" id="esValidador" formControlName="esValidador">
+                        <label class="form-check-label" for="esValidador">
+                            Validador
+                        </label>
+                    </div>
+                    <div class="form-check col-2">
+                        <input type="checkbox" class="form-check-input" id="esAprobador" formControlName="esAprobador">
+                        <label class="form-check-label" for="esAprobador">
+                            Aprobador
+                        </label>
+                    </div>
+                </div>
+                <span class="texto-error col-12"
+                    [style.visibility]="!alMenosUnRolSeleccionado() && intentoGuardar ? 'visible' : 'hidden'">
+                    Debe seleccionar al menos un rol
+                </span>
+            </div>
+        </div>
+    </form>
+
+    <div class="d-flex justify-content-end m-3 pe-3">
+        <button type="submit" class="btn btn-primary" (click)="guardar()" [disabled]="guardando">
+            Guardar
+        </button>
+        <button type="button" class="btn btn-link" (click)="cancelar()">Cancelar</button>
+    </div>
+</div>

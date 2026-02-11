@@ -1,0 +1,36 @@
+fieldset {
+    legend {
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+}
+
+.Box {
+    &--colorInfo {
+        background-color: #f0f8ff;
+        border: 1px solid #b8d4e8;
+        border-radius: 4px;
+        padding: 12px;
+
+        .subtitle {
+            font-size: 0.95rem;
+        }
+    }
+}
+
+.field-error {
+    input[type="checkbox"] {
+        border-color: #dc3545;
+    }
+
+    .Box {
+        border-color: #dc3545;
+    }
+}
+
+.texto-error {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
