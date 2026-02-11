@@ -14,6 +14,7 @@ import { IColumnaOrden } from '../../../../shared/models/common/columna-orden.mo
 import { FechaHoraPipe } from '../../../../shared/pipes/fecha-hora.pipe';
 import { PaginaBusquedaComponent } from '../../../../shared/components/pagina-busqueda/pagina-busqueda.component';
 import { PageModel } from '../../../../shared/models/common/page/page.model';
+import { CancelarPliegoPopupComponent } from './cancelar-pliego-popup/cancelar-pliego-popup';
 
 @Component({
   selector: 'app-bandeja-entrada',
@@ -320,7 +321,21 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
   }
 
   cancelarProceso(proceso: ProcesoPliego): void {
-    console.log('Cancelar proceso:', proceso);
+    const initialState = {
+      proceso: proceso
+    };
+
+    const modalRef = this.modalService.show(CancelarPliegoPopupComponent, {
+      initialState,
+      class: 'modal-lg',
+      backdrop: 'static',
+      keyboard: false
+    });
+
+    modalRef.onHide?.subscribe(() => {
+      // Aquí se puede refrescar la lista si es necesario
+      this.buscar();
+    });
   }
 
   modificarPliegoPublicado(proceso: ProcesoPliego): void {

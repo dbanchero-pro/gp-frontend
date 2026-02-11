@@ -1,0 +1,59 @@
+<div class="modal-header">
+  <h4 class="modal-title">Cancelación de pliego</h4>
+  <button type="button" class="close" aria-label="Cerrar" (click)="cancelar()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <div class="Box Box--colorInfo mb-3 p-3">
+    <div class="mb-2">
+      <strong>Organismo:</strong> {{ proceso.incisoDescripcion }} | {{ proceso.unidadEjecutoraDescripcion }}
+    </div>
+    <div class="mb-2">
+      <strong>Compra:</strong> {{ proceso.tipoCompraDescripcion }} | {{ proceso.subtipoCompraDescripcion }} | {{ proceso.numeroCompra }}/{{ proceso.anioCompra }}
+    </div>
+    <div>
+      <strong>Estado:</strong> {{ obtenerNombreEstado(proceso.estado) }}
+    </div>
+  </div>
+
+  <form [formGroup]="form">
+    <div class="form-group">
+      <label for="motivo">Motivo de la cancelación <span class="text-danger">*</span></label>
+      <textarea
+        id="motivo"
+        class="form-control"
+        formControlName="motivo"
+        rows="4"
+        maxlength="500"
+        placeholder="Ingrese el motivo de la cancelación"
+        [class.is-invalid]="motivoInvalido">
+      </textarea>
+      <small class="form-text text-muted">
+        Máximo 500 caracteres
+      </small>
+      <div *ngIf="motivoInvalido" class="invalid-feedback">
+        El motivo es requerido
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="cancelar()"
+    [disabled]="guardando">
+    Cancelar
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary"
+    (click)="guardar()"
+    [disabled]="guardando">
+    <span *ngIf="guardando" class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span>
+    Guardar
+  </button>
+</div>

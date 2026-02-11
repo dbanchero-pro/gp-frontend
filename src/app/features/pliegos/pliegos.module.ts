@@ -19,6 +19,7 @@ import { AgregarModificarSeccionComponent } from './components/secciones/agregar
 import { ConsultaModelosComponent } from './components/modelos/consulta-modelos/consulta-modelos.component';
 import { AgregarModificarModeloComponent } from './components/modelos/agregar-modificar-modelo/agregar-modificar-modelo.component';
 import { BandejaEntradaComponent } from './components/bandeja-entrada/bandeja-entrada.component';
+import { CancelarPliegoPopupComponent } from './components/bandeja-entrada/cancelar-pliego-popup/cancelar-pliego-popup';
 
 export const routes: Routes = [
     {
@@ -149,7 +150,8 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
         AgregarModificarSeccionComponent,
         ConsultaModelosComponent,
         AgregarModificarModeloComponent,
-        BandejaEntradaComponent
+        BandejaEntradaComponent,
+        CancelarPliegoPopupComponent
     ], imports: [
         CommonModule,
         SharedModule,
