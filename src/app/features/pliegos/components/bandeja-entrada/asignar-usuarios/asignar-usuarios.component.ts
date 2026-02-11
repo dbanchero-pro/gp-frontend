@@ -33,7 +33,7 @@ export class AsignarUsuariosComponent implements OnInit, CanComponentDeactivate 
   private readonly usuarioService = inject(UsuarioService);
   private readonly actualizarServ = inject(ActualizarService);
 
-  proceso!: ProcesoPliego;
+  proceso: ProcesoPliego | null = null;
   formBusqueda!: FormGroup;
   formRoles!: FormGroup;
 
@@ -235,6 +235,11 @@ export class AsignarUsuariosComponent implements OnInit, CanComponentDeactivate 
   }
 
   guardar(): void {
+    if (!this.proceso) {
+      this.actualizarServ.mensajeError('Error: no se ha cargado el proceso');
+      return;
+    }
+
     if (this.usuariosConRoles.length === 0) {
       this.actualizarServ.mensajeInformacion('Debe asignar al menos un usuario');
       return;
@@ -255,6 +260,11 @@ export class AsignarUsuariosComponent implements OnInit, CanComponentDeactivate 
   }
 
   finalizar(): void {
+    if (!this.proceso) {
+      this.actualizarServ.mensajeError('Error: no se ha cargado el proceso');
+      return;
+    }
+
     if (this.usuariosConRoles.length === 0) {
       this.actualizarServ.mensajeInformacion('Debe asignar al menos un usuario');
       return;
