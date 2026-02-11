@@ -51,8 +51,15 @@ export class AsignarUsuariosComponent implements OnInit, CanComponentDeactivate 
   usuariosConRoles: UsuarioRol[] = [];
 
   ngOnInit(): void {
-    const procesoId = this.route.snapshot.params['id'];
-    this.cargarProceso(procesoId);
+    const procesoIdParam = this.route.snapshot.params['id'];
+    const procesoId = procesoIdParam ? Number(procesoIdParam) : null;
+
+    if (procesoId && !isNaN(procesoId)) {
+      this.cargarProceso(procesoId);
+    } else {
+      this.actualizarServ.mensajeError('Error: ID de proceso inválido');
+      this.volverSinConfirmar();
+    }
 
     this.formBusqueda = this.fb.nonNullable.group({
       nroDocumento: [''],
