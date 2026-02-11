@@ -15,12 +15,12 @@ import { SubtipoCompraDTO } from 'src/app/shared/models/sice/subtipo-compra.mode
 import { TipoCompraClausula } from '../../../models/clausula.model';
 
 @Component({
-  selector: 'app-agregar-modificar-archivo-repositorio',
-  templateUrl: './agregar-modificar-archivo-repositorio.component.html',
-  styleUrls: ['./agregar-modificar-archivo-repositorio.component.scss'],
+  selector: 'app-agregar-modificar-repositorio-archivo',
+  templateUrl: './agregar-modificar-repositorio-archivo.component.html',
+  styleUrls: ['./agregar-modificar-repositorio-archivo.component.scss'],
   standalone: false
 })
-export class AgregarModificarArchivoRepositorioComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
+export class AgregarModificarRepositorioArchivoComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);
   private readonly documentoService = inject(DocumentoRepositorioService);
   protected readonly actualizarServ = inject(ActualizarService);

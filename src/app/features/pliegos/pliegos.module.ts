@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DeactivateGuard } from '../../shared/guards/deactivate-guard';
 import { ConsultaRepositorioArchivosComponent } from './components/repositorio-archivos/consulta-repositorio-archivos/consulta-repositorio-archivos.component';
-import { AgregarModificarArchivoRepositorioComponent } from './components/repositorio-archivos/agregar-modificar-archivo-repositorio/agregar-modificar-archivo-repositorio.component';
+import { AgregarModificarRepositorioArchivoComponent } from './components/repositorio-archivos/agregar-modificar-repositorio-archivo/agregar-modificar-repositorio-archivo.component';
 import { ConsultaClausulasComponent } from './components/clausulas/consulta-clausulas/consulta-clausulas.component';
 import { AgregarModificarClausulaComponent } from './components/clausulas/agregar-modificar-clausula/agregar-modificar-clausula.component';
 import { AgregarModificarRedaccionPopupComponent } from './components/clausulas/agregar-modificar-redaccion-popup/agregar-modificar-redaccion-popup.component';
@@ -26,12 +26,12 @@ export const routes: Routes = [
     },
     {
         path: 'repositorio-archivos/agregar',
-        component: AgregarModificarArchivoRepositorioComponent,
+        component: AgregarModificarRepositorioArchivoComponent,
         canDeactivate: [DeactivateGuard]
     },
     {
         path: 'repositorio-archivos/modificar/:idDocumento',
-        component: AgregarModificarArchivoRepositorioComponent,
+        component: AgregarModificarRepositorioArchivoComponent,
         canDeactivate: [DeactivateGuard]
     },
     {
@@ -130,7 +130,7 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
 @NgModule({
     declarations: [
         ConsultaRepositorioArchivosComponent,
-        AgregarModificarArchivoRepositorioComponent,
+        AgregarModificarRepositorioArchivoComponent,
         ConsultaClausulasComponent,
         AgregarModificarClausulaComponent,
         AgregarModificarRedaccionPopupComponent,
