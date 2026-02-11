@@ -1,0 +1,46 @@
+.Box--colorInfo {
+  background-color: #d9edf7;
+  border: 1px solid #bce8f1;
+  border-radius: 4px;
+}
+
+.badge {
+  font-size: 0.875rem;
+  padding: 0.35em 0.65em;
+}
+
+.badge-info {
+  background-color: #17a2b8;
+  color: #fff;
+}
+
+.badge-warning {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.badge-success {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.badge-cancel {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.form-check-input:disabled ~ .form-check-label {
+  opacity: 0.6;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table th {
+  background-color: #f8f9fa;
+}
+
+.btn-link {
+  margin-left: 0.75rem;
+}

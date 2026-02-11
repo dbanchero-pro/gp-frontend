@@ -210,4 +210,26 @@ export class BandejaEntradaService {
 
     return of(page).pipe(delay(500));
   }
+
+  obtenerProceso(id: number): Observable<ProcesoPliego> {
+    const proceso = this.procesosMock.find(p => p.id === id);
+    if (!proceso) {
+      throw new Error(`Proceso con id ${id} no encontrado`);
+    }
+    return of(proceso).pipe(delay(300));
+  }
+
+  asignarUsuarios(procesoId: number, usuariosConRoles: any[]): Observable<void> {
+    console.log('Guardando usuarios para el proceso:', procesoId, usuariosConRoles);
+    return of(void 0).pipe(delay(500));
+  }
+
+  asignarUsuariosYFinalizar(procesoId: number, usuariosConRoles: any[]): Observable<void> {
+    console.log('Finalizando asignación para el proceso:', procesoId, usuariosConRoles);
+    const proceso = this.procesosMock.find(p => p.id === procesoId);
+    if (proceso) {
+      proceso.estado = EstadoProcesoPliego.ASIGNADO;
+    }
+    return of(void 0).pipe(delay(500));
+  }
 }

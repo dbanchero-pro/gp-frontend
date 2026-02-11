@@ -43,5 +43,13 @@ export class UsuarioService {
     return this.gcRestService.get<UsuarioDTO>(`${this.baseUrlUsuario}/buscar/${idUsuario}`);
   }
 
+  buscarUsuario(nroDocumento?: string, nombre?: string): Observable<UsuarioDTO | null> {
+    let params = new HttpParams();
+    if (nroDocumento) params = params.set('nroDocumento', nroDocumento);
+    if (nombre) params = params.set('nombre', nombre);
+
+    return this.gcRestService.get<UsuarioDTO | null>(`${this.baseUrlUsuario}/buscar`, params);
+  }
+
 }
 
