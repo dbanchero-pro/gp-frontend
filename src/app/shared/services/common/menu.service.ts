@@ -359,16 +359,24 @@ export class MenuService {
     }
 
      private menuBandejaEntrada(): IMenuItem {
+        
         return {
-            nombre: 'Bandeja de entrada',
-            titulo: 'Bandeja de entrada',
-            subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para consultar procesos de pliegos',
+            nombre: 'Pliegos',
             visible: true,
             tipoUsuario: TipoUsuario.ORGANISMO,
-            permisos: [
-                'GC_GESTION_USU.CONSULTA'
-            ],
-            url: '/pliegos/bandeja-entrada',
+            items: [
+                {
+                    nombre: 'Bandeja de entrada',
+                    titulo: 'Bandeja de entrada',
+                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para consultar procesos de pliegos',
+                    visible: true,
+                    tipoUsuario: TipoUsuario.ORGANISMO,
+                    permisos: [
+                        'GC_GESTION_USU.CONSULTA'
+                    ],
+                    url: '/pliegos/bandeja-entrada'
+                }
+             ]
         };
     }
 

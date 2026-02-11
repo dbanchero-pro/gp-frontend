@@ -109,20 +109,6 @@ export class BandejaEntradaService {
       fechaTopeRecepcionOfertas: new Date('2025-03-15'),
       vigente: true
     },
-    {
-      id: 8,
-      estado: EstadoProcesoPliego.CANCELADO,
-      incisoDescripcion: 'Poder Legislativo',
-      unidadEjecutoraDescripcion: 'Cámara de Senadores',
-      unidadCompraDescripcion: 'Área de Compras',
-      tipoCompraDescripcion: 'Contratación Directa',
-      subtipoCompraDescripcion: 'Por excepción',
-      numeroCompra: 9123,
-      anioCompra: 2024,
-      fechaPublicacion: undefined,
-      fechaTopeRecepcionOfertas: undefined,
-      vigente: false
-    }
   ];
 
   constructor() { }

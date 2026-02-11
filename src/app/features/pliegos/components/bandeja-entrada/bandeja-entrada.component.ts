@@ -186,7 +186,7 @@ export class BandejaEntradaComponent implements OnInit, AfterViewInit {
       case EstadoProcesoPliego.PENDIENTE:
         acciones.push({
           nombre: 'Asignar',
-          clase: 'btn btn-success',
+          clase: 'btn btn-success btn-ancho-fijo',
           icono: 'fa fa-user-plus',
           ariaLabel: 'Asignar proceso ' + proceso.numeroCompra,
           accion: () => this.asignarProceso(proceso)
@@ -196,14 +196,14 @@ export class BandejaEntradaComponent implements OnInit, AfterViewInit {
       case EstadoProcesoPliego.ASIGNADO:
         acciones.push({
           nombre: 'Iniciar',
-          clase: 'btn btn-success',
+          clase: 'btn btn-success btn-ancho-fijo',
           icono: 'fa fa-play',
           ariaLabel: 'Iniciar proceso ' + proceso.numeroCompra,
           accion: () => this.iniciarProceso(proceso)
         });
         acciones.push({
           nombre: 'Cancelar',
-          clase: 'btn btn-danger',
+          clase: 'btn btn-success btn-ancho-fijo',
           icono: 'fa fa-times',
           ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
           accion: () => this.cancelarProceso(proceso)
@@ -213,14 +213,14 @@ export class BandejaEntradaComponent implements OnInit, AfterViewInit {
       case EstadoProcesoPliego.EN_PROCESO:
         acciones.push({
           nombre: 'Elaborar',
-          clase: 'btn btn-success',
+          clase: 'btn btn-success btn-ancho-fijo',
           icono: 'fa fa-edit',
           ariaLabel: 'Elaborar proceso ' + proceso.numeroCompra,
           accion: () => this.elaborarProceso(proceso)
         });
         acciones.push({
           nombre: 'Cancelar',
-          clase: 'btn btn-danger',
+          clase: 'btn btn-success btn-ancho-fijo',
           icono: 'fa fa-times',
           ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
           accion: () => this.cancelarProceso(proceso)
@@ -230,14 +230,14 @@ export class BandejaEntradaComponent implements OnInit, AfterViewInit {
       case EstadoProcesoPliego.PENDIENTE_VALIDACION:
         acciones.push({
           nombre: 'Validar',
-          clase: 'btn btn-success',
+          clase: 'btn btn-success btn-ancho-fijo',
           icono: 'fa fa-check-circle',
           ariaLabel: 'Validar proceso ' + proceso.numeroCompra,
           accion: () => this.validarProceso(proceso)
         });
         acciones.push({
           nombre: 'Cancelar',
-          clase: 'btn btn-danger',
+          clase: 'btn btn-success btn-ancho-fijo',
           icono: 'fa fa-times',
           ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
           accion: () => this.cancelarProceso(proceso)
@@ -247,14 +247,14 @@ export class BandejaEntradaComponent implements OnInit, AfterViewInit {
       case EstadoProcesoPliego.PENDIENTE_APROBACION:
         acciones.push({
           nombre: 'Aprobar',
-          clase: 'btn btn-success',
+          clase: 'btn btn-success btn-ancho-fijo',
           icono: 'fa fa-thumbs-up',
           ariaLabel: 'Aprobar proceso ' + proceso.numeroCompra,
           accion: () => this.aprobarProceso(proceso)
         });
         acciones.push({
           nombre: 'Cancelar',
-          clase: 'btn btn-danger',
+          clase: 'btn btn-success btn-ancho-fijo',
           icono: 'fa fa-times',
           ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
           accion: () => this.cancelarProceso(proceso)
@@ -264,7 +264,7 @@ export class BandejaEntradaComponent implements OnInit, AfterViewInit {
       case EstadoProcesoPliego.APROBADO:
         acciones.push({
           nombre: 'Cancelar',
-          clase: 'btn btn-danger',
+          clase: 'btn btn-success btn-ancho-fijo',
           icono: 'fa fa-times',
           ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
           accion: () => this.cancelarProceso(proceso)
@@ -275,14 +275,14 @@ export class BandejaEntradaComponent implements OnInit, AfterViewInit {
         if (proceso.vigente) {
           acciones.push({
             nombre: 'Modificar',
-            clase: 'btn btn-primary',
+            clase: 'btn btn-success btn-ancho-fijo',
             icono: 'fa fa-edit',
             ariaLabel: 'Modificar pliego publicado ' + proceso.numeroCompra,
             accion: () => this.modificarPliegoPublicado(proceso)
           });
           acciones.push({
             nombre: 'Cancelar',
-            clase: 'btn btn-danger',
+            clase: 'btn btn-success btn-ancho-fijo',
             icono: 'fa fa-times',
             ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
             accion: () => this.cancelarProceso(proceso)
@@ -293,7 +293,7 @@ export class BandejaEntradaComponent implements OnInit, AfterViewInit {
 
     acciones.push({
       nombre: 'Ver ítems',
-      clase: 'btn btn-info',
+      clase: 'btn btn-success btn-ancho-fijo',
       icono: 'fa fa-list',
       ariaLabel: 'Ver ítems del proceso ' + proceso.numeroCompra,
       accion: () => this.verItems(proceso)
@@ -348,12 +348,12 @@ export class BandejaEntradaComponent implements OnInit, AfterViewInit {
 
   obtenerClaseBadgeEstado(estado: EstadoProcesoPliego): string {
     const clases: { [key in EstadoProcesoPliego]: string } = {
-      [EstadoProcesoPliego.PENDIENTE]: 'badge-warning',
+      [EstadoProcesoPliego.PENDIENTE]: 'badge-info',
       [EstadoProcesoPliego.ASIGNADO]: 'badge-info',
-      [EstadoProcesoPliego.EN_PROCESO]: 'badge-primary',
-      [EstadoProcesoPliego.PENDIENTE_VALIDACION]: 'badge-secondary',
-      [EstadoProcesoPliego.PENDIENTE_APROBACION]: 'badge-secondary',
-      [EstadoProcesoPliego.APROBADO]: 'badge-success',
+      [EstadoProcesoPliego.EN_PROCESO]: 'badge-warning',
+      [EstadoProcesoPliego.PENDIENTE_VALIDACION]: 'badge-warning',
+      [EstadoProcesoPliego.PENDIENTE_APROBACION]: 'badge-warning',
+      [EstadoProcesoPliego.APROBADO]: 'badge-warning',
       [EstadoProcesoPliego.PUBLICADO]: 'badge-success',
       [EstadoProcesoPliego.CANCELADO]: 'badge-danger'
     };
