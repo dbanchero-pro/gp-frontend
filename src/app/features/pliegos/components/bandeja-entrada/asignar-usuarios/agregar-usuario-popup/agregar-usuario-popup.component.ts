@@ -34,9 +34,13 @@ export class AgregarUsuarioPopupComponent extends PopupBaseComponent implements 
 
   tipoBusqueda: FormControl = new FormControl(TipoBusquedaUsuario.CI);
   busquedaTexto: FormControl = new FormControl('');
+  busquedaCI: FormControl = new FormControl('');
+  busquedaNombre: FormControl = new FormControl('');
   usuarioSeleccionado: UsuarioBusqueda | null = null;
 
   usuariosFiltrados: UsuarioBusqueda[] = [];
+  cedulaValida = false;
+  nombreValido = false;
 
   TipoBusquedaUsuario = TipoBusquedaUsuario;
 
@@ -72,65 +76,102 @@ export class AgregarUsuarioPopupComponent extends PopupBaseComponent implements 
       esAprobador: [false],
     });
 
-    // Inicializar con todos los usuarios
-    this.usuariosFiltrados = [...this.usuariosMock];
+    // Inicializar con lista vacía hasta que haya una búsqueda válida
+    this.usuariosFiltrados = [];
   }
 
-  getUsuariosDataSource(): Observable<UsuarioBusqueda[]> {
-    return of(this.usuariosFiltrados);
+  /**
+   * Valida si una cédula tiene el formato correcto
+   */
+  private validarCedula(cedula: string): boolean {
+    if (!cedula) return false;
+
+    // Eliminar puntos y guiones
+    const soloDigitos = cedula.replace(/[.\-]/g, '');
+
+    // Debe tener entre 7 y 8 dígitos
+    return soloDigitos.length >= 7 && soloDigitos.length <= 8;
   }
 
-  onBuscarUsuario(event: Event): void {
-    const texto = (event.target as HTMLInputElement).value;
-    this.buscarUsuarios(texto);
-  }
+  /**
+   * Evento que se dispara al salir del campo CI (blur)
+   */
+  onBlurCI(): void {
+    const cedula = this.busquedaCI.value;
+    this.cedulaValida = this.validarCedula(cedula);
 
-  buscarUsuarios(texto: string): void {
-    if (!texto || texto.trim().length === 0) {
-      this.usuariosFiltrados = [...this.usuariosMock];
-      return;
+    if (this.cedulaValida) {
+      this.buscarPorCI(cedula);
+    } else {
+      this.usuariosFiltrados = [];
+      this.usuarioSeleccionado = null;
+      this.busquedaTexto.setValue('');
     }
+  }
 
+  /**
+   * Busca usuarios por cédula de identidad
+   */
+  private buscarPorCI(cedula: string): void {
+    const ciLimpia = cedula.replace(/[.\-]/g, '');
+
+    this.usuariosFiltrados = this.usuariosMock.filter(u => {
+      const ciUsuarioLimpia = u.numeroDocumento.replace(/[.\-]/g, '');
+      return ciUsuarioLimpia.includes(ciLimpia);
+    });
+
+    // Limpiar la selección anterior
+    this.usuarioSeleccionado = null;
+    this.busquedaTexto.setValue('');
+  }
+
+  /**
+   * Evento que se dispara al escribir en el campo Nombre
+   */
+  onBuscarPorNombre(event: Event): void {
+    const texto = (event.target as HTMLInputElement).value;
+    this.nombreValido = texto.trim().length >= 5;
+
+    if (this.nombreValido) {
+      this.buscarPorNombre(texto);
+    } else {
+      this.usuariosFiltrados = [];
+      this.usuarioSeleccionado = null;
+      this.busquedaTexto.setValue('');
+    }
+  }
+
+  /**
+   * Busca usuarios por nombre
+   */
+  private buscarPorNombre(texto: string): void {
     const textoBusqueda = texto.toLowerCase().trim();
 
-    if (this.tipoBusqueda.value === TipoBusquedaUsuario.CI) {
-      // Búsqueda por CI (eliminar puntos y guiones para comparar)
-      const ciLimpia = textoBusqueda.replace(/[.\-]/g, '');
-      this.usuariosFiltrados = this.usuariosMock.filter(u =>
-        u.numeroDocumento.replace(/[.\-]/g, '').includes(ciLimpia)
-      );
-    } else {
-      // Búsqueda por nombre completo
-      this.usuariosFiltrados = this.usuariosMock.filter(u =>
-        `${u.nombre} ${u.apellido}`.toLowerCase().includes(textoBusqueda)
-      );
-    }
+    this.usuariosFiltrados = this.usuariosMock.filter(u => {
+      const nombreCompleto = `${u.nombre} ${u.apellido}`.toLowerCase();
+      return nombreCompleto.includes(textoBusqueda);
+    });
+
+    // Limpiar la selección anterior
+    this.usuarioSeleccionado = null;
+    this.busquedaTexto.setValue('');
   }
 
   cambioTipoBusqueda(): void {
+    // Limpiar todos los campos y flags al cambiar el tipo de búsqueda
     this.busquedaTexto.setValue('');
+    this.busquedaCI.setValue('');
+    this.busquedaNombre.setValue('');
     this.usuarioSeleccionado = null;
-    this.usuariosFiltrados = [...this.usuariosMock];
+    this.usuariosFiltrados = [];
+    this.cedulaValida = false;
+    this.nombreValido = false;
   }
 
   onSeleccionarUsuario(event: TypeaheadMatch): void {
     if (event && event.item) {
       this.usuarioSeleccionado = event.item;
     }
-  }
-
-  onDeseleccionarUsuario(): void {
-    // Solo limpiar si el texto no coincide con un usuario seleccionado
-    const textoActual = this.busquedaTexto.value?.trim();
-    if (!textoActual) {
-      this.usuarioSeleccionado = null;
-    }
-  }
-
-  obtenerTextoUsuario(usuario: UsuarioBusqueda): string {
-    return this.tipoBusqueda.value === TipoBusquedaUsuario.CI
-      ? usuario.numeroDocumento
-      : `${usuario.nombre} ${usuario.apellido}`;
   }
 
   alMenosUnRolSeleccionado(): boolean {

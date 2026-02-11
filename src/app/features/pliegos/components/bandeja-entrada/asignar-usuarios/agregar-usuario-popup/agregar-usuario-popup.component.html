@@ -36,13 +36,29 @@
             </div>
         </div>
 
-        <!-- Input de búsqueda -->
-        <div class="row mt-3">
-            <div class="form-group form-row col-12 m-0">
-                <label for="busqueda" class="col-form-label pl-0">
-                    {{ tipoBusqueda.value === TipoBusquedaUsuario.CI ? 'Cédula de identidad' : 'Nombre del usuario' }}
-                </label>
-                <input id="busqueda"
+        <!-- Input de búsqueda por CI -->
+        <div class="row mt-3" *ngIf="tipoBusqueda.value === TipoBusquedaUsuario.CI">
+            <div class="col-12">
+                <app-input-documento
+                    [id]="'busquedaCI'"
+                    [label]="'Cédula de identidad'"
+                    [esCedula]="true"
+                    [required]="false"
+                    [placeholder]="'Ingrese CI para buscar'"
+                    [formControl]="busquedaCI"
+                    (blur)="onBlurCI()">
+                </app-input-documento>
+
+                <small class="form-text text-muted mt-1" *ngIf="!cedulaValida">
+                    Ingrese una cédula válida para buscar usuarios
+                </small>
+            </div>
+
+            <!-- Lista de usuarios encontrados para CI -->
+            <div class="col-12 mt-2" *ngIf="cedulaValida && usuariosFiltrados.length > 0">
+                <label class="col-form-label pl-0">Usuarios encontrados</label>
+                <input
+                    type="text"
                     [formControl]="busquedaTexto"
                     [typeahead]="usuariosFiltrados"
                     [typeaheadItemTemplate]="customItemTemplate"
@@ -52,19 +68,68 @@
                     [typeaheadMinLength]="0"
                     [typeaheadOptionsInScrollableView]="10"
                     [typeaheadScrollable]="true"
-                    type="text"
-                    class="form-control col-12"
-                    (input)="onBuscarUsuario($event)"
-                    (blur)="onDeseleccionarUsuario()"
-                    [placeholder]="tipoBusqueda.value === TipoBusquedaUsuario.CI ? 'Ingrese CI' : 'Ingrese nombre'" />
+                    class="form-control"
+                    placeholder="Seleccione un usuario de la lista" />
+            </div>
 
-                <ng-template #customItemTemplate let-model="item" let-index="index">
-                    <div class="d-flex justify-content-between w-100">
-                        <span><strong>{{ model.numeroDocumento }}</strong> - {{ model.nombre }} {{ model.apellido }}</span>
-                    </div>
-                </ng-template>
+            <div class="col-12 mt-2" *ngIf="cedulaValida && usuariosFiltrados.length === 0">
+                <div class="alert alert-info">
+                    No se encontraron usuarios con la cédula ingresada
+                </div>
             </div>
         </div>
+
+        <!-- Input de búsqueda por Nombre -->
+        <div class="row mt-3" *ngIf="tipoBusqueda.value === TipoBusquedaUsuario.NOMBRE">
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="busquedaNombre" class="col-form-label pl-0">Nombre del usuario</label>
+                    <input
+                        id="busquedaNombre"
+                        type="text"
+                        [formControl]="busquedaNombre"
+                        class="form-control"
+                        placeholder="Ingrese al menos 5 caracteres"
+                        (input)="onBuscarPorNombre($event)"
+                        maxlength="100" />
+
+                    <small class="form-text text-muted mt-1" *ngIf="!nombreValido">
+                        Debe ingresar al menos 5 caracteres para buscar
+                    </small>
+                </div>
+            </div>
+
+            <!-- Lista de usuarios encontrados para Nombre -->
+            <div class="col-12" *ngIf="nombreValido && usuariosFiltrados.length > 0">
+                <label class="col-form-label pl-0">Usuarios encontrados</label>
+                <input
+                    type="text"
+                    [formControl]="busquedaTexto"
+                    [typeahead]="usuariosFiltrados"
+                    [typeaheadItemTemplate]="customItemTemplate"
+                    (typeaheadOnSelect)="onSeleccionarUsuario($event)"
+                    autocomplete="off"
+                    [typeaheadOptionsLimit]="20"
+                    [typeaheadMinLength]="0"
+                    [typeaheadOptionsInScrollableView]="10"
+                    [typeaheadScrollable]="true"
+                    class="form-control"
+                    placeholder="Seleccione un usuario de la lista" />
+            </div>
+
+            <div class="col-12 mt-2" *ngIf="nombreValido && usuariosFiltrados.length === 0">
+                <div class="alert alert-info">
+                    No se encontraron usuarios con el nombre ingresado
+                </div>
+            </div>
+        </div>
+
+        <!-- Template para los items del typeahead -->
+        <ng-template #customItemTemplate let-model="item" let-index="index">
+            <div class="d-flex justify-content-between w-100">
+                <span><strong>{{ model.numeroDocumento }}</strong> - {{ model.nombre }} {{ model.apellido }}</span>
+            </div>
+        </ng-template>
 
         <!-- Usuario seleccionado -->
         <div *ngIf="usuarioSeleccionado" class="row mt-3">
