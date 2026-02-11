@@ -96,8 +96,7 @@
           <form [formGroup]="formRoles">
             <div class="row">
               <div class="form-group form-row col-12" [class.field-error]="!alMenosUnRolSeleccionado() && intentoAgregar">
-                <label for="roles">* Roles</label>
-                <div class="d-flex justify-content-center w-100 col-12 Box">
+                <div class="d-flex justify-content-center w-50 col-12">
                   <div class="form-check col-3">
                     <input
                       type="checkbox"
@@ -151,7 +150,7 @@
 
       <div class="card mb-3">
         <div class="card-body">
-          <h5 class="card-title mb-3">Usuarios</h5>
+          <h5 class="card-title mb-3">Usuarios asignados</h5>
 
           <div *ngIf="editorPrincipal" class="mb-3">
             <h6 class="font-weight-bold">Editor principal</h6>
