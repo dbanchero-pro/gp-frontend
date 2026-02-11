@@ -114,7 +114,7 @@
               <span class="font-weight-bold">{{ modelo.denominacion }}</span>
               <span class="badge ml-2" *ngIf="!esBorrador(modelo)" [ngClass]="{
                 'badge-success': obtenerEstadoVigencia(modelo) === 'VIGENTE',
-                'badge-warning': obtenerEstadoVigencia(modelo) === 'NO_VIGENTE'
+                'badge-cancel': obtenerEstadoVigencia(modelo) === 'NO_VIGENTE'
               }">
                 {{ obtenerTextoEstadoVigencia(modelo) }}
               </span>

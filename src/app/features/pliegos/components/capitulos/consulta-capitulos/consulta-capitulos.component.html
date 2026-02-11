@@ -63,7 +63,7 @@
               <span class="font-weight-bold"><em class="fa fa-angle-right m-2"></em>{{ capitulo.denominacion }}</span>
               <span class="badge ml-2" *ngIf="!esBorrador(capitulo)" [ngClass]="{
                 'badge-success': obtenerEstadoVigencia(capitulo) === 'VIGENTE',
-                'badge-warning': obtenerEstadoVigencia(capitulo) === 'NO_VIGENTE'
+                'badge-cancel': obtenerEstadoVigencia(capitulo) === 'NO_VIGENTE'
               }">
                 {{ obtenerTextoEstadoVigencia(capitulo) }}
               </span>

@@ -355,7 +355,7 @@ export class BandejaEntradaComponent implements OnInit, AfterViewInit {
       [EstadoProcesoPliego.PENDIENTE_APROBACION]: 'badge-warning',
       [EstadoProcesoPliego.APROBADO]: 'badge-warning',
       [EstadoProcesoPliego.PUBLICADO]: 'badge-success',
-      [EstadoProcesoPliego.CANCELADO]: 'badge-danger'
+      [EstadoProcesoPliego.CANCELADO]: 'badge-cancel'
     };
     return clases[estado];
   }

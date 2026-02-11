@@ -63,7 +63,7 @@
               <span class="font-weight-bold"><em class="fa fa-caret-right m-2"></em> {{ seccion.denominacion }}</span>
               <span class="badge ml-2" *ngIf="!esBorrador(seccion)" [ngClass]="{
                 'badge-success': obtenerEstadoVigencia(seccion) === 'VIGENTE',
-                'badge-warning': obtenerEstadoVigencia(seccion) === 'NO_VIGENTE'
+                'badge-cancel': obtenerEstadoVigencia(seccion) === 'NO_VIGENTE'
               }">
                 {{ obtenerTextoEstadoVigencia(seccion) }}
               </span>
