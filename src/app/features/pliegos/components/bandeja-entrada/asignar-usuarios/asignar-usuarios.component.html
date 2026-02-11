@@ -1,42 +1,28 @@
 <div class="container-fluid">
   <!-- Información del proceso -->
-  <div class="card mb-4" *ngIf="proceso">
-    <div class="card-header bg-primary text-white">
-      <h5 class="mb-0">Asignar usuarios al proceso</h5>
-    </div>
-    <div class="card-body">
-      <div class="row g-0 py-1">
-        <div class="col-md-3 col-lg-2 etiqueta">Estado</div>
-        <div class="col font-weight-bold">
+  <div class="row" *ngIf="proceso">
+    <div class="col-12">
+      <div class="Box Box--colorInfo mr-3 ml-3 p-3">
+        <div class="mb-2 font-weight-bold">
+          {{ proceso.incisoDescripcion }} | {{ proceso.unidadEjecutoraDescripcion }}
+        </div>
+        <div class="mb-2 font-weight-bold">
+          {{ proceso.tipoCompraDescripcion }} | {{ proceso.subtipoCompraDescripcion }} N° {{ proceso.numeroCompra }}/{{ proceso.anioCompra }}
+        </div>
+        <div class="mb-2">
+            Modelo: <strong> Denominación Modelo 1</strong>
+        </div>
+        <div class="m-0">
           <span class="badge" [ngClass]="obtenerClaseBadgeEstado(proceso.estado)">
-            {{ obtenerNombreEstado(proceso.estado) }}
+                {{ obtenerNombreEstado(proceso.estado) }}
           </span>
-        </div>
-      </div>
-
-      <div class="row g-0 py-1">
-        <div class="col-md-3 col-lg-2 etiqueta">N°/Año compra</div>
-        <div class="col font-weight-bold">{{ proceso.numeroCompra }}/{{ proceso.anioCompra }}</div>
-      </div>
-
-      <div class="row g-0 py-1">
-        <div class="col-md-3 col-lg-2 etiqueta">Organismo</div>
-        <div class="col font-weight-bold">
-          {{ proceso.incisoDescripcion }} | {{ proceso.unidadEjecutoraDescripcion }} | {{ proceso.unidadCompraDescripcion }}
-        </div>
-      </div>
-
-      <div class="row g-0 py-1">
-        <div class="col-md-3 col-lg-2 etiqueta">Tipo de compra</div>
-        <div class="col font-weight-bold">
-          {{ proceso.tipoCompraDescripcion }} | {{ proceso.subtipoCompraDescripcion }}
         </div>
       </div>
     </div>
   </div>
 
   <!-- Lista de usuarios asignados -->
-  <div class="row justify-content-between align-items-center mb-3">
+  <div class="row justify-content-between align-items-center mb-3 mt-4">
     <div class="col-auto">
       <h5 class="mb-0">Usuarios asignados</h5>
     </div>
