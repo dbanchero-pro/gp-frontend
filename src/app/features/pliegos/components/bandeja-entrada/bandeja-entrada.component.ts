@@ -35,7 +35,8 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
 
   listaOrden: IColumnaOrden[] = [
     { id: 'estado', nombre: 'Estado' },
-    { id: 'numeroCompra', nombre: 'N°/Año compra' }
+    { id: 'numeroCompra', nombre: 'N°/Año compra' },
+    { id: 'tipoCompraDescripcion', nombre: 'Tipo de compra' }
   ];
 
   incisos: IncisoDTO[] = [

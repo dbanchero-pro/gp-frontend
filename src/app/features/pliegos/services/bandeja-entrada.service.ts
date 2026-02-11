@@ -179,6 +179,11 @@ export class BandejaEntradaService {
         if (valorA < valorB) return order === 'asc' ? -1 : 1;
         if (valorA > valorB) return order === 'asc' ? 1 : -1;
         return 0;
+      } else if (sort === 'tipoCompraDescripcion') {
+        const valorA = a.tipoCompraDescripcion || '';
+        const valorB = b.tipoCompraDescripcion || '';
+        const comparacion = valorA.localeCompare(valorB);
+        return order === 'asc' ? comparacion : -comparacion;
       }
       return 0;
     });
