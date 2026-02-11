@@ -1,4 +1,5 @@
 import { EstadoProcesoPliego } from '../enum/estado-proceso-pliego.enum';
+import { UsuarioAsignado } from '../components/bandeja-entrada/asignar-usuarios/models/usuario-asignado.model';
 
 export interface ProcesoPliego {
   id: number;
@@ -13,4 +14,5 @@ export interface ProcesoPliego {
   fechaPublicacion?: Date;
   fechaTopeRecepcionOfertas?: Date;
   vigente?: boolean;
+  usuariosAsignados?: UsuarioAsignado[];
 }

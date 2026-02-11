@@ -22,20 +22,15 @@
   </div>
 
   <!-- Lista de usuarios asignados -->
-  <div class="row justify-content-between align-items-center mb-3 mt-4">
-    <div class="col-auto">
-      <h5 class="mb-0">Usuarios asignados</h5>
-    </div>
-    <div class="col-auto">
-      <button class="btn btn-primary" (click)="agregarUsuario()">
-        <em class="fa fa-plus mr-1"></em>
-        Agregar usuario
-      </button>
-    </div>
+  <div class="row justify-content-end pr-2 mb-2 mt-4">
+    <button class="btn btn-primary mr-2" (click)="agregarUsuario()">
+      <em class="fa fa-plus mr-1"></em>
+      Agregar usuario
+    </button>
   </div>
 
   <app-cabezal-consulta
-    [totalItems]="total"
+    [totalItems]="proceso?.usuariosAsignados?.length || 0"
     [listaOrden]="listaOrden"
     [columnaOrden]="parametros.sort"
     [orden]="parametros.order"
@@ -44,42 +39,32 @@
   </app-cabezal-consulta>
 
   <!-- Cards de usuarios -->
-  <div *ngFor="let usuario of usuariosAsignadosFiltrados" class="row">
-    <div class="col-12 my-1">
-      <div class="card">
-        <div class="card-body">
-          <div class="row align-items-center">
-            <div class="col-md-3">
-              <div class="mb-2">
-                <span class="etiqueta">CI</span>
-                <div class="font-weight-bold">{{ usuario.numeroDocumento }}</div>
-              </div>
+  <div *ngFor="let usuario of proceso?.usuariosAsignados; let i = index" [style.position]="'relative'" [style.z-index]="8000-i">
+    <div class="card mb-2">
+      <div class="row">
+        <div class="col-12 py-2 px-4">
+          <div class="row g-0 py-1 px-3">
+            <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta">Número de documento</div>
+            <div class="col-9 col-sm-5 col-md-6 col-lg-7 font-weight-bold">{{ usuario.numeroDocumento }}</div>
+            <div class="col-3 col-sm-3 col-md-3 col-lg-3 d-flex justify-content-end align-items-start">
+              <app-boton-accion
+                [acciones]="obtenerAcciones(usuario)"
+                [ariaLabelMasOpciones]="'Mas opciones del usuario ' + obtenerNombreCompleto(usuario)"
+                (accionEjecutada)="ejecutarAccion($event)">
+              </app-boton-accion>
             </div>
-
-            <div class="col-md-4">
-              <div class="mb-2">
-                <span class="etiqueta">Nombre</span>
-                <div class="font-weight-bold">{{ obtenerNombreCompleto(usuario) }}</div>
-              </div>
-            </div>
-
-            <div class="col-md-3">
-              <div class="mb-2">
-                <span class="etiqueta">Roles</span>
-                <div class="font-weight-bold">{{ obtenerRoles(usuario) }}</div>
-              </div>
-            </div>
-
-            <div class="col-md-2 text-right">
-              <button
-                type="button"
-                class="btn btn-success btn-sm"
-                [attr.aria-label]="'Modificar usuario ' + obtenerNombreCompleto(usuario)"
-                (click)="modificarUsuario(usuario)">
-                <em class="fa fa-edit mr-1"></em>
-                Modificar
-              </button>
-            </div>
+          </div>
+          <div class="row g-0 py-1 px-3">
+            <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta">Nombre</div>
+            <div class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold">{{ obtenerNombreCompleto(usuario) }}</div>
+          </div>
+          <div class="row g-0 py-1 px-3">
+            <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta">Apellido</div>
+            <div class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold">{{ usuario.apellido }}</div>
+          </div>
+          <div class="row g-0 py-1 px-3">
+            <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta">Roles</div>
+            <div class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold">{{ obtenerRoles(usuario) }}</div>
           </div>
         </div>
       </div>
@@ -87,7 +72,7 @@
   </div>
 
   <!-- Mensaje cuando no hay usuarios -->
-  <div class="card row aviso-info-busqueda" *ngIf="total === 0">
+  <div class="card row aviso-info-busqueda" *ngIf="!proceso?.usuariosAsignados || proceso?.usuariosAsignados?.length === 0">
     <div class="card-body py-sm-2 mb-sm-2 col-12 text-center pt-sm-4 pb-sm-4">
       <em class="fa fa-users fa-2x d-block mb-4"></em>
       <h6>No hay usuarios asignados a este proceso</h6>
@@ -96,8 +81,8 @@
 
   <!-- Paginado -->
   <app-paginado
-    *ngIf="total > 0"
-    [totalItems]="total"
+    *ngIf="(proceso?.usuariosAsignados?.length || 0) > 0"
+    [totalItems]="proceso?.usuariosAsignados?.length || 0"
     [itemsPorPagina]="parametros.tamanoPagina"
     [paginaActual]="parametros.pagina + 1"
     (cambioPagina)="cambioPagina($event)"

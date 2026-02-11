@@ -128,6 +128,10 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     this.bandejaEntradaService.obtenerProceso(id).subscribe({
       next: (proceso: ProcesoPliego) => {
         this.proceso = proceso;
+        // Si no tiene usuarios asignados, usamos datos mock
+        if (!this.proceso.usuariosAsignados || this.proceso.usuariosAsignados.length === 0) {
+          this.proceso.usuariosAsignados = [...this.usuariosMock];
+        }
       },
       error: () => {
         this.actualizarServ.mensajeError('Error al cargar el proceso');
@@ -137,9 +141,7 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
   }
 
   cargarUsuariosAsignados(): void {
-    // Por ahora usamos datos mock
-    this.usuariosAsignados = [...this.usuariosMock];
-    this.aplicarFiltrosYOrdenamiento();
+    // Los usuarios se cargan en el proceso
   }
 
   aplicarFiltrosYOrdenamiento(): void {
@@ -210,7 +212,7 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     this.aplicarFiltrosYOrdenamiento();
   }
 
-  obtenerAccionesUsuario(usuario: UsuarioAsignado): AccionBoton[] {
+  obtenerAcciones(usuario: UsuarioAsignado): AccionBoton[] {
     return [
       {
         nombre: 'Modificar',
@@ -218,8 +220,21 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
         icono: 'fa fa-edit',
         ariaLabel: 'Modificar usuario ' + usuario.nombre,
         accion: () => this.modificarUsuario(usuario)
+      },
+      {
+        nombre: 'Eliminar',
+        clase: 'btn btn-danger btn-sm',
+        icono: 'fa fa-trash',
+        ariaLabel: 'Eliminar usuario ' + usuario.nombre,
+        accion: () => this.eliminarUsuario(usuario)
       }
     ];
+  }
+
+  ejecutarAccion(accion: AccionBoton): void {
+    if (accion.accion) {
+      accion.accion();
+    }
   }
 
   agregarUsuario(): void {
@@ -230,6 +245,17 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
   modificarUsuario(usuario: UsuarioAsignado): void {
     console.log('Modificar usuario:', usuario);
     // TODO: Implementar lógica de modificar usuario
+  }
+
+  eliminarUsuario(usuario: UsuarioAsignado): void {
+    console.log('Eliminar usuario:', usuario);
+    // TODO: Implementar lógica de eliminar usuario
+    if (this.proceso?.usuariosAsignados) {
+      const index = this.proceso.usuariosAsignados.findIndex(u => u.id === usuario.id);
+      if (index !== -1) {
+        this.proceso.usuariosAsignados.splice(index, 1);
+      }
+    }
   }
 
   obtenerNombreCompleto(usuario: UsuarioAsignado): string {
@@ -246,12 +272,14 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
       return;
     }
 
-    if (this.usuariosAsignados.length === 0) {
+    const usuariosAsignados = this.proceso.usuariosAsignados || [];
+
+    if (usuariosAsignados.length === 0) {
       this.actualizarServ.mensajeInformacion('Debe asignar al menos un usuario');
       return;
     }
 
-    const tieneEditorPrincipal = this.usuariosAsignados.some(u =>
+    const tieneEditorPrincipal = usuariosAsignados.some(u =>
       u.roles.includes('Editor Principal')
     );
 
@@ -263,7 +291,7 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     this.guardando = true;
 
     // TODO: Reemplazar con la llamada real al servicio
-    this.bandejaEntradaService.asignarUsuariosYFinalizar(this.proceso.id, this.usuariosAsignados).subscribe({
+    this.bandejaEntradaService.asignarUsuariosYFinalizar(this.proceso.id, usuariosAsignados).subscribe({
       next: () => {
         this.guardando = false;
         this.actualizarServ.mensajeCorrecto('Asignación finalizada correctamente');
