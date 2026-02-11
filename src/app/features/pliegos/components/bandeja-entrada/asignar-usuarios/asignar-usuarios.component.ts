@@ -232,7 +232,7 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     const yaAsignado = this.proceso.usuariosAsignados?.some(u => u.id === usuario.id);
     if (yaAsignado) {
       this.actualizarServ.mensajeInformacion('El usuario ya está asignado al proceso');
-      this.modalRef?.hide();
+      this.cerrarModalAgregar();
       return;
     }
 
@@ -244,6 +244,10 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     this.proceso.usuariosAsignados.push(usuario);
 
     this.actualizarServ.mensajeCorrecto('Usuario agregado correctamente');
+    this.cerrarModalAgregar();
+  }
+
+  cerrarModalAgregar(): void {
     this.modalRef?.hide();
   }
 

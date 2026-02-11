@@ -45,12 +45,20 @@
                 <label for="busqueda" class="col-form-label pl-0">
                     {{ tipoBusqueda.value === TipoBusquedaUsuario.CI ? 'CI' : 'Nombre' }}
                 </label>
-                <input id="busqueda" [formControl]="busquedaTexto" [typeahead]="usuarios$"
-                    [typeaheadItemTemplate]="customItemTemplate" (typeaheadOnSelect)="seleccionarUsuario($event)"
-                    autocomplete="off" [typeaheadAsync]="true" [typeaheadOptionsLimit]="999"
-                    [typeaheadOptionsInScrollableView]="10" [typeaheadScrollable]="true" type="text"
-                    [typeaheadSingleWords]="false" class="form-control col-12" (keyup)="buscarUsuario($event)"
-                    (blur)="seleccionarUsuario(null)"
+                <input id="busqueda"
+                    [formControl]="busquedaTexto"
+                    [typeahead]="usuariosFiltrados"
+                    [typeaheadItemTemplate]="customItemTemplate"
+                    (typeaheadOnSelect)="onSeleccionarUsuario($event)"
+                    autocomplete="off"
+                    [typeaheadOptionsLimit]="20"
+                    [typeaheadMinLength]="0"
+                    [typeaheadOptionsInScrollableView]="10"
+                    [typeaheadScrollable]="true"
+                    type="text"
+                    class="form-control col-12"
+                    (input)="onBuscarUsuario($event)"
+                    (blur)="onDeseleccionarUsuario()"
                     [placeholder]="tipoBusqueda.value === TipoBusquedaUsuario.CI ? 'Ingrese CI' : 'Ingrese nombre'" />
 
                 <ng-template #customItemTemplate let-model="item" let-index="index">
