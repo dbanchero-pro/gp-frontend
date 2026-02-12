@@ -1,6 +1,31 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-8">
+      <h4>Iniciar pliego</h4>
+    </div>
+  </div>
 
-<div class="row">
-  <div [ngClass]="colFiltro" class="sidebar">
+  <!-- Información del proceso -->
+  <div class="row" *ngIf="proceso">
+    <div class="col-12">
+      <div class="Box Box--colorInfo p-3 mb-3">
+        <div class="mb-2 font-weight-bold subtitle">
+          {{ proceso.incisoDescripcion }} | {{ proceso.unidadEjecutoraDescripcion }}
+        </div>
+        <div class="mb-2 font-weight-bold">
+          {{ proceso.tipoCompraDescripcion }} | {{ proceso.subtipoCompraDescripcion }} N° {{ proceso.numeroCompra }}/{{ proceso.anioCompra }}
+        </div>
+        <div class="m-0">
+          <span class="badge" [ngClass]="obtenerClaseBadgeEstado(proceso.estado)">
+            {{ obtenerNombreEstado(proceso.estado) }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div [ngClass]="colFiltro" class="sidebar">
     <app-filtro title="Búsqueda" titleBtn="Buscar" iconTitle="fa fa-search"
       (evFilter)="actualizarFiltrosYBuscar()">
       <div [formGroup]="formularioFiltro" class="col-12 ml-0 pl-0 mr-0 pr-0">
@@ -225,5 +250,7 @@
         <em class="fa fa-arrow-left mr-1"></em>Volver
       </button>
     </div>
+  </div>
+
   </div>
 </div>

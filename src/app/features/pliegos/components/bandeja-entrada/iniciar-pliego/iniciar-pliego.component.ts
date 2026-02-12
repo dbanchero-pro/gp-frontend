@@ -10,6 +10,9 @@ import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
 import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
 import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
 import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
+import { BandejaEntradaService } from '../../../services/bandeja-entrada.service';
+import { ProcesoPliego } from '../../../models/proceso-pliego.model';
+import { EstadoProcesoPliego } from '../../../enum/estado-proceso-pliego.enum';
 
 interface Inciso {
   id: number;
@@ -50,11 +53,13 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
   private fechaPipe = inject(FechaPipe);
   private actualizarService = inject(ActualizarService);
   private snapshotGenericService = inject(SnapshotGenericService);
+  private bandejaEntradaService = inject(BandejaEntradaService);
 
   formularioFiltro: FormGroup;
   modelos: Modelo[] = [];
   cargando = false;
   pliegoId: number | null = null;
+  proceso: ProcesoPliego | null = null;
 
   colFiltro = 'col-lg-3';
   colTabla = 'col-lg-9';
@@ -104,6 +109,11 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.pliegoId = this.route.snapshot.params['id'] ? Number(this.route.snapshot.params['id']) : null;
+
+    if (this.pliegoId) {
+      this.cargarProceso(this.pliegoId);
+    }
+
     this.cargarTiposCompraMock();
     this.configurarCambioInciso();
     this.configurarCambioTipoCompra();
@@ -343,5 +353,44 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     if (!texto) return '';
     if (texto.length <= limite) return texto;
     return texto.substring(0, limite) + '...';
+  }
+
+  cargarProceso(id: number): void {
+    this.bandejaEntradaService.obtenerProceso(id).subscribe({
+      next: (proceso: ProcesoPliego) => {
+        this.proceso = proceso;
+      },
+      error: () => {
+        this.actualizarService.mensajeError('Error al cargar el proceso');
+      }
+    });
+  }
+
+  obtenerNombreEstado(estado: EstadoProcesoPliego): string {
+    const estados: { [key in EstadoProcesoPliego]: string } = {
+      [EstadoProcesoPliego.PENDIENTE]: 'Pendiente',
+      [EstadoProcesoPliego.ASIGNADO]: 'Asignado',
+      [EstadoProcesoPliego.EN_PROCESO]: 'En proceso',
+      [EstadoProcesoPliego.PENDIENTE_VALIDACION]: 'Pendiente validación',
+      [EstadoProcesoPliego.PENDIENTE_APROBACION]: 'Pendiente aprobación',
+      [EstadoProcesoPliego.APROBADO]: 'Aprobado',
+      [EstadoProcesoPliego.PUBLICADO]: 'Publicado',
+      [EstadoProcesoPliego.CANCELADO]: 'Cancelado'
+    };
+    return estados[estado] || '';
+  }
+
+  obtenerClaseBadgeEstado(estado: EstadoProcesoPliego): string {
+    const clases: { [key in EstadoProcesoPliego]: string } = {
+      [EstadoProcesoPliego.PENDIENTE]: 'badge-info',
+      [EstadoProcesoPliego.ASIGNADO]: 'badge-info',
+      [EstadoProcesoPliego.EN_PROCESO]: 'badge-warning',
+      [EstadoProcesoPliego.PENDIENTE_VALIDACION]: 'badge-warning',
+      [EstadoProcesoPliego.PENDIENTE_APROBACION]: 'badge-warning',
+      [EstadoProcesoPliego.APROBADO]: 'badge-warning',
+      [EstadoProcesoPliego.PUBLICADO]: 'badge-success',
+      [EstadoProcesoPliego.CANCELADO]: 'badge-cancel'
+    };
+    return clases[estado];
   }
 }
