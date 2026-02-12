@@ -7,8 +7,15 @@
 
     <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
   
-    <div *ngIf="permiso" class="Box Box--colorInfo">
-        <span class="subtitle"> <strong>CI {{ permiso.nroDocumento | formatoCi }}</strong> - {{ permiso.nombre }}</span>
+  <div class="row">
+        <div class="col-12">
+            <div class="Box Box--colorInfo">
+                <div class="row g-0 py-1 px-3 subtitle">
+                    <div class="col-12 col-sm-8 col-md-9 font-weight-bold">{{ permiso.nombre }}</div>
+                    <div class="col-12 col-sm-8 col-md-9">CI:{{ permiso.nroDocumento  | formatoCi }}</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <form [formGroup]="form" (submit)="guardar()">

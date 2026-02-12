@@ -11,13 +11,9 @@
         <div class="row">
             <div class="col-12">
                 <div class="Box Box--colorInfo">
-                    <div class="row g-0 py-1 px-3">
-                        <div class="col-12 col-sm-4 col-md-3 fw-semibold etiqueta">Cédula de identidad</div>
-                        <div class="col-12 col-sm-8 col-md-9 font-weight-bold">{{ usuario.numeroDocumento }}</div>
-                    </div>
-                    <div class="row g-0 py-1 px-3">
-                        <div class="col-12 col-sm-4 col-md-3 fw-semibold etiqueta">Nombre</div>
+                    <div class="row g-0 py-1 px-3 subtitle">
                         <div class="col-12 col-sm-8 col-md-9 font-weight-bold">{{ usuario.nombre }} {{ usuario.apellido }}</div>
+                        <div class="col-12 col-sm-8 col-md-9">CI:{{ usuario.numeroDocumento | formatoCi }}</div>
                     </div>
                 </div>
             </div>
