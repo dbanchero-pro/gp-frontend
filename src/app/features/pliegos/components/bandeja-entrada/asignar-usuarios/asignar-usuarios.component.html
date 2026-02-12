@@ -1,12 +1,12 @@
 <div class="container-fluid">
    <div class="row">
-      <div class="col-md-8">
-        <h4>Asignación de usuarios</h4>
+      <div class="col-md-8 ml-0 pl-0 mr-0 pr-0">
+        <h4><em class="fa fa-user-plus mr-2"></em>Asignación de usuarios</h4>
       </div>
   </div>
   <!-- Información del proceso -->
   <div class="row" *ngIf="proceso">
-    <div class="col-12">
+    <div class="col-12 ml-0 pl-0 mr-0 pr-0">
       <div class="Box Box--colorInfo p-3">
         <div class="mb-2 font-weight-bold subtitle">
           {{ proceso.incisoDescripcion }} | {{ proceso.unidadEjecutoraDescripcion }}
@@ -27,7 +27,7 @@
   </div>
 
   <!-- Lista de usuarios asignados -->
-  <div class="row justify-content-end pr-2 mb-2 mt-4">
+  <div class="row justify-content-end">
     <button class="btn btn-primary mr-2" (click)="agregarUsuario()">
       <em class="fa fa-plus mr-1"></em>
       Agregar usuario
@@ -73,11 +73,8 @@
   </div>
 
   <!-- Mensaje cuando no hay usuarios -->
-  <div class="card row aviso-info-busqueda" *ngIf="!proceso?.usuariosAsignados || proceso?.usuariosAsignados?.length === 0">
-    <div class="card-body py-sm-2 mb-sm-2 col-12 text-center pt-sm-4 pb-sm-4">
-      <em class="fa fa-users fa-2x d-block mb-4"></em>
-      <h6>No hay usuarios asignados a este proceso</h6>
-    </div>
+  <div class="alert alert-info" *ngIf="!proceso?.usuariosAsignados || proceso?.usuariosAsignados?.length === 0">
+      No hay usuarios asignados a este pliego
   </div>
 
   <!-- Paginado -->

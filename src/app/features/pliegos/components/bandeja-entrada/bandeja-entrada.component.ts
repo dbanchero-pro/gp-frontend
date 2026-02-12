@@ -202,7 +202,7 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
         acciones.push({
           nombre: 'Cancelar',
           clase: 'btn btn-success btn-ancho-fijo',
-          icono: 'fa fa-times',
+          icono: 'fa fa-ban',
           ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
           accion: () => this.cancelarProceso(proceso)
         });
@@ -219,7 +219,7 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
         acciones.push({
           nombre: 'Cancelar',
           clase: 'btn btn-success btn-ancho-fijo',
-          icono: 'fa fa-times',
+          icono: 'fa fa-ban',
           ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
           accion: () => this.cancelarProceso(proceso)
         });
@@ -229,14 +229,14 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
         acciones.push({
           nombre: 'Validar',
           clase: 'btn btn-success btn-ancho-fijo',
-          icono: 'fa fa-check-circle',
+          icono: 'fa fa-check',
           ariaLabel: 'Validar proceso ' + proceso.numeroCompra,
           accion: () => this.validarProceso(proceso)
         });
         acciones.push({
           nombre: 'Cancelar',
           clase: 'btn btn-success btn-ancho-fijo',
-          icono: 'fa fa-times',
+          icono: 'fa fa-ban',
           ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
           accion: () => this.cancelarProceso(proceso)
         });
@@ -246,14 +246,14 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
         acciones.push({
           nombre: 'Aprobar',
           clase: 'btn btn-success btn-ancho-fijo',
-          icono: 'fa fa-thumbs-up',
+          icono: 'fa fa-check-circle',
           ariaLabel: 'Aprobar proceso ' + proceso.numeroCompra,
           accion: () => this.aprobarProceso(proceso)
         });
         acciones.push({
           nombre: 'Cancelar',
           clase: 'btn btn-success btn-ancho-fijo',
-          icono: 'fa fa-times',
+          icono: 'fa fa-ban',
           ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
           accion: () => this.cancelarProceso(proceso)
         });
@@ -263,7 +263,7 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
         acciones.push({
           nombre: 'Cancelar',
           clase: 'btn btn-success btn-ancho-fijo',
-          icono: 'fa fa-times',
+          icono: 'fa fa-ban',
           ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
           accion: () => this.cancelarProceso(proceso)
         });
@@ -281,7 +281,7 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
           acciones.push({
             nombre: 'Cancelar',
             clase: 'btn btn-success btn-ancho-fijo',
-            icono: 'fa fa-times',
+            icono: 'fa fa-ban',
             ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
             accion: () => this.cancelarProceso(proceso)
           });
