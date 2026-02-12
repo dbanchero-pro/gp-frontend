@@ -118,6 +118,7 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     } else {
       setTimeout(() => {
         this.nuevaConsulta();
+        this.buscar();
       }, 100);
     }
   }
