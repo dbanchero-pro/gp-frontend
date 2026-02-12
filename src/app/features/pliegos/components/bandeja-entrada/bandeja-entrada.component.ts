@@ -75,7 +75,7 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
     { valor: EstadoProcesoPliego.PENDIENTE_VALIDACION, nombre: 'Pendiente validación' },
     { valor: EstadoProcesoPliego.PENDIENTE_APROBACION, nombre: 'Pendiente aprobación' },
     { valor: EstadoProcesoPliego.APROBADO, nombre: 'Aprobado' },
-    { valor: EstadoProcesoPliego.CANCELADO, nombre: 'Cancelado' }
+    { valor: EstadoProcesoPliego.CANCELADO, nombre: 'Publicado (vigente)' }
   ];
 
   constructor() {
