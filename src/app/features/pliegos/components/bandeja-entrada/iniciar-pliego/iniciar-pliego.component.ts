@@ -1,0 +1,346 @@
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ClausulaModelo, Modelo } from '../../../models/modelo.model';
+import { FiltroModelo } from '../../../models/filtro-modelo.model';
+import { ModeloService } from '../../../services/modelo.service';
+import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden.model';
+import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
+import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
+import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
+import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
+
+interface Inciso {
+  id: number;
+  codigo: string;
+  descripcion: string;
+}
+
+interface UnidadEjecutora {
+  id: number;
+  codigo: string;
+  descripcion: string;
+  incisoId: number;
+}
+
+interface TipoCompra {
+  id: number;
+  descripcion: string;
+  subtipos: SubtipoCompra[];
+}
+
+interface SubtipoCompra {
+  id: number;
+  descripcion: string;
+}
+
+@Component({
+  selector: 'app-iniciar-pliego',
+  templateUrl: './iniciar-pliego.component.html',
+  styleUrls: ['./iniciar-pliego.component.scss'],
+  standalone: false
+})
+export class IniciarPliegoComponent implements OnInit, AfterViewInit {
+  private fb = inject(FormBuilder);
+  private modeloService = inject(ModeloService);
+  private location = inject(Location);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private fechaPipe = inject(FechaPipe);
+  private actualizarService = inject(ActualizarService);
+  private snapshotGenericService = inject(SnapshotGenericService);
+
+  formularioFiltro: FormGroup;
+  modelos: Modelo[] = [];
+  cargando = false;
+  pliegoId: number | null = null;
+
+  colFiltro = 'col-lg-3';
+  colTabla = 'col-lg-9';
+
+  total = -1;
+  parametros = {
+    pagina: 0,
+    tamanoPagina: 10,
+    sort: 'denominacion',
+    order: 'asc' as 'asc' | 'desc'
+  };
+
+  listaOrden: IColumnaOrden[] = [
+    { id: 'denominacion', nombre: 'Denominación' },
+    { id: 'estado', nombre: 'Estado' },
+  ];
+
+  incisos: Inciso[] = [
+    { id: 1, codigo: '02', descripcion: 'Presidencia de la República' },
+    { id: 2, codigo: '04', descripcion: 'Ministerio de Economía y Finanzas' },
+    { id: 3, codigo: '10', descripcion: 'Ministerio de Obras Públicas' }
+  ];
+
+  unidadesEjecutoras: UnidadEjecutora[] = [];
+  unidadesEjecutorasCompletas: UnidadEjecutora[] = [
+    { id: 1, codigo: '001', descripcion: 'Unidad Central', incisoId: 1 },
+    { id: 2, codigo: '005', descripcion: 'Unidad de Proyectos', incisoId: 1 },
+    { id: 5, codigo: '002', descripcion: 'Dirección General', incisoId: 2 },
+    { id: 10, codigo: '001', descripcion: 'Dirección de Obras', incisoId: 3 }
+  ];
+
+  tiposCompra: TipoCompra[] = [];
+  subtiposCompra: SubtipoCompra[] = [];
+
+  public static readonly SNAPSHOT_KEY = 'INICIAR_PLIEGO';
+
+  constructor() {
+    this.formularioFiltro = this.fb.nonNullable.group({
+      incisoId: [null],
+      unidadEjecutoraId: [null],
+      tipoCompraId: [null],
+      subtipoCompraId: [null],
+      denominacion: [''],
+      rangoFechasVigencia: [null]
+    });
+  }
+
+  ngOnInit(): void {
+    this.pliegoId = this.route.snapshot.params['id'] ? Number(this.route.snapshot.params['id']) : null;
+    this.cargarTiposCompraMock();
+    this.configurarCambioInciso();
+    this.configurarCambioTipoCompra();
+  }
+
+  ngAfterViewInit(): void {
+    const paramVolver = this.route.snapshot.queryParamMap.get('volver');
+    if (paramVolver === '1') {
+      setTimeout(() => {
+        this.buscarVolver();
+      }, 100);
+    } else {
+      setTimeout(() => {
+        this.nuevaConsulta();
+      }, 100);
+    }
+  }
+
+  private cargarTiposCompraMock(): void {
+    this.tiposCompra = [
+      { id: 1, descripcion: 'Licitación Pública', subtipos: [
+        { id: 1, descripcion: 'Nacional' },
+        { id: 2, descripcion: 'Internacional' }
+      ]},
+      { id: 2, descripcion: 'Contratación Directa', subtipos: [
+        { id: 3, descripcion: 'Por monto' }
+      ]},
+      { id: 3, descripcion: 'Licitación Abreviada', subtipos: [] }
+    ];
+  }
+
+  private configurarCambioInciso(): void {
+    this.formularioFiltro.get('incisoId')?.valueChanges.subscribe(incisoId => {
+      this.formularioFiltro.patchValue({
+        unidadEjecutoraId: null
+      }, { emitEvent: false });
+
+      if (incisoId) {
+        this.unidadesEjecutoras = this.unidadesEjecutorasCompletas.filter(
+          ue => ue.incisoId === incisoId
+        );
+      } else {
+        this.unidadesEjecutoras = [];
+      }
+    });
+  }
+
+  private configurarCambioTipoCompra(): void {
+    this.formularioFiltro.get('tipoCompraId')?.valueChanges.subscribe(tipoCompraId => {
+      this.formularioFiltro.patchValue({
+        subtipoCompraId: null
+      }, { emitEvent: false });
+
+      if (tipoCompraId) {
+        const tipoSeleccionado = this.tiposCompra.find(tc => tc.id === tipoCompraId);
+        this.subtiposCompra = tipoSeleccionado?.subtipos || [];
+      } else {
+        this.subtiposCompra = [];
+      }
+    });
+  }
+
+  private buscarVolver(): void {
+    const snap = this.snapshotGenericService.load<any>(IniciarPliegoComponent.SNAPSHOT_KEY);
+
+    if (snap) {
+      this.formularioFiltro.patchValue(snap.filtro);
+      this.parametros.pagina = snap.pagina;
+      this.parametros.tamanoPagina = snap.tamanoPagina;
+      this.parametros.sort = snap.sort;
+      this.parametros.order = snap.order;
+      this.buscar();
+    }
+
+    const currentUrl = this.location.path().split('?')[0];
+    this.location.replaceState(currentUrl);
+  }
+
+  buscar(): void {
+    this.cargando = true;
+    const valores = this.formularioFiltro.value;
+    const rangoFechas = valores.rangoFechasVigencia;
+
+    const filtro: FiltroModelo = {
+      incisoId: valores.incisoId || null,
+      unidadEjecutoraId: valores.unidadEjecutoraId || null,
+      tipoCompraId: valores.tipoCompraId || null,
+      subtipoCompraId: valores.subtipoCompraId || null,
+      denominacion: valores.denominacion || undefined,
+      fechaVigenciaDesde: rangoFechas?.fechaDesde || null,
+      fechaVigenciaHasta: rangoFechas?.fechaHasta || null
+    };
+
+    this.snapshotGenericService.save(
+      IniciarPliegoComponent.SNAPSHOT_KEY,
+      {
+        filtro: valores,
+        pagina: this.parametros.pagina,
+        tamanoPagina: this.parametros.tamanoPagina,
+        sort: this.parametros.sort,
+        order: this.parametros.order
+      }
+    );
+
+    this.modeloService.buscarModelos(filtro).subscribe({
+      next: (modelos) => {
+        this.modelos = modelos;
+        this.total = modelos.length;
+        this.cargando = false;
+      },
+      error: () => {
+        this.cargando = false;
+      }
+    });
+  }
+
+  actualizarFiltrosYBuscar(): void {
+    this.parametros.pagina = 0;
+    this.buscar();
+  }
+
+  nuevaConsulta(): void {
+    this.formularioFiltro.reset();
+    this.parametros.pagina = 0;
+    this.parametros.tamanoPagina = 10;
+    this.parametros.sort = 'denominacion';
+    this.parametros.order = 'asc';
+    this.modelos = [];
+    this.total = -1;
+    this.unidadesEjecutoras = [];
+    this.subtiposCompra = [];
+
+    this.snapshotGenericService.clear(
+      IniciarPliegoComponent.SNAPSHOT_KEY
+    );
+  }
+
+  cambioPagina(pagina: number): void {
+    this.parametros.pagina = pagina - 1;
+    this.buscar();
+  }
+
+  cambioPorPagina(tamanoPagina: number): void {
+    this.parametros.tamanoPagina = tamanoPagina;
+    this.parametros.pagina = 0;
+    this.buscar();
+  }
+
+  cambioOrden(orden: 'asc' | 'desc'): void {
+    this.parametros.order = orden;
+    this.buscar();
+  }
+
+  cambioColumnaOrden(columna: string): void {
+    this.parametros.sort = columna;
+    this.buscar();
+  }
+
+  obtenerAccionesClausula(clausula: ClausulaModelo): AccionBoton[] {
+      const acciones: AccionBoton[] = [];
+
+      acciones.push({
+        nombre: 'Ver',
+        clase: 'btn btn-sm',
+        icono: 'fa fa-eye',
+        ariaLabel: `Ver redacciones de cláusula ${clausula.denominacion}`,
+      });
+
+      return acciones;
+  }
+
+  volver(): void {
+    this.router.navigate(['/pliegos/bandeja-entrada']);
+  }
+
+  seleccionarModelo(modelo: Modelo): void {
+    if (!this.pliegoId) {
+      this.actualizarService.mensajeError('No se pudo identificar el pliego');
+      return;
+    }
+
+    const mensaje = `¿Está seguro que desea iniciar el pliego con el modelo "${modelo.denominacion}"?`;
+
+    this.actualizarService.confirmar(
+      mensaje,
+      () => {
+        // Aquí se debe llamar al servicio para asignar el modelo al pliego
+        console.log('Asignar modelo', modelo.id, 'al pliego', this.pliegoId);
+        this.actualizarService.mensajeCorrecto(`El pliego ha sido iniciado con el modelo "${modelo.denominacion}"`);
+        this.volver();
+      }
+    );
+  }
+
+  obtenerTextoVigencia(modelo: Modelo): string {
+    const desde = modelo.fechaVigenciaDesde
+      ? this.fechaPipe.transform(modelo.fechaVigenciaDesde)
+      : ' ';
+    const hasta = modelo.fechaVigenciaHasta
+      ? this.fechaPipe.transform(modelo.fechaVigenciaHasta)
+      : ' ';
+    return desde + ' - ' + hasta;
+  }
+
+  esBorrador(modelo: Modelo): boolean {
+    return modelo.estado === 'BORRADOR';
+  }
+
+  esVigente(modelo: Modelo): boolean {
+    const hoy = new Date();
+    const desde = modelo.fechaVigenciaDesde ? new Date(modelo.fechaVigenciaDesde) : null;
+    const hasta = modelo.fechaVigenciaHasta ? new Date(modelo.fechaVigenciaHasta) : null;
+
+    if (modelo.estado === 'BORRADOR' || !modelo.versionada) {
+      return false;
+    }
+
+    if (desde && hoy < desde) {
+      return false;
+    }
+    if (hasta && hoy > hasta) {
+      return false;
+    }
+    return true;
+  }
+
+  obtenerEstadoVigencia(modelo: Modelo): string {
+    return this.esVigente(modelo) ? 'VIGENTE' : 'NO_VIGENTE';
+  }
+
+  obtenerTextoEstadoVigencia(modelo: Modelo): string {
+    return this.esVigente(modelo) ? 'Vigente' : 'No vigente';
+  }
+
+  truncarTexto(texto: string, limite: number = 500): string {
+    if (!texto) return '';
+    if (texto.length <= limite) return texto;
+    return texto.substring(0, limite) + '...';
+  }
+}

@@ -305,7 +305,10 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
   }
 
   iniciarProceso(proceso: ProcesoPliego): void {
-    console.log('Iniciar proceso:', proceso);
+    if (!proceso.id) {
+      return;
+    }
+    this.router.navigate(['/pliegos/bandeja-entrada/iniciar', proceso.id]);
   }
 
   elaborarProceso(proceso: ProcesoPliego): void {
