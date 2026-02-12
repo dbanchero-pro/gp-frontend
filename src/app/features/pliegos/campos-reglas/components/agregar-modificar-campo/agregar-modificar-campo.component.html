@@ -60,13 +60,13 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group" [class.field-error]="form.get('sePuedeEliminar')?.invalid && form.get('sePuedeEliminar')?.touched">
-                                <label for="sePuedeEliminar">* Se puede eliminar</label>
+                                <label for="sePuedeEliminar">* Campo protegido</label>
                                 <select id="sePuedeEliminar" class="form-control" formControlName="sePuedeEliminar">
                                     <option *ngFor="let opcion of opcionesSiNo" [value]="opcion.id">{{ opcion.nombre }}</option>
                                 </select>
                                 <span class="texto-error m-0"
                                     [style.visibility]="form.get('sePuedeEliminar')?.hasError('required') && form.get('sePuedeEliminar')?.touched ? 'visible' : 'hidden'">
-                                    Debe indicar si se puede eliminar
+                                    Debe indicar si se puede modificar o eliminar el campo
                                 </span>
                             </div>
                         </div>
