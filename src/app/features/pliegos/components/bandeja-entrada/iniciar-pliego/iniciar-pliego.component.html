@@ -36,8 +36,8 @@
             <select class="form-control col-12">
               <option value="null">Todas </option>
               <option value="M" selected> Modelos</option>
-              <option value="P"> Pliegos mi organismo</option>
-              <option value="PO"> Pliegos otros organismos</option>
+              <option value="P"> Pliegos de mi organismo</option>
+              <option value="PO"> Pliegos de otros organismos</option>
             </select>
           </div>
         </div>
@@ -46,7 +46,7 @@
           <div class="form-group form-row col-12 m-0 pb-0">
             <label for="incisoId" class="col-form-label col-12">Inciso</label>
             <select class="form-control col-12" id="incisoId" formControlName="incisoId">
-              <option [ngValue]="null">Seleccione un inciso</option>
+              <option [ngValue]="null">Todos los incisos</option>
               <option *ngFor="let inciso of incisos" [ngValue]="inciso.id">
                 {{ inciso.codigo }} - {{ inciso.descripcion }}
               </option>
@@ -59,7 +59,7 @@
             <label for="unidadEjecutoraId" class="col-form-label col-12">Unidad Ejecutora</label>
             <select class="form-control col-12" id="unidadEjecutoraId" formControlName="unidadEjecutoraId"
               [disabled]="unidadesEjecutoras.length === 0">
-              <option [ngValue]="null">Seleccione una unidad ejecutora</option>
+              <option [ngValue]="null">Todas las unidades ejecutoras</option>
               <option *ngFor="let ue of unidadesEjecutoras" [ngValue]="ue.id">
                 {{ ue.codigo }} - {{ ue.descripcion }}
               </option>

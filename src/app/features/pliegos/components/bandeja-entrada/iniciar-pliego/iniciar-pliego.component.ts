@@ -74,7 +74,7 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
 
   listaOrden: IColumnaOrden[] = [
     { id: 'denominacion', nombre: 'Denominación' },
-    { id: 'estado', nombre: 'Estado' },
+    { id: 'Inciso', nombre: 'Inciso' },
   ];
 
   incisos: Inciso[] = [
