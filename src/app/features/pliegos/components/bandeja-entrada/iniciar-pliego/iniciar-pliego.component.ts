@@ -98,8 +98,9 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
 
   constructor() {
     this.formularioFiltro = this.fb.nonNullable.group({
-      incisoId: [null],
-      unidadEjecutoraId: [null],
+      tipoBusqueda: ['M'],
+      incisoId: [{ value: null, disabled: true }],
+      unidadEjecutoraId: [{ value: null, disabled: true }],
       tipoCompraId: [null],
       subtipoCompraId: [null],
       denominacion: [''],
@@ -115,6 +116,7 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     }
 
     this.cargarTiposCompraMock();
+    this.configurarCambioTipoBusqueda();
     this.configurarCambioInciso();
     this.configurarCambioTipoCompra();
   }
@@ -144,6 +146,24 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
       ]},
       { id: 3, descripcion: 'Licitación Abreviada', subtipos: [] }
     ];
+  }
+
+  private configurarCambioTipoBusqueda(): void {
+    this.formularioFiltro.get('tipoBusqueda')?.valueChanges.subscribe(tipoBusqueda => {
+      const incisoControl = this.formularioFiltro.get('incisoId');
+      const unidadEjecutoraControl = this.formularioFiltro.get('unidadEjecutoraId');
+
+      if (tipoBusqueda === 'PO') {
+        incisoControl?.enable({ emitEvent: false });
+        unidadEjecutoraControl?.enable({ emitEvent: false });
+      } else {
+        incisoControl?.disable({ emitEvent: false });
+        unidadEjecutoraControl?.disable({ emitEvent: false });
+        incisoControl?.setValue(null, { emitEvent: false });
+        unidadEjecutoraControl?.setValue(null, { emitEvent: false });
+        this.unidadesEjecutoras = [];
+      }
+    });
   }
 
   private configurarCambioInciso(): void {
