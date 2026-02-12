@@ -1,8 +1,21 @@
+
 <div class="row">
   <div [ngClass]="colFiltro" class="sidebar">
     <app-filtro title="Búsqueda" titleBtn="Buscar" iconTitle="fa fa-search"
       (evFilter)="actualizarFiltrosYBuscar()">
       <div [formGroup]="formularioFiltro" class="col-12 ml-0 pl-0 mr-0 pr-0">
+
+        <div class="row">
+          <div class="form-group form-row col-12 m-0 pb-0">
+            <label for="articuloId" class="col-form-label col-12">Tipo búsqueda</label>
+            <select class="form-control col-12">
+              <option value="null">Todas </option>
+              <option value="M" selected> Modelos</option>
+              <option value="P"> Pliegos mi organismo</option>
+              <option value="PO"> Pliegos otros organismos</option>
+            </select>
+          </div>
+        </div>
 
         <div class="row">
           <div class="form-group form-row col-12 m-0 pb-0">
@@ -31,46 +44,9 @@
 
         <div class="row">
           <div class="form-group form-row col-12 m-0 pb-0">
-            <label for="tipoCompraId" class="col-form-label col-12">Tipo de compra</label>
-            <select class="form-control col-12" id="tipoCompraId" formControlName="tipoCompraId">
-              <option [ngValue]="null">Seleccione un tipo de compra</option>
-              <option *ngFor="let tipo of tiposCompra" [ngValue]="tipo.id">
-                {{ tipo.descripcion }}
-              </option>
-            </select>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="form-group form-row col-12 m-0 pb-0">
-            <label for="subtipoCompraId" class="col-form-label col-12">Subtipo de compra</label>
-            <select class="form-control col-12" id="subtipoCompraId" formControlName="subtipoCompraId"
-              [disabled]="subtiposCompra.length === 0">
-              <option [ngValue]="null">Seleccione un subtipo de compra</option>
-              <option *ngFor="let subtipo of subtiposCompra" [ngValue]="subtipo.id">
-                {{ subtipo.descripcion }}
-              </option>
-            </select>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="form-group form-row col-12 m-0 pb-0">
             <label for="denominacion" class="col-form-label col-12">Denominación modelo</label>
             <input type="text" class="form-control col-12" id="denominacion"
               formControlName="denominacion" placeholder="Ingrese denominación">
-          </div>
-        </div>
-
-      <div class="row">
-          <div class="form-group form-row col-12 m-0 pb-0">
-            <label for="articuloId" class="col-form-label col-12">Estado</label>
-            <select class="form-control col-12">
-              <option value="null">Todos los estados</option>
-              <option value="V"> Vigente</option>
-              <option value="N"> No vigente</option>
-              <option value="B"> Borrador</option>
-            </select>
           </div>
         </div>
 
@@ -86,13 +62,6 @@
   </div>
 
   <div [ngClass]="colTabla">
-
-      <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total===-1">
-          <div class="card-body py-sm-2 mb-sm-2 col-12 text-center pt-sm-4 pb-sm-4">
-          <em class="fa fa-search fa-2x d-block mb-4"></em>
-              <h6>Ingresa las opciones de búsqueda y presiona buscar para consultar modelos</h6>
-          </div>
-      </div>
 
     <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden"
       [columnaOrden]="parametros.sort" [orden]="parametros.order"
@@ -116,7 +85,7 @@
               </span>
             </div>
             <div>
-              <button type="button" class="btn btn-primary btn-sm" (click)="seleccionarModelo(modelo)">
+              <button type="button" class="btn btn-primary" (click)="seleccionarModelo(modelo)">
                 <em class="fa fa-check mr-1"></em> Seleccionar
               </button>
             </div>

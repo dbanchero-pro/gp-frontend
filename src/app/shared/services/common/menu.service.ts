@@ -375,6 +375,28 @@ export class MenuService {
                         'GC_GESTION_USU.CONSULTA'
                     ],
                     url: '/pliegos/bandeja-entrada'
+                },
+                {
+                    nombre: 'Asignar usuarios',
+                    titulo: 'Asignar usuarios',
+                    subtitulo: 'Seleccion agregar usuario o modificar para asignar roles a los usuarios',
+                    visible: false,
+                    tipoUsuario: TipoUsuario.ORGANISMO,
+                    permisos: [
+                        'GC_GESTION_USU.CONSULTA'
+                    ],
+                    url: '/pliegos/bandeja-entrada/asignar-usuarios'
+                },
+                {
+                    nombre: 'Iniciar pliego',
+                    titulo: 'Iniciar pliego',
+                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar modelos o pliegos para seleccionar un modelo o pliego',
+                    visible: false,
+                    tipoUsuario: TipoUsuario.ORGANISMO,
+                    permisos: [
+                        'GC_GESTION_USU.CONSULTA'
+                    ],
+                    url: '/pliegos/bandeja-entrada/iniciar-pliego'
                 }
              ]
         };
