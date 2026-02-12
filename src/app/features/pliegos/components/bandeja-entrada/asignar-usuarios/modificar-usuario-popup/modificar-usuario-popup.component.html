@@ -1,0 +1,71 @@
+<div class="modal-header d-flex justify-content-between align-items-center">
+    <h1 class="modal-title mb-0" id="tituloPopup">Modificar roles de usuario</h1>
+    <button type="button" aria-label="Cerrar" class="close" (click)="cancelar()">&times;</button>
+</div>
+
+<div class="modal-body">
+    <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
+
+    <form [formGroup]="form" (submit)="guardar()" *ngIf="usuario">
+        <!-- Usuario -->
+        <div class="row">
+            <div class="col-12">
+                <div class="Box Box--colorInfo">
+                    <div class="row g-0 py-1 px-3">
+                        <div class="col-12 col-sm-4 col-md-3 fw-semibold etiqueta">Cédula de identidad</div>
+                        <div class="col-12 col-sm-8 col-md-9 font-weight-bold">{{ usuario.numeroDocumento }}</div>
+                    </div>
+                    <div class="row g-0 py-1 px-3">
+                        <div class="col-12 col-sm-4 col-md-3 fw-semibold etiqueta">Nombre</div>
+                        <div class="col-12 col-sm-8 col-md-9 font-weight-bold">{{ usuario.nombre }} {{ usuario.apellido }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Roles -->
+        <div class="row mt-4">
+            <div class="form-group form-row col-12" [class.field-error]="!alMenosUnRolSeleccionado() && intentoGuardar">
+                <label for="roles">* Roles</label>
+                <div class="d-flex justify-content-center w-100 col-12 Box">
+                    <div class="form-check col-3">
+                        <input type="checkbox" class="form-check-input" id="esEditorPrincipal"
+                            formControlName="esEditorPrincipal">
+                        <label class="form-check-label" for="esEditorPrincipal">
+                            Editor principal
+                        </label>
+                    </div>
+                    <div class="form-check col-2">
+                        <input type="checkbox" class="form-check-input" id="esEditor" formControlName="esEditor">
+                        <label class="form-check-label" for="esEditor">
+                            Editor
+                        </label>
+                    </div>
+                    <div class="form-check col-2">
+                        <input type="checkbox" class="form-check-input" id="esValidador" formControlName="esValidador">
+                        <label class="form-check-label" for="esValidador">
+                            Validador
+                        </label>
+                    </div>
+                    <div class="form-check col-2">
+                        <input type="checkbox" class="form-check-input" id="esAprobador" formControlName="esAprobador">
+                        <label class="form-check-label" for="esAprobador">
+                            Aprobador
+                        </label>
+                    </div>
+                </div>
+                <span class="texto-error col-12"
+                    [style.visibility]="!alMenosUnRolSeleccionado() && intentoGuardar ? 'visible' : 'hidden'">
+                    Debe seleccionar al menos un rol
+                </span>
+            </div>
+        </div>
+    </form>
+
+    <div class="d-flex justify-content-end m-3 pe-3">
+        <button type="submit" class="btn btn-primary" (click)="guardar()" [disabled]="guardando">
+            Guardar
+        </button>
+        <button type="button" class="btn btn-link" (click)="cancelar()">Cancelar</button>
+    </div>
+</div>

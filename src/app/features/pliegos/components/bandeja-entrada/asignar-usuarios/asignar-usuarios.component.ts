@@ -29,10 +29,12 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
   protected override readonly modalService = inject(BsModalService);
 
   @ViewChild('agregarUsuarioTemplate', { static: false }) agregarUsuarioTemplate: any;
+  @ViewChild('modificarUsuarioTemplate', { static: false }) modificarUsuarioTemplate: any;
 
   proceso: ProcesoPliego | null = null;
   guardando = false;
   modalRef?: BsModalRef;
+  usuarioAModificar: UsuarioAsignado | null = null;
 
   get columnaOrdenInicial(): string {
     return 'nombre';
@@ -252,8 +254,35 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
   }
 
   modificarUsuario(usuario: UsuarioAsignado): void {
-    console.log('Modificar usuario:', usuario);
-    // TODO: Implementar lógica de modificar usuario
+    this.usuarioAModificar = usuario;
+    this.modalRef = this.modalService.show(
+      this.modificarUsuarioTemplate,
+      {
+        class: 'modal-lg',
+        backdrop: 'static',
+        keyboard: false
+      }
+    );
+  }
+
+  guardarUsuarioModificado(usuarioModificado: UsuarioAsignado): void {
+    if (!this.proceso?.usuariosAsignados) {
+      return;
+    }
+
+    // Encontrar y actualizar el usuario en la lista
+    const index = this.proceso.usuariosAsignados.findIndex(u => u.id === usuarioModificado.id);
+    if (index !== -1) {
+      this.proceso.usuariosAsignados[index] = usuarioModificado;
+      this.actualizarServ.mensajeCorrecto('Roles del usuario modificados correctamente');
+    }
+
+    this.cerrarModalModificar();
+  }
+
+  cerrarModalModificar(): void {
+    this.usuarioAModificar = null;
+    this.modalRef?.hide();
   }
 
   eliminarUsuario(usuario: UsuarioAsignado): void {

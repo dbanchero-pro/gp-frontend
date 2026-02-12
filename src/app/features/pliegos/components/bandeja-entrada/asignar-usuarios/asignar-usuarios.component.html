@@ -116,3 +116,12 @@
     (cancelarEvento)="cerrarModalAgregar()">
   </app-agregar-usuario-popup>
 </ng-template>
+
+<!-- Popup para modificar usuario -->
+<ng-template #modificarUsuarioTemplate>
+  <app-modificar-usuario-popup
+    [usuario]="usuarioAModificar!"
+    (guardarEvento)="guardarUsuarioModificado($event)"
+    (cancelarEvento)="cerrarModalModificar()">
+  </app-modificar-usuario-popup>
+</ng-template>
