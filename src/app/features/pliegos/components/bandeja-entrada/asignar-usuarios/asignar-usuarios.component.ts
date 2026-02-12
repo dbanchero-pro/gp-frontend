@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
 import { BandejaEntradaService } from '../../../services/bandeja-entrada.service';
 import { ProcesoPliego } from '../../../models/proceso-pliego.model';
@@ -12,7 +11,6 @@ import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden
 import { AccionBoton } from '../../../../../shared/models/common/accion-boton.model';
 import { CanComponentDeactivate } from '../../../../../shared/utils/can-component-deactivate';
 import { Observable } from 'rxjs';
-import { AgregarUsuarioPopupComponent } from './agregar-usuario-popup/agregar-usuario-popup.component';
 
 @Component({
   selector: 'app-asignar-usuarios',
@@ -26,14 +24,12 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
   private readonly router = inject(Router);
   private readonly actualizarServ = inject(ActualizarService);
   private readonly bandejaEntradaService = inject(BandejaEntradaService);
-  protected override readonly modalService = inject(BsModalService);
 
   @ViewChild('agregarUsuarioTemplate', { static: false }) agregarUsuarioTemplate: any;
   @ViewChild('modificarUsuarioTemplate', { static: false }) modificarUsuarioTemplate: any;
 
   proceso: ProcesoPliego | null = null;
   guardando = false;
-  modalRef?: BsModalRef;
   usuarioAModificar: UsuarioAsignado | null = null;
 
   get columnaOrdenInicial(): string {
@@ -215,14 +211,7 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
   }
 
   agregarUsuario(): void {
-    this.modalRef = this.modalService.show(
-      this.agregarUsuarioTemplate,
-      {
-        class: 'modal-lg',
-        backdrop: 'static',
-        keyboard: false
-      }
-    );
+    this.abrirPopup(this.agregarUsuarioTemplate, 'Guardar');
   }
 
   guardarNuevoUsuario(usuario: UsuarioAsignado): void {
@@ -234,7 +223,6 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     const yaAsignado = this.proceso.usuariosAsignados?.some(u => u.id === usuario.id);
     if (yaAsignado) {
       this.actualizarServ.mensajeInformacion('El usuario ya está asignado al proceso');
-      this.cerrarModalAgregar();
       return;
     }
 
@@ -246,23 +234,12 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     this.proceso.usuariosAsignados.push(usuario);
 
     this.actualizarServ.mensajeCorrecto('Usuario agregado correctamente');
-    this.cerrarModalAgregar();
-  }
-
-  cerrarModalAgregar(): void {
-    this.modalRef?.hide();
+    this.cerrarPopup();
   }
 
   modificarUsuario(usuario: UsuarioAsignado): void {
     this.usuarioAModificar = usuario;
-    this.modalRef = this.modalService.show(
-      this.modificarUsuarioTemplate,
-      {
-        class: 'modal-lg',
-        backdrop: 'static',
-        keyboard: false
-      }
-    );
+    this.abrirPopup(this.modificarUsuarioTemplate, 'Guardar');
   }
 
   guardarUsuarioModificado(usuarioModificado: UsuarioAsignado): void {
@@ -277,12 +254,8 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
       this.actualizarServ.mensajeCorrecto('Roles del usuario modificados correctamente');
     }
 
-    this.cerrarModalModificar();
-  }
-
-  cerrarModalModificar(): void {
     this.usuarioAModificar = null;
-    this.modalRef?.hide();
+    this.cerrarPopup();
   }
 
   eliminarUsuario(usuario: UsuarioAsignado): void {

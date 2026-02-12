@@ -13,7 +13,6 @@ import { UsuarioAsignado } from '../models/usuario-asignado.model';
 export class ModificarUsuarioPopupComponent extends PopupBaseComponent implements OnInit {
   @Input() usuario!: UsuarioAsignado;
   @Output() guardarEvento = new EventEmitter<UsuarioAsignado>();
-  @Output() cancelarEvento = new EventEmitter<void>();
 
   override form!: FormGroup;
   intentoGuardar = false;
@@ -64,9 +63,10 @@ export class ModificarUsuarioPopupComponent extends PopupBaseComponent implement
     };
 
     this.guardarEvento.emit(usuarioModificado);
+    this.guardando = false;
   }
 
   cancelar(): void {
-    this.cancelarEvento.emit();
+    this.cerrarPopup();
   }
 }

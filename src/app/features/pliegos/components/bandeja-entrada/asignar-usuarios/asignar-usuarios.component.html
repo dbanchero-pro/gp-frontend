@@ -112,8 +112,7 @@
 <!-- Popup para agregar usuario -->
 <ng-template #agregarUsuarioTemplate>
   <app-agregar-usuario-popup
-    (guardarEvento)="guardarNuevoUsuario($event)"
-    (cancelarEvento)="cerrarModalAgregar()">
+    (guardarEvento)="guardarNuevoUsuario($event)">
   </app-agregar-usuario-popup>
 </ng-template>
 
@@ -121,7 +120,6 @@
 <ng-template #modificarUsuarioTemplate>
   <app-modificar-usuario-popup
     [usuario]="usuarioAModificar!"
-    (guardarEvento)="guardarUsuarioModificado($event)"
-    (cancelarEvento)="cerrarModalModificar()">
+    (guardarEvento)="guardarUsuarioModificado($event)">
   </app-modificar-usuario-popup>
 </ng-template>

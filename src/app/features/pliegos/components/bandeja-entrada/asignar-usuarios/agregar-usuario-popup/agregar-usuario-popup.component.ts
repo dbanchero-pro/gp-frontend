@@ -27,7 +27,6 @@ interface UsuarioBusqueda {
 })
 export class AgregarUsuarioPopupComponent extends PopupBaseComponent implements OnInit, OnDestroy {
   @Output() guardarEvento = new EventEmitter<UsuarioAsignado>();
-  @Output() cancelarEvento = new EventEmitter<void>();
 
   override form!: FormGroup;
   intentoGuardar = false;
@@ -233,9 +232,10 @@ export class AgregarUsuarioPopupComponent extends PopupBaseComponent implements 
     };
 
     this.guardarEvento.emit(nuevoUsuario);
+    this.guardando = false;
   }
 
   cancelar(): void {
-    this.cancelarEvento.emit();
+    this.cerrarPopup();
   }
 }
