@@ -368,7 +368,7 @@ export class MenuService {
                 {
                     nombre: 'Bandeja de entrada',
                     titulo: 'Bandeja de entrada',
-                    subtitulo: 'Visualización de los procesos de elaboración de peligos sobres los que se puede trabajar',
+                    subtitulo: 'Visualización de los procesos de elaboración de pliegos',
                     visible: true,
                     tipoUsuario: TipoUsuario.ORGANISMO,
                     permisos: [
