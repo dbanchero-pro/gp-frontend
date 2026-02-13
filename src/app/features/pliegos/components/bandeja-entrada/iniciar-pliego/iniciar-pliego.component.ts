@@ -495,14 +495,14 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const mensaje = `¿Está seguro que desea iniciar el pliego con el pliego base N° ${pliego.numeroCompra}/${pliego.anioCompra}?`;
+    const mensaje = `¿Está seguro que desea iniciar el pliego con el pliego de la compra N° ${pliego.numeroCompra}/${pliego.anioCompra}?`;
 
     this.actualizarService.confirmar(
       mensaje,
       () => {
         // Aquí se debe llamar al servicio para asignar el pliego base
         console.log('Asignar pliego base', pliego.id, 'al pliego', this.pliegoId);
-        this.actualizarService.mensajeCorrecto(`El pliego ha sido iniciado con el pliego base N° ${pliego.numeroCompra}/${pliego.anioCompra}`);
+        this.actualizarService.mensajeCorrecto(`El pliego ha sido iniciado con el pliego de la compra N° ${pliego.numeroCompra}/${pliego.anioCompra}`);
         this.volver();
       }
     );
