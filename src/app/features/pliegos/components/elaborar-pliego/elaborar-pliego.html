@@ -39,8 +39,7 @@
   <div class="col-12 mb-2 pl-0 mr-0 pr-0">
     <app-grupo-colapsable
       [colapsado]="true"
-      class="w-100"
-      classContenido="p-0">
+      class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
       <titulo>Usuarios asignados</titulo>
       <contenido>
         <div class="card mb-2">
@@ -73,8 +72,7 @@
   <div class="col-12 ml-0 pl-0 mr-0 pr-0">
     <app-grupo-colapsable
       [colapsado]="true"
-      class="w-100"
-      classContenido="p-0">
+      class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
       <titulo>Historial tareas</titulo>
       <contenido>
         <div class="card mb-2">
@@ -111,52 +109,57 @@
         <h5 class="panel-title" *ngIf="!panelNavegacionContraido">Navegación</h5>
         <button type="button" class="btn-toggle-panel" (click)="togglePanelNavegacion()"
                 [title]="panelNavegacionContraido ? 'Expandir panel' : 'Contraer panel'">
-          <em class="mdi" [ngClass]="panelNavegacionContraido ? 'mdi-chevron-right' : 'mdi-chevron-left'"></em>
+          <em [ngClass]="panelNavegacionContraido ? 'fa fa-expand' : 'fa fa-compress'"></em>
         </button>
       </div>
       <div class="panel-body" [class.d-none]="panelNavegacionContraido">
         <ul class="nav-list">
-          <li class="nav-item" [class.active]="seccionActiva === 'caratula'" (click)="seleccionarSeccion('caratula')">
-            <em class="mdi mdi-file-document"></em>
+          <li class="nav-item" onkeydown="" [class.active]="seccionActiva === 'caratula'" (click)="seleccionarSeccion('caratula')">
+            <em class="fa fa-edit m-2"></em>
             <span>Carátula</span>
           </li>
-          <li class="nav-item" [class.active]="seccionActiva === 'notas'" (click)="seleccionarSeccion('notas')">
-            <em class="mdi mdi-note-text"></em>
+          <li class="nav-divider"></li>
+          <li class="nav-item" [class.active]="seccionActiva === 'notas'" onkeydown="" (click)="seleccionarSeccion('notas')">
+            <em class="fa fa-edit m-2"></em>
             <span>Notas</span>
           </li>
-          <li class="nav-item" [class.active]="seccionActiva === 'anexos'" (click)="seleccionarSeccion('anexos')">
-            <em class="mdi mdi-paperclip"></em>
+          <li class="nav-divider"></li>
+          <li class="nav-item" [class.active]="seccionActiva === 'anexos'" onkeydown="" (click)="seleccionarSeccion('anexos')">
+            <em class="fa fa-edit m-2"></em>
             <span>Anexos</span>
           </li>
-          <li class="nav-item" [class.active]="seccionActiva === 'campos'" (click)="seleccionarSeccion('campos')">
-            <em class="mdi mdi-form-textbox"></em>
+          <li class="nav-divider"></li>
+          <li class="nav-item" [class.active]="seccionActiva === 'campos'" onkeydown="" (click)="seleccionarSeccion('campos')">
+            <em class="fa fa-edit m-2"></em>
             <span>Campos variables</span>
           </li>
           <li class="nav-divider"></li>
-
+          <!-- Secciones -->
           <li class="nav-section" *ngFor="let seccion of secciones; let i = index">
-            <div class="nav-section-header" (click)="toggleSeccion(i)">
-              <em class="mdi" [ngClass]="seccion.expandida ? 'mdi-chevron-down' : 'mdi-chevron-right'"></em>
+            <div class="nav-section-header" onkeydown="" (click)="toggleSeccion(i)">
+              <em class="m-2" [ngClass]="seccion.expandida ? 'fa fa-angle-down' : 'fa fa-angle-right'"></em>
               <span>{{ seccion.nombre }}</span>
             </div>
             <ul class="nav-subsection" *ngIf="seccion.expandida">
+              <!-- Capítulos -->
               <li class="nav-subitem" *ngFor="let capitulo of seccion.capitulos; let j = index">
-                <div class="nav-capitulo-header" (click)="toggleCapitulo(i, j)">
-                  <em class="mdi" [ngClass]="capitulo.expandido ? 'mdi-chevron-down' : 'mdi-chevron-right'"></em>
+                <div class="nav-capitulo-header" onkeydown="" (click)="toggleCapitulo(i, j)">
+                  <em class="m-2" [ngClass]="capitulo.expandido ? 'fa fa-angle-down' : 'fa fa-angle-right'"></em>
                   <span>{{ capitulo.nombre }}</span>
                 </div>
                 <ul class="nav-clausulas" *ngIf="capitulo.expandido">
-                  <li class="nav-clausula"
+                  <li class="nav-clausula" onkeydown=""
                       *ngFor="let clausula of capitulo.clausulas"
                       [class.active]="clausulaActiva === clausula.id"
                       [class.bloqueada]="clausula.bloqueada"
                       (click)="seleccionarClausula(clausula)">
-                    <em class="mdi mdi-file-document-outline"></em>
+                    <em class="fa fa-edit m-2"></em>
                     <span>{{ clausula.nombre }}</span>
                     <em class="mdi mdi-lock float-right" *ngIf="clausula.bloqueada" title="Bloqueada por otro usuario"></em>
                   </li>
                 </ul>
               </li>
+              <li class="nav-divider"></li>
             </ul>
           </li>
         </ul>
@@ -170,7 +173,7 @@
         <h5 class="panel-title" *ngIf="!panelEdicionContraido">{{ tituloEdicion }}</h5>
         <button type="button" class="btn-toggle-panel" (click)="togglePanelEdicion()"
                 [title]="panelEdicionContraido ? 'Expandir panel' : 'Contraer panel'">
-          <em class="mdi" [ngClass]="panelEdicionContraido ? 'mdi-chevron-left' : 'mdi-chevron-right'"></em>
+           <em [ngClass]="panelEdicionContraido ? 'fa fa-expand' : 'fa fa-compress'"></em>
         </button>
       </div>
       <div class="panel-body" [class.d-none]="panelEdicionContraido">
