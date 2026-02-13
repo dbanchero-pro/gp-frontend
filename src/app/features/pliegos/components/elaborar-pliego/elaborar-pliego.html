@@ -111,38 +111,38 @@
         <h5 class="panel-title" *ngIf="!panelNavegacionContraido">Navegación</h5>
         <button type="button" class="btn-toggle-panel" (click)="togglePanelNavegacion()"
                 [title]="panelNavegacionContraido ? 'Expandir panel' : 'Contraer panel'">
-          <i class="mdi" [ngClass]="panelNavegacionContraido ? 'mdi-chevron-right' : 'mdi-chevron-left'"></i>
+          <em class="mdi" [ngClass]="panelNavegacionContraido ? 'mdi-chevron-right' : 'mdi-chevron-left'"></em>
         </button>
       </div>
       <div class="panel-body" [class.d-none]="panelNavegacionContraido">
         <ul class="nav-list">
           <li class="nav-item" [class.active]="seccionActiva === 'caratula'" (click)="seleccionarSeccion('caratula')">
-            <i class="mdi mdi-file-document"></i>
+            <em class="mdi mdi-file-document"></em>
             <span>Carátula</span>
           </li>
           <li class="nav-item" [class.active]="seccionActiva === 'notas'" (click)="seleccionarSeccion('notas')">
-            <i class="mdi mdi-note-text"></i>
+            <em class="mdi mdi-note-text"></em>
             <span>Notas</span>
           </li>
           <li class="nav-item" [class.active]="seccionActiva === 'anexos'" (click)="seleccionarSeccion('anexos')">
-            <i class="mdi mdi-paperclip"></i>
+            <em class="mdi mdi-paperclip"></em>
             <span>Anexos</span>
           </li>
           <li class="nav-item" [class.active]="seccionActiva === 'campos'" (click)="seleccionarSeccion('campos')">
-            <i class="mdi mdi-form-textbox"></i>
+            <em class="mdi mdi-form-textbox"></em>
             <span>Campos variables</span>
           </li>
           <li class="nav-divider"></li>
 
           <li class="nav-section" *ngFor="let seccion of secciones; let i = index">
             <div class="nav-section-header" (click)="toggleSeccion(i)">
-              <i class="mdi" [ngClass]="seccion.expandida ? 'mdi-chevron-down' : 'mdi-chevron-right'"></i>
+              <em class="mdi" [ngClass]="seccion.expandida ? 'mdi-chevron-down' : 'mdi-chevron-right'"></em>
               <span>{{ seccion.nombre }}</span>
             </div>
             <ul class="nav-subsection" *ngIf="seccion.expandida">
               <li class="nav-subitem" *ngFor="let capitulo of seccion.capitulos; let j = index">
                 <div class="nav-capitulo-header" (click)="toggleCapitulo(i, j)">
-                  <i class="mdi" [ngClass]="capitulo.expandido ? 'mdi-chevron-down' : 'mdi-chevron-right'"></i>
+                  <em class="mdi" [ngClass]="capitulo.expandido ? 'mdi-chevron-down' : 'mdi-chevron-right'"></em>
                   <span>{{ capitulo.nombre }}</span>
                 </div>
                 <ul class="nav-clausulas" *ngIf="capitulo.expandido">
@@ -151,9 +151,9 @@
                       [class.active]="clausulaActiva === clausula.id"
                       [class.bloqueada]="clausula.bloqueada"
                       (click)="seleccionarClausula(clausula)">
-                    <i class="mdi mdi-file-document-outline"></i>
+                    <em class="mdi mdi-file-document-outline"></em>
                     <span>{{ clausula.nombre }}</span>
-                    <i class="mdi mdi-lock float-right" *ngIf="clausula.bloqueada" title="Bloqueada por otro usuario"></i>
+                    <em class="mdi mdi-lock float-right" *ngIf="clausula.bloqueada" title="Bloqueada por otro usuario"></em>
                   </li>
                 </ul>
               </li>
@@ -170,12 +170,12 @@
         <h5 class="panel-title" *ngIf="!panelEdicionContraido">{{ tituloEdicion }}</h5>
         <button type="button" class="btn-toggle-panel" (click)="togglePanelEdicion()"
                 [title]="panelEdicionContraido ? 'Expandir panel' : 'Contraer panel'">
-          <i class="mdi" [ngClass]="panelEdicionContraido ? 'mdi-chevron-left' : 'mdi-chevron-right'"></i>
+          <em class="mdi" [ngClass]="panelEdicionContraido ? 'mdi-chevron-left' : 'mdi-chevron-right'"></em>
         </button>
       </div>
       <div class="panel-body" [class.d-none]="panelEdicionContraido">
         <div *ngIf="seccionActiva === null && clausulaActiva === null" class="text-center text-muted py-5">
-          <i class="mdi mdi-arrow-left-circle mdi-48px mb-3"></i>
+          <em class="mdi mdi-arrow-left-circle mdi-48px mb-3"></em>
           <h6>Seleccione un elemento del panel de navegación para editar</h6>
         </div>
 
@@ -197,11 +197,11 @@
           <p class="text-muted">Agregue o elimine notas que se incluirán en el pliego.</p>
           <div class="mb-3">
             <button type="button" class="btn btn-primary">
-              <i class="mdi mdi-plus"></i> Agregar nota
+              <em class="mdi mdi-plus"></em> Agregar nota
             </button>
           </div>
           <div class="alert alert-info">
-            <i class="mdi mdi-information"></i> No hay notas agregadas
+            <em class="mdi mdi-information"></em> No hay notas agregadas
           </div>
         </div>
 
@@ -210,11 +210,11 @@
           <p class="text-muted">Agregue o elimine archivos anexos al pliego.</p>
           <div class="mb-3">
             <button type="button" class="btn btn-primary">
-              <i class="mdi mdi-paperclip"></i> Agregar anexo
+              <em class="mdi mdi-paperclip"></em> Agregar anexo
             </button>
           </div>
           <div class="alert alert-info">
-            <i class="mdi mdi-information"></i> No hay anexos agregados
+            <em class="mdi mdi-information"></em> No hay anexos agregados
           </div>
         </div>
 
@@ -233,7 +233,7 @@
 
         <div *ngIf="clausulaActiva !== null && clausulaSeleccionada">
           <div class="alert alert-warning" *ngIf="clausulaSeleccionada.bloqueada">
-            <i class="mdi mdi-lock"></i> Esta cláusula está siendo editada por otro usuario
+            <em class="mdi mdi-lock"></em> Esta cláusula está siendo editada por otro usuario
           </div>
 
           <h6>{{ clausulaSeleccionada.nombre }}</h6>
@@ -246,18 +246,18 @@
 
           <div class="mt-3 border-top pt-3">
             <button type="button" class="btn btn-secondary mr-2" [disabled]="clausulaSeleccionada.bloqueada">
-              <i class="mdi mdi-message-alert"></i> Solicitar modificación
+              <em class="mdi mdi-message-alert"></em> Solicitar modificación
             </button>
             <button type="button" class="btn btn-danger mr-2"
                     *ngIf="!clausulaSeleccionada.obligatoria"
                     [disabled]="clausulaSeleccionada.bloqueada">
-              <i class="mdi mdi-delete"></i> Eliminar
+              <em class="mdi mdi-delete"></em> Eliminar
             </button>
             <button type="button" class="btn btn-info mr-2">
-              <i class="mdi mdi-eye"></i> Ver
+              <em class="mdi mdi-eye"></em> Ver
             </button>
             <button type="button" class="btn btn-primary" [disabled]="clausulaSeleccionada.bloqueada">
-              <i class="mdi mdi-note-plus"></i> Agregar nota
+              <em class="mdi mdi-note-plus"></em> Agregar nota
             </button>
           </div>
         </div>
@@ -269,28 +269,28 @@
 <div class="row mt-3 mb-3">
   <div class="col-12 text-center">
     <button type="button" class="btn btn-secondary mr-2">
-      <i class="mdi mdi-content-save"></i> Guardar
+      <em class="mdi mdi-content-save"></em> Guardar
     </button>
     <button type="button" class="btn btn-primary mr-2">
-      <i class="mdi mdi-check-circle"></i> Solicitar validación
+      <em class="mdi mdi-check-circle"></em> Solicitar validación
     </button>
     <button type="button" class="btn btn-info mr-2">
-      <i class="mdi mdi-shield-check"></i> Pre validar
+      <em class="mdi mdi-shield-check"></em> Pre validar
     </button>
     <button type="button" class="btn btn-success mr-2">
-      <i class="mdi mdi-eye"></i> Visualizar
+      <em class="mdi mdi-eye"></em> Visualizar
     </button>
     <button type="button" class="btn btn-warning mr-2" *ngIf="modeloCambio">
-      <i class="mdi mdi-compare"></i> Ver diferencias
+      <em class="mdi mdi-compare"></em> Ver diferencias
     </button>
     <button type="button" class="btn btn-primary mr-2" *ngIf="modeloCambio">
-      <i class="mdi mdi-refresh"></i> Actualizar
+      <em class="mdi mdi-refresh"></em> Actualizar
     </button>
     <button type="button" class="btn btn-secondary mr-2">
-      <i class="mdi mdi-message-alert"></i> Solicitar modificación modelo
+      <em class="mdi mdi-message-alert"></em> Solicitar modificación modelo
     </button>
     <button type="button" class="btn btn-success mr-2" *ngIf="esValidador">
-      <i class="mdi mdi-check-all"></i> Solicitar aprobación
+      <em class="mdi mdi-check-all"></em> Solicitar aprobación
     </button>
   </div>
 </div>
