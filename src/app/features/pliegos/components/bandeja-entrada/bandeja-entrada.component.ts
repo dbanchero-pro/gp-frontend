@@ -312,7 +312,7 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
   }
 
   elaborarProceso(proceso: ProcesoPliego): void {
-    console.log('Elaborar proceso:', proceso);
+    this.router.navigate(['/pliegos/bandeja-entrada/elaborar', proceso.id]);
   }
 
   validarProceso(proceso: ProcesoPliego): void {

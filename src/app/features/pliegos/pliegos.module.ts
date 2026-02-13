@@ -25,6 +25,7 @@ import { AsignarUsuariosComponent } from './components/bandeja-entrada/asignar-u
 import { AgregarUsuarioPopupComponent } from './components/bandeja-entrada/asignar-usuarios/agregar-usuario-popup/agregar-usuario-popup.component';
 import { ModificarUsuarioPopupComponent } from './components/bandeja-entrada/asignar-usuarios/modificar-usuario-popup/modificar-usuario-popup.component';
 import { IniciarPliegoComponent } from './components/bandeja-entrada/iniciar-pliego/iniciar-pliego.component';
+import { ElaborarPliegoComponent } from './components/elaborar-pliego/elaborar-pliego';
 
 export const routes: Routes = [
     {
@@ -47,6 +48,11 @@ export const routes: Routes = [
     {
         path: 'bandeja-entrada/iniciar/:id',
         component: IniciarPliegoComponent
+    },
+    {
+        path: 'bandeja-entrada/elaborar/:id',
+        component: ElaborarPliegoComponent,
+        canDeactivate: [DeactivateGuard]
     },
     {
         path: 'repositorio-archivos',
@@ -177,7 +183,8 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
         AsignarUsuariosComponent,
         AgregarUsuarioPopupComponent,
         ModificarUsuarioPopupComponent,
-        IniciarPliegoComponent
+        IniciarPliegoComponent,
+        ElaborarPliegoComponent
     ], imports: [
         CommonModule,
         SharedModule,
