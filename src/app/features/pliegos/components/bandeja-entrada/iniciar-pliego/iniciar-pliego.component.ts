@@ -522,4 +522,34 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     };
     return textos[apertura] || apertura;
   }
+
+  esBorradorPliego(pliego: PliegoBase): boolean {
+    return pliego.estadoModelo === 'BORRADOR';
+  }
+
+  esVigentePliego(pliego: PliegoBase): boolean {
+    const hoy = new Date();
+    const desde = pliego.fechaVigenciaDesdeModelo ? new Date(pliego.fechaVigenciaDesdeModelo) : null;
+    const hasta = pliego.fechaVigenciaHastaModelo ? new Date(pliego.fechaVigenciaHastaModelo) : null;
+
+    if (pliego.estadoModelo === 'BORRADOR' || !pliego.versionadaModelo) {
+      return false;
+    }
+
+    if (desde && hoy < desde) {
+      return false;
+    }
+    if (hasta && hoy > hasta) {
+      return false;
+    }
+    return true;
+  }
+
+  obtenerEstadoVigenciaPliego(pliego: PliegoBase): string {
+    return this.esVigentePliego(pliego) ? 'VIGENTE' : 'NO_VIGENTE';
+  }
+
+  obtenerTextoEstadoVigenciaPliego(pliego: PliegoBase): string {
+    return this.esVigentePliego(pliego) ? 'Vigente' : 'No vigente';
+  }
 }

@@ -2,6 +2,10 @@ export interface PliegoBase {
   id: number;
   denominacionModelo: string;
   vigenciaModelo: string;
+  estadoModelo: string; // 'BORRADOR', 'VIGENTE', etc.
+  versionadaModelo: boolean;
+  fechaVigenciaDesdeModelo: Date | null;
+  fechaVigenciaHastaModelo: Date | null;
   incisoDescripcion: string;
   unidadEjecutoraDescripcion: string;
   tipoCompraDescripcion: string;
