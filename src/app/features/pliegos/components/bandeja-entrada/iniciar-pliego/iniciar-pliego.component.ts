@@ -13,6 +13,7 @@ import { AccionBoton } from '../../../../../shared/models/common/accion-boton.mo
 import { BandejaEntradaService } from '../../../services/bandeja-entrada.service';
 import { ProcesoPliego } from '../../../models/proceso-pliego.model';
 import { EstadoProcesoPliego } from '../../../enum/estado-proceso-pliego.enum';
+import { PliegoBase } from '../../../models/pliego-base.model';
 
 interface Inciso {
   id: number;
@@ -57,6 +58,8 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
 
   formularioFiltro: FormGroup;
   modelos: Modelo[] = [];
+  pliegos: PliegoBase[] = [];
+  mostrandoPliegos = false;
   cargando = false;
   pliegoId: number | null = null;
   proceso: ProcesoPliego | null = null;
@@ -216,17 +219,7 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
   buscar(): void {
     this.cargando = true;
     const valores = this.formularioFiltro.value;
-    const rangoFechas = valores.rangoFechasVigencia;
-
-    const filtro: FiltroModelo = {
-      incisoId: valores.incisoId || null,
-      unidadEjecutoraId: valores.unidadEjecutoraId || null,
-      tipoCompraId: valores.tipoCompraId || null,
-      subtipoCompraId: valores.subtipoCompraId || null,
-      denominacion: valores.denominacion || undefined,
-      fechaVigenciaDesde: rangoFechas?.fechaDesde || null,
-      fechaVigenciaHasta: rangoFechas?.fechaHasta || null
-    };
+    const tipoBusqueda = valores.tipoBusqueda;
 
     this.snapshotGenericService.save(
       IniciarPliegoComponent.SNAPSHOT_KEY,
@@ -239,16 +232,53 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
       }
     );
 
-    this.modeloService.buscarModelos(filtro).subscribe({
-      next: (modelos) => {
-        this.modelos = modelos;
-        this.total = modelos.length;
-        this.cargando = false;
-      },
-      error: () => {
-        this.cargando = false;
-      }
-    });
+    // Determinar si buscar modelos o pliegos
+    if (tipoBusqueda === 'P' || tipoBusqueda === 'PO') {
+      // Buscar pliegos
+      this.mostrandoPliegos = true;
+      this.bandejaEntradaService.buscarPliegos(
+        tipoBusqueda,
+        valores.incisoId || null,
+        valores.unidadEjecutoraId || null,
+        valores.tipoCompraId || null,
+        valores.subtipoCompraId || null,
+        valores.denominacion || null
+      ).subscribe({
+        next: (pliegos) => {
+          this.pliegos = this.ordenarYPaginarPliegos(pliegos);
+          this.total = pliegos.length;
+          this.cargando = false;
+        },
+        error: () => {
+          this.cargando = false;
+        }
+      });
+    } else {
+      // Buscar modelos (comportamiento original)
+      this.mostrandoPliegos = false;
+      const rangoFechas = valores.rangoFechasVigencia;
+
+      const filtro: FiltroModelo = {
+        incisoId: valores.incisoId || null,
+        unidadEjecutoraId: valores.unidadEjecutoraId || null,
+        tipoCompraId: valores.tipoCompraId || null,
+        subtipoCompraId: valores.subtipoCompraId || null,
+        denominacion: valores.denominacion || undefined,
+        fechaVigenciaDesde: rangoFechas?.fechaDesde || null,
+        fechaVigenciaHasta: rangoFechas?.fechaHasta || null
+      };
+
+      this.modeloService.buscarModelos(filtro).subscribe({
+        next: (modelos) => {
+          this.modelos = modelos;
+          this.total = modelos.length;
+          this.cargando = false;
+        },
+        error: () => {
+          this.cargando = false;
+        }
+      });
+    }
   }
 
   actualizarFiltrosYBuscar(): void {
@@ -412,5 +442,84 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
       [EstadoProcesoPliego.CANCELADO]: 'badge-cancel'
     };
     return clases[estado];
+  }
+
+  ordenarYPaginarPliegos(pliegos: PliegoBase[]): PliegoBase[] {
+    // Ordenar
+    const pliegosOrdenados = [...pliegos].sort((a, b) => {
+      let valorA: any;
+      let valorB: any;
+
+      if (this.parametros.sort === 'denominacion') {
+        valorA = a.denominacionModelo || '';
+        valorB = b.denominacionModelo || '';
+      } else if (this.parametros.sort === 'Inciso') {
+        valorA = a.incisoDescripcion || '';
+        valorB = b.incisoDescripcion || '';
+      } else {
+        return 0;
+      }
+
+      const comparacion = valorA.toString().localeCompare(valorB.toString());
+      return this.parametros.order === 'asc' ? comparacion : -comparacion;
+    });
+
+    // Paginar
+    const inicio = this.parametros.pagina * this.parametros.tamanoPagina;
+    const fin = inicio + this.parametros.tamanoPagina;
+    return pliegosOrdenados.slice(inicio, fin);
+  }
+
+  obtenerAccionesPliego(pliego: PliegoBase): AccionBoton[] {
+    return [
+      {
+        nombre: 'Seleccionar',
+        clase: 'btn btn-success',
+        icono: 'fa fa-check',
+        ariaLabel: `Seleccionar pliego ${pliego.numeroCompra}/${pliego.anioCompra}`,
+        accion: () => this.seleccionarPliego(pliego)
+      },
+      {
+        nombre: 'Ver pliego',
+        clase: 'btn btn-success',
+        icono: 'fa fa-eye',
+        ariaLabel: `Ver pliego ${pliego.numeroCompra}/${pliego.anioCompra}`,
+        accion: () => this.verPliego(pliego)
+      }
+    ];
+  }
+
+  seleccionarPliego(pliego: PliegoBase): void {
+    if (!this.pliegoId) {
+      this.actualizarService.mensajeError('No se pudo identificar el pliego');
+      return;
+    }
+
+    const mensaje = `¿Está seguro que desea iniciar el pliego con el pliego base N° ${pliego.numeroCompra}/${pliego.anioCompra}?`;
+
+    this.actualizarService.confirmar(
+      mensaje,
+      () => {
+        // Aquí se debe llamar al servicio para asignar el pliego base
+        console.log('Asignar pliego base', pliego.id, 'al pliego', this.pliegoId);
+        this.actualizarService.mensajeCorrecto(`El pliego ha sido iniciado con el pliego base N° ${pliego.numeroCompra}/${pliego.anioCompra}`);
+        this.volver();
+      }
+    );
+  }
+
+  verPliego(pliego: PliegoBase): void {
+    console.log('Ver pliego:', pliego);
+    this.actualizarService.mensajeInformacion('Funcionalidad de ver pliego en desarrollo');
+    // TODO: Implementar navegación a vista de pliego
+  }
+
+  obtenerTextoAperturaElectronica(apertura: string): string {
+    const textos: { [key: string]: string } = {
+      'SI': 'Sí',
+      'NO': 'No',
+      'AMBAS': 'Ambas'
+    };
+    return textos[apertura] || apertura;
   }
 }
