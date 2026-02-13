@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProcesoPliego } from '../../models/proceso-pliego.model';
 import { EstadoProcesoPliego } from '../../enum/estado-proceso-pliego.enum';
+import { CanComponentDeactivate } from '../../../../shared/utils/can-component-deactivate';
+import { Observable } from 'rxjs';
 
 interface Clausula {
   id: number;
@@ -39,7 +41,7 @@ interface TareaHistorial {
   styleUrls: ['./elaborar-pliego.scss'],
   standalone: false
 })
-export class ElaborarPliegoComponent implements OnInit {
+export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
   pliego: ProcesoPliego = {
     id: 0,
     estado: EstadoProcesoPliego.EN_PROCESO,
@@ -66,6 +68,7 @@ export class ElaborarPliegoComponent implements OnInit {
 
   modeloCambio: boolean = false;
   esValidador: boolean = false;
+  cambiosSinGuardar: boolean = false;
 
   usuariosAsignados: UsuarioAsignado[] = [
     { rol: 'Editor Principal', nombre: 'Juan Pérez' },
@@ -214,5 +217,13 @@ export class ElaborarPliegoComponent implements OnInit {
     this.clausulaActiva = clausula.id;
     this.clausulaSeleccionada = clausula;
     this.tituloEdicion = clausula.nombre;
+  }
+
+  canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
+    if (!this.cambiosSinGuardar) {
+      return true;
+    }
+
+    return confirm('Tiene cambios sin guardar. ¿Desea salir sin guardar?');
   }
 }
