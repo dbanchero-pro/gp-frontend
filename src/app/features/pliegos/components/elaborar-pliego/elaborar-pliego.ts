@@ -55,8 +55,8 @@ export class ElaborarPliegoComponent implements OnInit {
   aperturaElectronica: string = 'Sí';
   modeloUsado: string = 'Modelo Estándar Licitación Pública Nacional';
 
-  navegacionCollapsed: boolean = false;
-  edicionCollapsed: boolean = false;
+  colNavegacion = 'col-lg-3';
+  colEdicion = 'col-lg-9';
 
   seccionActiva: string | null = null;
   clausulaActiva: number | null = null;
@@ -180,14 +180,6 @@ export class ElaborarPliegoComponent implements OnInit {
       'Publicado': 'Publicado'
     };
     return estados[estado] || estado;
-  }
-
-  toggleNavegacion(): void {
-    this.navegacionCollapsed = !this.navegacionCollapsed;
-  }
-
-  toggleEdicion(): void {
-    this.edicionCollapsed = !this.edicionCollapsed;
   }
 
   toggleSeccion(index: number): void {

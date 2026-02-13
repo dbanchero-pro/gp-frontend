@@ -1,263 +1,309 @@
-<div class="container-fluid">
-   <div class="row">
-    <div class="col-md-8 ml-0 pl-0 mr-0 pr-0">
-      <h4><em class="fa fa fa-edit mr-2"></em>Elaborar peligo</h4>
-      <h6>Edite los componentes del pliego</h6>
-    </div>
+<div class="row">
+  <div class="col-md-8 ml-0 pl-0 mr-0 pr-0">
+    <h4><em class="fa fa-edit mr-2"></em>Elaborar pliego</h4>
+    <h6>Edite los componentes del pliego</h6>
   </div>
+</div>
 
-   <!-- Información del proceso -->
-  <div class="row" *ngIf="pliego">
-    <div class="col-12 ml-0 pl-0 mr-0 pr-0">
-      <div class="Box Box--colorInfo">
-        <div class="mb-2 font-weight-bold subtitle">
-          {{ pliego.incisoDescripcion }} | {{ pliego.unidadEjecutoraDescripcion }} | {{ pliego.unidadCompraDescripcion }}
-        </div>
-        <div class="mb-2 font-weight-bold">
-          {{ pliego.tipoCompraDescripcion }} | {{ pliego.subtipoCompraDescripcion }} | {{ pliego.numeroCompra }}/{{ pliego.anioCompra }}
-        </div>
-         <div class="mb-2 font-weight-bold">
-          <strong>Apertura electrónica:</strong> {{ aperturaElectronica }}
-        </div>
-        <div class="m-0">
-           <span class="badge ml-2" [ngClass]="{
-            'badge-info': pliego.estado === 'Pendiente' || pliego.estado === 'Asignado',
-            'badge-success': pliego.estado === 'En proceso',
-            'badge-warning': pliego.estado === 'Pendiente validación',
-            'badge-primary': pliego.estado === 'Aprobado'
-          }">
-            {{ obtenerTextoEstado(pliego.estado) }}
-          </span>
-        </div>
+<div class="row" *ngIf="pliego">
+  <div class="col-12 ml-0 pl-0 mr-0 pr-0">
+    <div class="Box Box--colorInfo">
+      <div class="mb-2 font-weight-bold subtitle">
+        {{ pliego.incisoDescripcion }} | {{ pliego.unidadEjecutoraDescripcion }} | {{ pliego.unidadCompraDescripcion }}
+      </div>
+      <div class="mb-2 font-weight-bold">
+        {{ pliego.tipoCompraDescripcion }} | {{ pliego.subtipoCompraDescripcion }} | {{ pliego.numeroCompra }}/{{ pliego.anioCompra }}
+      </div>
+      <div class="mb-2 font-weight-bold">
+        <strong>Apertura electrónica:</strong> {{ aperturaElectronica }}
+      </div>
+      <div class="m-0">
+        <span class="badge ml-2" [ngClass]="{
+          'badge-info': pliego.estado === 'Pendiente' || pliego.estado === 'Asignado',
+          'badge-success': pliego.estado === 'En proceso',
+          'badge-warning': pliego.estado === 'Pendiente validación',
+          'badge-primary': pliego.estado === 'Aprobado'
+        }">
+          {{ obtenerTextoEstado(pliego.estado) }}
+        </span>
       </div>
     </div>
   </div>
+</div>
 
-  <div class="row" *ngIf="usuariosAsignados.length > 0">
-    <div class="col-12 ml-0 pl-0 mr-0 pr-0">
-      <app-grupo-colapsable
-        [colapsado]="true"
-        class="w-100"
-        classContenido="p-0">
-        <titulo>Usuarios asignados</titulo>
-        <contenido>
-          <div class="card mb-2">
-            <div class="card-body">
-              <div class="col-md-12 p-0">
-                <table class="table table-sm table-bordered"
-                    aria-label="Tabla de usuarios asignados al pliego">
-                    <thead>
-                      <tr>
-                        <th>Rol</th>
-                        <th>Usuario</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let usuario of usuariosAsignados">
-                        <td>{{ usuario.rol }}</td>
-                        <td>{{ usuario.nombre }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-              </div> 
-            </div>       
-          </div>  
-        </contenido>
-      </app-grupo-colapsable>
-    </div>
+<div class="row" *ngIf="modeloUsado">
+  <div class="col-12 ml-0 pl-0 mr-0 pr-0">
+    <app-grupo-colapsable
+      [colapsado]="true"
+      class="w-100"
+      classContenido="p-0">
+      <titulo>Modelo usado</titulo>
+      <contenido>
+        <div class="card mb-2">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-10">
+                <strong>{{ modeloUsado }}</strong>
+              </div>
+              <div class="col-md-2 text-right">
+                <span class="badge badge-success">Vigente</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </contenido>
+    </app-grupo-colapsable>
   </div>
+</div>
 
-
-  <div class="row" *ngIf="historialTareas.length > 0">
-    <div class="col-12 ml-0 pl-0 mr-0 pr-0">
-      <app-grupo-colapsable
-        [colapsado]="true"
-        class="w-100"
-        classContenido="p-0">
-        <titulo>Historial tareas</titulo>
-        <contenido>
-          <div class="card mb-2">
-            <div class="card-body">
-              <div class="col-md-12 p-0">
-                <table class="table table-sm table-bordered">
+<div class="row" *ngIf="usuariosAsignados.length > 0">
+  <div class="col-12 ml-0 pl-0 mr-0 pr-0">
+    <app-grupo-colapsable
+      [colapsado]="true"
+      class="w-100"
+      classContenido="p-0">
+      <titulo>Usuarios asignados</titulo>
+      <contenido>
+        <div class="card mb-2">
+          <div class="card-body">
+            <div class="col-md-12 p-0">
+              <table class="table table-sm table-bordered"
+                  aria-label="Tabla de usuarios asignados al pliego">
                   <thead>
                     <tr>
-                      <th>Fecha</th>
-                      <th>Tarea</th>
+                      <th>Rol</th>
                       <th>Usuario</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let tarea of historialTareas">
-                      <td>{{ tarea.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
-                      <td>{{ tarea.tarea }}</td>
-                      <td>{{ tarea.usuario }}</td>
+                    <tr *ngFor="let usuario of usuariosAsignados">
+                      <td>{{ usuario.rol }}</td>
+                      <td>{{ usuario.nombre }}</td>
                     </tr>
                   </tbody>
                 </table>
-              </div> 
-            </div>       
-          </div>  
-        </contenido>
-      </app-grupo-colapsable>
-    </div>
+            </div>
+          </div>
+        </div>
+      </contenido>
+    </app-grupo-colapsable>
   </div>
+</div>
 
-  <div class="row panel-container">
-    <div class="col panel-navegacion" [class.collapsed]="navegacionCollapsed" [class.expanded]="edicionCollapsed">
-      <div class="panel">
-        <div class="panel-header">
-          <h5 class="panel-title">Navegación</h5>
-          <button type="button" class="btn btn-sm btn-link" (click)="toggleNavegacion()"
-                  [attr.aria-label]="navegacionCollapsed ? 'Expandir panel de navegación' : 'Contraer panel de navegación'">
-            <i class="mdi" [ngClass]="navegacionCollapsed ? 'mdi-chevron-right' : 'mdi-chevron-left'"></i>
-          </button>
+<div class="row" *ngIf="historialTareas.length > 0">
+  <div class="col-12 ml-0 pl-0 mr-0 pr-0">
+    <app-grupo-colapsable
+      [colapsado]="true"
+      class="w-100"
+      classContenido="p-0">
+      <titulo>Historial tareas</titulo>
+      <contenido>
+        <div class="card mb-2">
+          <div class="card-body">
+            <div class="col-md-12 p-0">
+              <table class="table table-sm table-bordered">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Tarea</th>
+                    <th>Usuario</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let tarea of historialTareas">
+                    <td>{{ tarea.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td>{{ tarea.tarea }}</td>
+                    <td>{{ tarea.usuario }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-        <div class="panel-body" *ngIf="!navegacionCollapsed">
-          <ul class="nav-list">
-            <li class="nav-item" [class.active]="seccionActiva === 'caratula'" (click)="seleccionarSeccion('caratula')">
-              <i class="mdi mdi-file-document"></i>
-              <span>Carátula</span>
-            </li>
-            <li class="nav-item" [class.active]="seccionActiva === 'notas'" (click)="seleccionarSeccion('notas')">
-              <i class="mdi mdi-note-text"></i>
-              <span>Notas</span>
-            </li>
-            <li class="nav-item" [class.active]="seccionActiva === 'anexos'" (click)="seleccionarSeccion('anexos')">
-              <i class="mdi mdi-paperclip"></i>
-              <span>Anexos</span>
-            </li>
-            <li class="nav-item" [class.active]="seccionActiva === 'campos'" (click)="seleccionarSeccion('campos')">
-              <i class="mdi mdi-form-textbox"></i>
-              <span>Campos variables</span>
-            </li>
-            <li class="nav-divider"></li>
+      </contenido>
+    </app-grupo-colapsable>
+  </div>
+</div>
 
-            <li class="nav-section" *ngFor="let seccion of secciones; let i = index">
-              <div class="nav-section-header" (click)="toggleSeccion(i)">
-                <i class="mdi" [ngClass]="seccion.expandida ? 'mdi-chevron-down' : 'mdi-chevron-right'"></i>
-                <span>{{ seccion.nombre }}</span>
-              </div>
-              <ul class="nav-subsection" *ngIf="seccion.expandida">
-                <li class="nav-subitem" *ngFor="let capitulo of seccion.capitulos; let j = index">
-                  <div class="nav-capitulo-header" (click)="toggleCapitulo(i, j)">
-                    <i class="mdi" [ngClass]="capitulo.expandido ? 'mdi-chevron-down' : 'mdi-chevron-right'"></i>
-                    <span>{{ capitulo.nombre }}</span>
-                  </div>
-                  <ul class="nav-clausulas" *ngIf="capitulo.expandido">
-                    <li class="nav-clausula"
-                        *ngFor="let clausula of capitulo.clausulas"
-                        [class.active]="clausulaActiva === clausula.id"
-                        [class.bloqueada]="clausula.bloqueada"
-                        (click)="seleccionarClausula(clausula)">
-                      <i class="mdi mdi-file-document-outline"></i>
-                      <span>{{ clausula.nombre }}</span>
-                      <i class="mdi mdi-lock float-right" *ngIf="clausula.bloqueada" title="Bloqueada por otro usuario"></i>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
+<div class="row">
+  <div [ngClass]="colNavegacion" class="sidebar">
+    <div class="panel">
+      <div class="panel-header">
+        <h5 class="panel-title">Navegación</h5>
       </div>
-    </div>
+      <div class="panel-body">
+        <ul class="nav-list">
+          <li class="nav-item" [class.active]="seccionActiva === 'caratula'" (click)="seleccionarSeccion('caratula')">
+            <i class="mdi mdi-file-document"></i>
+            <span>Carátula</span>
+          </li>
+          <li class="nav-item" [class.active]="seccionActiva === 'notas'" (click)="seleccionarSeccion('notas')">
+            <i class="mdi mdi-note-text"></i>
+            <span>Notas</span>
+          </li>
+          <li class="nav-item" [class.active]="seccionActiva === 'anexos'" (click)="seleccionarSeccion('anexos')">
+            <i class="mdi mdi-paperclip"></i>
+            <span>Anexos</span>
+          </li>
+          <li class="nav-item" [class.active]="seccionActiva === 'campos'" (click)="seleccionarSeccion('campos')">
+            <i class="mdi mdi-form-textbox"></i>
+            <span>Campos variables</span>
+          </li>
+          <li class="nav-divider"></li>
 
-    <div class="col panel-edicion" [class.collapsed]="edicionCollapsed" [class.expanded]="navegacionCollapsed">
-      <div class="panel">
-        <div class="panel-header">
-          <h5 class="panel-title">{{ tituloEdicion }}</h5>
-          <button type="button" class="btn btn-sm btn-link" (click)="toggleEdicion()"
-                  [attr.aria-label]="edicionCollapsed ? 'Expandir panel de edición' : 'Contraer panel de edición'">
-            <i class="mdi" [ngClass]="edicionCollapsed ? 'mdi-chevron-left' : 'mdi-chevron-right'"></i>
-          </button>
-        </div>
-        <div class="panel-body" *ngIf="!edicionCollapsed">
-          <div *ngIf="seccionActiva === null && clausulaActiva === null" class="text-center text-muted py-5">
-            Seleccione un elemento del panel de navegación para editar
-          </div>
-
-          <div *ngIf="seccionActiva === 'caratula'">
-            <h6>Datos de la Carátula</h6>
-            <p class="text-muted">Complete los datos necesarios para generar la carátula del pliego.</p>
-          </div>
-
-          <div *ngIf="seccionActiva === 'notas'">
-            <h6>Notas del Pliego</h6>
-            <p class="text-muted">Agregue o elimine notas que se incluirán en el pliego.</p>
-          </div>
-
-          <div *ngIf="seccionActiva === 'anexos'">
-            <h6>Anexos del Pliego</h6>
-            <p class="text-muted">Agregue o elimine archivos anexos al pliego.</p>
-          </div>
-
-          <div *ngIf="seccionActiva === 'campos'">
-            <h6>Campos Variables</h6>
-            <p class="text-muted">Complete los campos variables definidos para este pliego.</p>
-          </div>
-
-          <div *ngIf="clausulaActiva !== null && clausulaSeleccionada">
-            <div class="alert alert-warning" *ngIf="clausulaSeleccionada.bloqueada">
-              <i class="mdi mdi-lock"></i> Esta cláusula está siendo editada por otro usuario
+          <li class="nav-section" *ngFor="let seccion of secciones; let i = index">
+            <div class="nav-section-header" (click)="toggleSeccion(i)">
+              <i class="mdi" [ngClass]="seccion.expandida ? 'mdi-chevron-down' : 'mdi-chevron-right'"></i>
+              <span>{{ seccion.nombre }}</span>
             </div>
-
-            <h6>{{ clausulaSeleccionada.nombre }}</h6>
-            <div class="form-group">
-              <label class="etiqueta">Contenido</label>
-              <textarea class="form-control" rows="10"
-                        [disabled]="clausulaSeleccionada.bloqueada"
-                        placeholder="Ingrese el contenido de la cláusula"></textarea>
-            </div>
-
-            <div class="mt-3 border-top pt-3">
-              <button type="button" class="btn btn-secondary mr-2" [disabled]="clausulaSeleccionada.bloqueada">
-                <i class="mdi mdi-message-alert"></i> Solicitar modificación
-              </button>
-              <button type="button" class="btn btn-danger mr-2"
-                      *ngIf="!clausulaSeleccionada.obligatoria"
-                      [disabled]="clausulaSeleccionada.bloqueada">
-                <i class="mdi mdi-delete"></i> Eliminar
-              </button>
-              <button type="button" class="btn btn-info mr-2">
-                <i class="mdi mdi-eye"></i> Ver
-              </button>
-              <button type="button" class="btn btn-primary" [disabled]="clausulaSeleccionada.bloqueada">
-                <i class="mdi mdi-note-plus"></i> Agregar nota
-              </button>
-            </div>
-          </div>
-        </div>
+            <ul class="nav-subsection" *ngIf="seccion.expandida">
+              <li class="nav-subitem" *ngFor="let capitulo of seccion.capitulos; let j = index">
+                <div class="nav-capitulo-header" (click)="toggleCapitulo(i, j)">
+                  <i class="mdi" [ngClass]="capitulo.expandido ? 'mdi-chevron-down' : 'mdi-chevron-right'"></i>
+                  <span>{{ capitulo.nombre }}</span>
+                </div>
+                <ul class="nav-clausulas" *ngIf="capitulo.expandido">
+                  <li class="nav-clausula"
+                      *ngFor="let clausula of capitulo.clausulas"
+                      [class.active]="clausulaActiva === clausula.id"
+                      [class.bloqueada]="clausula.bloqueada"
+                      (click)="seleccionarClausula(clausula)">
+                    <i class="mdi mdi-file-document-outline"></i>
+                    <span>{{ clausula.nombre }}</span>
+                    <i class="mdi mdi-lock float-right" *ngIf="clausula.bloqueada" title="Bloqueada por otro usuario"></i>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
 
-  <div class="row mt-3 mb-3">
-    <div class="col-12 text-center">
-      <button type="button" class="btn btn-secondary mr-2">
-        <i class="mdi mdi-content-save"></i> Guardar
-      </button>
-      <button type="button" class="btn btn-primary mr-2">
-        <i class="mdi mdi-check-circle"></i> Solicitar validación
-      </button>
-      <button type="button" class="btn btn-info mr-2">
-        <i class="mdi mdi-shield-check"></i> Pre validar
-      </button>
-      <button type="button" class="btn btn-success mr-2">
-        <i class="mdi mdi-eye"></i> Visualizar
-      </button>
-      <button type="button" class="btn btn-warning mr-2" *ngIf="modeloCambio">
-        <i class="mdi mdi-compare"></i> Ver diferencias
-      </button>
-      <button type="button" class="btn btn-primary mr-2" *ngIf="modeloCambio">
-        <i class="mdi mdi-refresh"></i> Actualizar
-      </button>
-      <button type="button" class="btn btn-secondary mr-2">
-        <i class="mdi mdi-message-alert"></i> Solicitar modificación modelo
-      </button>
-      <button type="button" class="btn btn-success mr-2" *ngIf="esValidador">
-        <i class="mdi mdi-check-all"></i> Solicitar aprobación
-      </button>
+  <div [ngClass]="colEdicion">
+    <div class="panel">
+      <div class="panel-header">
+        <h5 class="panel-title">{{ tituloEdicion }}</h5>
+      </div>
+      <div class="panel-body">
+        <div *ngIf="seccionActiva === null && clausulaActiva === null" class="text-center text-muted py-5">
+          <i class="mdi mdi-arrow-left-circle mdi-48px mb-3"></i>
+          <h6>Seleccione un elemento del panel de navegación para editar</h6>
+        </div>
+
+        <div *ngIf="seccionActiva === 'caratula'">
+          <h6>Datos de la Carátula</h6>
+          <p class="text-muted">Complete los datos necesarios para generar la carátula del pliego.</p>
+          <div class="form-group">
+            <label class="etiqueta">Título del pliego</label>
+            <input type="text" class="form-control" placeholder="Ingrese el título del pliego">
+          </div>
+          <div class="form-group">
+            <label class="etiqueta">Objeto de la compra</label>
+            <textarea class="form-control" rows="4" placeholder="Describa el objeto de la compra"></textarea>
+          </div>
+        </div>
+
+        <div *ngIf="seccionActiva === 'notas'">
+          <h6>Notas del Pliego</h6>
+          <p class="text-muted">Agregue o elimine notas que se incluirán en el pliego.</p>
+          <div class="mb-3">
+            <button type="button" class="btn btn-primary">
+              <i class="mdi mdi-plus"></i> Agregar nota
+            </button>
+          </div>
+          <div class="alert alert-info">
+            <i class="mdi mdi-information"></i> No hay notas agregadas
+          </div>
+        </div>
+
+        <div *ngIf="seccionActiva === 'anexos'">
+          <h6>Anexos del Pliego</h6>
+          <p class="text-muted">Agregue o elimine archivos anexos al pliego.</p>
+          <div class="mb-3">
+            <button type="button" class="btn btn-primary">
+              <i class="mdi mdi-paperclip"></i> Agregar anexo
+            </button>
+          </div>
+          <div class="alert alert-info">
+            <i class="mdi mdi-information"></i> No hay anexos agregados
+          </div>
+        </div>
+
+        <div *ngIf="seccionActiva === 'campos'">
+          <h6>Campos Variables</h6>
+          <p class="text-muted">Complete los campos variables definidos para este pliego.</p>
+          <div class="form-group">
+            <label class="etiqueta">Plazo de entrega</label>
+            <input type="number" class="form-control" placeholder="Ingrese el plazo en días">
+          </div>
+          <div class="form-group">
+            <label class="etiqueta">Monto estimado</label>
+            <input type="number" class="form-control" placeholder="Ingrese el monto estimado">
+          </div>
+        </div>
+
+        <div *ngIf="clausulaActiva !== null && clausulaSeleccionada">
+          <div class="alert alert-warning" *ngIf="clausulaSeleccionada.bloqueada">
+            <i class="mdi mdi-lock"></i> Esta cláusula está siendo editada por otro usuario
+          </div>
+
+          <h6>{{ clausulaSeleccionada.nombre }}</h6>
+          <div class="form-group">
+            <label class="etiqueta">Contenido</label>
+            <textarea class="form-control" rows="10"
+                      [disabled]="clausulaSeleccionada.bloqueada"
+                      placeholder="Ingrese el contenido de la cláusula"></textarea>
+          </div>
+
+          <div class="mt-3 border-top pt-3">
+            <button type="button" class="btn btn-secondary mr-2" [disabled]="clausulaSeleccionada.bloqueada">
+              <i class="mdi mdi-message-alert"></i> Solicitar modificación
+            </button>
+            <button type="button" class="btn btn-danger mr-2"
+                    *ngIf="!clausulaSeleccionada.obligatoria"
+                    [disabled]="clausulaSeleccionada.bloqueada">
+              <i class="mdi mdi-delete"></i> Eliminar
+            </button>
+            <button type="button" class="btn btn-info mr-2">
+              <i class="mdi mdi-eye"></i> Ver
+            </button>
+            <button type="button" class="btn btn-primary" [disabled]="clausulaSeleccionada.bloqueada">
+              <i class="mdi mdi-note-plus"></i> Agregar nota
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</div>
+
+<div class="row mt-3 mb-3">
+  <div class="col-12 text-center">
+    <button type="button" class="btn btn-secondary mr-2">
+      <i class="mdi mdi-content-save"></i> Guardar
+    </button>
+    <button type="button" class="btn btn-primary mr-2">
+      <i class="mdi mdi-check-circle"></i> Solicitar validación
+    </button>
+    <button type="button" class="btn btn-info mr-2">
+      <i class="mdi mdi-shield-check"></i> Pre validar
+    </button>
+    <button type="button" class="btn btn-success mr-2">
+      <i class="mdi mdi-eye"></i> Visualizar
+    </button>
+    <button type="button" class="btn btn-warning mr-2" *ngIf="modeloCambio">
+      <i class="mdi mdi-compare"></i> Ver diferencias
+    </button>
+    <button type="button" class="btn btn-primary mr-2" *ngIf="modeloCambio">
+      <i class="mdi mdi-refresh"></i> Actualizar
+    </button>
+    <button type="button" class="btn btn-secondary mr-2">
+      <i class="mdi mdi-message-alert"></i> Solicitar modificación modelo
+    </button>
+    <button type="button" class="btn btn-success mr-2" *ngIf="esValidador">
+      <i class="mdi mdi-check-all"></i> Solicitar aprobación
+    </button>
   </div>
 </div>
