@@ -1,7 +1,8 @@
+<div class="container-fluid">
 <div class="row">
   <div class="col-md-8 ml-0 pl-0 mr-0 pr-0">
     <h4><em class="fa fa-edit mr-2"></em>Elaborar pliego</h4>
-    <h6>Edite los componentes del pliego</h6>
+    <h6>Trabaje en la elaboración del pliego modificando o agregando cláusulas, anexos o notas</h6>
   </div>
 </div>
 
@@ -14,11 +15,11 @@
       <div class="mb-2 font-weight-bold">
         {{ pliego.tipoCompraDescripcion }} | {{ pliego.subtipoCompraDescripcion }} | {{ pliego.numeroCompra }}/{{ pliego.anioCompra }}
       </div>
-      <div class="mb-2 font-weight-bold">
-        <strong>Apertura electrónica:</strong> {{ aperturaElectronica }}
+      <div class="mb-2">
+        Apertura electrónica: <strong>{{ aperturaElectronica }} </strong> Cantidad de etapas: <strong>1</strong>
       </div>
       <div class="m-0">
-        <span class="badge ml-2" [ngClass]="{
+        <span class="badge" [ngClass]="{
           'badge-info': pliego.estado === 'Pendiente' || pliego.estado === 'Asignado',
           'badge-success': pliego.estado === 'En proceso',
           'badge-warning': pliego.estado === 'Pendiente validación',
@@ -27,37 +28,15 @@
           {{ obtenerTextoEstado(pliego.estado) }}
         </span>
       </div>
+        <div class="mb-2 pt-4"> Modelo usado:
+                <strong>{{ modeloUsado }}</strong>
+        </div>
     </div>
   </div>
 </div>
 
-<div class="row" *ngIf="modeloUsado">
-  <div class="col-12 ml-0 pl-0 mr-0 pr-0">
-    <app-grupo-colapsable
-      [colapsado]="true"
-      class="w-100"
-      classContenido="p-0">
-      <titulo>Modelo usado</titulo>
-      <contenido>
-        <div class="card mb-2">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-10">
-                <strong>{{ modeloUsado }}</strong>
-              </div>
-              <div class="col-md-2 text-right">
-                <span class="badge badge-success">Vigente</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </contenido>
-    </app-grupo-colapsable>
-  </div>
-</div>
-
 <div class="row" *ngIf="usuariosAsignados.length > 0">
-  <div class="col-12 ml-0 pl-0 mr-0 pr-0">
+  <div class="col-12 mb-2 pl-0 mr-0 pr-0">
     <app-grupo-colapsable
       [colapsado]="true"
       class="w-100"
@@ -306,4 +285,5 @@
       <i class="mdi mdi-check-all"></i> Solicitar aprobación
     </button>
   </div>
+</div>
 </div>
