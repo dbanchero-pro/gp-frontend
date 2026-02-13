@@ -100,7 +100,7 @@
           <div class="card">
             <div class="px-3 py-2">
               <div class="row g-0 py-1 px-3">
-                <div class="col-md-2 col-lg-2 fw-semibold etiqueta">Modelo base</div>
+                <div class="col-md-2 col-lg-2 etiqueta">Modelo base</div>
                 <div class="col-md-7 col-lg-7 font-weight-bold">{{ pliego.denominacionModelo }}</div>
                 <div class="col-md-2 col-lg-3 d-flex justify-content-end">
                   <app-boton-accion
@@ -112,25 +112,25 @@
               </div>
 
               <div class="row g-0 py-1 px-3">
-                <div class="col-md-2 col-lg-2 fw-semibold etiqueta">Organismo</div>
+                <div class="col-md-2 col-lg-2 etiqueta">Organismo</div>
                 <div class="col-md-10 col-lg-10 font-weight-bold">{{ pliego.incisoDescripcion }} | {{ pliego.unidadEjecutoraDescripcion }}</div>
               </div>
 
               <div class="row g-0 py-1 px-3">
-                <div class="col-md-2 col-lg-2 fw-semibold etiqueta">Tipo compra</div>
+                <div class="col-md-2 col-lg-2 etiqueta">Tipo compra</div>
                 <div class="col-md-10 col-lg-10 font-weight-bold">
                   {{ pliego.tipoCompraDescripcion }} | {{ pliego.subtipoCompraDescripcion }} N° {{ pliego.numeroCompra }}/{{ pliego.anioCompra }}
                 </div>
               </div>
 
               <div class="row g-0 py-1 px-3">
-                <div class="col-md-2 col-lg-2 fw-semibold etiqueta">Apertura electrónica</div>
-                <div class="col-md-10 col-lg-10">{{ obtenerTextoAperturaElectronica(pliego.aperturaElectronica) }}</div>
+                <div class="col-md-2 col-lg-2 etiqueta">Apertura electrónica</div>
+                <div class="col-md-10 col-lg-10 font-weight-bold">{{ obtenerTextoAperturaElectronica(pliego.aperturaElectronica) }}</div>
               </div>
 
               <div class="row g-0 py-1 px-3">
                 <div class="col-md-2 col-lg-2 fw-semibold etiqueta">Fecha publicación</div>
-                <div class="col-md-10 col-lg-10">{{ pliego.fechaPublicacion | date:'dd/MM/yyyy' }}</div>
+                <div class="col-md-10 col-lg-10 font-weight-bold">{{ pliego.fechaPublicacion | date:'dd/MM/yyyy' }}</div>
               </div>
             </div>
           </div>
