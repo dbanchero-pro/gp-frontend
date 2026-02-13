@@ -10,6 +10,7 @@ interface Clausula {
   nombre: string;
   bloqueada: boolean;
   obligatoria: boolean;
+  protegida: boolean;
 }
 
 interface Capitulo {
@@ -21,7 +22,9 @@ interface Capitulo {
 interface Seccion {
   nombre: string;
   expandida: boolean;
+  soloClausulas: boolean;
   capitulos: Capitulo[];
+  clausulas: Clausula[];
 }
 
 interface UsuarioAsignado {
@@ -79,8 +82,10 @@ export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
   ];
 
   historialTareas: TareaHistorial[] = [
-    { fecha: new Date('2024-01-15 10:30'), tarea: 'Inicio de elaboración', usuario: 'Juan Pérez' },
-    { fecha: new Date('2024-01-16 14:20'), tarea: 'Modificación de cláusula', usuario: 'María González' }
+    { fecha: new Date('2024-01-15 10:30'), tarea: 'Creación', usuario: 'Juan Pérez' },
+    { fecha: new Date('2024-02-16 14:20'), tarea: 'Asignación', usuario: 'María González' },
+    { fecha: new Date('2024-03-16 14:20'), tarea: 'Iniciación', usuario: 'María González' },
+    { fecha: new Date('2024-03-16 14:20'), tarea: 'En edición', usuario: 'María González' }
   ];
 
   secciones: Seccion[] = [
@@ -92,21 +97,23 @@ export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
           nombre: 'Capítulo I - Objeto de la Compra',
           expandido: true,
           clausulas: [
-            { id: 1, nombre: 'Cláusula 1 - Descripción del objeto', bloqueada: false, obligatoria: true },
-            { id: 2, nombre: 'Cláusula 2 - Especificaciones técnicas', bloqueada: true, obligatoria: true },
-            { id: 3, nombre: 'Cláusula 3 - Cantidad y unidades', bloqueada: false, obligatoria: true }
+            { id: 1, nombre: 'Descripción del objeto', bloqueada: false, obligatoria: true, protegida:false  },
+            { id: 2, nombre: 'Especificaciones técnicas', bloqueada: true, obligatoria: true, protegida:false  },
+            { id: 3, nombre: 'Cantidad y unidades', bloqueada: false, obligatoria: true, protegida:false  }
           ]
         },
         {
           nombre: 'Capítulo II - Condiciones Generales',
           expandido: false,
           clausulas: [
-            { id: 4, nombre: 'Cláusula 4 - Plazo de entrega', bloqueada: false, obligatoria: true },
-            { id: 5, nombre: 'Cláusula 5 - Lugar de entrega', bloqueada: false, obligatoria: true },
-            { id: 6, nombre: 'Cláusula 6 - Garantías', bloqueada: false, obligatoria: false }
+            { id: 4, nombre: 'Plazo de entrega', bloqueada: false, obligatoria: true, protegida:false  },
+            { id: 5, nombre: 'Lugar de entrega', bloqueada: false, obligatoria: true, protegida:false  },
+            { id: 6, nombre: 'Garantías', bloqueada: false, obligatoria: false, protegida:false  }
           ]
         }
-      ]
+      ],
+      clausulas: [],
+      soloClausulas: false,
     },
     {
       nombre: 'Sección II - Requisitos de Participación',
@@ -116,19 +123,21 @@ export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
           nombre: 'Capítulo I - Requisitos Legales',
           expandido: false,
           clausulas: [
-            { id: 7, nombre: 'Cláusula 7 - Documentación legal', bloqueada: false, obligatoria: true },
-            { id: 8, nombre: 'Cláusula 8 - Certificados requeridos', bloqueada: false, obligatoria: true }
+            { id: 7, nombre: 'Documentación legal', bloqueada: false, obligatoria: true, protegida:false },
+            { id: 8, nombre: 'Certificados requeridos', bloqueada: false, obligatoria: true, protegida:false }
           ]
         },
         {
           nombre: 'Capítulo II - Requisitos Técnicos',
           expandido: false,
           clausulas: [
-            { id: 9, nombre: 'Cláusula 9 - Experiencia técnica', bloqueada: false, obligatoria: true },
-            { id: 10, nombre: 'Cláusula 10 - Capacidad operativa', bloqueada: false, obligatoria: false }
+            { id: 9, nombre: 'Experiencia técnica', bloqueada: false, obligatoria: true, protegida:false  },
+            { id: 10, nombre: 'Capacidad operativa', bloqueada: false, obligatoria: false, protegida:false  }
           ]
         }
-      ]
+      ],
+      clausulas: [],
+      soloClausulas: false
     },
     {
       nombre: 'Sección III - Evaluación y Adjudicación',
@@ -138,12 +147,23 @@ export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
           nombre: 'Capítulo I - Criterios de Evaluación',
           expandido: false,
           clausulas: [
-            { id: 11, nombre: 'Cláusula 11 - Criterio precio', bloqueada: false, obligatoria: true },
-            { id: 12, nombre: 'Cláusula 12 - Criterios técnicos', bloqueada: false, obligatoria: true },
-            { id: 13, nombre: 'Cláusula 13 - Puntajes', bloqueada: false, obligatoria: true }
+            { id: 11, nombre: 'Criterio precio', bloqueada: false, obligatoria: true, protegida:false  },
+            { id: 12, nombre: 'Criterios técnicos', bloqueada: false, obligatoria: true , protegida:false },
+            { id: 13, nombre: 'Puntajes', bloqueada: false, obligatoria: true, protegida:false  }
           ]
         }
-      ]
+      ],
+      clausulas: [],
+      soloClausulas: false
+    },
+    {
+      nombre: 'Sección IV - Con cláusulas',
+      expandida: false,
+      capitulos: [],
+      clausulas: [
+          { id: 11, nombre: 'Cláusula vacía', bloqueada: false, obligatoria: true, protegida:false  },
+        ],
+        soloClausulas: true
     }
   ];
 
@@ -202,9 +222,11 @@ export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
     if (this.panelNavegacionContraido) {
       this.colNavegacion = 'col-lg-1 ml-0 pl-0 mr-0 pr-0';
       this.colEdicion = 'col-lg-11 ml-0 pl-0 mr-0 pr-0';
+      this.panelEdicionContraido=false;
     } else {
       this.colNavegacion = 'col-lg-3 ml-0 pl-0 mr-0 pr-0';
       this.colEdicion = 'col-lg-9 ml-0 pl-0 mr-0 pr-0';
+      this.panelNavegacionContraido=false;
     }
   }
 
@@ -214,9 +236,11 @@ export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
     if (this.panelEdicionContraido) {
       this.colEdicion = 'col-lg-1 ml-0 pl-0 mr-0 pr-0';
       this.colNavegacion = 'col-lg-11 ml-0 pl-0 mr-0 pr-0';
+      this.panelNavegacionContraido=false;
     } else {
       this.colNavegacion = 'col-lg-3 ml-0 pl-0 mr-0 pr-0';
       this.colEdicion = 'col-lg-9 ml-0 pl-0 mr-0 pr-0';
+      this.panelEdicionContraido=false;
     }
   }
 
@@ -229,20 +253,17 @@ export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
       'caratula': 'Carátula',
       'notas': 'Notas',
       'anexos': 'Anexos',
-      'campos': 'Campos Variables'
+      'campos': 'Campos variables'
     };
     this.tituloEdicion = titulos[seccion] || 'Edición';
   }
 
   seleccionarClausula(clausula: Clausula): void {
-    if (clausula.bloqueada) {
-      return;
-    }
-
+   
     this.seccionActiva = null;
     this.clausulaActiva = clausula.id;
     this.clausulaSeleccionada = clausula;
-    this.tituloEdicion = clausula.nombre;
+    this.tituloEdicion = "Cláusula: " + clausula.nombre;
   }
 
   canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
