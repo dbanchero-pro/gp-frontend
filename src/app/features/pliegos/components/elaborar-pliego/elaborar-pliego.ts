@@ -59,6 +59,7 @@ export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
 
   colNavegacion = 'col-lg-3';
   colEdicion = 'col-lg-9';
+  panelNavegacionContraido = false;
 
   seccionActiva: string | null = null;
   clausulaActiva: number | null = null;
@@ -192,6 +193,18 @@ export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
   toggleCapitulo(seccionIndex: number, capituloIndex: number): void {
     this.secciones[seccionIndex].capitulos[capituloIndex].expandido =
       !this.secciones[seccionIndex].capitulos[capituloIndex].expandido;
+  }
+
+  togglePanelNavegacion(): void {
+    this.panelNavegacionContraido = !this.panelNavegacionContraido;
+
+    if (this.panelNavegacionContraido) {
+      this.colNavegacion = 'col-lg-1';
+      this.colEdicion = 'col-lg-11';
+    } else {
+      this.colNavegacion = 'col-lg-3';
+      this.colEdicion = 'col-lg-9';
+    }
   }
 
   seleccionarSeccion(seccion: string): void {
