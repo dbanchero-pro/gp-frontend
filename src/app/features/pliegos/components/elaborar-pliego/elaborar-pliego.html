@@ -107,8 +107,8 @@
 <div class="row">
   <div [ngClass]="colNavegacion">
     <div class="panel">
-      <div class="panel-header">
-        <h5 class="panel-title">Navegación</h5>
+      <div class="panel-header" [class.contraido]="panelNavegacionContraido">
+        <h5 class="panel-title" *ngIf="!panelNavegacionContraido">Navegación</h5>
         <button type="button" class="btn-toggle-panel" (click)="togglePanelNavegacion()"
                 [title]="panelNavegacionContraido ? 'Expandir panel' : 'Contraer panel'">
           <i class="mdi" [ngClass]="panelNavegacionContraido ? 'mdi-chevron-right' : 'mdi-chevron-left'"></i>
@@ -166,8 +166,8 @@
 
   <div [ngClass]="colEdicion">
     <div class="panel">
-      <div class="panel-header">
-        <h5 class="panel-title">{{ tituloEdicion }}</h5>
+      <div class="panel-header" [class.contraido]="panelEdicionContraido">
+        <h5 class="panel-title" *ngIf="!panelEdicionContraido">{{ tituloEdicion }}</h5>
         <button type="button" class="btn-toggle-panel" (click)="togglePanelEdicion()"
                 [title]="panelEdicionContraido ? 'Expandir panel' : 'Contraer panel'">
           <i class="mdi" [ngClass]="panelEdicionContraido ? 'mdi-chevron-left' : 'mdi-chevron-right'"></i>

@@ -23,10 +23,15 @@
 
   .panel-title {
     margin: 0;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 600;
     color: #2c3e50;
     flex: 1;
+  }
+
+  &.contraido {
+    justify-content: center;
+    padding: 8px;
   }
 }
 
