@@ -60,6 +60,7 @@ export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
   colNavegacion = 'col-lg-3';
   colEdicion = 'col-lg-9';
   panelNavegacionContraido = false;
+  panelEdicionContraido = false;
 
   seccionActiva: string | null = null;
   clausulaActiva: number | null = null;
@@ -201,6 +202,18 @@ export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
     if (this.panelNavegacionContraido) {
       this.colNavegacion = 'col-lg-1';
       this.colEdicion = 'col-lg-11';
+    } else {
+      this.colNavegacion = 'col-lg-3';
+      this.colEdicion = 'col-lg-9';
+    }
+  }
+
+  togglePanelEdicion(): void {
+    this.panelEdicionContraido = !this.panelEdicionContraido;
+
+    if (this.panelEdicionContraido) {
+      this.colEdicion = 'col-lg-1';
+      this.colNavegacion = 'col-lg-11';
     } else {
       this.colNavegacion = 'col-lg-3';
       this.colEdicion = 'col-lg-9';

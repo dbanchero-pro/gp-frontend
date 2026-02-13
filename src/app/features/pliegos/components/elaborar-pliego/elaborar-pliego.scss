@@ -19,25 +19,44 @@
   background: #f9f9f9;
   border-bottom: 1px solid #dee2e6;
   border-radius: 4px 4px 0 0;
+  gap: 10px;
 
   .panel-title {
     margin: 0;
     font-size: 1.1rem;
     font-weight: 600;
     color: #2c3e50;
+    flex: 1;
+  }
+}
+
+.btn-toggle-panel {
+  background: transparent;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 4px 8px;
+  color: #495057;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
+
+  &:hover {
+    background-color: #e9ecef;
+    border-color: #adb5bd;
+    color: #212529;
   }
 
-  button {
-    padding: 2px 8px;
-    color: #6c757d;
+  &:active {
+    background-color: #dee2e6;
+  }
 
-    &:hover {
-      color: #495057;
-    }
-
-    i {
-      font-size: 1.2rem;
-    }
+  i {
+    font-size: 1.2rem;
+    line-height: 1;
   }
 }
 
