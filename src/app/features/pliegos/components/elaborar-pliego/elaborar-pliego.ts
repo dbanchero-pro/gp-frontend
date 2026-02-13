@@ -57,8 +57,8 @@ export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
   aperturaElectronica: string = 'Sí';
   modeloUsado: string = 'Modelo Estándar Licitación Pública Nacional';
 
-  colNavegacion = 'col-lg-3';
-  colEdicion = 'col-lg-9';
+  colNavegacion = 'col-lg-3 ml-0 pl-0 mr-0 pr-0';
+  colEdicion = 'col-lg-9 ml-0 pl-0 mr-0 pr-0';
   panelNavegacionContraido = false;
   panelEdicionContraido = false;
 
@@ -200,11 +200,11 @@ export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
     this.panelNavegacionContraido = !this.panelNavegacionContraido;
 
     if (this.panelNavegacionContraido) {
-      this.colNavegacion = 'col-lg-1';
-      this.colEdicion = 'col-lg-11';
+      this.colNavegacion = 'col-lg-1 ml-0 pl-0 mr-0 pr-0';
+      this.colEdicion = 'col-lg-11 ml-0 pl-0 mr-0 pr-0';
     } else {
-      this.colNavegacion = 'col-lg-3';
-      this.colEdicion = 'col-lg-9';
+      this.colNavegacion = 'col-lg-3 ml-0 pl-0 mr-0 pr-0';
+      this.colEdicion = 'col-lg-9 ml-0 pl-0 mr-0 pr-0';
     }
   }
 
@@ -212,11 +212,11 @@ export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
     this.panelEdicionContraido = !this.panelEdicionContraido;
 
     if (this.panelEdicionContraido) {
-      this.colEdicion = 'col-lg-1';
-      this.colNavegacion = 'col-lg-11';
+      this.colEdicion = 'col-lg-1 ml-0 pl-0 mr-0 pr-0';
+      this.colNavegacion = 'col-lg-11 ml-0 pl-0 mr-0 pr-0';
     } else {
-      this.colNavegacion = 'col-lg-3';
-      this.colEdicion = 'col-lg-9';
+      this.colNavegacion = 'col-lg-3 ml-0 pl-0 mr-0 pr-0';
+      this.colEdicion = 'col-lg-9 ml-0 pl-0 mr-0 pr-0';
     }
   }
 
