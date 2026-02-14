@@ -58,11 +58,6 @@
   &:active {
     background-color: #dee2e6;
   }
-
-  i {
-    font-size: 1.2rem;
-    line-height: 1;
-  }
 }
 
 .panel-body {
@@ -91,28 +86,20 @@
   display: flex;
   align-items: center;
 
-  i {
-    margin-right: 10px;
-    font-size: 1.1rem;
-    color: #6c757d;
-  }
-
   span {
     flex: 1;
   }
 
   &:hover {
-    background-color: #e2e9f1;
+    /*background-color: #e2e9f1;*/
+    background-color: #f8f9fa;
   }
 
   &.active {
-    background-color: #e2e9f1;
+/*    background-color: #e2e9f1;*/
+    background-color: #f8f9fa;
     border-left-color:#003da5;
     font-weight: 600;
-
-    i {
-      color: #007bff;
-    }
   }
 }
 
@@ -132,12 +119,6 @@
   display: flex;
   align-items: center;
   transition: background-color 0.2s ease;
-
-  i {
-    margin-right: 8px;
-    font-size: 1rem;
-  }
-
   &:hover {
     background-color: #f8f9fa;
   }
@@ -187,33 +168,20 @@
   align-items: center;
   justify-content: space-between;
 
-  i.mdi-file-document-outline {
-    margin-right: 8px;
-    font-size: 0.9rem;
-    color: #6c757d;
-  }
-
-  i.mdi-lock {
-    font-size: 0.9rem;
-    color: #dc3545;
-  }
-
   span {
     flex: 1;
   }
 
   &:hover:not(.bloqueada) {
-    background-color: #e2e9f1;
+/*    background-color: #e2e9f1;*/
+    background-color: #f8f9fa;
   }
 
   &.active {
-    background-color: #e2e9f1;
+    /*background-color: #e2e9f1;*/
+    background-color: #f8f9fa;
     border-left-color: #003da5;
     font-weight: 500;
-
-    i.mdi-file-document-outline {
-      color: #007bff;
-    }
   }
 
   &.bloqueada {

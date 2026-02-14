@@ -44,7 +44,7 @@
       <contenido>
         <div class="card mb-2">
           <div class="col-md-12 p-0">
-            <table class="table table-striped table-hover mb-0 align-middle"
+            <table class="table table-hover"
                 aria-label="Tabla de usuarios asignados al pliego">
                 <thead>
                   <tr>
@@ -75,7 +75,7 @@
       <contenido>
         <div class="card mb-2">
           <div class="col-md-12 p-0">
-            <table class="table table-striped table-hover mb-0 align-middle">
+            <table class="table table-hover mb-0 align-middle">
               <thead>
                 <tr>
                   <th>Fecha</th>
@@ -126,7 +126,7 @@
           </li>
           <li class="nav-divider"></li>
           <li class="nav-item" [class.active]="seccionActiva === 'campos'" onkeydown="" (click)="seleccionarSeccion('campos')">
-            <em class="fa fa-pencil m-2"></em>
+            <em class="fa fa-table m-2"></em>
             <span>Campos variables</span>
           </li>
           <li class="nav-divider"></li>
@@ -245,7 +245,134 @@
                 Sí
               </small>
             </div>  
-            <div class="form-group">
+
+            <div class="row">
+              <div class="col-12 ml-0 pl-0 mr-0 pr-0">
+                <app-grupo-colapsable
+                  [colapsado]="true"
+                  class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
+                  <titulo>Notas</titulo>
+                  <contenido>
+                    <div class="col-md-12 p-0">
+                      <!-- Notas -->
+                      <table class="table table-hover m-0 align-middle">
+                        <thead>
+                          <tr>
+                            <th class="text-center" style="width: 50px;">Acciones</th>
+                            <th>Comentario</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="text-center">
+                              <button type="button" class="btn btn-sm"
+                                [attr.aria-label]="'Eliminar nota'">
+                                <em class="fa fa-trash"></em>
+                              </button>
+                            </td>
+                            <td>Comentario de la nota</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </contenido>
+                </app-grupo-colapsable>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 ml-0 pl-0 mr-0 pr-0">
+                <app-grupo-colapsable
+                  [colapsado]="true"
+                  class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
+                  <titulo>Solicitudes de modificación</titulo>
+                  <contenido>
+                    <div class="col-md-12 p-0">
+                      <!-- Solicitudes de modificación -->
+                      <table class="table table-hover m-0 align-middle">
+                        <thead>
+                          <tr>
+                            <th>Fecha</th>
+                            <th>Usuario</th>
+                            <th>Comentario</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>31/10/2024</td>
+                            <td>Graciela Acosta</td>
+                            <td>Comentario de la solicitud</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </contenido>
+                </app-grupo-colapsable>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 ml-0 pl-0 mr-0 pr-0">
+                <app-grupo-colapsable
+                  [colapsado]="true"
+                  class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
+                  <titulo>Redacciones</titulo>
+                  <contenido>
+                    <div class="col-md-12 p-0">
+                      <table class="table table-hover m-0 align-middle">
+                        <thead>
+                          <tr>
+                            <th class="text-center" style="width: 100px;"></th>
+                            <th>Redacción</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="text-center">
+                              <input type="checkbox">
+                              <button type="button" class="btn btn-sm"
+                                [attr.aria-label]="'Ver redacción'">
+                                <em class="fa fa-eye"></em>
+                              </button>
+                            </td>
+                            <td>Redacción 1...</td>
+                          </tr>
+                              <tr>
+                            <td></td>
+                            <td>Redacción 2...</td>
+                          </tr>                       
+                        </tbody>
+                      </table>
+                    </div>
+                  </contenido>
+                </app-grupo-colapsable>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 ml-0 pl-0 mr-0 pr-0 border-bottom">
+                <app-grupo-colapsable
+                  [colapsado]="true"
+                  class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
+                  <titulo>Campos variables</titulo>
+                  <contenido>
+                    <div class="col-12 m-3">
+                        <!-- Campos variables -->
+                        <div class="form-group">
+                          <label class="etiqueta">Plazo de entrega</label>
+                          <input type="number" class="form-control" placeholder="Ingrese el plazo en días">
+                        </div>
+                        <div class="form-group">
+                          <label class="etiqueta">Monto estimado</label>
+                          <input type="number" class="form-control" placeholder="Ingrese el monto estimado">
+                        </div>
+                    </div>
+                  </contenido>
+                </app-grupo-colapsable>
+              </div>
+            </div>
+
+            <div class="form-group m-4">
               <label for="redaccion">* Redacción</label>
               <app-text-editor></app-text-editor>
               <small class="form-text text-muted">
