@@ -42,7 +42,7 @@
       class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
       <titulo>Usuarios asignados</titulo>
       <contenido>
-        <div class="card mb-2">
+        <div class="card mb-2 border-top-0">
           <div class="col-md-12 p-0">
             <table class="table table-hover"
                 aria-label="Tabla de usuarios asignados al pliego">
@@ -73,7 +73,7 @@
       class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
       <titulo>Historial tareas</titulo>
       <contenido>
-        <div class="card mb-2">
+        <div class="card mb-2 border-top-0">
           <div class="col-md-12 p-0">
             <table class="table table-hover mb-0 align-middle">
               <thead>
@@ -91,6 +91,40 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+      </contenido>
+    </app-grupo-colapsable>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 ml-0 pl-0 mr-0 pr-0">
+    <app-grupo-colapsable
+      [colapsado]="true"
+      class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
+      <titulo>Motivo rechazo validación</titulo>
+      <contenido>
+        <div class="card mb-2 border-top-0">
+          <div class="col-12 m-3">
+           El motivo del rechazo de la validación se debe a que bla bla bla
+          </div>
+        </div>
+      </contenido>
+    </app-grupo-colapsable>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 ml-0 pl-0 mr-0 pr-0">
+    <app-grupo-colapsable
+      [colapsado]="true"
+      class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
+      <titulo>Motivo modificación</titulo>
+      <contenido>
+        <div class="card mb-2 border-top-0">
+          <div class="col-12 m-3">
+            <span> El motivo de la modificación se debe a que  bla bal bal bla</span>
           </div>
         </div>
       </contenido>
@@ -356,7 +390,7 @@
                   class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
                   <titulo>Campos variables</titulo>
                   <contenido>
-                    <div class="col-12 m-3">
+                    <div class="col-11 m-3">
                         <!-- Campos variables -->
                         <div class="form-group">
                           <label class="etiqueta">Plazo de entrega</label>
