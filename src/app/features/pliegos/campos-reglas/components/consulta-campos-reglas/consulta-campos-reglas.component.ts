@@ -49,6 +49,7 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   tiposFuente: { id: string; nombre: string }[] = [];
 
   modoSeleccion: boolean = false;
+  idClausula: string | null = null;
   redaccionId: string | null = null;
   focusElementId: string | null = null;
 
@@ -67,9 +68,10 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
     super.ngOnInit();
     this.tiposFuente = this.campoService.obtenerTiposFuente();
 
-    this.redaccionId = this.route.snapshot.queryParamMap.get('redaccionId');
+    this.idClausula = this.route.snapshot.queryParamMap.get('idClausula');
+    this.redaccionId = this.route.snapshot.queryParamMap.get('idRedaccion');
     this.focusElementId = this.route.snapshot.queryParamMap.get('focusElement');
-    this.modoSeleccion = !!(this.redaccionId && this.focusElementId);
+    this.modoSeleccion = !!(this.idClausula && this.redaccionId && this.focusElementId);
   }
 
   ngAfterViewInit(): void {
@@ -298,31 +300,33 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   }
 
   copiarCampo(campo: CampoDTO): void {
-    if (this.redaccionId && this.focusElementId && campo.etiqueta) {
+    if (this.idClausula && this.redaccionId && this.focusElementId && campo.etiqueta) {
       navigator.clipboard.writeText('[[' + campo.etiqueta + ']]');
 
-      this.router.navigate(
-        ['/pliegos/clausulas/redaccion/modificar', this.redaccionId],
-        {
-          queryParams: {
-            etiquetaCopiada: campo.etiqueta,
-            focusElement: this.focusElementId
-          }
+      const ruta = this.idClausula === '0'
+        ? ['/pliegos/clausulas/agregar/redaccion/modificar', this.redaccionId]
+        : ['/pliegos/clausulas/modificar', this.idClausula, 'redaccion/modificar', this.redaccionId];
+
+      this.router.navigate(ruta, {
+        queryParams: {
+          etiquetaCopiada: campo.etiqueta,
+          focusElement: this.focusElementId
         }
-      );
+      });
     }
   }
 
   volverAElaborarPliego(): void {
-    if (this.redaccionId) {
-      this.router.navigate(
-        ['/pliegos/clausulas/redaccion/modificar', this.redaccionId],
-        {
-          queryParams: {
-            focusElement: this.focusElementId
-          }
+    if (this.idClausula && this.redaccionId) {
+      const ruta = this.idClausula === '0'
+        ? ['/pliegos/clausulas/agregar/redaccion/modificar', this.redaccionId]
+        : ['/pliegos/clausulas/modificar', this.idClausula, 'redaccion/modificar', this.redaccionId];
+
+      this.router.navigate(ruta, {
+        queryParams: {
+          focusElement: this.focusElementId
         }
-      );
+      });
     } else {
       this.router.navigate(['/pliegos/bandeja-entrada']);
     }

@@ -175,8 +175,12 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
   }
 
   private limpiarQueryParams(): void {
-    if (this.idRedaccion) {
-      this.router.navigate(['/pliegos/clausulas/redaccion/modificar', this.idRedaccion], {
+    if (this.idClausula && this.idRedaccion) {
+      const ruta = this.modoIngreso
+        ? ['/pliegos/clausulas/agregar/redaccion/modificar', this.idRedaccion]
+        : ['/pliegos/clausulas/modificar', this.idClausula, 'redaccion/modificar', this.idRedaccion];
+
+      this.router.navigate(ruta, {
         replaceUrl: true
       });
     }
@@ -238,12 +242,13 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
 
   navegarACamposDinamicos(): void {
     navigator.clipboard.writeText('');
-    if (this.idRedaccion) {
+    if (this.idClausula && this.idRedaccion) {
       this.router.navigate(
         ['/pliegos/campos-reglas'],
         {
           queryParams: {
-            redaccionId: this.idRedaccion,
+            idClausula: this.idClausula,
+            idRedaccion: this.idRedaccion,
             focusElement: 'btnAgregarCampoDinamico'
           }
         }
