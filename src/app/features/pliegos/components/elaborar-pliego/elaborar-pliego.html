@@ -152,68 +152,56 @@
         </button>
         
       </div>
-      <div class="panel-body pt-3" [class.d-none]="panelEdicionContraido">
+      <div class="panel-body" [class.d-none]="panelEdicionContraido">
         <div *ngIf="seccionActiva === null && clausulaActiva === null" class="text-center text-muted py-5">
           <em class="fa fa-arrow-circle-left mdi-48px mb-3"></em>
           <h6>Seleccione un elemento del panel de navegación para editar</h6>
         </div>
 
           <div *ngIf="seccionActiva === 'encabezado'">
-          <div class="form-group">
-            <label class="etiqueta">Texto encabezado</label>
-            <input type="text" class="form-control">
-          </div>
-          <div class="form-group">
-            <label class="etiqueta">Texto pie de página</label>
-            <input type="text" class="form-control">
-          </div>
-        </div>
-
-        <div *ngIf="seccionActiva === 'caratula'">
-          <div class="form-group">
-            <label class="etiqueta">* Título del pliego</label>
-            <input type="text" class="form-control">
-          </div>
-          <div class="form-group">
-            <label class="etiqueta">* Objeto de la compra</label>
-            <textarea class="form-control" rows="4"></textarea>
-          </div>
-        </div>
-
-        <div *ngIf="seccionActiva === 'notas'">
-          <div class="mb-3 text-right">
-            <button type="button" class="btn btn-primary">
-              <em class="fa fa-plus"></em> Agregar nota
-            </button>
+            <div class="form-group">
+              <label class="etiqueta">Texto encabezado</label>
+              <input type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="etiqueta">Texto pie de página</label>
+              <input type="text" class="form-control">
+            </div>
           </div>
 
-          <div class="alert alert-info"> No hay notas agregadas </div>
-        </div>
-
-        <div *ngIf="seccionActiva === 'anexos'">
-          <div class="mb-3 text-right">
-            <button type="button" class="btn btn-primary">
-              <em class="fa fa-plus"></em> Agregar anexo
-            </button>
+          <div *ngIf="seccionActiva === 'caratula'">
+            <div class="form-group">
+              <label class="etiqueta">* Título del pliego</label>
+              <input type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="etiqueta">* Objeto de la compra</label>
+              <textarea class="form-control" rows="4"></textarea>
+            </div>
           </div>
-          <div class="alert alert-info"> No hay anexos agregados </div>
-        </div>
 
-        <div *ngIf="seccionActiva === 'campos'">
-          <div class="form-group">
-            <label class="etiqueta">Plazo de entrega</label>
-            <input type="number" class="form-control" placeholder="Ingrese el plazo en días">
-          </div>
-          <div class="form-group">
-            <label class="etiqueta">Monto estimado</label>
-            <input type="number" class="form-control" placeholder="Ingrese el monto estimado">
-          </div>
-        </div>
+          <div *ngIf="seccionActiva === 'notas'">
+            <div class="mb-3 text-right">
+              <button type="button" class="btn btn-primary">
+                <em class="fa fa-plus"></em> Agregar nota
+              </button>
+            </div>
 
-        <div *ngIf="clausulaActiva !== null && clausulaSeleccionada">
-          
+            <div class="alert alert-info"> No hay notas agregadas </div>
+          </div>
+
+          <div *ngIf="seccionActiva === 'anexos'">
+            <div class="mb-3 text-right">
+              <button type="button" class="btn btn-primary">
+                <em class="fa fa-plus"></em> Agregar anexo
+              </button>
+            </div>
+            <div class="alert alert-info"> No hay anexos agregados </div>
+          </div>
+
+          <div class="pt-0" *ngIf="clausulaActiva !== null && clausulaSeleccionada">
             <div class="row">
-              <div class="col-12 ml-0 pl-0 mr-0 pr-0">
+              <div class="col-12 ml-0 pl-0 mr-0 pr-0 pt-0">
                 <app-grupo-colapsable
                   [colapsado]="true"
                   class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
@@ -221,28 +209,20 @@
                   <contenido>
                     <div class="col-md-12 p-0">
                       <table class="table table-hover m-0 align-middle">
-                        <thead>
-                          <tr>
-                            <th class="text-center" style="width: 100px;"></th>
-                            <th>Redacción</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td class="text-center">
-                              <input type="checkbox">
-                              <button type="button" class="btn btn-sm"
-                                [attr.aria-label]="'Ver redacción'">
-                                <em class="fa fa-eye"></em>
-                              </button>
-                            </td>
-                            <td>Redacción 1...</td>
-                          </tr>
-                              <tr>
-                            <td></td>
-                            <td>Redacción 2...</td>
-                          </tr>                       
-                        </tbody>
+                        <tr>
+                          <td class="text-center" style="width: 100px;">
+                            <input type="checkbox">
+                            <button type="button" class="btn btn-sm"
+                              [attr.aria-label]="'Ver redacción'">
+                              <em class="fa fa-eye"></em>
+                            </button>
+                          </td>
+                          <td>Redacción 1...</td>
+                        </tr>
+                            <tr>
+                          <td></td>
+                          <td>Redacción 2...</td>
+                        </tr>                       
                       </table>
                     </div>
                   </contenido>
