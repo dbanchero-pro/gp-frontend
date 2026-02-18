@@ -299,6 +299,7 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
 
   copiarCampo(campo: CampoDTO): void {
     if (this.pliegoId && this.focusElementId && campo.etiqueta) {
+      navigator.clipboard.writeText('[[' + campo.etiqueta + ']]');
       this.router.navigate(
         ['/pliegos/bandeja-entrada/elaborar', this.pliegoId],
         {
