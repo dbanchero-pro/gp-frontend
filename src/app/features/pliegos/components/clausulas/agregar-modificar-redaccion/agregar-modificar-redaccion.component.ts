@@ -54,6 +54,35 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
 
     console.log('Redacción cargada:', this.redaccion);
     console.log('Valores del formulario - Prioridad:', this.form.value.prioridad, 'Redacción length:', this.form.value.redaccion?.length);
+
+    this.route.queryParams.subscribe(params => {
+      const etiquetaCopiada = params['etiquetaCopiada'];
+      const focusElement = params['focusElement'];
+
+      if (etiquetaCopiada) {
+        setTimeout(() => {
+          this.actualizarService.mensajeCorrecto(`Campo copiado: [[${etiquetaCopiada}]]`);
+
+          if (focusElement) {
+            const elemento = document.getElementById(focusElement);
+            if (elemento) {
+              elemento.focus();
+            }
+          }
+
+          this.limpiarQueryParams();
+        }, 300);
+      } else if (focusElement && !etiquetaCopiada) {
+        setTimeout(() => {
+          const elemento = document.getElementById(focusElement);
+          if (elemento) {
+            elemento.focus();
+          }
+
+          this.limpiarQueryParams();
+        }, 300);
+      }
+    });
   }
 
   private cargarDatosTemporales(): void {
@@ -145,6 +174,14 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
     this.location.back();
   }
 
+  private limpiarQueryParams(): void {
+    if (this.idRedaccion) {
+      this.router.navigate(['/pliegos/clausulas/redaccion/modificar', this.idRedaccion], {
+        replaceUrl: true
+      });
+    }
+  }
+
   canDeactivate(): boolean {
     return !this.form.dirty;
   }
@@ -201,19 +238,15 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
 
   navegarACamposDinamicos(): void {
     navigator.clipboard.writeText('');
-    if (this.idClausula) {
-      const queryParams: any = {
-        pliegoId: 0,
-        focusElement: 'btnAgregarCampoDinamico'
-      };
-
-      if (this.idClausula !== null) {
-        queryParams.clausulaId = this.idClausula;
-      }
-
+    if (this.idRedaccion) {
       this.router.navigate(
         ['/pliegos/campos-reglas'],
-        { queryParams }
+        {
+          queryParams: {
+            redaccionId: this.idRedaccion,
+            focusElement: 'btnAgregarCampoDinamico'
+          }
+        }
       );
     }
   }

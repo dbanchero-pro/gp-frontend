@@ -49,9 +49,8 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   tiposFuente: { id: string; nombre: string }[] = [];
 
   modoSeleccion: boolean = false;
-  pliegoId: string | null = null;
+  redaccionId: string | null = null;
   focusElementId: string | null = null;
-  clausulaId: string | null = null;
 
   public static readonly SNAPSHOT_KEY = 'CONSULTA_CAMPOS_REGLAS';
 
@@ -68,10 +67,9 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
     super.ngOnInit();
     this.tiposFuente = this.campoService.obtenerTiposFuente();
 
-    this.pliegoId = this.route.snapshot.queryParamMap.get('pliegoId');
+    this.redaccionId = this.route.snapshot.queryParamMap.get('redaccionId');
     this.focusElementId = this.route.snapshot.queryParamMap.get('focusElement');
-    this.clausulaId = this.route.snapshot.queryParamMap.get('clausulaId');
-    this.modoSeleccion = !!(this.pliegoId && this.focusElementId);
+    this.modoSeleccion = !!(this.redaccionId && this.focusElementId);
   }
 
   ngAfterViewInit(): void {
@@ -300,38 +298,30 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   }
 
   copiarCampo(campo: CampoDTO): void {
-    if (this.pliegoId && this.focusElementId && campo.etiqueta) {
-
+    if (this.redaccionId && this.focusElementId && campo.etiqueta) {
       navigator.clipboard.writeText('[[' + campo.etiqueta + ']]');
-      const queryParams: any = {
-        etiquetaCopiada: campo.etiqueta,
-        focusElement: this.focusElementId
-      };
-
-      if (this.clausulaId) {
-        queryParams.clausulaId = this.clausulaId;
-      }
 
       this.router.navigate(
-        ['/pliegos/bandeja-entrada/elaborar', this.pliegoId],
-        { queryParams }
+        ['/pliegos/clausulas/redaccion/modificar', this.redaccionId],
+        {
+          queryParams: {
+            etiquetaCopiada: campo.etiqueta,
+            focusElement: this.focusElementId
+          }
+        }
       );
     }
   }
 
   volverAElaborarPliego(): void {
-    if (this.pliegoId) {
-      const queryParams: any = {
-        focusElement: this.focusElementId
-      };
-
-      if (this.clausulaId) {
-        queryParams.clausulaId = this.clausulaId;
-      }
-
+    if (this.redaccionId) {
       this.router.navigate(
-        ['/pliegos/bandeja-entrada/elaborar', this.pliegoId],
-        { queryParams }
+        ['/pliegos/clausulas/redaccion/modificar', this.redaccionId],
+        {
+          queryParams: {
+            focusElement: this.focusElementId
+          }
+        }
       );
     } else {
       this.router.navigate(['/pliegos/bandeja-entrada']);
