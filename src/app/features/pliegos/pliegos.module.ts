@@ -8,7 +8,6 @@ import { ConsultaRepositorioArchivosComponent } from './components/repositorio-a
 import { AgregarModificarRepositorioArchivoComponent } from './components/repositorio-archivos/agregar-modificar-repositorio-archivo/agregar-modificar-repositorio-archivo.component';
 import { ConsultaClausulasComponent } from './components/clausulas/consulta-clausulas/consulta-clausulas.component';
 import { AgregarModificarClausulaComponent } from './components/clausulas/agregar-modificar-clausula/agregar-modificar-clausula.component';
-import { AgregarModificarRedaccionPopupComponent } from './components/clausulas/agregar-modificar-redaccion-popup/agregar-modificar-redaccion-popup.component';
 import { AgregarModificarRedaccionComponent } from './components/clausulas/agregar-modificar-redaccion/agregar-modificar-redaccion.component';
 import { HistorialClausulasComponent } from './components/clausulas/historial-clausulas/historial-clausulas.component';
 import { DiferenciasClausulasComponent } from './components/clausulas/diferencias-clausulas/diferencias-clausulas';
@@ -167,7 +166,6 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
         AgregarModificarRepositorioArchivoComponent,
         ConsultaClausulasComponent,
         AgregarModificarClausulaComponent,
-        AgregarModificarRedaccionPopupComponent,
         AgregarModificarRedaccionComponent,
         HistorialClausulasComponent,
         DiferenciasClausulasComponent,
