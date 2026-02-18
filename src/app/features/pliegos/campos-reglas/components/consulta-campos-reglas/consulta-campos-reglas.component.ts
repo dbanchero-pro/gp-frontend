@@ -51,7 +51,6 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   modoSeleccion: boolean = false;
   idClausula: string | null = null;
   redaccionId: string | null = null;
-  focusElementId: string | null = null;
 
   public static readonly SNAPSHOT_KEY = 'CONSULTA_CAMPOS_REGLAS';
 
@@ -70,8 +69,7 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
 
     this.idClausula = this.route.snapshot.queryParamMap.get('idClausula');
     this.redaccionId = this.route.snapshot.queryParamMap.get('idRedaccion');
-    this.focusElementId = this.route.snapshot.queryParamMap.get('focusElement');
-    this.modoSeleccion = !!(this.idClausula && this.redaccionId && this.focusElementId);
+    this.modoSeleccion = !!(this.idClausula && this.redaccionId);
   }
 
   ngAfterViewInit(): void {
@@ -300,35 +298,28 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   }
 
   copiarCampo(campo: CampoDTO): void {
-    if (this.idClausula && this.redaccionId && this.focusElementId && campo.etiqueta) {
+    if (this.idClausula || this.redaccionId) {
       navigator.clipboard.writeText('[[' + campo.etiqueta + ']]');
 
-      const ruta = this.idClausula === '0'
+      const ruta = this.redaccionId
         ? ['/pliegos/clausulas/agregar/redaccion/modificar', this.redaccionId]
         : ['/pliegos/clausulas/modificar', this.idClausula, 'redaccion/modificar', this.redaccionId];
 
       this.router.navigate(ruta, {
         queryParams: {
-          etiquetaCopiada: campo.etiqueta,
-          focusElement: this.focusElementId
+          etiquetaCopiada: campo.etiqueta
         }
       });
     }
   }
 
-  volverAElaborarPliego(): void {
-    if (this.idClausula && this.redaccionId) {
-      const ruta = this.idClausula === '0'
+  volverAAdministrarClausula(): void {
+    if (this.idClausula || this.redaccionId) {
+      const ruta = this.redaccionId
         ? ['/pliegos/clausulas/agregar/redaccion/modificar', this.redaccionId]
         : ['/pliegos/clausulas/modificar', this.idClausula, 'redaccion/modificar', this.redaccionId];
 
-      this.router.navigate(ruta, {
-        queryParams: {
-          focusElement: this.focusElementId
-        }
-      });
-    } else {
-      this.router.navigate(['/pliegos/bandeja-entrada']);
+      this.router.navigate(ruta);
     }
   }
 }

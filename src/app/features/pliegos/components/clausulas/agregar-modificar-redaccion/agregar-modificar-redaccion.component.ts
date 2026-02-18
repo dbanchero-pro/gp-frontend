@@ -57,31 +57,13 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
 
     this.route.queryParams.subscribe(params => {
       const etiquetaCopiada = params['etiquetaCopiada'];
-      const focusElement = params['focusElement'];
 
       if (etiquetaCopiada) {
         setTimeout(() => {
           this.actualizarService.mensajeCorrecto(`Campo copiado: [[${etiquetaCopiada}]]`);
-
-          if (focusElement) {
-            const elemento = document.getElementById(focusElement);
-            if (elemento) {
-              elemento.focus();
-            }
-          }
-
           this.limpiarQueryParams();
         }, 300);
-      } else if (focusElement && !etiquetaCopiada) {
-        setTimeout(() => {
-          const elemento = document.getElementById(focusElement);
-          if (elemento) {
-            elemento.focus();
-          }
-
-          this.limpiarQueryParams();
-        }, 300);
-      }
+      } 
     });
   }
 
@@ -248,8 +230,7 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
         {
           queryParams: {
             idClausula: this.idClausula,
-            idRedaccion: this.idRedaccion,
-            focusElement: 'btnAgregarCampoDinamico'
+            idRedaccion: this.idRedaccion
           }
         }
       );
