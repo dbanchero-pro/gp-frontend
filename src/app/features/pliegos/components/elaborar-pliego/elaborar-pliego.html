@@ -16,7 +16,10 @@
         {{ pliego.tipoCompraDescripcion }} | {{ pliego.subtipoCompraDescripcion }} | {{ pliego.numeroCompra }}/{{ pliego.anioCompra }}
       </div>
       <div class="mb-2">
-        Apertura electrónica: <strong>{{ aperturaElectronica }} </strong> Cantidad de etapas: <strong>1</strong>
+        Apertura electrónica: <strong>{{ aperturaElectronica }} </strong>
+      </div>
+       <div class="mb-2">
+        Cantidad de etapas: <strong>1</strong>
       </div>
       <div class="m-0">
         <span class="badge" [ngClass]="{
@@ -35,7 +38,22 @@
   </div>
 </div>
 
-<div class="row" *ngIf="usuariosAsignados.length > 0">
+<div class="row">
+   <div class="col-12 ml-0 pl-0 mr-0 pr-0 mb-2">
+  <div class="text-right">
+    <button type="button" class="btn btn-success mr-2"> Volver a inicio </button>
+     <button type="button" class="btn btn-success mr-2"> Solicitar validación </button>
+    <button type="button" class="btn btn-success mr-2" *ngIf="esValidador"> Solicitar aprobación </button>
+    <button type="button" class="btn btn-primary mr-2"> Pre validar </button>
+    <button type="button" class="btn btn-primary mr-2"> Pre visualizar </button>
+    <button type="button" class="btn btn-primary mr-2"> Solicitar modificación modelo </button>
+      <button type="button" class="btn btn-primary mr-2"> Usuarios </button>
+      <button type="button" class="btn btn-primary mr-2"> Historial </button>
+    </div>
+    </div>
+</div>
+
+<!-- <div class="row" *ngIf="usuariosAsignados.length > 0">
   <div class="col-12 pl-0 mr-0 pr-0">
     <app-grupo-colapsable
       [colapsado]="true"
@@ -130,7 +148,7 @@
       </contenido>
     </app-grupo-colapsable>
   </div>
-</div>
+</div>-->
 
 <div class="row">
   <div [ngClass]="colNavegacion">
@@ -159,11 +177,11 @@
             <span>Anexos</span>
           </li>
           <li class="nav-divider"></li>
-          <li class="nav-item" [class.active]="seccionActiva === 'campos'" onkeydown="" (click)="seleccionarSeccion('campos')">
+          <!-- <li class="nav-item" [class.active]="seccionActiva === 'campos'" onkeydown="" (click)="seleccionarSeccion('campos')">
             <em class="fa fa-table m-2"></em>
             <span>Campos variables</span>
           </li>
-          <li class="nav-divider"></li>
+          <li class="nav-divider"></li>-->
           <!-- Secciones -->
           <li class="nav-section" *ngFor="let seccion of secciones; let i = index">
             <div class="nav-section-header" onkeydown="" (click)="toggleSeccion(i)">
@@ -171,6 +189,7 @@
               <span>{{ seccion.nombre }}</span>
             </div>
             <ul class="nav-subsection" *ngIf="seccion.expandida">
+              <li class="nav-divider"></li>
               <!-- Capítulos -->
               <li class="nav-subitem" *ngFor="let capitulo of seccion.capitulos; let j = index">
                 <div class="nav-capitulo-header" onkeydown="" (click)="toggleCapitulo(i, j)">
@@ -188,11 +207,13 @@
                     <em class="fa fa-lock m-2" *ngIf="clausula.bloqueada" title="Bloqueada por otro usuario"></em>
                     <span>{{ clausula.nombre }}</span>
                   </li>
+                   <li class="nav-divider"></li>
                   <li class="nav-clausula" onkeydown="">
                     <button type="button" class="btn btn-link">
                       <em class="fa fa-plus mr-2"></em>Agregar cláusula
                     </button>
                   </li>
+                   <li class="nav-divider"></li>
                 </ul>
               </li>
                <li class="nav-clausula" onkeydown="" *ngIf="seccion.soloClausulas">
@@ -212,14 +233,19 @@
     <div class="panel">
       <div class="panel-header" [class.contraido]="panelEdicionContraido">
         <em class="fa fa-pencil"></em><h5 class="panel-title" *ngIf="!panelEdicionContraido">{{ tituloEdicion }}</h5>
+        <span *ngIf="clausulaActiva !== null && clausulaSeleccionada">
+          <em class="fa fa-asterisk" title="Obligatoria"></em>
+          <em class="fa fa-shield" title="Protegida"></em>
+        </span>
+
         <button type="button" class="btn-toggle-panel" (click)="togglePanelEdicion()"
                 [title]="panelEdicionContraido ? 'Expandir panel' : 'Contraer panel'">
            <em [ngClass]="panelEdicionContraido ? 'fa fa-expand' : 'fa fa-compress'"></em>
         </button>
       </div>
-      <div class="panel-body" [class.d-none]="panelEdicionContraido">
+      <div class="panel-body pt-3" [class.d-none]="panelEdicionContraido">
         <div *ngIf="seccionActiva === null && clausulaActiva === null" class="text-center text-muted py-5">
-          <em class="mdi mdi-arrow-left-circle mdi-48px mb-3"></em>
+          <em class="fa fa-arrow-circle-left mdi-48px mb-3"></em>
           <h6>Seleccione un elemento del panel de navegación para editar</h6>
         </div>
 
@@ -241,9 +267,7 @@
             </button>
           </div>
 
-          <div class="alert alert-info">
-            <em class="mdi mdi-information"></em> No hay notas agregadas
-          </div>
+          <div class="alert alert-info"> No hay notas agregadas </div>
         </div>
 
         <div *ngIf="seccionActiva === 'anexos'">
@@ -252,9 +276,7 @@
               <em class="fa fa-plus"></em> Agregar anexo
             </button>
           </div>
-          <div class="alert alert-info">
-            <em class="mdi mdi-information"></em> No hay anexos agregados
-          </div>
+          <div class="alert alert-info"> No hay anexos agregados </div>
         </div>
 
         <div *ngIf="seccionActiva === 'campos'">
@@ -269,82 +291,8 @@
         </div>
 
         <div *ngIf="clausulaActiva !== null && clausulaSeleccionada">
-           <div class="form-group text-right">
-              <label for="Obligatoria">Obligatoria:</label>
-              <small class="font-weight-bold mr-6">
-                Sí
-              </small>
-              <label for="Protegida">Protegida:</label>
-              <small class="font-weight-bold mr-2">
-                Sí
-              </small>
-            </div>  
-
-            <div class="row">
-              <div class="col-12 ml-0 pl-0 mr-0 pr-0">
-                <app-grupo-colapsable
-                  [colapsado]="true"
-                  class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
-                  <titulo>Notas</titulo>
-                  <contenido>
-                    <div class="col-md-12 p-0">
-                      <!-- Notas -->
-                      <table class="table table-hover m-0 align-middle">
-                        <thead>
-                          <tr>
-                            <th class="text-center" style="width: 50px;">Acciones</th>
-                            <th>Comentario</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td class="text-center">
-                              <button type="button" class="btn btn-sm"
-                                [attr.aria-label]="'Eliminar nota'">
-                                <em class="fa fa-trash"></em>
-                              </button>
-                            </td>
-                            <td>Comentario de la nota</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </contenido>
-                </app-grupo-colapsable>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-12 ml-0 pl-0 mr-0 pr-0">
-                <app-grupo-colapsable
-                  [colapsado]="true"
-                  class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
-                  <titulo>Solicitudes de modificación</titulo>
-                  <contenido>
-                    <div class="col-md-12 p-0">
-                      <!-- Solicitudes de modificación -->
-                      <table class="table table-hover m-0 align-middle">
-                        <thead>
-                          <tr>
-                            <th>Fecha</th>
-                            <th>Usuario</th>
-                            <th>Comentario</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>31/10/2024</td>
-                            <td>Graciela Acosta</td>
-                            <td>Comentario de la solicitud</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </contenido>
-                </app-grupo-colapsable>
-              </div>
-            </div>
-
+         
+           
             <div class="row">
               <div class="col-12 ml-0 pl-0 mr-0 pr-0">
                 <app-grupo-colapsable
@@ -415,23 +363,14 @@
             </div>
          
           <div class="mt-3 border-top pt-3 text-right" *ngIf="!clausulaSeleccionada.bloqueada">
-             <button type="button" class="btn btn-primary mr-2">
-                <em class="mdi mdi-content-save"></em> Guardar
-              </button>
-            <button type="button" class="btn btn-primary mr-2" [disabled]="clausulaSeleccionada.bloqueada">
-              Solicitar modificación
-            </button>
-            <button type="button" class="btn btn-primary mr-2">
-              <em class="mdi mdi-eye"></em> Visualizar
-            </button>
-            <button type="button" class="btn btn-primary" [disabled]="clausulaSeleccionada.bloqueada">
-              Agregar nota
-            </button>
+             <button type="button" class="btn btn-primary mr-2"> Guardar </button>
+             <button type="button" class="btn btn-primary mr-2"> Agregar campo variable </button>
+            <button type="button" class="btn btn-primary mr-2" [disabled]="clausulaSeleccionada.bloqueada"> Solicitar modificación</button>
+            <button type="button" class="btn btn-primary mr-2"> Visualizar </button>
+            <button type="button" class="btn btn-primary" [disabled]="clausulaSeleccionada.bloqueada"> Notas </button>
               <button type="button" class="btn link mr-2"
                     *ngIf="!clausulaSeleccionada.obligatoria"
-                    [disabled]="clausulaSeleccionada.bloqueada">
-              Eliminar
-            </button>
+                    [disabled]="clausulaSeleccionada.bloqueada"> Eliminar </button>
           </div>
         </div>
       </div>
@@ -441,23 +380,9 @@
 
 <div class="row mt-3 mb-3">
   <div class="col-12 text-right">
-    
-    <button type="button" class="btn btn-success mr-2">
-      <em class="mdi mdi-check-circle"></em> Solicitar validación
-    </button>
-    <button type="button" class="btn btn-success mr-2" *ngIf="esValidador">
-      Solicitar aprobación
-    </button>
-    <button type="button" class="btn btn-primary mr-2">
-      <em class="mdi mdi-shield-check"></em> Pre validar
-    </button>
-    <button type="button" class="btn btn-primary mr-2">
-      <em class="mdi mdi-eye"></em> Pre visualizar
-    </button>
-    <button type="button" class="btn btn-primary mr-2">
-      Solicitar modificación modelo
-    </button>
-     <button class="btn btn-link" type="button">Cancelar</button>
-  </div>
+      <div class="btn-back d-flex justify-content-end">
+            <button class="btn btn-link" type="button" (click)="volver()"><em class="fa fa-arrow-left mr-1"></em>Volver</button>
+        </div>
+    </div>
 </div>
 </div>

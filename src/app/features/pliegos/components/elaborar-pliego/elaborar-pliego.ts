@@ -273,4 +273,12 @@ export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
 
     return confirm('Tiene cambios sin guardar. ¿Desea salir sin guardar?');
   }
+
+   volver() {
+      //this.guardarFiltro();
+      this.router.navigate(
+          ['/pliegos/bandeja-entrada'],
+          { queryParams: { volver: '1' } }
+      );
+  }
 }
