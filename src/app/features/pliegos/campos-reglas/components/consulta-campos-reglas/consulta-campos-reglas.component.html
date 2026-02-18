@@ -41,7 +41,12 @@
     </div>
 
     <div [ngClass]="colTabla">
-        <div class="row justify-content-end pr-2 mb-2">
+        <div class="alert alert-info mb-3" *ngIf="modoSeleccion">
+            <em class="fa fa-info-circle mr-2"></em>
+            <strong>Modo selección:</strong> Busque el campo que desea copiar y haga clic en la acción "Copiar".
+        </div>
+
+        <div class="row justify-content-end pr-2 mb-2" *ngIf="!modoSeleccion">
             <button class="btn btn-primary mr-2" (click)="abrirAgregarCampo()">
                 <em class="fa fa-plus mr-1"></em>
                 Agregar campo
@@ -141,5 +146,15 @@
                 (cambioPagina)="cambioPagina($event)"
                 (cambioItemsPorPagina)="cambioPorPagina($event)">
             </app-paginado>
+
+            <div class="row mt-3 mb-3" *ngIf="modoSeleccion">
+                <div class="col-12 text-right">
+                    <div class="btn-back d-flex justify-content-end">
+                        <button class="btn btn-link" type="button" (click)="volverAElaborarPliego()">
+                            <em class="fa fa-arrow-left mr-1"></em>Volver al pliego
+                        </button>
+                    </div>
+                </div>
+            </div>
     </div>
 </div>

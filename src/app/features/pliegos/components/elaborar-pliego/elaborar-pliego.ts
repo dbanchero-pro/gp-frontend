@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProcesoPliego } from '../../models/proceso-pliego.model';
 import { EstadoProcesoPliego } from '../../enum/estado-proceso-pliego.enum';
 import { CanComponentDeactivate } from '../../../../shared/utils/can-component-deactivate';
 import { Observable } from 'rxjs';
+import { ActualizarService } from '../../../../shared/services/common/actualizar.service';
 
 interface Clausula {
   id: number;
@@ -44,7 +45,7 @@ interface TareaHistorial {
   styleUrls: ['./elaborar-pliego.scss'],
   standalone: false
 })
-export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
+export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanComponentDeactivate {
   pliego: ProcesoPliego = {
     id: 0,
     estado: EstadoProcesoPliego.EN_PROCESO,
@@ -169,13 +170,54 @@ export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private actualizarService: ActualizarService
   ) {}
 
   ngOnInit(): void {
     const pliegoId = this.route.snapshot.paramMap.get('id');
     if (pliegoId) {
       this.cargarPliego(parseInt(pliegoId, 10));
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.route.queryParams.subscribe(params => {
+      const etiquetaCopiada = params['etiquetaCopiada'];
+      const focusElement = params['focusElement'];
+
+      if (etiquetaCopiada) {
+        this.actualizarService.mensajeCorrecto(`Campo copiado: [[${etiquetaCopiada}]]`);
+
+        if (focusElement) {
+          setTimeout(() => {
+            const elemento = document.getElementById(focusElement);
+            if (elemento) {
+              elemento.focus();
+            }
+          }, 100);
+        }
+
+        this.limpiarQueryParams();
+      } else if (focusElement) {
+        setTimeout(() => {
+          const elemento = document.getElementById(focusElement);
+          if (elemento) {
+            elemento.focus();
+          }
+        }, 100);
+
+        this.limpiarQueryParams();
+      }
+    });
+  }
+
+  private limpiarQueryParams(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.router.navigate(['/pliegos/bandeja-entrada/elaborar', id], {
+        replaceUrl: true
+      });
     }
   }
 
@@ -274,11 +316,24 @@ export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
     return confirm('Tiene cambios sin guardar. ¿Desea salir sin guardar?');
   }
 
-   volver() {
-      //this.guardarFiltro();
+  volver() {
+    this.router.navigate(
+      ['/pliegos/bandeja-entrada'],
+      { queryParams: { volver: '1' } }
+    );
+  }
+
+  navegarACamposDinamicos(): void {
+    if (this.pliego && this.pliego.id) {
       this.router.navigate(
-          ['/pliegos/bandeja-entrada'],
-          { queryParams: { volver: '1' } }
+        ['/pliegos/campos-reglas'],
+        {
+          queryParams: {
+            pliegoId: this.pliego.id,
+            focusElement: 'btnAgregarCampoDinamico'
+          }
+        }
       );
+    }
   }
 }

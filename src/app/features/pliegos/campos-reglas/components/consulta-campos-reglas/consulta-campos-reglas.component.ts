@@ -48,6 +48,10 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   campos: CampoDTO[] = [];
   tiposFuente: { id: string; nombre: string }[] = [];
 
+  modoSeleccion: boolean = false;
+  pliegoId: string | null = null;
+  focusElementId: string | null = null;
+
   public static readonly SNAPSHOT_KEY = 'CONSULTA_CAMPOS_REGLAS';
 
   constructor() {
@@ -62,6 +66,10 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   override ngOnInit(): void {
     super.ngOnInit();
     this.tiposFuente = this.campoService.obtenerTiposFuente();
+
+    this.pliegoId = this.route.snapshot.queryParamMap.get('pliegoId');
+    this.focusElementId = this.route.snapshot.queryParamMap.get('focusElement');
+    this.modoSeleccion = !!(this.pliegoId && this.focusElementId);
   }
 
   ngAfterViewInit(): void {
@@ -176,22 +184,31 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   obtenerAcciones(campo: CampoDTO): AccionBoton[] {
     const acciones: AccionBoton[] = [];
 
-    if (this.campoService.puedeModificar(campo)) {
+    if (this.modoSeleccion) {
       acciones.push({
-        nombre: 'Modificar',
+        nombre: 'Copiar',
         clase: 'btn btn-success',
-        icono: 'fa fa-edit',
-        accion: () => this.modificarCampo(campo)
+        icono: 'fa fa-copy',
+        accion: () => this.copiarCampo(campo)
       });
-    }
+    } else {
+      if (this.campoService.puedeModificar(campo)) {
+        acciones.push({
+          nombre: 'Modificar',
+          clase: 'btn btn-success',
+          icono: 'fa fa-edit',
+          accion: () => this.modificarCampo(campo)
+        });
+      }
 
-    if (this.campoService.puedeEliminar(campo)) {
-      acciones.push({
-        nombre: 'Eliminar',
-        clase: 'btn btn-success',
-        icono: 'fa fa-trash',
-        accion: () => this.eliminarCampo(campo)
-      });
+      if (this.campoService.puedeEliminar(campo)) {
+        acciones.push({
+          nombre: 'Eliminar',
+          clase: 'btn btn-success',
+          icono: 'fa fa-trash',
+          accion: () => this.eliminarCampo(campo)
+        });
+      }
     }
 
     return acciones;
@@ -278,5 +295,34 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
 
   tieneReglas(campo: CampoDTO): boolean {
     return !!(campo.reglas && campo.reglas.length > 0);
+  }
+
+  copiarCampo(campo: CampoDTO): void {
+    if (this.pliegoId && this.focusElementId && campo.etiqueta) {
+      this.router.navigate(
+        ['/pliegos/bandeja-entrada/elaborar', this.pliegoId],
+        {
+          queryParams: {
+            etiquetaCopiada: campo.etiqueta,
+            focusElement: this.focusElementId
+          }
+        }
+      );
+    }
+  }
+
+  volverAElaborarPliego(): void {
+    if (this.pliegoId) {
+      this.router.navigate(
+        ['/pliegos/bandeja-entrada/elaborar', this.pliegoId],
+        {
+          queryParams: {
+            focusElement: this.focusElementId
+          }
+        }
+      );
+    } else {
+      this.router.navigate(['/pliegos/bandeja-entrada']);
+    }
   }
 }
