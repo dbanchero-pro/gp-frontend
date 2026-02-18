@@ -183,6 +183,12 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
     this.route.queryParams.subscribe(params => {
       const etiquetaCopiada = params['etiquetaCopiada'];
       const focusElement = params['focusElement'];
+      const clausulaIdParam = params['clausulaId'];
+
+      if (clausulaIdParam) {
+        const clausulaId = parseInt(clausulaIdParam, 10);
+        this.restaurarClausulaActiva(clausulaId);
+      }
 
       if (etiquetaCopiada) {
         setTimeout(() => {
@@ -208,6 +214,33 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
         }, 300);
       }
     });
+  }
+
+  private restaurarClausulaActiva(clausulaId: number): void {
+    for (let seccionIndex = 0; seccionIndex < this.secciones.length; seccionIndex++) {
+      const seccion = this.secciones[seccionIndex];
+
+      if (seccion.soloClausulas) {
+        const clausula = seccion.clausulas.find(c => c.id === clausulaId);
+        if (clausula) {
+          seccion.expandida = true;
+          this.seleccionarClausula(clausula);
+          return;
+        }
+      } else {
+        for (let capituloIndex = 0; capituloIndex < seccion.capitulos.length; capituloIndex++) {
+          const capitulo = seccion.capitulos[capituloIndex];
+          const clausula = capitulo.clausulas.find(c => c.id === clausulaId);
+
+          if (clausula) {
+            seccion.expandida = true;
+            capitulo.expandido = true;
+            this.seleccionarClausula(clausula);
+            return;
+          }
+        }
+      }
+    }
   }
 
   ngAfterViewInit(): void {
@@ -327,14 +360,18 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
 
   navegarACamposDinamicos(): void {
     if (this.pliego && this.pliego.id) {
+      const queryParams: any = {
+        pliegoId: this.pliego.id,
+        focusElement: 'btnAgregarCampoDinamico'
+      };
+
+      if (this.clausulaActiva !== null) {
+        queryParams.clausulaId = this.clausulaActiva;
+      }
+
       this.router.navigate(
         ['/pliegos/campos-reglas'],
-        {
-          queryParams: {
-            pliegoId: this.pliego.id,
-            focusElement: 'btnAgregarCampoDinamico'
-          }
-        }
+        { queryParams }
       );
     }
   }

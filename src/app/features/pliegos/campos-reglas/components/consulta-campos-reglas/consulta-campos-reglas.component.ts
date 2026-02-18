@@ -51,6 +51,7 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   modoSeleccion: boolean = false;
   pliegoId: string | null = null;
   focusElementId: string | null = null;
+  clausulaId: string | null = null;
 
   public static readonly SNAPSHOT_KEY = 'CONSULTA_CAMPOS_REGLAS';
 
@@ -69,6 +70,7 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
 
     this.pliegoId = this.route.snapshot.queryParamMap.get('pliegoId');
     this.focusElementId = this.route.snapshot.queryParamMap.get('focusElement');
+    this.clausulaId = this.route.snapshot.queryParamMap.get('clausulaId');
     this.modoSeleccion = !!(this.pliegoId && this.focusElementId);
   }
 
@@ -299,27 +301,35 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
 
   copiarCampo(campo: CampoDTO): void {
     if (this.pliegoId && this.focusElementId && campo.etiqueta) {
+      const queryParams: any = {
+        etiquetaCopiada: campo.etiqueta,
+        focusElement: this.focusElementId
+      };
+
+      if (this.clausulaId) {
+        queryParams.clausulaId = this.clausulaId;
+      }
+
       this.router.navigate(
         ['/pliegos/bandeja-entrada/elaborar', this.pliegoId],
-        {
-          queryParams: {
-            etiquetaCopiada: campo.etiqueta,
-            focusElement: this.focusElementId
-          }
-        }
+        { queryParams }
       );
     }
   }
 
   volverAElaborarPliego(): void {
     if (this.pliegoId) {
+      const queryParams: any = {
+        focusElement: this.focusElementId
+      };
+
+      if (this.clausulaId) {
+        queryParams.clausulaId = this.clausulaId;
+      }
+
       this.router.navigate(
         ['/pliegos/bandeja-entrada/elaborar', this.pliegoId],
-        {
-          queryParams: {
-            focusElement: this.focusElementId
-          }
-        }
+        { queryParams }
       );
     } else {
       this.router.navigate(['/pliegos/bandeja-entrada']);
