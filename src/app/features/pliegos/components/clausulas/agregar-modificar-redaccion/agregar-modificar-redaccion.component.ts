@@ -198,4 +198,23 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
   toggleColapsado(): void {
     this.colapsado = !this.colapsado;
   }
+
+  navegarACamposDinamicos(): void {
+    navigator.clipboard.writeText('');
+    if (this.idClausula) {
+      const queryParams: any = {
+        pliegoId: 0,
+        focusElement: 'btnAgregarCampoDinamico'
+      };
+
+      if (this.idClausula !== null) {
+        queryParams.clausulaId = this.idClausula;
+      }
+
+      this.router.navigate(
+        ['/pliegos/campos-reglas'],
+        { queryParams }
+      );
+    }
+  }
 }
