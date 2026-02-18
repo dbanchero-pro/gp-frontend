@@ -179,37 +179,39 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
     if (pliegoId) {
       this.cargarPliego(parseInt(pliegoId, 10));
     }
-  }
 
-  ngAfterViewInit(): void {
     this.route.queryParams.subscribe(params => {
       const etiquetaCopiada = params['etiquetaCopiada'];
       const focusElement = params['focusElement'];
 
       if (etiquetaCopiada) {
-        this.actualizarService.mensajeCorrecto(`Campo copiado: [[${etiquetaCopiada}]]`);
+        setTimeout(() => {
+          this.actualizarService.mensajeCorrecto(`Campo copiado: [[${etiquetaCopiada}]]`);
 
-        if (focusElement) {
-          setTimeout(() => {
+          if (focusElement) {
             const elemento = document.getElementById(focusElement);
             if (elemento) {
               elemento.focus();
             }
-          }, 100);
-        }
+          }
 
-        this.limpiarQueryParams();
-      } else if (focusElement) {
+          this.limpiarQueryParams();
+        }, 300);
+      } else if (focusElement && !etiquetaCopiada) {
         setTimeout(() => {
           const elemento = document.getElementById(focusElement);
           if (elemento) {
             elemento.focus();
           }
-        }, 100);
 
-        this.limpiarQueryParams();
+          this.limpiarQueryParams();
+        }, 300);
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    // Implementado para cumplir con la interfaz AfterViewInit
   }
 
   private limpiarQueryParams(): void {
