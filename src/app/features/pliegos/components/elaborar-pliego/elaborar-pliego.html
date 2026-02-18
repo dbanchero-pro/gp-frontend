@@ -364,7 +364,7 @@
          
           <div class="mt-3 border-top pt-3 text-right" *ngIf="!clausulaSeleccionada.bloqueada">
              <button type="button" class="btn btn-primary mr-2"> Guardar </button>
-             <button type="button" class="btn btn-primary mr-2"> Agregar campo variable </button>
+             <button type="button" id="btnAgregarCampoDinamico" class="btn btn-primary mr-2" (click)="navegarACamposDinamicos()"> Agregar campo dinámico </button>
             <button type="button" class="btn btn-primary mr-2" [disabled]="clausulaSeleccionada.bloqueada"> Solicitar modificación</button>
             <button type="button" class="btn btn-primary mr-2"> Visualizar </button>
             <button type="button" class="btn btn-primary" [disabled]="clausulaSeleccionada.bloqueada"> Notas </button>
