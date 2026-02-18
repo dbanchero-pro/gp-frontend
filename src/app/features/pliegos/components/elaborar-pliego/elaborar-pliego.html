@@ -12,17 +12,16 @@
     <div class="Box Box--colorInfo">
         <div class="mb-2 font-weight-bold subtitle">
           {{ pliego.incisoDescripcion }} | {{ pliego.unidadEjecutoraDescripcion }} | {{ pliego.unidadCompraDescripcion }}
-          <div class="text-right">
-            <span class="badge" [ngClass]="{
-              'badge-info': pliego.estado === 'Pendiente' || pliego.estado === 'Asignado',
-              'badge-success': pliego.estado === 'En proceso',
-              'badge-warning': pliego.estado === 'Pendiente validación',
-              'badge-primary': pliego.estado === 'Aprobado'
-            }">
-              {{ obtenerTextoEstado(pliego.estado) }}
-            </span>
-          </div>
+          <span class="badge" [ngClass]="{
+            'badge-info': pliego.estado === 'Pendiente' || pliego.estado === 'Asignado',
+            'badge-success': pliego.estado === 'En proceso',
+            'badge-warning': pliego.estado === 'Pendiente validación',
+            'badge-primary': pliego.estado === 'Aprobado'
+          }">
+            {{ obtenerTextoEstado(pliego.estado) }}
+          </span>
         </div>
+        
       <div class="mb-2 font-weight-bold">
         {{ pliego.tipoCompraDescripcion }} | {{ pliego.subtipoCompraDescripcion }} N° {{ pliego.numeroCompra }}/{{ pliego.anioCompra }}
       </div>
@@ -64,6 +63,11 @@
       </div>
       <div class="panel-body" [class.d-none]="panelNavegacionContraido">
         <ul class="nav-list">
+           <li class="nav-item" onkeydown="" [class.active]="seccionActiva === 'encabezado'" (click)="seleccionarSeccion('encabezado')">
+            <em class="fa fa-book m-2"></em>
+            <span>Encabezado y pie página</span>
+          </li>
+           <li class="nav-divider"></li>
           <li class="nav-item" onkeydown="" [class.active]="seccionActiva === 'caratula'" (click)="seleccionarSeccion('caratula')">
             <em class="fa fa-bookmark m-2"></em>
             <span>Carátula</span>
@@ -134,24 +138,35 @@
   <div [ngClass]="colEdicion">
     <div class="panel">
       <div class="panel-header" [class.contraido]="panelEdicionContraido">
-        <em class="fa fa-edit mr-2"></em><h3 class="panel-title" *ngIf="!panelEdicionContraido">{{ tituloEdicion }}</h3>
+        <em class="fa fa-edit mr-2"></em><h5 class="panel-title" *ngIf="!panelEdicionContraido">{{ tituloEdicion }}</h5>
+        <span *ngIf="!panelEdicionContraido && clausulaActiva !== null && clausulaSeleccionada" class="etiqueta text-right">
+          <small><strong>Obligatoria</strong></small>
+        </span>
+        <span *ngIf="!panelEdicionContraido && clausulaActiva !== null && clausulaSeleccionada" class="etiqueta  text-right">
+          <small><strong>No editable</strong></small>
+        </span>
+
         <button type="button" class="btn-toggle-panel" (click)="togglePanelEdicion()"
                 [title]="panelEdicionContraido ? 'Expandir panel' : 'Contraer panel'">
            <em [ngClass]="panelEdicionContraido ? 'fa fa-expand' : 'fa fa-compress'"></em>
         </button>
-        <div>
-          <span *ngIf="clausulaActiva !== null && clausulaSeleccionada" class="etiqueta text-right">
-            Obligatoria
-          </span>
-          <span *ngIf="clausulaActiva !== null && clausulaSeleccionada" class="etiqueta  text-right">
-            No editable
-          </span>
-        </div>
+        
       </div>
       <div class="panel-body pt-3" [class.d-none]="panelEdicionContraido">
         <div *ngIf="seccionActiva === null && clausulaActiva === null" class="text-center text-muted py-5">
           <em class="fa fa-arrow-circle-left mdi-48px mb-3"></em>
           <h6>Seleccione un elemento del panel de navegación para editar</h6>
+        </div>
+
+          <div *ngIf="seccionActiva === 'encabezado'">
+          <div class="form-group">
+            <label class="etiqueta">Texto encabezado</label>
+            <input type="text" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="etiqueta">Texto pie de página</label>
+            <input type="text" class="form-control">
+          </div>
         </div>
 
         <div *ngIf="seccionActiva === 'caratula'">

@@ -327,6 +327,7 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
     this.clausulaSeleccionada = null;
 
     const titulos: { [key: string]: string } = {
+      'encabezado': 'Encabezado y pie de página',
       'caratula': 'Carátula',
       'notas': 'Notas',
       'anexos': 'Anexos',
