@@ -357,23 +357,4 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
       { queryParams: { volver: '1' } }
     );
   }
-
-  navegarACamposDinamicos(): void {
-     navigator.clipboard.writeText('');
-    if (this.pliego && this.pliego.id) {
-      const queryParams: any = {
-        pliegoId: this.pliego.id,
-        focusElement: 'btnAgregarCampoDinamico'
-      };
-
-      if (this.clausulaActiva !== null) {
-        queryParams.clausulaId = this.clausulaActiva;
-      }
-
-      this.router.navigate(
-        ['/pliegos/campos-reglas'],
-        { queryParams }
-      );
-    }
-  }
 }
