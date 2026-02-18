@@ -6,149 +6,51 @@
   </div>
 </div>
 
+
 <div class="row" *ngIf="pliego">
   <div class="col-12 ml-0 pl-0 mr-0 pr-0">
     <div class="Box Box--colorInfo">
-      <div class="mb-2 font-weight-bold subtitle">
-        {{ pliego.incisoDescripcion }} | {{ pliego.unidadEjecutoraDescripcion }} | {{ pliego.unidadCompraDescripcion }}
-      </div>
+        <div class="mb-2 font-weight-bold subtitle">
+          {{ pliego.incisoDescripcion }} | {{ pliego.unidadEjecutoraDescripcion }} | {{ pliego.unidadCompraDescripcion }}
+          <div class="text-right">
+            <span class="badge" [ngClass]="{
+              'badge-info': pliego.estado === 'Pendiente' || pliego.estado === 'Asignado',
+              'badge-success': pliego.estado === 'En proceso',
+              'badge-warning': pliego.estado === 'Pendiente validación',
+              'badge-primary': pliego.estado === 'Aprobado'
+            }">
+              {{ obtenerTextoEstado(pliego.estado) }}
+            </span>
+          </div>
+        </div>
       <div class="mb-2 font-weight-bold">
-        {{ pliego.tipoCompraDescripcion }} | {{ pliego.subtipoCompraDescripcion }} | {{ pliego.numeroCompra }}/{{ pliego.anioCompra }}
+        {{ pliego.tipoCompraDescripcion }} | {{ pliego.subtipoCompraDescripcion }} N° {{ pliego.numeroCompra }}/{{ pliego.anioCompra }}
       </div>
       <div class="mb-2">
         Apertura electrónica: <strong>{{ aperturaElectronica }} </strong>
-      </div>
-       <div class="mb-2">
         Cantidad de etapas: <strong>1</strong>
       </div>
-      <div class="m-0">
-        <span class="badge" [ngClass]="{
-          'badge-info': pliego.estado === 'Pendiente' || pliego.estado === 'Asignado',
-          'badge-success': pliego.estado === 'En proceso',
-          'badge-warning': pliego.estado === 'Pendiente validación',
-          'badge-primary': pliego.estado === 'Aprobado'
-        }">
-          {{ obtenerTextoEstado(pliego.estado) }}
-        </span>
+      <div class="mb-2 pt-2"> Modelo usado:
+        <strong>{{ modeloUsado }}</strong>
       </div>
-        <div class="mb-2 pt-4"> Modelo usado:
-                <strong>{{ modeloUsado }}</strong>
+
+      <div class="row">
+        <div class="col-12 ml-0 pl-0 mr-0 pr-0 mb-2">
+          <div class="text-right">
+            <button type="button" class="btn btn-success mr-2"> Volver a iniciar pliego </button>
+            <button type="button" class="btn btn-success mr-2"> Solicitar validación </button>
+            <button type="button" class="btn btn-success mr-2" *ngIf="esValidador"> Solicitar aprobación </button>
+            <button type="button" class="btn btn-primary mr-2"> Pre validar </button>
+            <button type="button" class="btn btn-primary mr-2"> Pre visualizar </button>
+            <button type="button" class="btn btn-primary mr-2"> Solicitar modificación modelo </button>
+            <button type="button" class="btn btn-primary mr-2"> Usuarios </button>
+            <button type="button" class="btn btn-primary mr-2"> Historial </button>
+          </div>
         </div>
+      </div>
     </div>
   </div>
 </div>
-
-<div class="row">
-   <div class="col-12 ml-0 pl-0 mr-0 pr-0 mb-2">
-  <div class="text-right">
-    <button type="button" class="btn btn-success mr-2"> Volver a iniciar pliego </button>
-     <button type="button" class="btn btn-success mr-2"> Solicitar validación </button>
-    <button type="button" class="btn btn-success mr-2" *ngIf="esValidador"> Solicitar aprobación </button>
-    <button type="button" class="btn btn-primary mr-2"> Pre validar </button>
-    <button type="button" class="btn btn-primary mr-2"> Pre visualizar </button>
-    <button type="button" class="btn btn-primary mr-2"> Solicitar modificación modelo </button>
-      <button type="button" class="btn btn-primary mr-2"> Usuarios </button>
-      <button type="button" class="btn btn-primary mr-2"> Historial </button>
-    </div>
-    </div>
-</div>
-
-<!-- <div class="row" *ngIf="usuariosAsignados.length > 0">
-  <div class="col-12 pl-0 mr-0 pr-0">
-    <app-grupo-colapsable
-      [colapsado]="true"
-      class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
-      <titulo>Usuarios asignados</titulo>
-      <contenido>
-        <div class="card mb-2 border-top-0">
-          <div class="col-md-12 p-0">
-            <table class="table table-hover"
-                aria-label="Tabla de usuarios asignados al pliego">
-                <thead>
-                  <tr>
-                    <th>Rol</th>
-                    <th>Usuario</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let usuario of usuariosAsignados">
-                    <td>{{ usuario.rol }}</td>
-                    <td>{{ usuario.nombre }}</td>
-                  </tr>
-                </tbody>
-              </table>
-          </div>
-        </div>
-      </contenido>
-    </app-grupo-colapsable>
-  </div>
-</div>
-
-<div class="row" *ngIf="historialTareas.length > 0">
-  <div class="col-12 ml-0 pl-0 mr-0 pr-0">
-    <app-grupo-colapsable
-      [colapsado]="true"
-      class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
-      <titulo>Historial tareas</titulo>
-      <contenido>
-        <div class="card mb-2 border-top-0">
-          <div class="col-md-12 p-0">
-            <table class="table table-hover mb-0 align-middle">
-              <thead>
-                <tr>
-                  <th>Fecha</th>
-                  <th>Tarea</th>
-                  <th>Usuario</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let tarea of historialTareas">
-                  <td>{{ tarea.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
-                  <td>{{ tarea.tarea }}</td>
-                  <td>{{ tarea.usuario }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </contenido>
-    </app-grupo-colapsable>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-12 ml-0 pl-0 mr-0 pr-0">
-    <app-grupo-colapsable
-      [colapsado]="true"
-      class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
-      <titulo>Motivo rechazo validación</titulo>
-      <contenido>
-        <div class="card mb-2 border-top-0">
-          <div class="col-12 m-3">
-           El motivo del rechazo de la validación se debe a que bla bla bla
-          </div>
-        </div>
-      </contenido>
-    </app-grupo-colapsable>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-12 ml-0 pl-0 mr-0 pr-0">
-    <app-grupo-colapsable
-      [colapsado]="true"
-      class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
-      <titulo>Motivo modificación</titulo>
-      <contenido>
-        <div class="card mb-2 border-top-0">
-          <div class="col-12 m-3">
-            <span> El motivo de la modificación se debe a que  bla bal bal bla</span>
-          </div>
-        </div>
-      </contenido>
-    </app-grupo-colapsable>
-  </div>
-</div>-->
 
 <div class="row">
   <div [ngClass]="colNavegacion">
@@ -232,16 +134,19 @@
   <div [ngClass]="colEdicion">
     <div class="panel">
       <div class="panel-header" [class.contraido]="panelEdicionContraido">
-        <em class="fa fa-pencil"></em><h5 class="panel-title" *ngIf="!panelEdicionContraido">{{ tituloEdicion }}</h5>
-        <span *ngIf="clausulaActiva !== null && clausulaSeleccionada">
-          <em class="fa fa-asterisk" title="Obligatoria"></em>
-          <em class="fa fa-shield" title="Protegida"></em>
-        </span>
-
+        <em class="fa fa-edit mr-2"></em><h3 class="panel-title" *ngIf="!panelEdicionContraido">{{ tituloEdicion }}</h3>
         <button type="button" class="btn-toggle-panel" (click)="togglePanelEdicion()"
                 [title]="panelEdicionContraido ? 'Expandir panel' : 'Contraer panel'">
            <em [ngClass]="panelEdicionContraido ? 'fa fa-expand' : 'fa fa-compress'"></em>
         </button>
+        <div>
+          <span *ngIf="clausulaActiva !== null && clausulaSeleccionada" class="etiqueta text-right">
+            Obligatoria
+          </span>
+          <span *ngIf="clausulaActiva !== null && clausulaSeleccionada" class="etiqueta  text-right">
+            No editable
+          </span>
+        </div>
       </div>
       <div class="panel-body pt-3" [class.d-none]="panelEdicionContraido">
         <div *ngIf="seccionActiva === null && clausulaActiva === null" class="text-center text-muted py-5">
@@ -291,8 +196,7 @@
         </div>
 
         <div *ngIf="clausulaActiva !== null && clausulaSeleccionada">
-         
-           
+          
             <div class="row">
               <div class="col-12 ml-0 pl-0 mr-0 pr-0">
                 <app-grupo-colapsable

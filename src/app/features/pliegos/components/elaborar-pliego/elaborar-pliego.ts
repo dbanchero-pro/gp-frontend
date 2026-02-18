@@ -340,7 +340,7 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
     this.seccionActiva = null;
     this.clausulaActiva = clausula.id;
     this.clausulaSeleccionada = clausula;
-    this.tituloEdicion = "Cláusula: " + clausula.nombre;
+    this.tituloEdicion = "    Cláusula: " + clausula.nombre;
   }
 
   canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
