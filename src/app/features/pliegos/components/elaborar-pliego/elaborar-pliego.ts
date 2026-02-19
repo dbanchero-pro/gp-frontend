@@ -11,7 +11,7 @@ interface Clausula {
   nombre: string;
   bloqueada: boolean;
   obligatoria: boolean;
-  protegida: boolean;
+  editable: boolean;
 }
 
 interface Capitulo {
@@ -98,18 +98,18 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
           nombre: 'Capítulo I - Objeto de la Compra',
           expandido: true,
           clausulas: [
-            { id: 1, nombre: 'Descripción del objeto', bloqueada: false, obligatoria: true, protegida:false  },
-            { id: 2, nombre: 'Especificaciones técnicas', bloqueada: true, obligatoria: true, protegida:false  },
-            { id: 3, nombre: 'Cantidad y unidades', bloqueada: false, obligatoria: true, protegida:false  }
+            { id: 1, nombre: 'Descripción del objeto', bloqueada: false, obligatoria: true, editable:true  },
+            { id: 2, nombre: 'Especificaciones técnicas', bloqueada: true, obligatoria: false, editable:false  },
+            { id: 3, nombre: 'Cantidad y unidades', bloqueada: false, obligatoria: true, editable:false  }
           ]
         },
         {
           nombre: 'Capítulo II - Condiciones Generales',
           expandido: false,
           clausulas: [
-            { id: 4, nombre: 'Plazo de entrega', bloqueada: false, obligatoria: true, protegida:false  },
-            { id: 5, nombre: 'Lugar de entrega', bloqueada: false, obligatoria: true, protegida:false  },
-            { id: 6, nombre: 'Garantías', bloqueada: false, obligatoria: false, protegida:false  }
+            { id: 4, nombre: 'Plazo de entrega', bloqueada: false, obligatoria: true, editable:false  },
+            { id: 5, nombre: 'Lugar de entrega', bloqueada: false, obligatoria: true, editable:false  },
+            { id: 6, nombre: 'Garantías', bloqueada: false, obligatoria: false, editable:false  }
           ]
         }
       ],
@@ -124,16 +124,16 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
           nombre: 'Capítulo I - Requisitos Legales',
           expandido: false,
           clausulas: [
-            { id: 7, nombre: 'Documentación legal', bloqueada: false, obligatoria: true, protegida:false },
-            { id: 8, nombre: 'Certificados requeridos', bloqueada: false, obligatoria: true, protegida:false }
+            { id: 7, nombre: 'Documentación legal', bloqueada: false, obligatoria: true, editable:false },
+            { id: 8, nombre: 'Certificados requeridos', bloqueada: false, obligatoria: true, editable:false }
           ]
         },
         {
           nombre: 'Capítulo II - Requisitos Técnicos',
           expandido: false,
           clausulas: [
-            { id: 9, nombre: 'Experiencia técnica', bloqueada: false, obligatoria: true, protegida:false  },
-            { id: 10, nombre: 'Capacidad operativa', bloqueada: false, obligatoria: false, protegida:false  }
+            { id: 9, nombre: 'Experiencia técnica', bloqueada: false, obligatoria: true, editable:false  },
+            { id: 10, nombre: 'Capacidad operativa', bloqueada: false, obligatoria: false, editable:false  }
           ]
         }
       ],
@@ -148,9 +148,9 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
           nombre: 'Capítulo I - Criterios de Evaluación',
           expandido: false,
           clausulas: [
-            { id: 11, nombre: 'Criterio precio', bloqueada: false, obligatoria: true, protegida:false  },
-            { id: 12, nombre: 'Criterios técnicos', bloqueada: false, obligatoria: true , protegida:false },
-            { id: 13, nombre: 'Puntajes', bloqueada: false, obligatoria: true, protegida:false  }
+            { id: 11, nombre: 'Criterio precio', bloqueada: false, obligatoria: true, editable:false  },
+            { id: 12, nombre: 'Criterios técnicos', bloqueada: false, obligatoria: true , editable:false },
+            { id: 13, nombre: 'Puntajes', bloqueada: false, obligatoria: true, editable:false  }
           ]
         }
       ],
@@ -162,7 +162,7 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
       expandida: false,
       capitulos: [],
       clausulas: [
-          { id: 11, nombre: 'Cláusula vacía', bloqueada: false, obligatoria: true, protegida:false  },
+          { id: 11, nombre: 'Cláusula vacía', bloqueada: false, obligatoria: true, editable:false  },
         ],
         soloClausulas: true
     }

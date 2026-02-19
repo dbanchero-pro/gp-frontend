@@ -10,8 +10,11 @@
 <div class="row" *ngIf="pliego">
   <div class="col-12 ml-0 pl-0 mr-0 pr-0">
     <div class="Box Box--colorInfo">
-        <div class="mb-2 font-weight-bold subtitle">
+      <div class="row">
+        <div class="col-10 ml-3 pl-0 mr-0 pr-0 mb-2 font-weight-bold subtitle">
           {{ pliego.incisoDescripcion }} | {{ pliego.unidadEjecutoraDescripcion }} | {{ pliego.unidadCompraDescripcion }}
+        </div>
+        <div class="col-1 ml-0 pl-0 mr-0 pr-0 mb-2 text-right">
           <span class="badge" [ngClass]="{
             'badge-info': pliego.estado === 'Pendiente' || pliego.estado === 'Asignado',
             'badge-success': pliego.estado === 'En proceso',
@@ -21,13 +24,15 @@
             {{ obtenerTextoEstado(pliego.estado) }}
           </span>
         </div>
-        
-      <div class="mb-2 font-weight-bold">
-        {{ pliego.tipoCompraDescripcion }} | {{ pliego.subtipoCompraDescripcion }} N° {{ pliego.numeroCompra }}/{{ pliego.anioCompra }}
       </div>
+        
       <div class="mb-2">
-        Apertura electrónica: <strong>{{ aperturaElectronica }} </strong>
-        Cantidad de etapas: <strong>1</strong>
+        <span class="mb-2 font-weight-bold">
+        {{ pliego.tipoCompraDescripcion }} | {{ pliego.subtipoCompraDescripcion }} N° {{ pliego.numeroCompra }}/{{ pliego.anioCompra }}
+        </span>
+      <span>
+         | Apertura electrónica: <strong>{{ aperturaElectronica }}</strong>
+         | Cantidad de etapas: <strong>1</strong></span>
       </div>
       <div class="mb-2 pt-2"> Modelo usado:
         <strong>{{ modeloUsado }}</strong>
@@ -83,11 +88,6 @@
             <span>Anexos</span>
           </li>
           <li class="nav-divider"></li>
-          <!-- <li class="nav-item" [class.active]="seccionActiva === 'campos'" onkeydown="" (click)="seleccionarSeccion('campos')">
-            <em class="fa fa-table m-2"></em>
-            <span>Campos variables</span>
-          </li>
-          <li class="nav-divider"></li>-->
           <!-- Secciones -->
           <li class="nav-section" *ngFor="let seccion of secciones; let i = index">
             <div class="nav-section-header" onkeydown="" (click)="toggleSeccion(i)">
@@ -109,11 +109,12 @@
                       [class.active]="clausulaActiva === clausula.id"
                       [class.bloqueada]="clausula.bloqueada"
                       (click)="seleccionarClausula(clausula)">
-                    <em class="fa fa-pencil m-2" *ngIf="!clausula.bloqueada"></em>
-                    <em class="fa fa-lock m-2" *ngIf="clausula.bloqueada" title="Bloqueada por otro usuario"></em>
+                    <em class="fa fa-pencil m-2" *ngIf="!clausula.bloqueada && clausula.editable"></em>
+                    <em class="fa fa-lock m-2" *ngIf="clausula.bloqueada"></em>
+                    <em class="fa fa-ban m-2" *ngIf="!clausula.bloqueada && !clausula.editable"></em>
                     <span>{{ clausula.nombre }}</span>
                   </li>
-                   <li class="nav-divider"></li>
+                  <li class="nav-divider"></li>
                   <li class="nav-clausula" onkeydown="">
                     <button type="button" class="btn btn-link">
                       <em class="fa fa-plus mr-2"></em>Agregar cláusula
@@ -220,7 +221,13 @@
                           <td>Redacción 1...</td>
                         </tr>
                             <tr>
-                          <td></td>
+                          <td class="text-center" style="width: 100px;">
+                            <input type="checkbox">
+                            <button type="button" class="btn btn-sm"
+                              [attr.aria-label]="'Ver redacción'">
+                              <em class="fa fa-eye"></em>
+                            </button>
+                          </td>
                           <td>Redacción 2...</td>
                         </tr>                       
                       </table>
@@ -267,8 +274,7 @@
             <button type="button" class="btn btn-primary mr-2"> Visualizar </button>
             <button type="button" class="btn btn-primary" [disabled]="clausulaSeleccionada.bloqueada"> Agregar notas </button>
               <button type="button" class="btn link mr-2"
-                    *ngIf="!clausulaSeleccionada.obligatoria"
-                    [disabled]="clausulaSeleccionada.bloqueada"> Eliminar </button>
+                    *ngIf="!clausulaSeleccionada.obligatoria && !clausulaSeleccionada.bloqueada"> Eliminar </button>
           </div>
         </div>
       </div>
