@@ -1,15 +1,19 @@
 <div class="row">
-    <div [ngClass]="colFiltro" class="sidebar">
-        <app-filtro titleBtn="Buscar" (evFilter)="actualizarFiltrosYBuscar()" (evCollapse)="aplicarColapso()" class="filter">
+    <div [ngClass]="colFiltro" class="sidebar p-0">
+        <app-filtro titleBtn="Buscar" (evFilter)="actualizarFiltrosYBuscar()" (evCollapse)="aplicarColapso()" class="filter" claseCabezal="ml-2 pl-2 mr-2 pr-2">
             <div [formGroup]="form">
-                <app-filtro-organismo formControlName="organismo"
-                    (cambioFiltro)="onFiltroOrganismo($event)"
-                    (limpiarFiltro)="onFiltroOrganismo(null)"
-                    [requeridoUC]="false">
-                </app-filtro-organismo>
+                <app-grupo-colapsable class="pl-0 borde-inferior" classTitulo="pl-3"  classContenido="ml-2 pl-2 pr-2 mr-2" 
+                  titulo="Filtro por organismo" ariaLabel="Expandir o colapsar filtro por organismo">
 
-                <div class="row">
-                    <div class="form-group form-row col-12 m-0 pb-0 pt-0">
+                    <app-filtro-organismo formControlName="organismo"
+                        (cambioFiltro)="onFiltroOrganismo($event)"
+                        (limpiarFiltro)="onFiltroOrganismo(null)"
+                        [requeridoUC]="false">
+                    </app-filtro-organismo>
+                </app-grupo-colapsable>
+
+                <div class="row pr-3 pl-3">
+                    <div class="form-group form-row col-12">
                         <label for="nombreDocumento" class="col-form-label col-12 pl-0">Nombre documento</label>
                         <input id="nombreDocumento" class="form-control col-12" type="text"
                             formControlName="nombreDocumento"
@@ -17,8 +21,8 @@
                     </div>
                 </div>
                 
-                <div class="row">
-                    <div class="form-group form-row col-12 m-0 pt-0 pt-0">
+               <div class="row pr-3 pl-3">
+                    <div class="form-group form-row col-12">
                         <label for="tipoArchivo" class="col-form-label col-12 pl-0">Tipo archivo</label>
                         <select id="tipoArchivo" class="form-control col-12" formControlName="tipoArchivo">
                             <option *ngFor="let tipo of tiposArchivo" [value]="tipo.id">{{ tipo.nombre }}</option>
@@ -26,7 +30,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                 <div class="row p-3">
                     <div class="clean-filter col-12">
                         <button type="button" class="btn btn-link" id="cleanFilterBtn" (click)="nuevaConsulta()">
                             Nueva consulta

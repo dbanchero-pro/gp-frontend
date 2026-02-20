@@ -1,60 +1,67 @@
 <div class="row">
-  <div [ngClass]="colFiltro" class="sidebar">
-    <app-filtro title="Búsqueda" titleBtn="Buscar" iconTitle="fa fa-search"
+  <div [ngClass]="colFiltro" class="sidebar p-0">
+    <app-filtro title="Búsqueda" titleBtn="Buscar" iconTitle="fa fa-search" claseCabezal="ml-2 pl-2 mr-2 pr-2" 
       (evFilter)="actualizarFiltrosYBuscar()">
       <div [formGroup]="formularioFiltro" class="col-12 ml-0 pl-0 mr-0 pr-0">
 
-        <div class="row">
-          <div class="form-group form-row col-12 m-0 pb-0">
-            <label for="incisoId" class="col-form-label col-12">Inciso</label>
-            <select class="form-control col-12" id="incisoId" formControlName="incisoId">
-              <option [ngValue]="null">Seleccione un inciso</option>
-              <option *ngFor="let inciso of incisos" [ngValue]="inciso.id">
-                {{ inciso.codigo }} - {{ inciso.descripcion }}
-              </option>
-            </select>
-          </div>
-        </div>
+        <app-grupo-colapsable class="pl-0" classTitulo="pl-3"  classContenido="ml-2 pl-2 pr-2 mr-2" 
+          titulo="Filtro por organismo" ariaLabel="Expandir o colapsar filtro por organismo">
 
-        <div class="row">
-          <div class="form-group form-row col-12 m-0 pb-0">
-            <label for="unidadEjecutoraId" class="col-form-label col-12">Unidad Ejecutora</label>
-            <select class="form-control col-12" id="unidadEjecutoraId" formControlName="unidadEjecutoraId"
-              [disabled]="unidadesEjecutoras.length === 0">
-              <option [ngValue]="null">Seleccione una unidad ejecutora</option>
-              <option *ngFor="let ue of unidadesEjecutoras" [ngValue]="ue.id">
-                {{ ue.codigo }} - {{ ue.descripcion }}
-              </option>
-            </select>
+          <div class="row">
+            <div class="form-group form-row col-12">
+              <label for="incisoId" class="col-form-label col-12">Inciso</label>
+              <select class="form-control col-12" id="incisoId" formControlName="incisoId">
+                <option [ngValue]="null">Seleccione un inciso</option>
+                <option *ngFor="let inciso of incisos" [ngValue]="inciso.id">
+                  {{ inciso.codigo }} - {{ inciso.descripcion }}
+                </option>
+              </select>
+            </div>
           </div>
-        </div>
 
-        <div class="row">
-          <div class="form-group form-row col-12 m-0 pb-0">
-            <label for="tipoCompraId" class="col-form-label col-12">Tipo de compra</label>
-            <select class="form-control col-12" id="tipoCompraId" formControlName="tipoCompraId">
-              <option [ngValue]="null">Seleccione un tipo de compra</option>
-              <option *ngFor="let tipo of tiposCompra" [ngValue]="tipo.id">
-                {{ tipo.descripcion }}
-              </option>
-            </select>
+          <div class="row">
+            <div class="form-group form-row col-12">
+              <label for="unidadEjecutoraId" class="col-form-label col-12">Unidad Ejecutora</label>
+              <select class="form-control col-12" id="unidadEjecutoraId" formControlName="unidadEjecutoraId"
+                [disabled]="unidadesEjecutoras.length === 0">
+                <option [ngValue]="null">Seleccione una unidad ejecutora</option>
+                <option *ngFor="let ue of unidadesEjecutoras" [ngValue]="ue.id">
+                  {{ ue.codigo }} - {{ ue.descripcion }}
+                </option>
+              </select>
+            </div>
           </div>
-        </div>
+        </app-grupo-colapsable>
 
-        <div class="row">
-          <div class="form-group form-row col-12 m-0 pb-0">
-            <label for="subtipoCompraId" class="col-form-label col-12">Subtipo de compra</label>
-            <select class="form-control col-12" id="subtipoCompraId" formControlName="subtipoCompraId"
-              [disabled]="subtiposCompra.length === 0">
-              <option [ngValue]="null">Seleccione un subtipo de compra</option>
-              <option *ngFor="let subtipo of subtiposCompra" [ngValue]="subtipo.id">
-                {{ subtipo.descripcion }}
-              </option>
-            </select>
+        <app-grupo-colapsable class="pl-0 borde-inferior" classTitulo="pl-3"  classContenido="ml-2 pl-2 pr-2 mr-2" 
+            titulo="Filtro por tipo de contratación" ariaLabel="Expandir o colapsar filtro por tipo de contratación">
+          <div class="row">
+            <div class="form-group form-row col-12">
+              <label for="tipoCompraId" class="col-form-label col-12">Tipo de compra</label>
+              <select class="form-control col-12" id="tipoCompraId" formControlName="tipoCompraId">
+                <option [ngValue]="null">Seleccione un tipo de compra</option>
+                <option *ngFor="let tipo of tiposCompra" [ngValue]="tipo.id">
+                  {{ tipo.descripcion }}
+                </option>
+              </select>
+            </div>
           </div>
-        </div>
 
-        <div class="row">
+          <div class="row">
+            <div class="form-group form-row col-12">
+              <label for="subtipoCompraId" class="col-form-label col-12">Subtipo de compra</label>
+              <select class="form-control col-12" id="subtipoCompraId" formControlName="subtipoCompraId"
+                [disabled]="subtiposCompra.length === 0">
+                <option [ngValue]="null">Seleccione un subtipo de compra</option>
+                <option *ngFor="let subtipo of subtiposCompra" [ngValue]="subtipo.id">
+                  {{ subtipo.descripcion }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </app-grupo-colapsable>
+
+        <div class="row pr-3 pl-3">
           <div class="form-group form-row col-12 m-0 pb-0">
             <label for="denominacion" class="col-form-label col-12">Denominación modelo</label>
             <input type="text" class="form-control col-12" id="denominacion"
@@ -62,7 +69,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row pr-3 pl-3">
           <div class="form-group form-row col-12 m-0 pb-0">
             <label for="articuloId" class="col-form-label col-12">Estado</label>
             <select class="form-control col-12">
@@ -74,7 +81,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row p-3">
           <div class="clean-filter col-12">
             <button type="button" class="btn btn-link" (click)="nuevaConsulta()">
               Nueva consulta
