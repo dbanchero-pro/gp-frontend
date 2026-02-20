@@ -1,68 +1,87 @@
 <div class="row">
-  <div [ngClass]="colFiltro" class="sidebar">
-    <app-filtro title="Búsqueda" titleBtn="Buscar" iconTitle="fa fa-search"
+  <div [ngClass]="colFiltro" class="sidebar p-0">
+    <app-filtro title="Búsqueda" titleBtn="Buscar" iconTitle="fa fa-search" claseCabezal="ml-2 pl-2 mr-2 pr-2" 
       (evFilter)="actualizarFiltrosYBuscar()">
       <div [formGroup]="form" class="col-12 ml-0 pl-0 mr-0 pr-0">
-        <div class="row">
-          <div class="form-group form-row col-12">
-            <label for="incisoId" class="col-form-label">Inciso</label>
-            <select class="form-control" id="incisoId" formControlName="incisoId">
-              <option [ngValue]="null">Todos los incisos</option>
-              <option *ngFor="let inciso of incisos" [ngValue]="inciso.id">
-                {{ inciso.id }} - {{ inciso.descInciso }}
-              </option>
-            </select>
-          </div>
-        </div>
+        <app-grupo-colapsable class="pl-0" classTitulo="pl-3"  classContenido="ml-2 pl-2 pr-2 mr-2" 
+          titulo="Filtro por organismo" ariaLabel="Expandir o colapsar filtro por organismo">
+                   
+              <div class="row">
+                <div class="form-group form-row col-12">
+                  <label for="incisoId" class="col-form-label">Inciso</label>
+                  <select class="form-control" id="incisoId" formControlName="incisoId">
+                    <option [ngValue]="null">Todos los incisos</option>
+                    <option *ngFor="let inciso of incisos" [ngValue]="inciso.id">
+                      {{ inciso.id }} - {{ inciso.descInciso }}
+                    </option>
+                  </select>
+                </div>
+              </div>
 
-        <div class="row">
-          <div class="form-group form-row col-12">
-            <label for="unidadEjecutoraId" class="col-form-label">Unidad ejecutora</label>
-            <select class="form-control" id="unidadEjecutoraId" formControlName="unidadEjecutoraId"
-              [disabled]="!form.value.incisoId">
-              <option [ngValue]="null">Todas las unidades ejecutoras</option>
-              <option *ngFor="let ue of unidadesEjecutoras" [ngValue]="ue.id">
-                {{ ue.idUnidadEjecutora }} - {{ ue.descUnidadEjecutora }}
-              </option>
-            </select>
-          </div>
-        </div>
+              <div class="row">
+                <div class="form-group form-row col-12">
+                  <label for="unidadEjecutoraId" class="col-form-label">Unidad ejecutora</label>
+                  <select class="form-control" id="unidadEjecutoraId" formControlName="unidadEjecutoraId"
+                    [disabled]="!form.value.incisoId">
+                    <option [ngValue]="null">Todas las unidades ejecutoras</option>
+                    <option *ngFor="let ue of unidadesEjecutoras" [ngValue]="ue.id">
+                      {{ ue.idUnidadEjecutora }} - {{ ue.descUnidadEjecutora }}
+                    </option>
+                  </select>
+                </div>
+              </div>
 
-        <div class="row">
-          <div class="form-group form-row col-12">
-            <label for="unidadCompraId" class="col-form-label">Unidad de compra</label>
-            <select class="form-control" id="unidadCompraId" formControlName="unidadCompraId"
-              [disabled]="!form.value.unidadEjecutoraId">
-              <option [ngValue]="null">Todas las unidades de compra</option>
-              <option *ngFor="let uc of unidadesCompra" [ngValue]="uc.id">
-                {{ uc.descUnidadCompra }}
-              </option>
-            </select>
-          </div>
-        </div>
+              <div class="row">
+                <div class="form-group form-row col-12">
+                  <label for="unidadCompraId" class="col-form-label">Unidad de compra</label>
+                  <select class="form-control" id="unidadCompraId" formControlName="unidadCompraId"
+                    [disabled]="!form.value.unidadEjecutoraId">
+                    <option [ngValue]="null">Todas las unidades de compra</option>
+                    <option *ngFor="let uc of unidadesCompra" [ngValue]="uc.id">
+                      {{ uc.descUnidadCompra }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+        </app-grupo-colapsable>
+        
+        <app-grupo-colapsable class="pl-0 borde-inferior" classTitulo="pl-3"  classContenido="ml-2 pl-2 pr-2 mr-2" 
+          titulo="Filtro por compra" ariaLabel="Expandir o colapsar filtro por organismo">
+              
+          
+            <div class="row">
+              <div class="form-group form-row col-12">
+                <label for="tipoCompraId" class="col-form-label">Tipo de compra</label>
+                <select class="form-control col-12" id="tipoCompraId" formControlName="tipoCompraId">
+                  <option [ngValue]="null">Todos los tipos</option>
+                  <option *ngFor="let tipo of tiposCompra" [ngValue]="tipo.id">
+                    {{ tipo.descTipoCompra }}
+                  </option>
+                </select>
+              </div>
+            </div>
 
-        <div class="row">
-          <div class="form-group form-row col-12">
-            <label for="numeroCompra" class="col-form-label">N°/año compra</label>
-            <input type="number" class="form-control" id="numeroCompra"
-              formControlName="numeroCompra">
-          </div>
-        </div>
+            <div class="row">
+              <div class="form-group form-row col-12">
+                <label for="tipoCompraId" class="col-form-label">Subtipos de compra</label>
+                <select class="form-control col-12">
+                  <option [ngValue]="null">Todos los subtipos</option>
+                </select>
+              </div>
+            </div>
 
-        <div class="row">
-          <div class="form-group form-row col-12">
-            <label for="tipoCompraId" class="col-form-label">Tipo de compra</label>
-            <select class="form-control col-12" id="tipoCompraId" formControlName="tipoCompraId">
-              <option [ngValue]="null">Todos los tipos</option>
-              <option *ngFor="let tipo of tiposCompra" [ngValue]="tipo.id">
-                {{ tipo.descTipoCompra }}
-              </option>
-            </select>
-          </div>
-        </div>
+              <div class="row">
+              <div class="form-group form-row col-12">
+                <label for="numeroCompra" class="col-form-label">N°/año compra</label>
+                <input type="number" class="form-control" id="numeroCompra"
+                  formControlName="numeroCompra">
+              </div>
+            </div>
 
-        <div class="row">
-          <div class="form-group form-row col-12">
+        </app-grupo-colapsable>
+
+        <div class="row p-3">
+          <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-2">
             <label for="estado" class="col-form-label">Estado</label>
             <select class="form-control" id="estado" formControlName="estado">
               <option [ngValue]="null">Todos los estados</option>
@@ -74,8 +93,8 @@
         </div>
 
         <div class="row">
-          <div class="clean-filter col-12">
-            <button type="button" class="btn btn-link" (click)="nuevaConsulta()">
+          <div class="clean-filter col-12 mt-3">
+            <button type="button" class="btn btn-link pt-0 mr-3" (click)="nuevaConsulta()">
               Nueva consulta
             </button>
           </div>
