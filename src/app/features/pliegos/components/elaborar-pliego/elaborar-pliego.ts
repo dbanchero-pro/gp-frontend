@@ -331,7 +331,8 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
       'caratula': 'Carátula',
       'notas': 'Notas',
       'anexos': 'Anexos',
-      'campos': 'Campos variables'
+      'campos': 'Campos variables',
+      'resolucion': 'Resolución'
     };
     this.tituloEdicion = titulos[seccion] || 'Edición';
   }

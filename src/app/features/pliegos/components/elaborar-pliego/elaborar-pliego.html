@@ -68,14 +68,20 @@
       </div>
       <div class="panel-body" [class.d-none]="panelNavegacionContraido">
         <ul class="nav-list">
-           <li class="nav-item" onkeydown="" [class.active]="seccionActiva === 'encabezado'" (click)="seleccionarSeccion('encabezado')">
-            <em class="fa fa-book m-2"></em>
-            <span>Encabezado y pie página</span>
+           
+           <li class="nav-item" onkeydown="" [class.active]="seccionActiva === 'resolucion'" (click)="seleccionarSeccion('resolucion')">
+            <em class="fa fa-id-card-o m-2"></em>
+            <span>Resolución</span>
           </li>
-           <li class="nav-divider"></li>
+          <li class="nav-divider"></li>
           <li class="nav-item" onkeydown="" [class.active]="seccionActiva === 'caratula'" (click)="seleccionarSeccion('caratula')">
             <em class="fa fa-bookmark m-2"></em>
             <span>Carátula</span>
+          </li>
+          <li class="nav-divider"></li>
+          <li class="nav-item" onkeydown="" [class.active]="seccionActiva === 'encabezado'" (click)="seleccionarSeccion('encabezado')">
+            <em class="fa fa-book m-2"></em>
+            <span>Encabezado y pie página</span>
           </li>
           <li class="nav-divider"></li>
           <li class="nav-item" [class.active]="seccionActiva === 'notas'" onkeydown="" (click)="seleccionarSeccion('notas')">
@@ -170,6 +176,19 @@
             </div>
           </div>
 
+            <div *ngIf="seccionActiva === 'resolucion'">
+              <div class="form-group">
+                <div class="mb-3 text-right">
+                  <button type="button" class="btn btn-primary mr-3 ">
+                    Adjuntar resolucion
+                  </button>
+                  <button type="button" class="btn btn-primary">
+                    Buscar modelo
+                  </button>
+                </div>
+              </div>                            
+            </div>
+
           <div *ngIf="seccionActiva === 'caratula'">
             <div class="form-group">
               <label class="etiqueta">* Título del pliego</label>
@@ -178,6 +197,42 @@
             <div class="form-group">
               <label class="etiqueta">* Objeto de la compra</label>
               <textarea class="form-control" rows="4"></textarea>
+            </div>
+              <div class="form-group">
+                <label class="etiqueta">* Teléfono para consultas </label>
+                <input type="text" class="form-control">
+              </div>
+              <div class="form-group">
+                <label class="etiqueta">* Dirección de entrega de ofertas </label>
+                <input type="text" class="form-control">
+              </div>
+               <div class="form-group">
+                <label class="etiqueta">* Correo electrónico para consultas </label>
+                <input type="text" class="form-control">
+              </div>
+              <div class="form-group">
+                <label class="etiqueta">* Plazo tope recepción de ofertas</label>
+                <input type="text" class="form-control">
+              </div>
+              <div class="form-group">
+                <label class="etiqueta">* Plazo acto de apertura </label>
+                <input type="text" class="form-control">
+              </div>
+               <div class="form-group">
+                <label class="etiqueta">* Plazo de solicitud de prórroga </label>
+                <input type="text" class="form-control">
+              </div>
+               <div class="form-group">
+                <label class="etiqueta">* Plazo de recepción de solicitudes de prórroga </label>
+                <input type="text" class="form-control">
+              </div>
+              <div class="m-3 text-right">
+              <button type="button" class="btn btn-primary mr-3">
+                Buscar logo
+              </button>
+              <button type="button" class="btn btn-primary">
+                <em class="fa fa-plus"></em> Agregar logo
+              </button>
             </div>
           </div>
 

@@ -488,7 +488,8 @@ export class CampoService {
       { id: TipoDatoCampo.FECHA, nombre: 'Fecha' },
       { id: TipoDatoCampo.HORA, nombre: 'Hora' },
       { id: TipoDatoCampo.CORREO_ELECTRONICO, nombre: 'Correo electrónico' },
-      { id: TipoDatoCampo.LISTA_VALORES_TEXTO, nombre: 'Lista de valores (texto)' }
+      { id: TipoDatoCampo.LISTA_VALORES_TEXTO, nombre: 'Lista de valores (texto)' },
+      { id: TipoDatoCampo.LISTA_VALORES_TEXTO, nombre: 'Lista de ítems' }
     ];
   }
 
