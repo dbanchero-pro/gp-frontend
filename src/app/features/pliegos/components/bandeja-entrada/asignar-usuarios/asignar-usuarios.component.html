@@ -23,6 +23,19 @@
                 {{ obtenerNombreEstado(proceso.estado) }}
           </span>
         </div>
+        <div class="row">
+          <div class="col-12 ml-0 pl-0 mr-0 pr-0 mb-2">
+            <div class="text-right mr-2">
+              <button
+                class="btn btn-success"
+                type="button"
+                (click)="finalizar()"
+                [disabled]="guardando">
+                  Solicitar iniciar pliego
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -91,18 +104,10 @@
   <!-- Botones de acción -->
   <div class="row mt-4">
     <div class="col-12 d-flex justify-content-end">
-        <button
-        class="btn btn-success"
-        type="button"
-        (click)="finalizar()"
-        [disabled]="guardando">
-          Solicitar iniciar pliego
-      </button>
       <button
         class="btn btn-link"
         type="button"
-        (click)="volver()">
-        Cancelar
+        (click)="volver()"><em class="fa fa-arrow-left mr-1"></em> Volver
       </button>
 
     </div>
