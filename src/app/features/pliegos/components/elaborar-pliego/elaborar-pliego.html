@@ -11,10 +11,10 @@
   <div class="col-12 ml-0 pl-0 mr-0 pr-0">
     <div class="Box Box--colorInfo">
       <div class="row">
-        <div class="col-10 ml-3 pl-0 mr-0 pr-0 mb-2 font-weight-bold subtitle">
+        <div class="col-9 ml-3 pl-0 mr-0 pr-0 mb-2 font-weight-bold subtitle">
           {{ pliego.incisoDescripcion }} | {{ pliego.unidadEjecutoraDescripcion }} | {{ pliego.unidadCompraDescripcion }}
         </div>
-        <div class="col-1 ml-0 pl-0 mr-0 pr-0 mb-2 text-right">
+        <div class="col-2 ml-0 pl-0 mr-0 pr-0 mb-2 text-right">
           <span class="badge" [ngClass]="{
             'badge-info': pliego.estado === 'Pendiente' || pliego.estado === 'Asignado',
             'badge-success': pliego.estado === 'En proceso',
@@ -22,6 +22,9 @@
             'badge-primary': pliego.estado === 'Aprobado'
           }">
             {{ obtenerTextoEstado(pliego.estado) }}
+          </span>
+          <span class="ml-2">
+                <small><strong>Versión: 1</strong></small>
           </span>
         </div>
       </div>
