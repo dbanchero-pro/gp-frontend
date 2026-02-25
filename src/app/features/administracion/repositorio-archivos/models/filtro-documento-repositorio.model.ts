@@ -1,0 +1,17 @@
+import { TipoArchivoRepositorio } from "src/app/shared/enum/tipo-archivo-repositorio.enum";
+
+export interface IFiltroDocumentoRepositorioDTO {
+    idInciso?: number;
+    idUnidadEjecutora?: number;
+    nombreDocumento?: string;
+    tipoArchivo?: TipoArchivoRepositorio;
+}
+
+export class FiltroDocumentoRepositorioDTO implements IFiltroDocumentoRepositorioDTO {
+    constructor(
+        public idInciso?: number,
+        public idUnidadEjecutora?: number,
+        public nombreDocumento?: string,
+        public tipoArchivo?: TipoArchivoRepositorio
+    ) {}
+}

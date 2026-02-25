@@ -15,7 +15,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Pais } from 'src/app/shared/enum/pais.enum';
 import { TipoBusqueda } from 'src/app/shared/enum/tipo-busqueda-item.enum';
 import { TipoDocumentoUsuario } from 'src/app/shared/enum/tipo-documento-usuario.enum';
-import { TipoUsuario } from 'src/app/shared/enum/tipo-usuario.enum';
 import { AuthRawService } from 'src/app/shared/services/common/auth-raw-service';
 import { MenuService } from 'src/app/shared/services/common/menu.service';
 import { SeguridadService } from 'src/app/shared/services/common/seguridad.service';
@@ -63,12 +62,11 @@ class SeguridadServiceMock {
     usuarioLogueadoEsUsuarioProveedor(): boolean {
         return this.esUsuarioProveedor;
     }
+    usuarioLogueadoPuedeCambiarPerfil(): boolean {
+        return this.esUsuarioOrganismo && this.esUsuarioProveedor;
+    }
 
     almacenarPermisos: (permisos: string[]) => void = () => { };
-
-    obtenerTipoUsuario(): TipoUsuario {
-        return TipoUsuario.ORGANISMO; // Valor por defecto para las pruebas
-    }
 
     almacenarProveedores: (proveedores: any[]) => void = () =>  { }
 
@@ -161,21 +159,6 @@ describe('MenuComponent', () => {
         component.cerrarSesion();
         expect(keycloakSpy).toHaveBeenCalled();
     });
-
-    it('openDialog establece el indicador cuando se cierra con true', () => {
-        const dialog = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
-        dialog.open.and.returnValue({
-            afterClosed: () => of(true)
-        } as any);
-
-        component.itemsUC = [{idUnidadCompra: 1, idUnidadEjecutora:1, idInciso: 1}];
-        component.itemsP = [{id: "1", nroDocumento: "1", tipoDocumento: TipoDocumentoUsuario.CEDULA_IDENTIDAD, paisDocumento: {id: Pais.URUGUAY}, nombre: "Proveedor 1"}];
-        component.tipo = TipoBusqueda.NROITEM;
-        component.cambiarPerfil();
-        expect(dialog.open).toHaveBeenCalled();
-        expect(component.openDialogUcProveedor).toBeTrue();
-    });
-
     it('verificarMostrarCambiarPerfil devuelve el valor correcto', () => {
         (component.seguridad as any).esUsuarioOrganismo = true;
         (component.seguridad as any).esUsuarioProveedor = true;
@@ -256,7 +239,7 @@ describe('MenuComponent', () => {
     it('obtenerMenu emite mensaje de error cuando no hay ítems visibles', (done) => {
         spyOn(menuService, 'obtenerMenu').and.returnValue([{ visible: false }] as any);
         const mensajeSpy = spyOn(component.actualizar, 'mensajeError');
-        component.obtenerMenu([], TipoUsuario.ORGANISMO).subscribe(items => {
+        component.obtenerMenu([]).subscribe(items => {
             expect(items.length).toBe(0);
             expect(mensajeSpy).toHaveBeenCalledWith('El usuario no tiene permisos');
             done();

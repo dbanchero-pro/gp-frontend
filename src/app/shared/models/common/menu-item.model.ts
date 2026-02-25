@@ -1,4 +1,4 @@
-import { TipoUsuario } from "../../enum/tipo-usuario.enum";
+
 
 export interface IMenuItem {
     nombre: string;
@@ -10,7 +10,6 @@ export interface IMenuItem {
     visible?: boolean;
     _open?: boolean;
     padre?: IMenuItem;
-    tipoUsuario?: TipoUsuario
 }
 
 export class MenuItem implements IMenuItem {
@@ -23,7 +22,6 @@ export class MenuItem implements IMenuItem {
         public items?: IMenuItem[],
         public visible?: boolean,
         public padre?: IMenuItem,
-        public tipoUsuario?: TipoUsuario
     ) {
     }
 }

@@ -1,6 +1,5 @@
 import { Component } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
-import { TipoUsuario } from "src/app/shared/enum/tipo-usuario.enum";
 import { IMenuItem } from "src/app/shared/models/common/menu-item.model";
 import { ActualizarService } from "src/app/shared/services/common/actualizar.service";
 import { MenuService } from "../../../shared/services/common/menu.service";
@@ -11,7 +10,6 @@ import { MenuService } from "../../../shared/services/common/menu.service";
     standalone: false
 })
 export class BreadcrumbsComponent {
-    tipoUsuario?: TipoUsuario;
     item: IMenuItem | undefined;
     superItem: IMenuItem | undefined;
     superItem2: IMenuItem | undefined;
@@ -19,10 +17,7 @@ export class BreadcrumbsComponent {
     constructor(private readonly menu: MenuService, 
         private readonly router: Router,
         private readonly actualizar: ActualizarService) {
-        this.actualizar.tipoUsuario$.subscribe((tipoUsuario?: TipoUsuario) => {
-            this.tipoUsuario = tipoUsuario;
-            this.actualizarMigaPan();
-        });
+       
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
                 this.actualizarMigaPan();
@@ -32,7 +27,7 @@ export class BreadcrumbsComponent {
     }
 
     private actualizarMigaPan() {
-        this.item = this.menu.obtenerItemMasAbajo(this.router.url, this.tipoUsuario);
+        this.item = this.menu.obtenerItemMasAbajo(this.router.url);
         this.superItem = this.obtenerPadre(this.item);
         this.superItem2 = this.obtenerPadre(this.superItem);
         this.superItem3 = this.obtenerPadre(this.superItem2);

@@ -40,8 +40,6 @@ describe("HomeComponent", () => {
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(HomeComponent);
-        component = fixture.componentInstance;
         AppConfig.settings = {
             apiCargaMasivaUrl: '',
             apiUrl: '',
@@ -52,7 +50,9 @@ describe("HomeComponent", () => {
             archivosTamanoMaxBytes: 0,
             archivosCantidadMax: 10,
             contenidoInicio: '123'
-            };
+        };
+        fixture = TestBed.createComponent(HomeComponent);
+        component = fixture.componentInstance;
         fixture.detectChanges();
     });
 

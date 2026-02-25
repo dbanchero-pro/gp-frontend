@@ -5,7 +5,6 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
-import { ItemOrdenCompraService } from 'src/app/features/entregas/services/item-orden-compra.service';
 import { TipoBusqueda } from '../../enum/tipo-busqueda-item.enum';
 import { IBusquedaItemDTO } from '../../models/busqueda-item.model';
 import { ItemsCompraService } from '../../services/items-compra.service';
@@ -45,7 +44,6 @@ describe('FiltroItemsArticulos', () => {
                 provideRouter([]),
                 { provide: HttpClient, useValue: mockHttpClient },
                 { provide: ItemsCompraService, useClass: ItemsCompraServiceStub },
-                { provide: ItemOrdenCompraService, useClass: ItemOrdenCompraServiceStub }
             ],
             schemas: [NO_ERRORS_SCHEMA],
         });
@@ -212,8 +210,7 @@ describe('FiltroItemsArticulos', () => {
         expect(ret).toBeTrue();
     });
 
-    it('usa ItemsOrdenCompraService cuando usarItemsOrdenCompra es true', fakeAsync(() => {
-        const ocService = TestBed.inject(ItemOrdenCompraService);
+    it('usa ItemsCompraService cuando usarItemsOrdenCompra es true', fakeAsync(() => {
         const icService = TestBed.inject(ItemsCompraService);
 
         const fix = TestBed.createComponent(FiltroItemsArticulosComponent);
@@ -228,12 +225,10 @@ describe('FiltroItemsArticulos', () => {
         comp.buscar({ target: { value: '22' } } as any);
         tick(400);
 
-        expect((ocService as any).buscarPorArticulo).toHaveBeenCalled();
-        expect((icService as any).buscarPorArticulo).not.toHaveBeenCalled();
+        expect((icService as any).buscarPorArticulo).toHaveBeenCalled();
     }));
 
     it('usa ItemsCompraService cuando usarItemsOrdenCompra es false', fakeAsync(() => {
-        const ocService = TestBed.inject(ItemOrdenCompraService);
         const icService = TestBed.inject(ItemsCompraService);
 
         const fix = TestBed.createComponent(FiltroItemsArticulosComponent);
@@ -249,6 +244,5 @@ describe('FiltroItemsArticulos', () => {
         tick(400);
 
         expect((icService as any).buscarPorArticulo).toHaveBeenCalled();
-        expect((ocService as any).buscarPorArticulo).not.toHaveBeenCalled();
     }));
 });

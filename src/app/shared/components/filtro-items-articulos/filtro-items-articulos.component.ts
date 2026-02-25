@@ -9,7 +9,6 @@ import {
     of,
     switchMap,
 } from 'rxjs';
-import { ItemOrdenCompraService } from 'src/app/features/entregas/services/item-orden-compra.service';
 import { IBusquedaItemDTO } from 'src/app/shared/models/busqueda-item.model';
 import { TipoBusqueda } from '../../enum/tipo-busqueda-item.enum';
 import { TipoPerfil } from '../../enum/tipo-perfil.enum';
@@ -51,7 +50,6 @@ export class FiltroItemsArticulosComponent implements OnInit {
 
     constructor(
         private readonly itemCompraService: ItemsCompraService,
-        private readonly itemOrdenCompraService: ItemOrdenCompraService,
         private readonly usuarioPerfilService: UsuarioOrganismoPerfilService
     ) { }
 
@@ -68,8 +66,6 @@ export class FiltroItemsArticulosComponent implements OnInit {
                 } else if (this.modoCliente) {
                     return this.buscarEnCliente(texto);
                         
-                } else if (this.articulosCualquierOrdenCompra && this.tipoBusqueda.value === TipoBusqueda.ARTICULO) {
-                    return this.itemOrdenCompraService.buscarPorArticuloCualquierOC(texto);
                 } else if (!this.idCompra) {
                     const filtros: FiltroBusquedaArticulosDTO = {
                         ...this.filtroParaBusqueda,
@@ -78,9 +74,7 @@ export class FiltroItemsArticulosComponent implements OnInit {
                         descripcionArticulo: this.tipoBusqueda.value === TipoBusqueda.ARTICULO ? texto : undefined,
                     };
                     return this.usuarioPerfilService.buscarArticulos(this.tipoPerfil ?? TipoPerfil.Conformidad, filtros);
-                } else if (this.usarItemsOrdenCompra) {
-                    return this.itemOrdenCompraService.buscarPorArticulo(this.idCompra, texto, this.tipoBusqueda.value);
-                }
+                } 
                 else {
                     return this.itemCompraService.buscarPorArticulo( this.idCompra, texto, this.tipoBusqueda.value );
                 }

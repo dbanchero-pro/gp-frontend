@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { TipoUsuario } from '../../enum/tipo-usuario.enum';
 import { IMenuItem } from '../../models/common/menu-item.model';
 import { SeguridadService } from './seguridad.service';
 
@@ -16,9 +15,9 @@ export interface SubItem {
 export class MenuService {
     constructor(private readonly router: Router, private readonly seguridad: SeguridadService) { }
 
-    public obtenerMenu(permisos: string[], tipoUsuario?: TipoUsuario, ignorarPermisos: boolean = false): IMenuItem[] {
-        const items: IMenuItem[] = this.obtenerMenuItems(tipoUsuario);
-        return this.filtrarMenu(items, permisos, tipoUsuario === TipoUsuario.PROVEEDOR || ignorarPermisos);
+    public obtenerMenu(permisos: string[], ignorarPermisos: boolean = false): IMenuItem[] {
+        const items: IMenuItem[] = this.obtenerMenuItems();
+        return this.filtrarMenu(items, permisos, ignorarPermisos);
     }
 
     public filtrarMenu(items: IMenuItem[], permisos: string[], ignorarPermisos: boolean = false): IMenuItem[] {
@@ -54,108 +53,19 @@ export class MenuService {
         return retorno;
     }
 
-    private obtenerMenuItems(tipoUsuario?: TipoUsuario): IMenuItem[] {
-        return this.filtrarPorTipoUsuario([
+    private obtenerMenuItems(): IMenuItem[] {
+        return this.filtrarItemsMenu([
             this.menuBandejaEntrada(),
-            this.menuAdministracion(tipoUsuario),
+            this.menuAdministracion(),
           //  this.menuEntregas(tipoUsuario),
-        ], tipoUsuario);
+        ]);
     }
 
-    private menuEntregas(tipoUsuario?: TipoUsuario): IMenuItem {
-        return {
-            nombre: 'Gestión',
-            visible: true,
-            tipoUsuario: TipoUsuario.AMBOS,
-            items: [
-                {
-                    nombre: 'Seguimiento y ajustes',
-                    titulo: 'Seguimiento Entregas y Ajustes Órdenes Compra',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar órdenes de compra y gestionar las entregas o solicitar ajustes',
-                    visible: true,
-                    tipoUsuario: TipoUsuario.PROVEEDOR,
-                    permisos: [],
-                    url: '/entregas/seguimiento-proveedor',
-                },
-                {
-                    nombre: 'Seguimiento y ajustes',
-                    titulo: 'Seguimiento Entregas y Ajustes Órdenes Compra',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar órdenes de compra y gestionar las entregas o los ajustes',
-                    visible: true,
-                    tipoUsuario: TipoUsuario.ORGANISMO,
-                    permisos: [
-                        'GC_GESTION_RECEP.CONSULTA',
-                        'GC_GESTION_RECEP.ALTA',
-                        'GC_GESTION_RECEP.MODIFICACION',
-                        'GC_GESTION_RECEP.BAJA',
-                        'GC_GESTION_RECEP.IMPRESION',
-                        'GC_GESTION_CONF.CONSULTA',
-                        'GC_GESTION_CONF.ALTA',
-                        'GC_GESTION_CONF.MODIFICACION',
-                        'GC_GESTION_CONF.BAJA',
-                        'GC_GESTION_CONF.IMPRESION',
-                        'GC_GESTION_ENTR.CONSULTA',
-                        'GC_GESTION_ENTR.ALTA',
-                        'GC_GESTION_ENTR.MODIFICACION',
-                        'GC_GESTION_ENTR.BAJA',
-                        'GC_GESTION_ENTR.IMPRESION',
-                    ],
-                    url: '/entregas/seguimiento-organismo',
-                },
-                {
-                    nombre: 'Ver auditoría entregas',
-                    titulo: 'Auditoría Entregas',
-                    subtitulo: 'Consulta las operaciones realizadas a las entregas de un ítem de una orden de compra',
-                    visible: true,
-                    tipoUsuario: TipoUsuario.AMBOS,
-                    permisos: [
-                        'GC_GESTION_RECEP.CONSULTA',
-                        'GC_GESTION_RECEP.ALTA',
-                        'GC_GESTION_RECEP.MODIFICACION',
-                        'GC_GESTION_RECEP.BAJA',
-                        'GC_GESTION_RECEP.IMPRESION',
-                        'GC_GESTION_CONF.CONSULTA',
-                        'GC_GESTION_CONF.ALTA',
-                        'GC_GESTION_CONF.MODIFICACION',
-                        'GC_GESTION_CONF.BAJA',
-                        'GC_GESTION_CONF.IMPRESION',
-                        'GC_GESTION_ENTR.CONSULTA',
-                        'GC_GESTION_ENTR.ALTA',
-                        'GC_GESTION_ENTR.MODIFICACION',
-                        'GC_GESTION_ENTR.BAJA',
-                        'GC_GESTION_ENTR.IMPRESION',
-                    ],
-                    url: '/entregas/auditoria-entregas',
-                },
-                {
-                    nombre: 'Ver auditoría ajustes',
-                    titulo: 'Auditoría Ajustes',
-                    subtitulo: 'Consulta las operaciones realizadas a los ajustes de un ítem o de una orden de compra',
-                    visible: true,
-                    tipoUsuario: TipoUsuario.AMBOS,
-                    permisos: ['GC_AJUSTES_ORDE.ALTA', 'GC_AJUSTES_ORDE.BAJA', 'GC_AJUSTES_ORDE.MODIFICACION'
-                        , 'GC_AJUSTES_ORDE.CONSULTA', 'GC_AJUSTES_ORDE.IMPRESION', 'GC_AJUSTES_ORDE.APROBACION'],
-                    url: '/ajustes/auditoria-ajustes',
-                },
-                {
-                    nombre: 'Ajustes Órdenes Compra',
-                    titulo: 'Ajustes Órdenes Compra',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar',
-                    visible: false,
-                    tipoUsuario: TipoUsuario.AMBOS,
-                    permisos: ['GC_AJUSTES_ORDE.ALTA', 'GC_AJUSTES_ORDE.BAJA', 'GC_AJUSTES_ORDE.MODIFICACION'
-                        , 'GC_AJUSTES_ORDE.CONSULTA', 'GC_AJUSTES_ORDE.IMPRESION', 'GC_AJUSTES_ORDE.APROBACION'],
-                    url: '/ajustes',
-                }
-            ]
-        };
-    }
 
-    private menuAdministracion(tipoUsuario?: TipoUsuario): IMenuItem {
+    private menuAdministracion(): IMenuItem {
         return {
             nombre: 'Administración',
             visible: true,
-            tipoUsuario: TipoUsuario.AMBOS,
             items: [
                 this.menuPliegos(),
                 this.menuRoles(),
@@ -167,7 +77,6 @@ export class MenuService {
         return {
             nombre: 'Puntos Recepción',
             visible: true,
-            tipoUsuario: TipoUsuario.ORGANISMO,
             items: [
                 {
                     nombre: 'Gestión',
@@ -233,115 +142,6 @@ export class MenuService {
         };
     }
 
-    private menuSeguimientoProveedores(): IMenuItem {
-        return {
-            nombre: 'Seguimiento proveedores',
-            visible: true,
-            tipoUsuario: TipoUsuario.AMBOS,
-            items: [
-                {
-                    nombre: 'Gestión usuarios',
-                    titulo: 'Gestión Usuarios Proveedor',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar los usuarios',
-                    visible: true,
-                    tipoUsuario: TipoUsuario.AMBOS,
-                    permisos: [
-                        'GC_GESTION_USU_P.CONSULTA',
-                        'GC_GESTION_USU_P.IMPRESION',
-                    ],
-                    url: '/administracion/gestion-usuarios/consulta-usuario-proveedor',
-                },
-                {
-                    nombre: 'Configurar plazo',
-                    titulo: 'Configuración Plazo Visualización Fecha Entrega Propuesta',
-                    subtitulo: 'Ingresa la cantidad de días previos al vencimiento de una entrega para que se la considere próxima a vencer',
-                    visible: true,
-                    tipoUsuario: TipoUsuario.PROVEEDOR,
-                    permisos: [],
-                    url: '/administracion/plazo-proveedor/configurar-plazo',
-                },
-                {
-                    nombre: 'Ver auditoría',
-                    titulo: 'Auditoría Funcional Usuarios Proveedor',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar las operaciones sobre los usuarios',
-                    visible: true,
-                    tipoUsuario: TipoUsuario.AMBOS,
-                    permisos: [
-                        'GC_GESTION_USU_P.CONSULTA',
-                    ],
-                    url: '/administracion/auditoria/usuario-proveedor',
-                },
-            ]
-        };
-    }
-
-    private menuRecepcion(): IMenuItem {
-        return {
-            nombre: 'Recepción',
-            visible: true,
-            tipoUsuario: TipoUsuario.ORGANISMO,
-            items: [
-                {
-                    nombre: 'Gestión usuarios',
-                    titulo: 'Gestión Usuarios Recepción',
-                    subtitulo: 'Asigna o elimina el permiso de recepción de entregas, a nivel de unidades de compra o puntos de recepción',
-                    visible: true,
-                    permisos: [
-                        'GC_GESTION_USU.ALTA',
-                        'GC_GESTION_USU.BAJA',
-                        'GC_GESTION_USU.MODIFICACION',
-                        'GC_GESTION_USU.CONSULTA',
-                        'GC_GESTION_USU.IMPRESION',
-                    ],
-                    url: '/administracion/gestion-usuarios/consulta-usuario-recepcion',
-                },
-                {
-                    nombre: 'Ver auditoría',
-                    titulo: 'Auditoría Funcional Usuarios Recepción',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar las operaciones sobre los usuarios',
-                    visible: true,
-                    permisos: [
-                        'GC_GESTION_USU.CONSULTA'
-                    ],
-                    url: '/administracion/auditoria/recepcion',
-                },
-            ]
-        };
-    }
-
-    private menuConformidad(): IMenuItem {
-        return {
-            nombre: 'Conformidad',
-            visible: true,
-            tipoUsuario: TipoUsuario.ORGANISMO,
-            items: [
-                {
-                    nombre: 'Gestión usuarios',
-                    titulo: 'Gestión Usuarios Conformidad',
-                    subtitulo: 'Asigna o elimina el permiso de dar conformidad a las entregas, a nivel de unidades de compra, compra o ítem',
-                    visible: true,
-                    permisos: [
-                        'GC_GESTION_USU.ALTA',
-                        'GC_GESTION_USU.BAJA',
-                        'GC_GESTION_USU.MODIFICACION',
-                        'GC_GESTION_USU.CONSULTA',
-                    ],
-                    url: '/administracion/gestion-usuarios/consulta-usuario-conformidad',
-                },
-                {
-                    nombre: 'Ver auditoría',
-                    titulo: 'Auditoría Funcional Usuarios Conformidad',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar las operaciones sobre los usuarios',
-                    visible: true,
-                    permisos: [
-                        'GC_GESTION_USU.CONSULTA'
-                    ],
-                    url: '/administracion/auditoria/conformidad',
-                },
-            ]
-        };
-    }
-
     private menuRoles(): IMenuItem {
         return {
             nombre: 'Usuarios y roles',
@@ -363,14 +163,12 @@ export class MenuService {
         return {
             nombre: 'Pliegos',
             visible: true,
-            tipoUsuario: TipoUsuario.ORGANISMO,
             items: [
                 {
                     nombre: 'Bandeja de entrada',
                     titulo: 'Bandeja de entrada',
                     subtitulo: 'Visualización de los procesos de elaboración de pliegos',
                     visible: true,
-                    tipoUsuario: TipoUsuario.ORGANISMO,
                     permisos: [
                         'GC_GESTION_USU.CONSULTA'
                     ],
@@ -381,7 +179,6 @@ export class MenuService {
                     titulo: 'Asignar usuarios',
                     subtitulo: 'Seleccion agregar usuario o modificar para asignar roles a los usuarios',
                     visible: false,
-                    tipoUsuario: TipoUsuario.ORGANISMO,
                     permisos: [
                         'GC_GESTION_USU.CONSULTA'
                     ],
@@ -392,7 +189,6 @@ export class MenuService {
                     titulo: 'Iniciar pliego',
                     subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar modelos o pliegos para seleccionar un modelo o pliego',
                     visible: false,
-                    tipoUsuario: TipoUsuario.ORGANISMO,
                     permisos: [
                         'GC_GESTION_USU.CONSULTA'
                     ],
@@ -406,21 +202,19 @@ export class MenuService {
          return {
             nombre: 'Pliegos',
             visible: true,
-            tipoUsuario: TipoUsuario.ORGANISMO,
             items: [
                  {
                     nombre: 'Campos y reglas',
                     titulo: 'Administración de campos y sus reglas',
                     subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar los campos',
                     visible: true,
-                    tipoUsuario: TipoUsuario.ORGANISMO,
                     permisos: [
                         'GC_GESTION_USU.ALTA',
                         'GC_GESTION_USU.BAJA',
                         'GC_GESTION_USU.MODIFICACION',
                         'GC_GESTION_USU.CONSULTA',
                     ],
-                    url: '/pliegos/campos-reglas',
+                    url: '/administracion/campos-reglas',
                 },
                 {
                     nombre: 'Capítulos',
@@ -430,7 +224,7 @@ export class MenuService {
                     permisos: [
                         'GC_GESTION_USU.CONSULTA'
                     ],
-                    url: '/pliegos/capitulos',
+                    url: '/administracion/capitulos',
                 },
                 {
                     nombre: 'Cláusulas',
@@ -480,16 +274,14 @@ export class MenuService {
         };
     }
 
-    public tienePermisoUrl(url: string, tipoUsuario?: TipoUsuario): boolean {
+    public tienePermisoUrl(url: string): boolean {
         const permisos: string[] = this.seguridad.obtenerPermisos();
         if (permisos.length === 0) {
             return false;
         }
-        const item = this.obtenerItemMasAbajo(url, tipoUsuario);
+        const item = this.obtenerItemMasAbajo(url);
         if (item) {
-            return (tipoUsuario === TipoUsuario.PROVEEDOR &&
-                (item.tipoUsuario === TipoUsuario.PROVEEDOR || item.tipoUsuario === TipoUsuario.AMBOS))
-                || item.permisos === undefined || item.permisos.length === 0 || item.permisos.some(permiso => permisos.includes(permiso));
+            return item.permisos === undefined || item.permisos.length === 0 || item.permisos.some(permiso => permisos.includes(permiso));
         } else {
             return false;
         }
@@ -534,8 +326,8 @@ export class MenuService {
         return items.length !== 0 ? items[0] : null;
 
     }
-    public obtenerItemMasAbajo(url: string, tipoUsuario?: TipoUsuario): IMenuItem | undefined {
-        const items = this.obtenerMenu([], tipoUsuario, true);
+    public obtenerItemMasAbajo(url: string): IMenuItem | undefined {
+        const items = this.obtenerMenu([], true);
         for (const item of items) {
             item.padre = undefined;
             const subItem = this.obtenerItemMasAbajoRecursivo(item, url);
@@ -661,14 +453,13 @@ export class MenuService {
                 hijo.items?.some((nieto) => nieto.url === url) ?? false
         ) ?? false;
     }
-    filtrarPorTipoUsuario(items: IMenuItem[], tipoUsuario?: TipoUsuario): IMenuItem[] {
+    filtrarItemsMenu(items: IMenuItem[]): IMenuItem[] {
 
-        let itemsFiltrados = items.filter((item) => tipoUsuario &&
-            (!item.tipoUsuario || item.tipoUsuario === tipoUsuario || item.tipoUsuario === TipoUsuario.AMBOS));
+        let itemsFiltrados = items;
 
         return itemsFiltrados.map((item) => {
             if (item.items && item.items.length > 0) {
-                item.items = this.filtrarPorTipoUsuario(item.items, tipoUsuario);
+                item.items = this.filtrarItemsMenu(item.items);
             }
             return item;
         });

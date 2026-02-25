@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { EntregaService } from 'src/app/features/entregas/services/entrega.service';
 import { ArchivoDTO } from 'src/app/shared/models/common/archivo.model';
 import { Logger } from '../../utils/logger';
 import { ArchivoService } from './archivo.service';
@@ -11,24 +10,12 @@ export class DocumentosUtilService {
 
     constructor(
         private readonly archivoService: ArchivoService,
-        private readonly entregaService: EntregaService
     ) { }
 
-    descargarDocumento(documento: ArchivoDTO, idEntrega?: number): void {
+    descargarDocumento(documento: ArchivoDTO, idPliego?: number): void {
         if (documento.modificado === true) {
             this.archivoService.descargar(documento);
-        } else if (documento.id && documento.id > 0 && idEntrega) {
-            this.entregaService.descargarDocumento(idEntrega, documento.id).subscribe({
-            next: (archivo: ArchivoDTO) => {
-                if (archivo) {
-                    this.archivoService.descargar(archivo);
-                }
-            },
-            error: (error) => {
-                Logger.logError('Error al descargar el documento:', error);
-            }
-        });
-        }
+        } 
     }
 
     eliminarDocumento(documentos: ArchivoDTO[], documento: ArchivoDTO): ArchivoDTO[] {

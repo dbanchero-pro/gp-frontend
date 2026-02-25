@@ -20,15 +20,9 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { NgxDaterangepickerBootstrapModule, NgxDaterangepickerLocaleService } from 'ngx-daterangepicker-bootstrap';
 import { NgxEditorModule } from 'ngx-editor';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
-import { DocumentoProveedorPipe } from 'src/app/shared/pipes/documento-proveedor.pipe';
-import { ItemOrdenCompraCabezalComponent } from '../features/entregas/components/comun/item-orden-compra-cabezal/item-orden-compra-cabezal.component';
-import { OrdenCompraCabezalComponent } from '../features/entregas/components/comun/orden-compra-cabezal/orden-compra-cabezal.component';
-import { ItemOrdenCompraResumenPipe } from '../features/entregas/pipes/item-orden-compra-resumen.pipe';
-import { OrdenCompraResumenPipe } from '../features/entregas/pipes/orden-compra-resumen.pipe';
-import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
+import { DocumentoProveedorPipe } from 'src/app/shared/pipes/documento-proveedor.pipe';import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 import { BotonAccionComponent } from './components/boton-accion/boton-accion.component';
 import { CabezalConsultaComponent } from './components/cabezal-consulta/cabezal-consulta.component';
-import { CambiarPerfilComponent } from './components/cambiar-perfil/cambiar-perfil.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { DoubleScrollComponent } from './components/double-scroll/double-scroll.component';
 import { FiltroItemsArticulosComponent } from './components/filtro-items-articulos/filtro-items-articulos.component';
@@ -101,7 +95,6 @@ const configEditor = {
     declarations: [
         RegistroUsuario,
         FiltroItemsArticulosComponent,
-        CambiarPerfilComponent,
         MensajeComponent,
         FiltroOrganismoComponent,
         FiltroComponent,
@@ -134,10 +127,6 @@ const configEditor = {
         GrupoColapsableContenidoComponent,
         TabsComponent,
         AppTabDirective,
-        OrdenCompraCabezalComponent,
-        ItemOrdenCompraCabezalComponent,
-        OrdenCompraResumenPipe,
-        ItemOrdenCompraResumenPipe
     ],
     exports: [
         FormatoCiPipe,
@@ -147,7 +136,6 @@ const configEditor = {
         RegistroUsuario,
         FiltroItemsArticulosComponent,
         FormsModule,
-        CambiarPerfilComponent,
         FiltroOrganismoComponent,
         ReactiveFormsModule,
         BsDropdownModule,
@@ -187,10 +175,6 @@ const configEditor = {
         GrupoColapsableContenidoComponent,
         TabsComponent,
         AppTabDirective,
-        OrdenCompraCabezalComponent,
-        ItemOrdenCompraCabezalComponent,
-        OrdenCompraResumenPipe,
-        ItemOrdenCompraResumenPipe,
     ],
     imports: [CommonModule,
         CommonModule,

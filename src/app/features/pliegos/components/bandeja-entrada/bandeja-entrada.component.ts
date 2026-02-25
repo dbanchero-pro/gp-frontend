@@ -14,7 +14,7 @@ import { IColumnaOrden } from '../../../../shared/models/common/columna-orden.mo
 import { FechaHoraPipe } from '../../../../shared/pipes/fecha-hora.pipe';
 import { PaginaBusquedaComponent } from '../../../../shared/components/pagina-busqueda/pagina-busqueda.component';
 import { PageModel } from '../../../../shared/models/common/page/page.model';
-import { CancelarPliegoPopupComponent } from './cancelar-pliego-popup/cancelar-pliego-popup';
+import { CancelarPliegoPopupComponent } from '../cancelar-pliego-popup/cancelar-pliego-popup.component';
 
 @Component({
   selector: 'app-bandeja-entrada',

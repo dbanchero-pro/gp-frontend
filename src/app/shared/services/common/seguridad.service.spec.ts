@@ -2,7 +2,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { TipoUsuario } from '../../enum/tipo-usuario.enum';
 import { SeguridadService } from '../common/seguridad.service';
 import { ActualizarService } from './actualizar.service';
 import { AuthRawService } from './auth-raw-service';
@@ -93,22 +92,6 @@ describe('SeguridadService', () => {
     expect(servicio.usuarioLogueadoEsUsuarioProveedor()).toBeTrue();
   });
 
-  it('cambiarTipoUsuario guarda el valor y notifica', () => {
-    const actualizar = TestBed.inject(ActualizarService);
-    spyOn(actualizar, 'cambiarTipoUsuario');
-    servicio.cambiarTipoUsuario(TipoUsuario.PROVEEDOR);
-    expect(sessionStorage.getItem('tipoUsuario')).toBe('PROVEEDOR');
-    expect(actualizar.cambiarTipoUsuario).toHaveBeenCalledWith(TipoUsuario.PROVEEDOR);
-  });
-
-  it('obtenerTipoUsuario devuelve el valor almacenado', () => {
-    sessionStorage.setItem('tipoUsuario', 'PROVEEDOR');
-    spyOn(servicio, 'usuarioLogueadoEsUsuarioOrganismo').and.returnValue(false);
-    spyOn(servicio, 'usuarioLogueadoEsUsuarioProveedor').and.returnValue(true);
-    const tipo = servicio.obtenerTipoUsuario();
-    expect(tipo).toBe(TipoUsuario.PROVEEDOR);
-  });
-
   it('limpiarContexto elimina todos los datos', () => {
     sessionStorage.setItem('permisos', 'A');
     servicio.limpiarContexto();
@@ -117,7 +100,6 @@ describe('SeguridadService', () => {
 
   it('cargarContexto almacena la información del usuario', async () => {
     const util = TestBed.inject(UtilService);
-    const actualizar = TestBed.inject(ActualizarService);
     const info = {
       usuario: 'usuario',
       nombre: 'nombre',
@@ -125,14 +107,11 @@ describe('SeguridadService', () => {
       unidadesCompra: [{ id: 1 }],
       permisos: ['P1']
     } as any;
-    spyOn(servicio, 'obtenerTipoUsuario').and.returnValue(TipoUsuario.ORGANISMO);
     spyOn(util, 'usuarioInfo').and.returnValue(of(info));
-    spyOn(actualizar, 'cambiarTipoUsuario');
     await servicio.cargarContexto();
     expect(sessionStorage.getItem('nombreUsuario')).toBe('nombre');
     expect(sessionStorage.getItem('usuario')).toBe('usuario');
     expect(sessionStorage.getItem('proveedores')).toBe(JSON.stringify(info.proveedores));
-    expect(actualizar.cambiarTipoUsuario).toHaveBeenCalled();
   });
 
   it('cargarContexto rechaza ante un error', async () => {
@@ -182,14 +161,12 @@ describe('SeguridadService', () => {
     sessionStorage.removeItem('tipoUsuario');
     spyOn(servicio, 'usuarioLogueadoEsUsuarioOrganismo').and.returnValue(false);
     spyOn(servicio, 'usuarioLogueadoEsUsuarioProveedor').and.returnValue(true);
-    expect(servicio.obtenerTipoUsuario()).toBe(TipoUsuario.PROVEEDOR);
   });
 
   it('obtenerTipoUsuario retorna ORGANISMO si solo es organismo', () => {
     sessionStorage.removeItem('tipoUsuario');
     spyOn(servicio, 'usuarioLogueadoEsUsuarioOrganismo').and.returnValue(true);
     spyOn(servicio, 'usuarioLogueadoEsUsuarioProveedor').and.returnValue(false);
-    expect(servicio.obtenerTipoUsuario()).toBe(TipoUsuario.ORGANISMO);
   });
 
   it('obtenerNombreUsuarioLogueado devuelve vacío si no hay dato', () => {
@@ -223,7 +200,6 @@ describe('SeguridadService', () => {
     sessionStorage.setItem('tipoUsuario', 'OTRO');
     spyOn(servicio, 'usuarioLogueadoEsUsuarioOrganismo').and.returnValue(true);
     spyOn(servicio, 'usuarioLogueadoEsUsuarioProveedor').and.returnValue(true);
-    expect(servicio.obtenerTipoUsuario()).toBe(TipoUsuario.ORGANISMO);
   });
 
   it('cargarPermisos resuelve sin llamar a util cuando no está logueado', async () => {

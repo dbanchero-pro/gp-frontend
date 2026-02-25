@@ -55,11 +55,13 @@ describe('NuevoUsuarioPopup', () => {
     let usuarioService: jasmine.SpyObj<UsuarioOrganismoService>;
     let usuarioPerfilService: jasmine.SpyObj<UsuarioOrganismoPerfilService>;
     let actualizarService: jasmine.SpyObj<ActualizarService>;
+    let bsModalService: jasmine.SpyObj<BsModalService>;
     beforeEach(async () => {
         bsModalRef = jasmine.createSpyObj('BsModalRef', ['hide']);
         usuarioService = jasmine.createSpyObj('UsuarioService', ['obtenerInformacionUsuarioSice']);
         usuarioPerfilService = jasmine.createSpyObj('UsuarioOrganismoPerfilService', ['obtenerTodos']);
         actualizarService = jasmine.createSpyObj('ActualizarService', [], { capturarErrores: true, });
+        bsModalService = jasmine.createSpyObj('BsModalService', ['show']);
 
         await TestBed.configureTestingModule({
             declarations: [NuevoUsuarioPopupComponent],
@@ -67,7 +69,7 @@ describe('NuevoUsuarioPopup', () => {
             providers: [
                 { provide: BsModalRef, useValue: bsModalRef },
                 FormBuilder,
-                BsModalService,
+                { provide: BsModalService, useValue: bsModalService },
                 { provide: UsuarioOrganismoService, useValue: usuarioService },
                 {
                     provide: UsuarioOrganismoPerfilService,
@@ -89,14 +91,13 @@ describe('NuevoUsuarioPopup', () => {
     it('guardar debería emitir y cerrar modal', () => {
         spyOn(component.guardarEvento, 'emit');
         spyOn(component, 'cerrarPopup');
-        component.form.patchValue({ nroDocumento: '1234567' });
+        component.form.patchValue({ nroDocumento: '1234567', esEditor: true });
         component.tienePermisoTodas = false;
-        component.usuario = { nroDocumento: '1234567' } as UsuarioOrganismoDTO;
         component.guardar();
 
-        expect(component.guardarEvento.emit).toHaveBeenCalledWith({
-            idUsuario: 'uy-ci-1234567',
-        });
+        expect(component.guardarEvento.emit).toHaveBeenCalledWith(
+            jasmine.objectContaining({ idUsuario: 'uy-ci-1234567', esEditor: true }) as any
+        );
         
         expect(component.cerrarPopup).toHaveBeenCalled();
     });
@@ -104,15 +105,13 @@ describe('NuevoUsuarioPopup', () => {
     it('guardar debería emitir y cerrar modal', () => {
         spyOn(component.guardarEvento, 'emit');
         spyOn(component, 'cerrarPopup');
-        component.form.patchValue({ nroDocumento: '1234567' });
+        component.form.patchValue({ nroDocumento: '1234567', esEditor: true });
         component.tienePermisoTodas = false;
-        component.usuario = { nroDocumento: '1234567' } as UsuarioOrganismoDTO;
-
         component.guardar();
 
-        expect(component.guardarEvento.emit).toHaveBeenCalledWith({
-            idUsuario: 'uy-ci-1234567',
-        });
+        expect(component.guardarEvento.emit).toHaveBeenCalledWith(
+            jasmine.objectContaining({ idUsuario: 'uy-ci-1234567', esEditor: true }) as any
+        );
         
         expect(component.cerrarPopup).toHaveBeenCalled();
     });
@@ -259,3 +258,6 @@ describe('NuevoUsuarioPopup', () => {
         expect(component.guardarEvento.emit).not.toHaveBeenCalled();
     });
 });
+
+
+

@@ -21,6 +21,7 @@ export const mockHttp = {
 @Component({
   selector: 'app-input-documento',
   template: '',
+  standalone: false,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -49,6 +50,7 @@ export class MockInputDocumentoComponent implements ControlValueAccessor, Valida
 @Component({
   selector: 'app-filtro-organismo',
   template: '',
+  standalone: false,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -77,17 +79,21 @@ describe('NuevoUsuarioUcPopup', () => {
   let component: NuevoUsuarioUcPopupComponent;
   let fixture: ComponentFixture<NuevoUsuarioUcPopupComponent>;
   let bsModalRef: jasmine.SpyObj<BsModalRef>;
+  let bsModalService: jasmine.SpyObj<BsModalService>;
 
   beforeEach(async () => {
     bsModalRef = jasmine.createSpyObj('BsModalRef', ['hide']);
+    bsModalService = jasmine.createSpyObj('BsModalService', ['show', 'hide', 'getModalsCount']);
+    bsModalService.show.and.returnValue({ content: {}, hide: jasmine.createSpy('hide'), setClass: jasmine.createSpy('setClass') } as any);
+    bsModalService.getModalsCount.and.returnValue(0);
 
     await TestBed.configureTestingModule({
-      declarations: [NuevoUsuarioUcPopupComponent],
-      imports: [ReactiveFormsModule, MockFiltroOrganismoComponent, HttpClientTestingModule],
+      declarations: [NuevoUsuarioUcPopupComponent, MockInputDocumentoComponent, MockFiltroOrganismoComponent],
+      imports: [ReactiveFormsModule, HttpClientTestingModule],
       providers: [
         { provide: BsModalRef, useValue: bsModalRef },
         { provide: HttpClient, useValue: mockHttp },
-        BsModalService
+        { provide: BsModalService, useValue: bsModalService }
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -109,6 +115,7 @@ describe('NuevoUsuarioUcPopup', () => {
     (component as any).form.patchValue({
       nroDocumento: '1',
       usuario: 'uy-ci-1',
+      esEditor: true,
     });
     (component as any).form.get('organismo')?.setValue({
       idInciso: 1,

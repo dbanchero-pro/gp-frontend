@@ -5,7 +5,6 @@ import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@a
 import { KeycloakService } from 'keycloak-angular'; //NOSONAR
 import { of } from 'rxjs';
 import { AppConfig } from 'src/app/app.config';
-import { TipoUsuario } from '../enum/tipo-usuario.enum';
 import { IAppConfig } from '../models/common/app-config.model';
 import { IMenuItem } from '../models/common/menu-item.model';
 import { AuthRawService } from '../services/common/auth-raw-service';
@@ -45,12 +44,6 @@ class MockMenuService {
 class MockSeguridadService {
     cargarPermisos() {
         return Promise.resolve();
-    }
-    obtenerTipoUsuario(): TipoUsuario {
-        return TipoUsuario.ORGANISMO; // Valor por defecto para las pruebas
-    }
-    cambiarTipoUsuario(tipo: TipoUsuario): void {
-        //mock
     }
 }
 class AppConfigStub {

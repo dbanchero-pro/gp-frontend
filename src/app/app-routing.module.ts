@@ -22,28 +22,14 @@ const routes: Routes = [
             ).then((m) => m.AdministracionModule),
 
     },
-
-    {
-        path: 'entregas',
-        loadChildren: () =>
-            import('./features/entregas/entregas.module').then(
-                (m) => m.EntregasModule
-            ),
-        canActivate: [AuthGuard],
-    },
-    {
-        path: 'ajustes',
-        loadChildren: () =>
-            import('./features/ajustes/ajustes.module').then(
-                (m) => m.AjustesModule
-            ),
-    },
     {
         path: 'pliegos',
         loadChildren: () =>
             import('./features/pliegos/pliegos.module').then(
                 (m) => m.PliegosModule
             ),
+            
+        canActivate: [AuthGuard],
     },
     { path: '', pathMatch: 'full', redirectTo: 'inicio' },
     { path: '**', redirectTo: '' },

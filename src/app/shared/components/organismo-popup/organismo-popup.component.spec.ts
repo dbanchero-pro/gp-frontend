@@ -52,6 +52,7 @@ describe('OrganismoPopupComponent', () => {
     spyOn(component.guardarEvento, 'emit');
     spyOn(component, 'cerrarPopup');
     component.form.get('organismo')?.setValue({ idInciso: 1, idUnidadEjecutora: 1, idUnidadCompra: 1 });
+    component.form.get('esEditor')?.setValue(true);
     component.guardar();
     expect(component.form.valid).toBeTrue();
     expect(component.guardarEvento.emit).toHaveBeenCalled();

@@ -1,6 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
-import { EntregaService } from 'src/app/features/entregas/services/entrega.service';
 import { ArchivoDTO } from 'src/app/shared/models/common/archivo.model';
 import { ArchivoService } from './archivo.service';
 import { DocumentosUtilService } from './documentos-util.service';
@@ -8,17 +6,14 @@ import { DocumentosUtilService } from './documentos-util.service';
 describe('DocumentosUtilService', () => {
   let service: DocumentosUtilService;
   let archivoService: any;
-  let entregaService: any;
 
   beforeEach(() => {
     archivoService = { descargar: jasmine.createSpy('descargar') };
-    entregaService = { descargarDocumento: jasmine.createSpy('descargarDocumento').and.returnValue(of({})) };
 
     TestBed.configureTestingModule({
       providers: [
         DocumentosUtilService,
         { provide: ArchivoService, useValue: archivoService },
-        { provide: EntregaService, useValue: entregaService }
       ]
     });
 
@@ -31,11 +26,10 @@ describe('DocumentosUtilService', () => {
     expect(archivoService.descargar).toHaveBeenCalledWith(doc);
   });
 
-  it('descargarDocumento obtiene y descarga archivo existente', () => {
+  it('descargarDocumento no descarga si el archivo no estÃ¡ modificado', () => {
     const doc = { id: 3 } as ArchivoDTO;
     service.descargarDocumento(doc, 5);
-    expect(entregaService.descargarDocumento).toHaveBeenCalledWith(5, 3);
-    expect(archivoService.descargar).toHaveBeenCalled();
+    expect(archivoService.descargar).not.toHaveBeenCalled();
   });
 
   it('eliminarDocumento quita documentos nuevos y marca existentes', () => {

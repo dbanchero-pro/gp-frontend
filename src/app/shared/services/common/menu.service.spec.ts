@@ -5,7 +5,6 @@ import { MenuService } from 'src/app/shared/services/common/menu.service';
 
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { TipoUsuario } from '../../enum/tipo-usuario.enum';
 import { SeguridadService } from './seguridad.service';
 
 describe('MenuService', () => {
@@ -14,10 +13,6 @@ describe('MenuService', () => {
         obtenerPermisos(): string[] {
             return [];
         },
-        obtenerTipoUsuario(): TipoUsuario {
-            return TipoUsuario.ORGANISMO; // Valor por defecto para las pruebas
-        },
-        cambiarTipoUsuario(tipo: TipoUsuario): void {}
     }
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -54,14 +49,14 @@ describe('MenuService', () => {
     });
 
     it('filtra el menú según los permisos otorgados', () => {
-        expect(service.obtenerMenu(['GC_GESTION_USU.ALTA'], TipoUsuario.ORGANISMO).length).toEqual(1);
+        expect(service.obtenerMenu(['GC_GESTION_USU.ALTA']).length).toEqual(1);
     });
 
     it('se chequea permiso', () => {
         let seguridadService: SeguridadService =
             TestBed.inject(SeguridadService);
-        spyOn(seguridadService, 'obtenerPermisos').and.returnValue(['GC_GESTION_USU_P.CONSULTA']);
-        expect(service.tienePermisoUrl('/administracion/gestion-usuarios/consulta-usuario-proveedor', TipoUsuario.PROVEEDOR)).toBeTrue();
+        spyOn(seguridadService, 'obtenerPermisos').and.returnValue(['GC_GESTION_USU.CONSULTA']);
+        expect(service.tienePermisoUrl('/administracion/gestion-usuarios/consulta-usuario-roles')).toBeTrue();
     });
     it('se chequea no se tiene permiso', () => {
         let seguridadService: SeguridadService =
@@ -228,8 +223,8 @@ describe('MenuService', () => {
     });
 
     it('obtenerMenu para proveedor ignora permisos', () => {
-        const res = service.obtenerMenu([], TipoUsuario.PROVEEDOR);
-        expect(res.length).toBeGreaterThan(0);
+        const res = service.obtenerMenu([]);
+        expect(res.length).toBe(0);
     });
 
     it('filtrarMenu ignora permisos cuando corresponde', () => {
@@ -272,11 +267,11 @@ describe('MenuService', () => {
 
     it('filtrarPorTipoUsuario filtra según el tipo', () => {
         const items: any = [
-            { nombre: 'A', tipoUsuario: TipoUsuario.PROVEEDOR },
-            { nombre: 'B', tipoUsuario: TipoUsuario.ORGANISMO }
+            { nombre: 'A'},
+            { nombre: 'B'}
         ];
-        const res = service.filtrarPorTipoUsuario(items, TipoUsuario.PROVEEDOR);
-        expect(res.length).toBe(1);
+        const res = service.filtrarItemsMenu(items);
+        expect(res.length).toBe(2);
         expect(res[0].nombre).toBe('A');
     });
 
@@ -395,22 +390,21 @@ describe('MenuService', () => {
   });
 
   it('filtrarPorTipoUsuario devuelve vacío cuando no se indica tipo', () => {
-    const items: any = [{ nombre: 'A', tipoUsuario: TipoUsuario.PROVEEDOR }];
-    expect(service.filtrarPorTipoUsuario(items, undefined).length).toBe(0);
+    const items: any = [{ nombre: 'A' }];
+    expect(service.filtrarItemsMenu(items).length).toBe(1);
   });
 
   it('filtrarPorTipoUsuario filtra hijos compatibles', () => {
     const items: any = [{
       nombre: 'Padre',
-      tipoUsuario: TipoUsuario.AMBOS,
       items: [
-        { nombre: 'Proveedor', tipoUsuario: TipoUsuario.PROVEEDOR },
-        { nombre: 'Organismo', tipoUsuario: TipoUsuario.ORGANISMO }
+        { nombre: 'Proveedor' },
+        { nombre: 'Organismo' }
       ]
     }];
-    const res = service.filtrarPorTipoUsuario(items, TipoUsuario.PROVEEDOR);
+    const res = service.filtrarItemsMenu(items);
     expect(res.length).toBe(1);
-    expect(res[0].items?.length).toBe(1);
+    expect(res[0].items?.length).toBe(2);
     expect(res[0].items?.[0].nombre).toBe('Proveedor');
   });
 

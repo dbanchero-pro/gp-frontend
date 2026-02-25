@@ -3,7 +3,6 @@ import { BehaviorSubject } from 'rxjs';
 
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { TipoMensajeEnum } from '../../enum/tipo-mensaje.enum';
-import { TipoUsuario } from '../../enum/tipo-usuario.enum';
 
 @Injectable({
     providedIn: 'root',
@@ -19,7 +18,6 @@ export class ActualizarService {
         [string] | [string, string] | [string, string, string] | []
     >([]);
     public cargando$ = new BehaviorSubject<boolean>(false);
-    public tipoUsuario$ = new BehaviorSubject<TipoUsuario | undefined>(undefined);
     public error$ = new BehaviorSubject<[string] | []>([]);
     public titulo$ = new BehaviorSubject<[string] | []>([]);
     public subTitulo$ = new BehaviorSubject<[string] | []>([]);
@@ -40,10 +38,6 @@ export class ActualizarService {
 
     public cargando(mostrar: boolean): void {
         this.cargando$.next(mostrar);
-    }
-
-    public cambiarTipoUsuario(tipoUsuario: TipoUsuario): void {
-        this.tipoUsuario$.next(tipoUsuario);
     }
     
     public confirmar(pregunta: string | string[], funcionAceptar: any, funcionCancelar: any = () => { }): void {

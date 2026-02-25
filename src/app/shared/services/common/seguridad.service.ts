@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { TipoUsuario } from "../../enum/tipo-usuario.enum";
 import { ProveedorDTO } from "../../models/proveedor/proveedor.model";
 import { IUnidadCompraDTO } from "../../models/sice/unidad-compra.model";
 import { IUsuarioInfoDTO } from "../../models/usuario/usuario-info.model";
@@ -50,7 +49,6 @@ export class SeguridadService {
                     this.almacenarProveedores(data.proveedores ?? []);
                     this.almacenarUnidadesCompra(data.unidadesCompra ?? []);
                     this.almacenarPermisos(data.permisos ?? []);
-                    this.cambiarTipoUsuario(this.obtenerTipoUsuario());
                     resolve(true);
                 },
                 error: (error: any) => {
@@ -109,33 +107,6 @@ export class SeguridadService {
         return ( this.usuarioLogueadoEsUsuarioOrganismo() && this.usuarioLogueadoEsUsuarioProveedor() );
     }
     
-    cambiarTipoUsuario(tipoUsuario: TipoUsuario):void {
-        const clave = Object.entries(TipoUsuario).filter(([key, value]) => value === tipoUsuario).map(([key, value]) => key)[0];
-        sessionStorage.setItem('tipoUsuario', clave);
-        this.actualizar.cambiarTipoUsuario(tipoUsuario);
-    }
-
-    obtenerTipoUsuario(): TipoUsuario {
-        let tipoUsuarioAnterior: TipoUsuario | undefined = undefined;
-        if (sessionStorage.getItem('tipoUsuario')){        
-            tipoUsuarioAnterior = TipoUsuario[sessionStorage.getItem('tipoUsuario') as keyof typeof TipoUsuario];
-        }
-        const esUsuarioOrganismo =this.usuarioLogueadoEsUsuarioOrganismo();
-        const esUsuarioProveedor = this.usuarioLogueadoEsUsuarioProveedor();
-        if(TipoUsuario.ORGANISMO === tipoUsuarioAnterior && esUsuarioOrganismo){
-            return TipoUsuario.ORGANISMO;
-        } else if (TipoUsuario.PROVEEDOR === tipoUsuarioAnterior && esUsuarioProveedor) {
-            return TipoUsuario.PROVEEDOR;
-        } else if( esUsuarioProveedor && !esUsuarioOrganismo){
-            return TipoUsuario.PROVEEDOR
-        } else if (esUsuarioOrganismo && !esUsuarioProveedor) {
-            return TipoUsuario.ORGANISMO
-        }
-        return TipoUsuario.ORGANISMO;
-    }
-
-
-
     public async cargarPermisos(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             if (this.authRaw.isLoggedIn() && (sessionStorage.getItem("permisos") === null

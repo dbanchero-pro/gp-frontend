@@ -1,4 +1,4 @@
-import { IPuntoRecepcionDTO } from 'src/app/features/administracion/puntos-recepcion/models/punto-recepcion.model';
+
 import { TipoPerfil } from '../../enum/tipo-perfil.enum';
 import { CompraDTO } from '../compra.model';
 import { ItemCompraDto } from '../item-compra.model';
@@ -15,5 +15,4 @@ export interface UsuarioOrganismoPerfilDTO {
   compra?: CompraDTO;
   itemCompra?: ItemCompraDto;
   tipoPerfil?: TipoPerfil;
-  puntoRecepcion?: IPuntoRecepcionDTO
 }

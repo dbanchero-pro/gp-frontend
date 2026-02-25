@@ -4,37 +4,30 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DeactivateGuard } from '../../shared/guards/deactivate-guard';
 import { AuthGuard } from '../../shared/guards/auth-guard';
-import { ConsultaRepositorioArchivosComponent } from './components/repositorio-archivos/consulta-repositorio-archivos/consulta-repositorio-archivos.component';
-import { AgregarModificarRepositorioArchivoComponent } from './components/repositorio-archivos/agregar-modificar-repositorio-archivo/agregar-modificar-repositorio-archivo.component';
-import { ConsultaClausulasComponent } from './components/clausulas/consulta-clausulas/consulta-clausulas.component';
-import { AgregarModificarClausulaComponent } from './components/clausulas/agregar-modificar-clausula/agregar-modificar-clausula.component';
-import { AgregarModificarRedaccionComponent } from './components/clausulas/agregar-modificar-redaccion/agregar-modificar-redaccion.component';
-import { HistorialClausulasComponent } from './components/clausulas/historial-clausulas/historial-clausulas.component';
-import { DiferenciasClausulasComponent } from './components/clausulas/diferencias-clausulas/diferencias-clausulas';
-import { ModelosClausulaComponent } from './components/clausulas/modelos-clausula/modelos-clausula.component';
-import { ConsultaCapitulosComponent } from './components/capitulos/consulta-capitulos/consulta-capitulos.component';
-import { AgregarModificarCapituloComponent } from './components/capitulos/agregar-modificar-capitulo/agregar-modificar-capitulo.component';
-import { ConsultaSeccionesComponent } from './components/secciones/consulta-secciones/consulta-secciones.component';
-import { AgregarModificarSeccionComponent } from './components/secciones/agregar-modificar-seccion/agregar-modificar-seccion.component';
-import { ConsultaModelosComponent } from './components/modelos/consulta-modelos/consulta-modelos.component';
-import { AgregarModificarModeloComponent } from './components/modelos/agregar-modificar-modelo/agregar-modificar-modelo.component';
+import { ConsultaSeccionesComponent } from '../administracion/secciones/components/consulta-secciones/consulta-secciones.component';
+import { AgregarModificarSeccionComponent } from '../administracion/secciones/components/agregar-modificar-seccion/agregar-modificar-seccion.component';
+import { ConsultaModelosComponent } from '../administracion/modelos/components/consulta-modelos/consulta-modelos.component';
+import { AgregarModificarModeloComponent } from '../administracion/modelos/components/agregar-modificar-modelo/agregar-modificar-modelo.component';
 import { BandejaEntradaComponent } from './components/bandeja-entrada/bandeja-entrada.component';
-import { CancelarPliegoPopupComponent } from './components/bandeja-entrada/cancelar-pliego-popup/cancelar-pliego-popup';
-import { AsignarUsuariosComponent } from './components/bandeja-entrada/asignar-usuarios/asignar-usuarios.component';
-import { AgregarUsuarioPopupComponent } from './components/bandeja-entrada/asignar-usuarios/agregar-usuario-popup/agregar-usuario-popup.component';
-import { ModificarUsuarioPopupComponent } from './components/bandeja-entrada/asignar-usuarios/modificar-usuario-popup/modificar-usuario-popup.component';
-import { IniciarPliegoComponent } from './components/bandeja-entrada/iniciar-pliego/iniciar-pliego.component';
+import { CancelarPliegoPopupComponent } from './components/cancelar-pliego-popup/cancelar-pliego-popup.component';
+import { AsignarUsuariosComponent } from './components/asignar-usuarios/asignar-usuarios.component';
+import { AgregarUsuarioPopupComponent } from './components/asignar-usuarios/agregar-usuario-popup/agregar-usuario-popup.component';
+import { ModificarUsuarioPopupComponent } from './components/asignar-usuarios/modificar-usuario-popup/modificar-usuario-popup.component';
+import { AgregarModificarCapituloComponent } from '../administracion/capitulos/components/agregar-modificar-capitulo/agregar-modificar-capitulo.component';
+import { ConsultaCapitulosComponent } from '../administracion/capitulos/components/consulta-capitulos/consulta-capitulos.component';
+import { AgregarModificarClausulaComponent } from '../administracion/clausulas/components/agregar-modificar-clausula/agregar-modificar-clausula.component';
+import { AgregarModificarRedaccionComponent } from '../administracion/clausulas/components/agregar-modificar-redaccion/agregar-modificar-redaccion.component';
+import { ConsultaClausulasComponent } from '../administracion/clausulas/components/consulta-clausulas/consulta-clausulas.component';
+import { DiferenciasClausulasComponent } from '../administracion/clausulas/components/diferencias-clausulas/diferencias-clausulas';
+import { HistorialClausulasComponent } from '../administracion/clausulas/components/historial-clausulas/historial-clausulas.component';
+import { ModelosClausulaComponent } from '../administracion/clausulas/components/modelos-clausula/modelos-clausula.component';
+import { AgregarModificarRepositorioArchivoComponent } from '../administracion/repositorio-archivos/components/agregar-modificar-repositorio-archivo/agregar-modificar-repositorio-archivo.component';
+import { ConsultaRepositorioArchivosComponent } from '../administracion/repositorio-archivos/components/consulta-repositorio-archivos/consulta-repositorio-archivos.component';
 import { ElaborarPliegoComponent } from './components/elaborar-pliego/elaborar-pliego';
+import { IniciarPliegoComponent } from './components/iniciar-pliego/iniciar-pliego.component';
 
 export const routes: Routes = [
-    {
-        path: 'campos-reglas',
-        loadChildren: () =>
-            import('./campos-reglas/campos-reglas.module').then(
-                (m) => m.CamposReglasModule
-            ),
-        canActivate: [AuthGuard],
-    },
+    
     {
         path: 'bandeja-entrada',
         component: BandejaEntradaComponent
@@ -51,108 +44,6 @@ export const routes: Routes = [
     {
         path: 'bandeja-entrada/elaborar/:id',
         component: ElaborarPliegoComponent,
-        canDeactivate: [DeactivateGuard]
-    },
-    {
-        path: 'repositorio-archivos',
-        component: ConsultaRepositorioArchivosComponent
-    },
-    {
-        path: 'repositorio-archivos/agregar',
-        component: AgregarModificarRepositorioArchivoComponent,
-        canDeactivate: [DeactivateGuard]
-    },
-    {
-        path: 'repositorio-archivos/modificar/:idDocumento',
-        component: AgregarModificarRepositorioArchivoComponent,
-        canDeactivate: [DeactivateGuard]
-    },
-    {
-        path: 'clausulas',
-        component: ConsultaClausulasComponent
-    },
-    {
-        path: 'clausulas/historial/:id',
-        component: HistorialClausulasComponent
-    },
-    {
-        path: 'clausulas/diferencias/:id',
-        component: DiferenciasClausulasComponent
-    },
-    {
-        path: 'clausulas/modelos/:id',
-        component: ModelosClausulaComponent
-    },
-    {
-        path: 'clausulas/agregar',
-        component: AgregarModificarClausulaComponent,
-        canDeactivate: [DeactivateGuard]
-    },
-    {
-        path: 'clausulas/agregar/redaccion/agregar',
-        component: AgregarModificarRedaccionComponent,
-        canDeactivate: [DeactivateGuard]
-    },
-    {
-        path: 'clausulas/agregar/redaccion/modificar/:idRedaccion',
-        component: AgregarModificarRedaccionComponent,
-        canDeactivate: [DeactivateGuard]
-    },
-    {
-        path: 'clausulas/modificar/:idClausula',
-        component: AgregarModificarClausulaComponent,
-        canDeactivate: [DeactivateGuard]
-    },
-    {
-        path: 'clausulas/modificar/:idClausula/redaccion/agregar',
-        component: AgregarModificarRedaccionComponent,
-        canDeactivate: [DeactivateGuard]
-    },
-    {
-        path: 'clausulas/modificar/:idClausula/redaccion/modificar/:idRedaccion',
-        component: AgregarModificarRedaccionComponent,
-        canDeactivate: [DeactivateGuard]
-    },
-    {
-        path: 'capitulos',
-        component: ConsultaCapitulosComponent
-    },
-    {
-        path: 'capitulos/agregar',
-        component: AgregarModificarCapituloComponent,
-        canDeactivate: [DeactivateGuard]
-    },
-    {
-        path: 'capitulos/modificar/:idCapitulo',
-        component: AgregarModificarCapituloComponent,
-        canDeactivate: [DeactivateGuard]
-    },
-    {
-        path: 'secciones',
-        component: ConsultaSeccionesComponent
-    },
-    {
-        path: 'secciones/agregar',
-        component: AgregarModificarSeccionComponent,
-        canDeactivate: [DeactivateGuard]
-    },
-    {
-        path: 'secciones/modificar/:idSeccion',
-        component: AgregarModificarSeccionComponent,
-        canDeactivate: [DeactivateGuard]
-    },
-    {
-        path: 'modelos',
-        component: ConsultaModelosComponent
-    },
-    {
-        path: 'modelos/agregar',
-        component: AgregarModificarModeloComponent,
-        canDeactivate: [DeactivateGuard]
-    },
-    {
-        path: 'modelos/modificar/:idModelo',
-        component: AgregarModificarModeloComponent,
         canDeactivate: [DeactivateGuard]
     }
 ];

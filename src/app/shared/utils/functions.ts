@@ -1,10 +1,5 @@
 import { HttpParams } from '@angular/common/http';
 import { FormControl, FormGroup } from '@angular/forms';
-import { TipoUnidad } from 'src/app/features/entregas/enum/tipo-unidad.enum';
-import { IEntregableDTO } from 'src/app/features/entregas/models/entregable.model';
-import { ItemOrdenCompraDTO } from 'src/app/features/entregas/models/item-orden-compra.model';
-import { IOrdenCompraDTO } from 'src/app/features/entregas/models/orden-ompra.model';
-import { TipoUsuario } from 'src/app/shared/enum/tipo-usuario.enum';
 import { NumeroStringNulo } from '../types/numero-string-nulo.type';
 
 import DateTimeFormatOptions = Intl.DateTimeFormatOptions;
@@ -359,77 +354,6 @@ export function volverConConfirmacionCustom(actualizarService: any, form: any, c
     } else {
         callbackFn();
     }
-}
-
-// Devuelve la unidad de medida entre paréntesis si es válida, si no, devuelve string vacío
-export function unidadMedidaFormateada(descUnidadMedida?: string, cantidadItem?: number, tipoUnidad?: TipoUnidad): string {
-    const unidad = descUnidadMedida?.trim();
-    if (tipoUnidad && tipoUnidad === TipoUnidad.PORCENTAJE) {
-        return `%`;
-    }
-    if (!unidad || unidad.replace(/-/g, '').trim() === '' || cantidadItem === 1) {
-        return '';
-    }
-    return `(${unidad})`;
-}
-
-export function obtenerUnidadEntregable(entregable?: Pick<IEntregableDTO, 'itemOrdenCompra' | 'cantidadTotalMostrar' | 'cantidad' | 'tipoUnidadEntregas'> | null): string {
-    if (!entregable) {
-        return '';
-    }
-
-    const unidad = unidadMedidaFormateada(
-        entregable.itemOrdenCompra?.descUnidadMedida,
-        entregable.cantidadTotalMostrar ?? entregable.cantidad,
-        entregable.tipoUnidadEntregas);
-
-    if (unidad === '' || !entregable.tipoUnidadEntregas) {
-        return '';
-    }
-
-    return ` ${unidad}`;
-}
-
-export function obtenerCantidadEntregable(entregable?: Pick<IEntregableDTO, 'tipoUnidad' | 'cantidadPendienteAsignar' | 'cantidadTotalMostrar' | 'cantidad'> | null): string {
-    if (!entregable) {
-        return '';
-    }
-
-    if (entregable.tipoUnidad === TipoUnidad.PORCENTAJE &&
-        entregable.cantidadPendienteAsignar == undefined &&
-        entregable.cantidadTotalMostrar == undefined) {
-        return '100 de 100';
-    }
-
-    const cantidadPendiente = entregable.cantidadPendienteAsignar ?? entregable.cantidad;
-    const cantidadTotal = entregable.cantidadTotalMostrar ?? entregable.cantidad;
-
-    const textoCantidadPendiente = cantidadPendiente?.toLocaleString('de-DE', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-    });
-    const textoCantidadTotal = cantidadTotal?.toLocaleString('de-DE', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-     });
-
-    return `${textoCantidadPendiente} de ${textoCantidadTotal}`;
-}
-
-export function fechaEntregaParaProveedor(item: ItemOrdenCompraDTO, tipoUsuario: TipoUsuario): boolean {
-    if (item.proximoAVencerse && !item.fechaEntrega && tipoUsuario === TipoUsuario.PROVEEDOR) {
-        return true;
-    }
-    return false;
-}
-
-export function cambiaUC(ordenCompra: IOrdenCompraDTO): boolean {
-    const compra = ordenCompra?.compra;
-    return (
-        ordenCompra?.unidadCompra?.idInciso !== compra?.unidadCompra?.idInciso ||
-        ordenCompra?.unidadCompra?.idUnidadEjecutora !== compra?.unidadCompra?.idUnidadEjecutora ||
-        ordenCompra?.unidadCompra?.idUnidadCompra !== compra?.unidadCompra?.idUnidadCompra
-    );
 }
 
 export function formatearBytes(bytes: number, decimals: number = 2): string {

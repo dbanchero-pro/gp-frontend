@@ -2,14 +2,12 @@ import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, from } from 'rxjs';
 import { AppConfig } from 'src/app/app.config';
-import { CambiarPerfilComponent } from 'src/app/shared/components/cambiar-perfil/cambiar-perfil.component';
 import { TipoBusqueda } from 'src/app/shared/enum/tipo-busqueda-item.enum';
 import { IMenuItem } from 'src/app/shared/models/common/menu-item.model';
 import { ActualizarService } from 'src/app/shared/services/common/actualizar.service';
 import { SeguridadService } from 'src/app/shared/services/common/seguridad.service';
 import { UtilService } from 'src/app/shared/services/common/util.service';
 
-import { TipoUsuario } from 'src/app/shared/enum/tipo-usuario.enum';
 import { ProveedorDTO } from 'src/app/shared/models/proveedor/proveedor.model';
 import { UnidadCompraDTO } from 'src/app/shared/models/sice/unidad-compra.model';
 import { AuthRawService } from 'src/app/shared/services/common/auth-raw-service';
@@ -22,7 +20,6 @@ import { MenuService } from '../../../shared/services/common/menu.service';
     standalone: false
 })
 export class MenuComponent implements OnInit {
-    tipoUsuario?: TipoUsuario;
     menuItems$?: Observable<Array<IMenuItem>>;
     public nombre: string = '';
     itemsUC: UnidadCompraDTO[] = [];
@@ -45,10 +42,7 @@ export class MenuComponent implements OnInit {
         readonly authRaw: AuthRawService,
         public dialog: MatDialog
     ) {
-        this.actualizar.tipoUsuario$.subscribe((tipoUsuario?: TipoUsuario) => {
-            this.tipoUsuario = tipoUsuario;
-            this.menuItems$ = this.obtenerMenu(this.seguridad.obtenerPermisos(), this.tipoUsuario);
-        });
+       
      }
 
 
@@ -58,9 +52,8 @@ export class MenuComponent implements OnInit {
         this.checkMobile();
         this.nombre = this.seguridad.obtenerNombreUsuarioLogueado();
         this.itemsUC = this.seguridad.obtenerUnidadesCompra();
-        this.actualizar.cambiarTipoUsuario(this.seguridad.obtenerTipoUsuario());
         this.mostrarCambiarPerfil = this.verificarMostrarCambiarPerfil();
-        this.menuItems$ = this.obtenerMenu(this.seguridad.obtenerPermisos(), this.tipoUsuario);
+        this.menuItems$ = this.obtenerMenu(this.seguridad.obtenerPermisos());
 
     }
 
@@ -88,8 +81,8 @@ export class MenuComponent implements OnInit {
         return this.seguridad.usuarioLogueadoPuedeCambiarPerfil();
     }
 
-    public obtenerMenu(permisos: string[], tipoUsuario?: TipoUsuario): Observable<IMenuItem[]> {
-        const items: IMenuItem[] = this.menu.obtenerMenu(permisos, tipoUsuario).filter(item => item.visible === undefined || item.visible === true);
+    public obtenerMenu(permisos: string[]): Observable<IMenuItem[]> {
+        const items: IMenuItem[] = this.menu.obtenerMenu(permisos).filter(item => item.visible === undefined || item.visible === true);
         items.forEach(item => {
             if (item.items) {
                 item.items = item.items.filter(subItem => subItem.visible === undefined || subItem.visible === true);
@@ -106,25 +99,6 @@ export class MenuComponent implements OnInit {
             .then(() => {
                this.authRaw.clearToken();
             });
-    }
-
-
-    cambiarPerfil(): void {
-        const dialogRef = this.dialog.open(CambiarPerfilComponent, {
-            disableClose: true,
-            data: {
-                itemsUC: this.itemsUC,
-                itemsP: this.itemsP,
-                tipo: this.tipo,
-                open: this.openDialogUcProveedor
-            },
-        });
-
-        dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this.openDialogUcProveedor = true;
-            }
-        });
     }
 
     toggleSubmenu(event: MouseEvent, menu: any, item: any, esClick: boolean = false) {

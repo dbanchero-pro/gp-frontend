@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ZonaDto } from 'src/app/features/administracion/puntos-recepcion/models/zona.model';
 import { RestService } from 'src/app/shared/services/common/rest.service';
+import { ZonaDto } from '../models/zona.model';
 
 @Injectable({
   providedIn: 'root'

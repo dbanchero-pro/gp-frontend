@@ -21,10 +21,13 @@ describe('ArchivoPopupBaseComponent', () => {
   beforeEach(() => {
     actualizar.capturarErrores = true;
     hostElement = document.createElement('div');
+    const bsModalServiceStub = jasmine.createSpyObj('BsModalService', ['show', 'hide', 'getModalsCount']);
+    bsModalServiceStub.show.and.returnValue({ content: {}, hide: jasmine.createSpy('hide') });
+    bsModalServiceStub.getModalsCount.and.returnValue(0);
     TestBed.configureTestingModule({
       providers: [
         { provide: ActualizarService, useValue: actualizar },
-        BsModalService,
+        { provide: BsModalService, useValue: bsModalServiceStub },
         { provide: ElementRef, useFactory: () => new ElementRef(hostElement) },
       ],
     });

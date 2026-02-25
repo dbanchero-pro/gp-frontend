@@ -1,5 +1,4 @@
 import { TipoMensajeEnum } from '../../enum/tipo-mensaje.enum';
-import { TipoUsuario } from '../../enum/tipo-usuario.enum';
 import { ActualizarService } from './actualizar.service';
 
 describe('ActualizarService', () => {
@@ -24,11 +23,6 @@ describe('ActualizarService', () => {
     service.guardarMensajeTemporal('hola', TipoMensajeEnum.warn);
     service.emitirMensajeTemporalSiExiste();
     expect(service.mensaje$.value).toEqual([['hola'], TipoMensajeEnum.warn]);
-  });
-
-  it('cambiarTipoUsuario actualiza el BehaviorSubject', () => {
-    service.cambiarTipoUsuario(TipoUsuario.PROVEEDOR);
-    expect(service.tipoUsuario$.value).toBe(TipoUsuario.PROVEEDOR);
   });
 
   it('confirmar emite pregunta como arreglo', () => {

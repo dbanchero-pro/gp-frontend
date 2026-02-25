@@ -19,8 +19,6 @@ import {
     getISODate,
     getRFC339,
     getRFC339FromSD,
-    obtenerCantidadEntregable,
-    obtenerUnidadEntregable,
     getUTCDateES,
     getValor,
     getValorControl,
@@ -32,8 +30,6 @@ import {
     volverConConfirmacion,
     volverConConfirmacionCustom
 } from './functions';
-import { TipoUnidad } from "src/app/features/entregas/enum/tipo-unidad.enum";
-
 describe('Test Suite for Functions', () => {
 
     let formBuilder: FormBuilder;
@@ -156,37 +152,6 @@ describe('Test Suite for Functions', () => {
         expect(formatearCI('12345678')).toBe('1.234.567-8');
         expect(formatearCI(1234567)).toBe('123.456-7');
     });
-
-    it('obtenerUnidadEntregable retorna la unidad formateada', () => {
-        expect(obtenerUnidadEntregable()).toBe('');
-        const entregable = {
-            itemOrdenCompra: { descUnidadMedida: 'kg' },
-            cantidad: 5,
-            cantidadTotalMostrar: 5,
-            tipoUnidadEntregas: TipoUnidad.CANTIDAD
-        } as any;
-
-        expect(obtenerUnidadEntregable(entregable)).toBe(' (kg)');
-    });
-
-    it('obtenerCantidadEntregable calcula correctamente las cantidades', () => {
-        expect(obtenerCantidadEntregable()).toBe('');
-        const entregablePorcentaje = {
-            tipoUnidad: TipoUnidad.PORCENTAJE,
-            cantidad: 100
-        } as any;
-        expect(obtenerCantidadEntregable(entregablePorcentaje)).toBe('100 de 100');
-
-        const entregableCantidad = {
-            tipoUnidad: TipoUnidad.CANTIDAD,
-            cantidad: 5,
-            cantidadPendienteAsignar: 3,
-            cantidadTotalMostrar: 10
-        } as any;
-
-        expect(obtenerCantidadEntregable(entregableCantidad)).toBe('3 de 10');
-    });
-
 
     it('dividirNroAnioCompra debe devolver vacío para entrada inválida', () => {
         const res = dividirNroAnioCompra('abc');

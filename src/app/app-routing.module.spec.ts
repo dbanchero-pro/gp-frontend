@@ -28,8 +28,8 @@ describe('AppRoutingModule', () => {
   });
 
   it('contiene rutas lazy protegidas', () => {
-    const entregas = router.config.find(r => r.path === 'entregas');
-    expect(entregas?.canActivate?.[0]).toBe(AuthGuard);
+    const pliegos = router.config.find(r => r.path === 'pliegos');
+    expect(pliegos?.canActivate?.[0]).toBe(AuthGuard);
   });
 
   it('redirecciona rutas desconocidas', () => {

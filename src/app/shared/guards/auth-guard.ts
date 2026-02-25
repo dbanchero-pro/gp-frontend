@@ -38,7 +38,7 @@ export class AuthGuard extends KeycloakAuthGuard { //NOSONAR
             }
         }
         await this.seguridad.cargarPermisos();
-        if (this.menu.tienePermisoUrl(state.url, this.seguridad.obtenerTipoUsuario())) {
+        if (this.menu.tienePermisoUrl(state.url)) {
             return true;
         } else {
             return this.router.parseUrl('/403');

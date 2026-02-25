@@ -17,6 +17,7 @@ describe('UnidadesCompraSicePopupComponent', () => {
   let component: UnidadesCompraSicePopupComponent;
   let fixture: ComponentFixture<UnidadesCompraSicePopupComponent>;
   let bsModalRef: jasmine.SpyObj<BsModalRef>;
+  let bsModalService: jasmine.SpyObj<BsModalService>;
   let organismoServiceSpy: jasmine.SpyObj<OrganismoService>;
 
   const usuario = {
@@ -37,13 +38,16 @@ describe('UnidadesCompraSicePopupComponent', () => {
   beforeEach(async () => {
     organismoServiceSpy = jasmine.createSpyObj('OrganismoService', ['obtenerUCUsuarioOrganismo']);
     bsModalRef = jasmine.createSpyObj('BsModalRef', ['hide']);
+    bsModalService = jasmine.createSpyObj('BsModalService', ['show', 'hide', 'getModalsCount']);
+    bsModalService.show.and.returnValue({ content: {}, hide: jasmine.createSpy('hide'), setClass: jasmine.createSpy('setClass') } as any);
+    bsModalService.getModalsCount.and.returnValue(0);
 
     await TestBed.configureTestingModule({
       declarations: [UnidadesCompraSicePopupComponent, FormatoCiPipe],
       imports: [ReactiveFormsModule],
       providers: [
         { provide: BsModalRef, useValue: bsModalRef },
-        BsModalService,
+        { provide: BsModalService, useValue: bsModalService },
         { provide: OrganismoService, useValue: organismoServiceSpy },
         provideRouter([]),
         provideHttpClient(),
