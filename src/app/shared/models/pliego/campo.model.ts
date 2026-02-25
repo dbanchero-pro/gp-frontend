@@ -1,6 +1,7 @@
-import { TipoDatoCampo } from "src/app/features/administracion/campos-reglas/enum/tipo-dato-campo.enum";
-import { TipoFuenteCampo } from "src/app/features/administracion/campos-reglas/enum/tipo-fuente-campo.enum";
-import { IReglaDTO } from "src/app/features/administracion/campos-reglas/models/regla.model";
+
+import { TipoDatoCampo } from "src/app/features/administracion/enums/tipo-dato-campo.enum";
+import { TipoFuenteCampo } from "src/app/features/administracion/enums/tipo-fuente-campo.enum";
+import { IReglaDTO } from "src/app/features/administracion/models/regla.model";
 import { SiNoValor } from "../../enum/si-no-valor.enum";
 
 

@@ -2,8 +2,6 @@ import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FiltroModelo } from 'src/app/features/administracion/modelos/models/filtro-modelo.model';
-import { ModeloService } from 'src/app/features/administracion/modelos/services/modelo.service';
 import { AccionBoton } from 'src/app/shared/models/common/accion-boton.model';
 import { IColumnaOrden } from 'src/app/shared/models/common/columna-orden.model';
 import { Modelo, ClausulaModelo } from 'src/app/shared/models/pliego/modelo.model';
@@ -14,6 +12,8 @@ import { EstadoProcesoPliego } from '../../enum/estado-proceso-pliego.enum';
 import { PliegoBase } from '../../models/pliego-base.model';
 import { ProcesoPliego } from '../../models/proceso-pliego.model';
 import { BandejaEntradaService } from '../../services/bandeja-entrada.service';
+import { FiltroModelo } from 'src/app/features/administracion/models/filtros/filtro-modelo.model';
+import { ModeloService } from 'src/app/features/administracion/services/modelo.service';
 
 interface Inciso {
   id: number;

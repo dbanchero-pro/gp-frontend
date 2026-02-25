@@ -6,19 +6,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { FechaPipe } from 'src/app/shared/pipes/fecha.pipe';
 import { SnapshotGenericService } from 'src/app/shared/services/common/snapshot-generic.service';
-import { BandejaEntradaService } from '../../services/bandeja-entrada.service';
-import { IniciarPliegoComponent } from './iniciar-pliego.component';
-import { ModeloService } from 'src/app/features/administracion/services/modelo.service';
+import { ConsultaSeccionesComponent } from './consulta-secciones.component';
+import { SeccionService } from '../../../services/seccion.service';
 
-describe('IniciarPliegoComponent', () => {
-  let component: IniciarPliegoComponent;
-  let fixture: ComponentFixture<IniciarPliegoComponent>;
+describe('ConsultaSeccionesComponent', () => {
+  let component: ConsultaSeccionesComponent;
+  let fixture: ComponentFixture<ConsultaSeccionesComponent>;
 
   const activatedRouteStub = {
     snapshot: {
+      queryParamMap: { get: (_key: string) => null },
       params: {},
-      paramMap: { get: (_key: string) => null },
-      queryParamMap: { get: (_key: string) => null }
+      paramMap: { get: (_key: string) => null }
     }
   };
   const routerStub = {
@@ -34,24 +33,20 @@ describe('IniciarPliegoComponent', () => {
     save: jasmine.createSpy('save'),
     clear: jasmine.createSpy('clear')
   };
-  const modeloServiceStub = jasmine.createSpyObj('ModeloService', ['buscarModelos']);
-  modeloServiceStub.buscarModelos.and.returnValue(of([]));
-  const bandejaEntradaServiceStub = jasmine.createSpyObj('BandejaEntradaService', ['buscarPliegos', 'obtenerProceso', 'asignarUsuariosYFinalizar']);
-  bandejaEntradaServiceStub.buscarPliegos.and.returnValue(of([]));
-  bandejaEntradaServiceStub.obtenerProceso.and.returnValue(of({}));
-  bandejaEntradaServiceStub.asignarUsuariosYFinalizar.and.returnValue(of({}));
+  const seccionServiceStub = jasmine.createSpyObj('SeccionService', ['buscarSecciones', 'eliminarSeccion']);
+  seccionServiceStub.buscarSecciones.and.returnValue(of([]));
+  seccionServiceStub.eliminarSeccion.and.returnValue(of({ exitoso: true, mensaje: '' }));
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IniciarPliegoComponent],
+      declarations: [ConsultaSeccionesComponent],
       imports: [ReactiveFormsModule],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteStub },
         { provide: Router, useValue: routerStub },
         { provide: Location, useValue: locationStub },
         { provide: SnapshotGenericService, useValue: snapshotServiceStub },
-        { provide: ModeloService, useValue: modeloServiceStub },
-        { provide: BandejaEntradaService, useValue: bandejaEntradaServiceStub },
+        { provide: SeccionService, useValue: seccionServiceStub },
         FechaPipe
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -60,7 +55,7 @@ describe('IniciarPliegoComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IniciarPliegoComponent);
+    fixture = TestBed.createComponent(ConsultaSeccionesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
