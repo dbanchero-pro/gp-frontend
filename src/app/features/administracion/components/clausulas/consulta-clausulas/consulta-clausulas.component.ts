@@ -400,14 +400,14 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
   }
 
   agregarClausula(): void {
-    this.router.navigate(['/pliegos/clausulas/agregar']);
+    this.router.navigate(['/administracion/clausulas/agregar']);
   }
 
   modificarClausula(clausula: Clausula): void {
     if (!clausula.id) {
       return;
     }
-    this.router.navigate(['/pliegos/clausulas/modificar', clausula.id]);
+    this.router.navigate(['/administracion/clausulas/modificar', clausula.id]);
   }
 
   eliminarClausula(clausula: Clausula): void {
@@ -441,21 +441,21 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
     if (!clausula.id) {
       return;
     }
-    this.router.navigate(['/pliegos/clausulas/historial', clausula.id]);
+    this.router.navigate(['/administracion/clausulas/historial', clausula.id]);
   }
 
   verDiferencias(clausula: Clausula): void {
     if (!clausula.id) {
       return;
     }
-    this.router.navigate(['/pliegos/clausulas/diferencias', clausula.id]);
+    this.router.navigate(['/administracion/clausulas/diferencias', clausula.id]);
   }
 
   verModelos(clausula: Clausula): void {
     if (!clausula.id) {
       return;
     }
-    this.router.navigate(['/pliegos/clausulas/modelos', clausula.id]);
+    this.router.navigate(['/administracion/clausulas/modelos', clausula.id]);
   }
 
   seleccionarClausula(clausula: Clausula): void {

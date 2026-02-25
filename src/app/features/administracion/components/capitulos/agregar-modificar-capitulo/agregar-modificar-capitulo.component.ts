@@ -150,7 +150,7 @@ export class AgregarModificarCapituloComponent extends FormularioBaseComponent i
   }
 
   agregarClausula(): void {
-    this.router.navigate(['/pliegos/clausulas'], {
+    this.router.navigate(['/administracion/clausulas'], {
       queryParams: {
         origen: 'capitulo',
         idCapitulo: this.idCapitulo || 'nuevo'

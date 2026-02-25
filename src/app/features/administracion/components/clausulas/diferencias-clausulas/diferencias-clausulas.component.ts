@@ -236,6 +236,6 @@ export class DiferenciasClausulasComponent implements OnInit {
   }
 
   volver(): void {
-    this.router.navigate(['/pliegos/clausulas'], { queryParams: { volver: 1 } });
+    this.router.navigate(['/administracion/clausulas'], { queryParams: { volver: 1 } });
   }
 }

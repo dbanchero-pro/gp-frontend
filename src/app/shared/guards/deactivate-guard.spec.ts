@@ -32,4 +32,10 @@ describe('DeactivateGuard', () => {
     expect(res).toBeTrue();
     expect(service.confirmar).not.toHaveBeenCalled();
   });
+
+  it('retorna true si el componente no implementa canDeactivate', () => {
+    const res = guard.canDeactivate({} as any, null as any, null as any);
+    expect(res).toBeTrue();
+    expect(service.confirmar).not.toHaveBeenCalled();
+  });
 });

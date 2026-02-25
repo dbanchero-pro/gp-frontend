@@ -443,8 +443,8 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
     this.guardarDatosTemporales();
 
     const ruta = this.modoIngreso
-      ? ['/pliegos/clausulas/agregar/redaccion/agregar']
-      : ['/pliegos/clausulas/modificar', this.idClausula, 'redaccion', 'agregar'];
+      ? ['/administracion/clausulas/agregar/redaccion/agregar']
+      : ['/administracion/clausulas/modificar', this.idClausula, 'redaccion', 'agregar'];
 
     this.router.navigate(ruta);
   }
@@ -453,8 +453,8 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
     this.guardarDatosTemporales();
 
     const ruta = this.modoIngreso
-      ? ['/pliegos/clausulas/agregar/redaccion/modificar', redaccion.id]
-      : ['/pliegos/clausulas/modificar', this.idClausula, 'redaccion', 'modificar', redaccion.id];
+      ? ['/administracion/clausulas/agregar/redaccion/modificar', redaccion.id]
+      : ['/administracion/clausulas/modificar', this.idClausula, 'redaccion', 'modificar', redaccion.id];
 
     this.router.navigate(ruta);
   }
@@ -651,7 +651,7 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
   }
 
   volver(): void {
-    this.router.navigate(['/pliegos/clausulas'], { queryParams: { volver: 1 } });
+    this.router.navigate(['/administracion/clausulas'], { queryParams: { volver: 1 } });
   }
 
   canDeactivate(): boolean {

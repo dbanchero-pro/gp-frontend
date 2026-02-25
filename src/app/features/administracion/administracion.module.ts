@@ -35,13 +35,20 @@ import { CommonModule } from '@angular/common';
 import { NgxMaskDirective } from 'ngx-mask';
 const routes: Routes = [
     {
+        path: 'campos-reglas',
+        component: ConsultaCamposReglasComponent,
+        canActivate: [AuthGuard],
+    },
+    {
         path: 'campos-reglas/agregar',
         component: AgregarModificarCampoComponent,
+        canActivate: [AuthGuard],
         canDeactivate: [DeactivateGuard]
     },
     {
         path: 'campos-reglas/modificar/:idCampo',
         component: AgregarModificarCampoComponent,
+        canActivate: [AuthGuard],
         canDeactivate: [DeactivateGuard]
     },
        
@@ -62,104 +69,126 @@ const routes: Routes = [
     },
     {
         path: 'repositorio-archivos',
-        component: ConsultaRepositorioArchivosComponent
+        component: ConsultaRepositorioArchivosComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'repositorio-archivos/agregar',
         component: AgregarModificarRepositorioArchivoComponent,
+        canActivate: [AuthGuard],
         canDeactivate: [DeactivateGuard]
     },
     {
         path: 'repositorio-archivos/modificar/:idDocumento',
         component: AgregarModificarRepositorioArchivoComponent,
+        canActivate: [AuthGuard],
         canDeactivate: [DeactivateGuard]
     },
     {
         path: 'clausulas',
-        component: ConsultaClausulasComponent
+        component: ConsultaClausulasComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'clausulas/historial/:id',
-        component: HistorialClausulasComponent
+        component: HistorialClausulasComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'clausulas/diferencias/:id',
-        component: DiferenciasClausulasComponent
+        component: DiferenciasClausulasComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'clausulas/modelos/:id',
-        component: ModelosClausulaComponent
+        component: ModelosClausulaComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'clausulas/agregar',
         component: AgregarModificarClausulaComponent,
+        canActivate: [AuthGuard],
         canDeactivate: [DeactivateGuard]
     },
     {
         path: 'clausulas/agregar/redaccion/agregar',
         component: AgregarModificarRedaccionComponent,
+        canActivate: [AuthGuard],
         canDeactivate: [DeactivateGuard]
     },
     {
         path: 'clausulas/agregar/redaccion/modificar/:idRedaccion',
         component: AgregarModificarRedaccionComponent,
+        canActivate: [AuthGuard],
         canDeactivate: [DeactivateGuard]
     },
     {
         path: 'clausulas/modificar/:idClausula',
         component: AgregarModificarClausulaComponent,
+        canActivate: [AuthGuard],
         canDeactivate: [DeactivateGuard]
     },
     {
         path: 'clausulas/modificar/:idClausula/redaccion/agregar',
         component: AgregarModificarRedaccionComponent,
+        canActivate: [AuthGuard],
         canDeactivate: [DeactivateGuard]
     },
     {
         path: 'clausulas/modificar/:idClausula/redaccion/modificar/:idRedaccion',
         component: AgregarModificarRedaccionComponent,
+        canActivate: [AuthGuard],
         canDeactivate: [DeactivateGuard]
     },
     {
         path: 'capitulos',
-        component: ConsultaCapitulosComponent
+        component: ConsultaCapitulosComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'capitulos/agregar',
         component: AgregarModificarCapituloComponent,
+        canActivate: [AuthGuard],
         canDeactivate: [DeactivateGuard]
     },
     {
         path: 'capitulos/modificar/:idCapitulo',
         component: AgregarModificarCapituloComponent,
+        canActivate: [AuthGuard],
         canDeactivate: [DeactivateGuard]
     },
     {
         path: 'secciones',
-        component: ConsultaSeccionesComponent
+        component: ConsultaSeccionesComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'secciones/agregar',
         component: AgregarModificarSeccionComponent,
+        canActivate: [AuthGuard],
         canDeactivate: [DeactivateGuard]
     },
     {
         path: 'secciones/modificar/:idSeccion',
         component: AgregarModificarSeccionComponent,
+        canActivate: [AuthGuard],
         canDeactivate: [DeactivateGuard]
     },
     {
         path: 'modelos',
-        component: ConsultaModelosComponent
+        component: ConsultaModelosComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'modelos/agregar',
         component: AgregarModificarModeloComponent,
+        canActivate: [AuthGuard],
         canDeactivate: [DeactivateGuard]
     },
     {
         path: 'modelos/modificar/:idModelo',
         component: AgregarModificarModeloComponent,
+        canActivate: [AuthGuard],
         canDeactivate: [DeactivateGuard]
     }
 

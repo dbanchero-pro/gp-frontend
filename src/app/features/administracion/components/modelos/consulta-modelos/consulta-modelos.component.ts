@@ -320,14 +320,14 @@ export class ConsultaModelosComponent implements OnInit, AfterViewInit {
   }
 
   agregarModelo(): void {
-    this.router.navigate(['/pliegos/modelos/agregar']);
+    this.router.navigate(['/administracion/modelos/agregar']);
   }
 
   modificarModelo(modelo: Modelo): void {
     if (!modelo.id) {
       return;
     }
-    this.router.navigate(['/pliegos/modelos/modificar', modelo.id]);
+    this.router.navigate(['/administracion/modelos/modificar', modelo.id]);
   }
 
   verDiferencias(modelo: Modelo): void {
@@ -366,7 +366,7 @@ export class ConsultaModelosComponent implements OnInit, AfterViewInit {
     if (!modelo.id) {
       return;
     }
-    this.router.navigate(['/pliegos/modelos/historial', modelo.id]);
+    this.router.navigate(['/administracion/modelos/historial', modelo.id]);
   }
 
   seleccionarModelo(modelo: Modelo): void {

@@ -223,14 +223,14 @@ export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
   }
 
   agregarSeccion(): void {
-    this.router.navigate(['/pliegos/secciones/agregar']);
+    this.router.navigate(['/administracion/secciones/agregar']);
   }
 
   modificarSeccion(seccion: Seccion): void {
     if (!seccion.id) {
       return;
     }
-    this.router.navigate(['/pliegos/secciones/modificar', seccion.id]);
+    this.router.navigate(['/administracion/secciones/modificar', seccion.id]);
   }
 
   eliminarSeccion(seccion: Seccion): void {
@@ -264,7 +264,7 @@ export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
     if (!seccion.id) {
       return;
     }
-    this.router.navigate(['/pliegos/secciones/historial', seccion.id]);
+    this.router.navigate(['/administracion/secciones/historial', seccion.id]);
   }
 
   verModelos(seccion: Seccion): void {

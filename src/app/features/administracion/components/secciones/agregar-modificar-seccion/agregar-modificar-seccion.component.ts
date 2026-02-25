@@ -195,7 +195,7 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
   }
 
   agregarClausula(): void {
-    this.router.navigate(['/pliegos/clausulas'], {
+    this.router.navigate(['/administracion/clausulas'], {
       queryParams: {
         origen: 'seccion',
         idSeccion: this.idSeccion || 'nuevo'
@@ -421,7 +421,7 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
   }
 
   volver(): void {
-    this.router.navigate(['/pliegos/secciones'], { queryParams: { volver: 1 } });
+    this.router.navigate(['/administracion/secciones'], { queryParams: { volver: 1 } });
   }
 
   canDeactivate(): boolean {

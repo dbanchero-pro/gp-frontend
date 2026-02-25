@@ -126,7 +126,7 @@ export class ModelosClausulaComponent implements OnInit {
   }
 
   volver(): void {
-    this.router.navigate(['/pliegos/clausulas'], {
+    this.router.navigate(['/administracion/clausulas'], {
       queryParams: { volver: '1' }
     });
   }

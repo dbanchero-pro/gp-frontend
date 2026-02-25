@@ -206,7 +206,7 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
   }
 
   agregarSeccion(): void {
-    this.router.navigate(['/pliegos/secciones'], {
+    this.router.navigate(['/administracion/secciones'], {
       queryParams: {
         origen: 'modelo',
         idModelo: this.idModelo || 'nuevo'
@@ -438,7 +438,7 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
   }
 
   volver(): void {
-    this.router.navigate(['/pliegos/modelos'], { queryParams: { volver: 1 } });
+    this.router.navigate(['/administracion/modelos'], { queryParams: { volver: 1 } });
   }
 
   canDeactivate(): boolean {

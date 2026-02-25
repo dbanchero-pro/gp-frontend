@@ -159,8 +159,8 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
   private limpiarQueryParams(): void {
     if (this.idClausula && this.idRedaccion) {
       const ruta = this.modoIngreso
-        ? ['/pliegos/clausulas/agregar/redaccion/modificar', this.idRedaccion]
-        : ['/pliegos/clausulas/modificar', this.idClausula, 'redaccion/modificar', this.idRedaccion];
+        ? ['/administracion/clausulas/agregar/redaccion/modificar', this.idRedaccion]
+        : ['/administracion/clausulas/modificar', this.idClausula, 'redaccion/modificar', this.idRedaccion];
 
       this.router.navigate(ruta, {
         replaceUrl: true

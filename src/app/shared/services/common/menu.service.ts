@@ -234,7 +234,7 @@ export class MenuService {
                     permisos: [
                         'GC_GESTION_USU.CONSULTA'
                     ],
-                    url: '/pliegos/clausulas',
+                    url: '/administracion/clausulas',
                 },
                 {
                     nombre: 'Modelos',
@@ -244,7 +244,7 @@ export class MenuService {
                     permisos: [
                         'GC_GESTION_USU.CONSULTA'
                     ],
-                    url: '/pliegos/modelos',
+                    url: '/administracion/modelos',
                 },
                 {
                     nombre: 'Repositorio archivos',
@@ -257,7 +257,7 @@ export class MenuService {
                         'GC_GESTION_USU.MODIFICACION',
                         'GC_GESTION_USU.CONSULTA',
                     ],
-                    url: '/pliegos/repositorio-archivos',
+                    url: '/administracion/repositorio-archivos',
                 },
                 {
                     nombre: 'Secciones',
@@ -267,7 +267,7 @@ export class MenuService {
                     permisos: [
                         'GC_GESTION_USU.CONSULTA'
                     ],
-                    url: '/pliegos/secciones',
+                    url: '/administracion/secciones',
                 },
                 
             ]

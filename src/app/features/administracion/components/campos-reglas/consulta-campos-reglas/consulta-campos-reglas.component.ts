@@ -303,8 +303,8 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
       navigator.clipboard.writeText('[[' + campo.etiqueta + ']]');
 
       const ruta = this.redaccionId
-        ? ['/pliegos/clausulas/agregar/redaccion/modificar', this.redaccionId]
-        : ['/pliegos/clausulas/modificar', this.idClausula, 'redaccion/modificar', this.redaccionId];
+        ? ['/administracion/clausulas/agregar/redaccion/modificar', this.redaccionId]
+        : ['/administracion/clausulas/modificar', this.idClausula, 'redaccion/modificar', this.redaccionId];
 
       this.router.navigate(ruta, {
         queryParams: {
@@ -317,8 +317,8 @@ export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<Filtr
   volverAAdministrarClausula(): void {
     if (this.idClausula || this.redaccionId) {
       const ruta = this.redaccionId
-        ? ['/pliegos/clausulas/agregar/redaccion/modificar', this.redaccionId]
-        : ['/pliegos/clausulas/modificar', this.idClausula, 'redaccion/modificar', this.redaccionId];
+        ? ['/administracion/clausulas/agregar/redaccion/modificar', this.redaccionId]
+        : ['/administracion/clausulas/modificar', this.idClausula, 'redaccion/modificar', this.redaccionId];
 
       this.router.navigate(ruta);
     }
