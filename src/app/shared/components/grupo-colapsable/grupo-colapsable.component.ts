@@ -4,6 +4,7 @@ import { Component, Input } from '@angular/core';
     selector: 'app-grupo-colapsable',
     templateUrl: './grupo-colapsable.component.html',
     styleUrls: ['./grupo-colapsable.component.scss'],
+
     standalone: false
 })
 export class GrupoColapsableComponent {
@@ -21,15 +22,19 @@ export class GrupoColapsableComponent {
 
 @Component({
   selector: 'titulo',
-  standalone: false,
-  template: `<ng-content></ng-content>`
+  template: `<ng-content></ng-content>`,
+
+    standalone: false
 })
 export class GrupoColapsableTituloComponent { }
 
 @Component({
   selector: 'contenido',
-  standalone: false,
-  template: `<ng-content></ng-content>`
+  template: `<ng-content></ng-content>`,
+
+    standalone: false
 })
 export class GrupoColapsableContenidoComponent {}
+
+
 

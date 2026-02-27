@@ -20,7 +20,8 @@ import { ordenarYPaginar } from 'src/app/shared/utils/paginador';
 @Component({
     selector: 'app-consulta-usuarios-roles-items',
     templateUrl: './consulta-usuarios-roles-items.component.html',
-    standalone: false,
+
+    standalone: false
 })
 export class ConsultaUsuariosRolesItemsComponent extends PaginaBusquedaComponent<IConsultaUsuarioOrganismoPerfilFiltroDTO>
     implements OnInit {
@@ -218,3 +219,5 @@ export class ConsultaUsuariosRolesItemsComponent extends PaginaBusquedaComponent
         });
     }
 }
+
+

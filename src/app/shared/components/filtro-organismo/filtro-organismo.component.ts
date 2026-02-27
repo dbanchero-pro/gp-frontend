@@ -12,7 +12,6 @@ import { NumeroNulo } from '../../types/numero-nulo.type';
     selector: 'app-filtro-organismo',
     templateUrl: './filtro-organismo.component.html',
     styleUrls: ['./filtro-organismo.component.scss'],
-    standalone: false,
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -25,6 +24,8 @@ import { NumeroNulo } from '../../types/numero-nulo.type';
             multi: true,
         },
     ],
+
+    standalone: false
 })
 
 
@@ -451,3 +452,5 @@ export class FiltroOrganismoComponent
         }, 100);
     }
 }
+
+

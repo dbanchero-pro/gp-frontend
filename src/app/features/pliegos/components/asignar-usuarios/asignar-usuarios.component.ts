@@ -16,7 +16,8 @@ import { UsuarioAsignadoDTO } from '../../models/usuario-asignado.model';
   selector: 'app-asignar-usuarios',
   templateUrl: './asignar-usuarios.component.html',
   styleUrls: ['./asignar-usuarios.component.scss'],
-  standalone: false
+
+    standalone: false
 })
 export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);
@@ -48,66 +49,6 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     ];
   }
 
-  // Datos mock para pruebas
-  private usuariosMock: UsuarioAsignadoDTO[] = [
-    {
-      id: 1,
-      numeroDocumento: '1.234.567-8',
-      nombre: 'Juan',
-      apellido: 'Pérez',
-      roles: ['Editor Principal']
-    },
-    {
-      id: 2,
-      numeroDocumento: '8.765.432-1',
-      nombre: 'María',
-      apellido: 'González',
-      roles: ['Editor', 'Validador']
-    },
-    {
-      id: 3,
-      numeroDocumento: '1.122.334-4',
-      nombre: 'Pedro',
-      apellido: 'Rodríguez',
-      roles: ['Aprobador']
-    },
-    {
-      id: 4,
-      numeroDocumento: '5.566.778-8',
-      nombre: 'Ana',
-      apellido: 'Martínez',
-      roles: ['Editor']
-    },
-    {
-      id: 5,
-      numeroDocumento: '9.988.776-6',
-      nombre: 'Luis',
-      apellido: 'Fernández',
-      roles: ['Validador', 'Aprobador']
-    },
-    {
-      id: 6,
-      numeroDocumento: '2.345.678-9',
-      nombre: 'Carmen',
-      apellido: 'López',
-      roles: ['Editor']
-    },
-    {
-      id: 7,
-      numeroDocumento: '3.456.789-0',
-      nombre: 'Roberto',
-      apellido: 'Sánchez',
-      roles: ['Validador']
-    },
-    {
-      id: 8,
-      numeroDocumento: '4.567.890-1',
-      nombre: 'Laura',
-      apellido: 'Ramírez',
-      roles: ['Editor', 'Validador']
-    }
-  ];
-
   constructor() {
     super();
     this.parametros = {
@@ -127,7 +68,6 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
 
     if (procesoId && !isNaN(procesoId)) {
       this.cargarProceso(procesoId);
-      this.cargarUsuariosAsignados();
     } else {
       this.actualizarServ.mensajeError('Error: ID de proceso inválido');
       this.volverSinConfirmar();
@@ -138,7 +78,7 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     this.bandejaEntradaService.obtenerProceso(id).subscribe({
       next: (proceso: PliegoDTO) => {
         this.proceso = proceso;
-        this.usuariosAsignados = [...this.usuariosMock];
+        this.cargarUsuariosAsignados();
       },
       error: () => {
         this.actualizarServ.mensajeError('Error al cargar el proceso');
@@ -148,7 +88,19 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
   }
 
   cargarUsuariosAsignados(): void {
-    // Los usuarios se cargan en el proceso
+    if (!this.proceso?.id) {
+      this.usuariosAsignados = [];
+      return;
+    }
+
+    this.bandejaEntradaService.obtenerUsuariosAsignadosPorProceso(this.proceso.id).subscribe({
+      next: (usuarios: UsuarioAsignadoDTO[]) => {
+        this.usuariosAsignados = usuarios;
+      },
+      error: () => {
+        this.usuariosAsignados = [];
+      }
+    });
   }
 
   override nuevaConsulta(): void {
@@ -361,3 +313,6 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     return `${tipoCompra} | ${subtipoCompra} N° ${this.proceso.numeroCompra}/${this.proceso.anioCompra}`;
   }
 }
+
+
+

@@ -5,6 +5,7 @@ import { FormControl } from '@angular/forms';
     selector: 'app-paginado',
     templateUrl: './paginado.component.html',
     styleUrls: ['./paginado.component.scss'],
+
     standalone: false
 })
 export class PaginadoComponent implements OnChanges, OnInit {
@@ -46,3 +47,5 @@ export class PaginadoComponent implements OnChanges, OnInit {
         this.currentPage.setValue(1);
     }
 }
+
+

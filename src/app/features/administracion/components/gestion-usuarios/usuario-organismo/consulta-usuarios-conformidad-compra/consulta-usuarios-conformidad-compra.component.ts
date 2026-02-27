@@ -35,7 +35,7 @@ import { IConsultaUsuarioOrganismoPerfilFiltroDTO } from 'src/app/features/admin
     templateUrl: './consulta-usuarios-conformidad-compra.component.html',
     styleUrls: ['./consulta-usuarios-conformidad-compra.component.scss'],
 
-    standalone: false,
+    standalone: false
 })
 export class ConsultaUsuariosConformidadCompraComponent
     extends PaginaBusquedaComponent<IConsultaUsuarioOrganismoPerfilFiltroDTO>
@@ -394,3 +394,5 @@ export class ConsultaUsuariosConformidadCompraComponent
         return null;
     }
 }
+
+

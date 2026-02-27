@@ -8,7 +8,8 @@ import { UsuarioAsignadoDTO } from '../../../models/usuario-asignado.model';
   selector: 'app-modificar-usuario-popup',
   templateUrl: './modificar-usuario-popup.component.html',
   styleUrls: ['./modificar-usuario-popup.component.scss'],
-  standalone: false,
+
+    standalone: false
 })
 export class ModificarUsuarioPopupComponent extends PopupBaseComponent implements OnInit {
   @Input() usuario!: UsuarioAsignadoDTO;
@@ -70,3 +71,5 @@ export class ModificarUsuarioPopupComponent extends PopupBaseComponent implement
     this.cerrarPopup();
   }
 }
+
+

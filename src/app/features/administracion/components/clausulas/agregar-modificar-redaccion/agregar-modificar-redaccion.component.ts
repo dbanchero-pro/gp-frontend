@@ -11,7 +11,8 @@ import { RedaccionDTO } from 'src/app/shared/models/pliego/clausula/redaccion.mo
   selector: 'app-agregar-modificar-redaccion',
   templateUrl: './agregar-modificar-redaccion.component.html',
   styleUrls: ['./agregar-modificar-redaccion.component.scss'],
-  standalone: false
+
+    standalone: false
 })
 export class AgregarModificarRedaccionComponent extends FormularioBaseComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
@@ -241,4 +242,5 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
     }
   }
 }
+
 

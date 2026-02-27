@@ -33,7 +33,18 @@ describe('ConsultaClausulasComponent', () => {
     save: jasmine.createSpy('save'),
     clear: jasmine.createSpy('clear')
   };
-  const clausulaServiceStub = jasmine.createSpyObj('ClausulaService', ['buscarClausulas', 'eliminarClausula']);
+  const clausulaServiceStub = jasmine.createSpyObj('ClausulaService', ['obtenerFiltrosClausula', 'buscarClausulas', 'eliminarClausula']);
+  clausulaServiceStub.obtenerFiltrosClausula.and.returnValue(of({
+    incisos: [],
+    unidadesEjecutoras: [],
+    tiposCompra: [],
+    subtiposCompra: [],
+    familias: [],
+    subfamilias: [],
+    clases: [],
+    subclases: [],
+    articulos: []
+  }));
   clausulaServiceStub.buscarClausulas.and.returnValue(of([]));
   clausulaServiceStub.eliminarClausula.and.returnValue(of({ exitoso: true, mensaje: '' }));
 

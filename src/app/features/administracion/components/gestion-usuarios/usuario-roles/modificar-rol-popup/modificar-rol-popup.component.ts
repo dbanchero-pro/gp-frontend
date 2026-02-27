@@ -6,7 +6,8 @@ import { PopupBaseComponent } from 'src/app/shared/components/popup-base/popup-b
     selector: 'app-modificar-rol-popup',
     templateUrl: './modificar-rol-popup.component.html',
     styleUrls: ['./modificar-rol-popup.component.scss'],
-    standalone: false,
+
+    standalone: false
 })
 export class ModificarRolPopupComponent extends PopupBaseComponent implements OnInit {
     @Output() guardarEvento = new EventEmitter<any>();
@@ -69,3 +70,5 @@ export class ModificarRolPopupComponent extends PopupBaseComponent implements On
         this.cerrarPopup();
     }
 }
+
+

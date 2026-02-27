@@ -43,7 +43,8 @@ interface SubtipoCompra {
   selector: 'app-iniciar-pliego',
   templateUrl: './iniciar-pliego.component.html',
   styleUrls: ['./iniciar-pliego.component.scss'],
-  standalone: false
+
+    standalone: false
 })
 export class IniciarPliegoComponent implements OnInit, AfterViewInit {
   private fb = inject(FormBuilder);
@@ -572,3 +573,5 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     return `${tipo} | ${subtipo} N° ${this.proceso.numeroCompra}/${this.proceso.anioCompra}`;
   }
 }
+
+

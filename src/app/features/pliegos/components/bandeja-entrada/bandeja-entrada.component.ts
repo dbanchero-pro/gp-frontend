@@ -20,7 +20,8 @@ import { PliegoDTO } from '../../models/pliego.model';
   selector: 'app-bandeja-entrada',
   templateUrl: './bandeja-entrada.component.html',
   styleUrls: ['./bandeja-entrada.component.scss'],
-  standalone: false
+
+    standalone: false
 })
 export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBandejaEntradaDTO> implements OnInit, AfterViewInit {
   private readonly fb = inject(FormBuilder);
@@ -385,3 +386,5 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
     return new Date(proceso.fechaTopeRecepcionOfertas) >= new Date();
   }
 }
+
+

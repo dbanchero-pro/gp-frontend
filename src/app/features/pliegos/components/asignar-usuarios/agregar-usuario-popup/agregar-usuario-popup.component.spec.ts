@@ -2,6 +2,8 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, forwardRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { of } from 'rxjs';
+import { BandejaEntradaService } from '../../../services/bandeja-entrada.service';
 import { AgregarUsuarioPopupComponent } from './agregar-usuario-popup.component';
 
 @Component({
@@ -37,12 +39,17 @@ describe('AgregarUsuarioPopupComponent', () => {
 
   const bsModalServiceStub = jasmine.createSpyObj('BsModalService', ['show']);
   bsModalServiceStub.show.and.returnValue({ content: {}, hide: jasmine.createSpy('hide') });
+  const bandejaEntradaServiceStub = jasmine.createSpyObj('BandejaEntradaService', ['buscarUsuariosParaAsignacion']);
+  bandejaEntradaServiceStub.buscarUsuariosParaAsignacion.and.returnValue(of([]));
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AgregarUsuarioPopupComponent, MockInputDocumentoComponent],
       imports: [ReactiveFormsModule],
-      providers: [{ provide: BsModalService, useValue: bsModalServiceStub }],
+      providers: [
+        { provide: BsModalService, useValue: bsModalServiceStub },
+        { provide: BandejaEntradaService, useValue: bandejaEntradaServiceStub }
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();

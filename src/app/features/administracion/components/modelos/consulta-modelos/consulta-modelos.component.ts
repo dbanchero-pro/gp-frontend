@@ -20,7 +20,8 @@ import { ISubtipoCompraDTO } from 'src/app/shared/models/sice/subtipo-compra.mod
   selector: 'app-consulta-modelos',
   templateUrl: './consulta-modelos.component.html',
   styleUrls: ['./consulta-modelos.component.scss'],
-  standalone: false
+
+    standalone: false
 })
 export class ConsultaModelosComponent implements OnInit, AfterViewInit {
   private fb = inject(FormBuilder);
@@ -415,3 +416,5 @@ export class ConsultaModelosComponent implements OnInit, AfterViewInit {
     return texto.substring(0, limite) + '...';
   }
 }
+
+

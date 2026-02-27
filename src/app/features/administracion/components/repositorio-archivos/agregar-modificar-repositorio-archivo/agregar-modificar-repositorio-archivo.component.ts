@@ -18,7 +18,8 @@ import { DocumentoRepositorioService } from '../../../services/documento-reposit
   selector: 'app-agregar-modificar-repositorio-archivo',
   templateUrl: './agregar-modificar-repositorio-archivo.component.html',
   styleUrls: ['./agregar-modificar-repositorio-archivo.component.scss'],
-  standalone: false
+
+    standalone: false
 })
 export class AgregarModificarRepositorioArchivoComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);
@@ -284,4 +285,6 @@ export class AgregarModificarRepositorioArchivoComponent extends FormularioBaseC
     this.router.navigate(['../../'], { relativeTo: this.route });
   }
 }
+
+
 

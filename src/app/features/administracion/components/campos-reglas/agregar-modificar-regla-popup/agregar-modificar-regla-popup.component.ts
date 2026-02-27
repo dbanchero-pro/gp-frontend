@@ -14,7 +14,8 @@ import { CampoService } from '../../../services/campo.service';
   selector: 'app-agregar-modificar-regla-popup',
   templateUrl: './agregar-modificar-regla-popup.component.html',
   styleUrls: ['./agregar-modificar-regla-popup.component.scss'],
-  standalone: false
+
+    standalone: false
 })
 export class AgregarModificarReglaPopupComponent extends PopupBaseComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
@@ -326,3 +327,5 @@ export class AgregarModificarReglaPopupComponent extends PopupBaseComponent impl
     this.cancelarConConfirmacion();
   }
 }
+
+

@@ -18,6 +18,18 @@ import { ArticuloServObraDTO } from 'src/app/shared/models/cbso/articulo-serv-ob
 import { FiltroClausula } from '../models/filtros/filtro-clausula.model';
 import { EliminarElementoResponseDTO } from '../models/eliminar-elemento-response.model';
 
+export interface FiltrosClausulaDTO {
+  incisos: IncisoDTO[];
+  unidadesEjecutoras: UnidadEjecutoraDTO[];
+  tiposCompra: TipoCompraDTO[];
+  subtiposCompra: SubtipoCompraDTO[];
+  familias: FamiliaDTO[];
+  subfamilias: SubfamiliaDTO[];
+  clases: ClaseDTO[];
+  subclases: SubclaseDTO[];
+  articulos: ArticuloServObraDTO[];
+}
+
 const crearTipoCompraMock = (
   id: string,
   descripcion: string,
@@ -226,6 +238,74 @@ export class ClausulaService {
   ];
 
   constructor() {}
+
+  obtenerFiltrosClausula(): Observable<FiltrosClausulaDTO> {
+    const incisos = [
+      new IncisoDTO(1, 'Poder Ejecutivo'),
+      new IncisoDTO(2, 'Poder Legislativo'),
+      new IncisoDTO(3, 'Poder Judicial')
+    ];
+
+    const unidadesEjecutoras = [
+      new UnidadEjecutoraDTO(1, new IncisoDTO(1, 'Poder Ejecutivo'), 1, 'Ministerio de Economia'),
+      new UnidadEjecutoraDTO(2, new IncisoDTO(2, 'Poder Legislativo'), 2, 'Camara de Diputados'),
+      new UnidadEjecutoraDTO(3, new IncisoDTO(1, 'Poder Ejecutivo'), 3, 'Ministerio de Salud')
+    ];
+
+    const tiposCompra = [
+      new TipoCompraDTO('1', 'Licitacion Publica'),
+      new TipoCompraDTO('2', 'Contratacion Directa'),
+      new TipoCompraDTO('3', 'Licitacion Abreviada')
+    ];
+
+    const subtiposCompra = [
+      new SubtipoCompraDTO('1', '1', 'Nacional', 'Licitacion Publica'),
+      new SubtipoCompraDTO('1', '2', 'Internacional', 'Licitacion Publica'),
+      new SubtipoCompraDTO('2', '3', 'Por excepcion', 'Contratacion Directa')
+    ];
+
+    const familias = [
+      new FamiliaDTO(1, 'FAM001', 'Equipos de computacion'),
+      new FamiliaDTO(2, 'FAM002', 'Mobiliario'),
+      new FamiliaDTO(3, 'FAM003', 'Servicios')
+    ];
+
+    const subfamilias = [
+      new SubfamiliaDTO(1, 'SUB001', 'Computadoras', '1'),
+      new SubfamiliaDTO(2, 'SUB002', 'Muebles de oficina', '2'),
+      new SubfamiliaDTO(3, 'SUB003', 'Servicios profesionales', '3')
+    ];
+
+    const clases = [
+      new ClaseDTO(1, 1, 'Notebooks', 1, 1),
+      new ClaseDTO(2, 2, 'Escritorios', 2, 2),
+      new ClaseDTO(3, 3, 'Consultoria', 3, 3)
+    ];
+
+    const subclases = [
+      new SubclaseDTO(1, 'SCLA001', 'Portatiles', '1', '1', '1'),
+      new SubclaseDTO(2, 'SCLA002', 'Ejecutivos', '2', '2', '2'),
+      new SubclaseDTO(3, 'SCLA003', 'Asesoria tecnica', '3', '3', '3')
+    ];
+
+    const articulos = [
+      new ArticuloServObraDTO(1, 'Notebook HP'),
+      new ArticuloServObraDTO(2, 'Notebook Dell'),
+      new ArticuloServObraDTO(3, 'Escritorio ejecutivo')
+    ];
+
+    return of({
+      incisos,
+      unidadesEjecutoras,
+      tiposCompra,
+      subtiposCompra,
+      familias,
+      subfamilias,
+      clases,
+      subclases,
+      articulos
+    }).pipe(delay(200));
+  }
 
   buscarClausulas(filtro: FiltroClausula): Observable<ClausulaDTO[]> {
     let resultados = [...this.clausulasMock];

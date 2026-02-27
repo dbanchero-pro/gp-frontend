@@ -15,14 +15,15 @@ import { Editor, Toolbar, Validators, schema } from 'ngx-editor';
     selector: 'app-text-editor',
     templateUrl: './text-editor.component.html',
     styleUrls: [],
-    standalone: false,
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             useExisting: forwardRef(() => TextEditorComponent),
             multi: true
         }
-    ]
+    ],
+
+    standalone: false
 })
 export class TextEditorComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
     editor!: Editor;
@@ -102,3 +103,5 @@ export class TextEditorComponent implements OnInit, OnChanges, OnDestroy, Contro
         }
     }
 }
+
+

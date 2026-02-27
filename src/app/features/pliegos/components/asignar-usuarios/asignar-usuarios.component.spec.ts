@@ -24,8 +24,9 @@ describe('AsignarUsuariosComponent', () => {
   const bsModalServiceStub = {
     show: jasmine.createSpy('show').and.returnValue({ content: {}, hide: jasmine.createSpy('hide') })
   };
-  const bandejaEntradaServiceStub = jasmine.createSpyObj('BandejaEntradaService', ['obtenerProceso', 'asignarUsuariosYFinalizar']);
+  const bandejaEntradaServiceStub = jasmine.createSpyObj('BandejaEntradaService', ['obtenerProceso', 'obtenerUsuariosAsignadosPorProceso', 'asignarUsuariosYFinalizar']);
   bandejaEntradaServiceStub.obtenerProceso.and.returnValue(of({ id: 1, usuariosAsignados: [] }));
+  bandejaEntradaServiceStub.obtenerUsuariosAsignadosPorProceso.and.returnValue(of([]));
   bandejaEntradaServiceStub.asignarUsuariosYFinalizar.and.returnValue(of({}));
 
   beforeEach(async () => {

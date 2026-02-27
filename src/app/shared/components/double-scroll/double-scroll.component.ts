@@ -4,7 +4,8 @@ import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Renderer2, Vie
   selector: 'app-double-scroll',
   templateUrl: './double-scroll.component.html',
   styleUrls: ['./double-scroll.component.scss'],
-  standalone: false
+
+    standalone: false
 })
 export class DoubleScrollComponent implements AfterViewInit {
 
@@ -42,3 +43,4 @@ export class DoubleScrollComponent implements AfterViewInit {
   }
 
 }
+

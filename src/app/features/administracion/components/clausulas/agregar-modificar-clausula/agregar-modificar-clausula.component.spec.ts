@@ -31,7 +31,18 @@ describe('AgregarModificarClausulaComponent', () => {
     save: jasmine.createSpy('save'),
     clear: jasmine.createSpy('clear')
   };
-  const clausulaServiceStub = jasmine.createSpyObj('ClausulaService', ['obtenerClausulaPorId', 'crearClausula', 'actualizarClausula', 'aprobarClausula']);
+  const clausulaServiceStub = jasmine.createSpyObj('ClausulaService', ['obtenerFiltrosClausula', 'obtenerClausulaPorId', 'crearClausula', 'actualizarClausula', 'aprobarClausula']);
+  clausulaServiceStub.obtenerFiltrosClausula.and.returnValue(of({
+    incisos: [],
+    unidadesEjecutoras: [],
+    tiposCompra: [],
+    subtiposCompra: [],
+    familias: [],
+    subfamilias: [],
+    clases: [],
+    subclases: [],
+    articulos: []
+  }));
   clausulaServiceStub.obtenerClausulaPorId.and.returnValue(of(undefined));
   clausulaServiceStub.crearClausula.and.returnValue(of({}));
   clausulaServiceStub.actualizarClausula.and.returnValue(of({}));

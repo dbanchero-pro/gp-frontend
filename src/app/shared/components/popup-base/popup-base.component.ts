@@ -7,7 +7,8 @@ import { PaginaBusquedaComponent } from "../pagina-busqueda/pagina-busqueda.comp
 
 @Directive({
     selector: '[appPopupBase]',
-    standalone: false,
+
+  standalone: false
 })
 export abstract class PopupBaseComponent extends PaginaBusquedaComponent<any> implements AfterViewInit, OnDestroy {
     @ViewChild('modalRoot', { static: false }) modalRoot!: ElementRef<HTMLElement>;
@@ -178,3 +179,5 @@ export abstract class PopupBaseComponent extends PaginaBusquedaComponent<any> im
         this.procesarError(error, mensaje);
     }
 }
+
+

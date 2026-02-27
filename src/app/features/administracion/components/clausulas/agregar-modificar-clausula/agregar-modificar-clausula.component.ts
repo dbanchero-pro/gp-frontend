@@ -27,7 +27,8 @@ import { ClausulaService } from '../../../services/clausula.service';
   selector: 'app-agregar-modificar-clausula',
   templateUrl: './agregar-modificar-clausula.component.html',
   styleUrls: ['./agregar-modificar-clausula.component.scss'],
-  standalone: false
+
+    standalone: false
 })
 export class AgregarModificarClausulaComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);
@@ -68,66 +69,29 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
     { id: SiNoAmbasValor.NO, nombre: 'No' },
     { id: SiNoAmbasValor.A, nombre: 'Ambas' }
   ];
-
-  incisos: IncisoDTO[] = [
-    new IncisoDTO(1, 'Poder Ejecutivo'),
-    new IncisoDTO(2, 'Poder Legislativo'),
-    new IncisoDTO(3, 'Poder Judicial')
-  ];
+  incisos: IncisoDTO[] = [];
 
   unidadesEjecutoras: UnidadEjecutoraDTO[] = [];
-  unidadesEjecutorasMock: UnidadEjecutoraDTO[] = [
-    new UnidadEjecutoraDTO(1, new IncisoDTO(1, 'Poder Ejecutivo'), 1, 'Ministerio de Economía'),
-    new UnidadEjecutoraDTO(2, new IncisoDTO(2, 'Poder Legislativo'), 2, 'Cámara de Diputados'),
-    new UnidadEjecutoraDTO(3, new IncisoDTO(1, 'Poder Ejecutivo'), 3, 'Ministerio de Salud')
-  ];
+  unidadesEjecutorasBase: UnidadEjecutoraDTO[] = [];
 
-  tiposCompra: TipoCompraDTO[] = [
-    new TipoCompraDTO('1', 'Licitación Pública'),
-    new TipoCompraDTO('2', 'Contratación Directa'),
-    new TipoCompraDTO('3', 'Licitación Abreviada')
-  ];
+  tiposCompra: TipoCompraDTO[] = [];
 
   subtiposCompra: SubtipoCompraDTO[] = [];
-  subtiposCompraMock: SubtipoCompraDTO[] = [
-    new SubtipoCompraDTO('1', '1', 'Nacional', 'Licitación Pública'),
-    new SubtipoCompraDTO('1', '2', 'Internacional', 'Licitación Pública'),
-    new SubtipoCompraDTO('2', '3', 'Por excepción', 'Contratación Directa')
-  ];
+  subtiposCompraBase: SubtipoCompraDTO[] = [];
 
-  familias: FamiliaDTO[] = [
-    new FamiliaDTO(1, 'FAM001', 'Equipos de computación'),
-    new FamiliaDTO(2, 'FAM002', 'Mobiliario'),
-    new FamiliaDTO(3, 'FAM003', 'Servicios')
-  ];
+  familias: FamiliaDTO[] = [];
 
   subfamilias: SubfamiliaDTO[] = [];
-  subfamiliasMock: SubfamiliaDTO[] = [
-    new SubfamiliaDTO(1, 'SUB001', 'Computadoras', '1'),
-    new SubfamiliaDTO(2, 'SUB002', 'Muebles de oficina', '2'),
-    new SubfamiliaDTO(3, 'SUB003', 'Servicios profesionales', '3')
-  ];
+  subfamiliasBase: SubfamiliaDTO[] = [];
 
   clases: ClaseDTO[] = [];
-  clasesMock: ClaseDTO[] = [
-    new ClaseDTO(1, 1, 'Notebooks', 1, 1),
-    new ClaseDTO(2, 2, 'Escritorios', 2, 2),
-    new ClaseDTO(3, 3, 'Consultoría', 3, 3)
-  ];
+  clasesBase: ClaseDTO[] = [];
 
   subclases: SubclaseDTO[] = [];
-  subclasesMock: SubclaseDTO[] = [
-    new SubclaseDTO(1, 'SCLA001', 'Portátiles', '1', '1', '1'),
-    new SubclaseDTO(2, 'SCLA002', 'Ejecutivos', '2', '2', '2'),
-    new SubclaseDTO(3, 'SCLA003', 'Asesoría técnica', '3', '3', '3')
-  ];
+  subclasesBase: SubclaseDTO[] = [];
 
   articulos: ArticuloServObraDTO[] = [];
-  articulosMock: ArticuloServObraDTO[] = [
-    new ArticuloServObraDTO(1, 'Notebook HP'),
-    new ArticuloServObraDTO(2, 'Notebook Dell'),
-    new ArticuloServObraDTO(3, 'Escritorio ejecutivo')
-  ];
+  articulosBase: ArticuloServObraDTO[] = [];
 
   tiposCompraAgregados: TipoCompraClausulaModeloDTO[] = [];
   objetosCompraAgregados: ObjetoCompraDTO[] = [];
@@ -149,11 +113,39 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
     }
 
     this.inicializarFormularios();
+    this.cargarCatalogosFiltros();
     this.configurarCambiosFiltros();
     this.cargarDatosClausula();
     this.restaurarDatosTemporales();
   }
 
+  
+  private cargarCatalogosFiltros(): void {
+    this.clausulaService.obtenerFiltrosClausula().subscribe({
+      next: (filtros) => {
+        this.incisos = filtros.incisos;
+        this.unidadesEjecutorasBase = filtros.unidadesEjecutoras;
+        this.tiposCompra = filtros.tiposCompra;
+        this.subtiposCompraBase = filtros.subtiposCompra;
+        this.familias = filtros.familias;
+        this.subfamiliasBase = filtros.subfamilias;
+        this.clasesBase = filtros.clases;
+        this.subclasesBase = filtros.subclases;
+        this.articulosBase = filtros.articulos;
+      },
+      error: () => {
+        this.incisos = [];
+        this.unidadesEjecutorasBase = [];
+        this.tiposCompra = [];
+        this.subtiposCompraBase = [];
+        this.familias = [];
+        this.subfamiliasBase = [];
+        this.clasesBase = [];
+        this.subclasesBase = [];
+        this.articulosBase = [];
+      }
+    });
+  }
   private restaurarDatosTemporales(): void {
     const datos = this.snapshotService.load<any>('clausula_temporal');
     if (datos && datos.redacciones) {
@@ -193,21 +185,21 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
   private configurarCambiosFiltros(): void {
     this.form.get('incisoId')?.valueChanges.subscribe(incisoId => {
       this.unidadesEjecutoras = incisoId
-        ? this.unidadesEjecutorasMock.filter(ue => (ue.inciso as any)?.id === incisoId)
+        ? this.unidadesEjecutorasBase.filter(ue => (ue.inciso as any)?.id === incisoId)
         : [];
       this.form.patchValue({ unidadEjecutoraId: null });
     });
 
     this.formTipoCompra.get('tipoCompraId')?.valueChanges.subscribe(tipoCompraId => {
       this.subtiposCompra = tipoCompraId
-        ? this.subtiposCompraMock.filter(st => st.idTipoCompra === tipoCompraId)
+        ? this.subtiposCompraBase.filter(st => st.idTipoCompra === tipoCompraId)
         : [];
       this.formTipoCompra.patchValue({ subtipoCompraId: null });
     });
 
     this.formObjetoCompra.get('familiaId')?.valueChanges.subscribe(familiaId => {
       this.subfamilias = familiaId
-        ? this.subfamiliasMock.filter(sf => sf.familiaId === String(familiaId))
+        ? this.subfamiliasBase.filter(sf => sf.familiaId === String(familiaId))
         : [];
       this.formObjetoCompra.patchValue({
         subfamiliaId: null,
@@ -222,7 +214,7 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
 
     this.formObjetoCompra.get('subfamiliaId')?.valueChanges.subscribe(subfamiliaId => {
       this.clases = subfamiliaId
-        ? this.clasesMock.filter(c => c.subfamiliaId === subfamiliaId)
+        ? this.clasesBase.filter(c => c.subfamiliaId === subfamiliaId)
         : [];
       this.formObjetoCompra.patchValue({
         claseId: null,
@@ -235,7 +227,7 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
 
     this.formObjetoCompra.get('claseId')?.valueChanges.subscribe(claseId => {
       this.subclases = claseId
-        ? this.subclasesMock.filter(sc => sc.claseId === String(claseId))
+        ? this.subclasesBase.filter(sc => sc.claseId === String(claseId))
         : [];
       this.formObjetoCompra.patchValue({
         subclaseId: null,
@@ -246,7 +238,7 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
 
     this.formObjetoCompra.get('subclaseId')?.valueChanges.subscribe(subclaseId => {
       this.articulos = subclaseId
-        ? this.articulosMock.filter(art => art.subclase?.id === subclaseId)
+        ? this.articulosBase.filter(art => art.subclase?.id === subclaseId)
         : [];
       this.formObjetoCompra.patchValue({ articuloId: null });
     });
@@ -572,7 +564,7 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
 
     const inciso = this.incisos.find(i => i.id === valores.incisoId) || null;
     const unidadEjecutora = valores.unidadEjecutoraId
-      ? this.unidadesEjecutorasMock.find(ue => ue.id === valores.unidadEjecutoraId) || null
+      ? this.unidadesEjecutorasBase.find(ue => ue.id === valores.unidadEjecutoraId) || null
       : null;
 
     const organismo = inciso
@@ -643,5 +635,8 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
     return !this.form.dirty && !this.formTipoCompra.dirty && !this.formObjetoCompra.dirty;
   }
 }
+
+
+
 
 

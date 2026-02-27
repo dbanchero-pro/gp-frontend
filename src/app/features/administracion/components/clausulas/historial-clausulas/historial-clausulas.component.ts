@@ -9,7 +9,8 @@ import { ClausulaService } from '../../../services/clausula.service';
   selector: 'app-historial-clausulas',
   templateUrl: './historial-clausulas.component.html',
   styleUrls: ['./historial-clausulas.component.scss'],
-  standalone: false
+
+    standalone: false
 })
 export class HistorialClausulasComponent implements OnInit {
   private route = inject(ActivatedRoute);
@@ -296,5 +297,6 @@ export class HistorialClausulasComponent implements OnInit {
       return 'No vigente';
     }
 }
+
 
 

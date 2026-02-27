@@ -12,6 +12,10 @@ import { UnidadEjecutoraDTO } from 'src/app/shared/models/sice/unidad-ejecutora.
 import { SiNoAmbasValor } from 'src/app/shared/enum/si-no-ambas-valor.enum';
 import { FiltroBandejaEntradaDTO } from '../models/filtros/filtro-bandeja-entrada.model';
 import { CampoPliegoDTO } from '../models/campo-pliego.model';
+import { IncisoDTO } from 'src/app/shared/models/sice/inciso.model';
+import { UnidadCompraDTO } from 'src/app/shared/models/sice/unidad-compra.model';
+import { UsuarioAsignadoDTO } from '../models/usuario-asignado.model';
+import { UsuarioBusquedaDTO } from '../models/usuario-busqueda.model';
 
 const CAMPO_PLIEGO_VACIO: CampoPliegoDTO = {
   id: 0,
@@ -19,6 +23,36 @@ const CAMPO_PLIEGO_VACIO: CampoPliegoDTO = {
   campo: {} as any,
   bloqueado: 'N'
 };
+
+const USUARIOS_ASIGNADOS_MOCK: UsuarioAsignadoDTO[] = [
+  { id: 1, numeroDocumento: '1.234.567-8', nombre: 'Juan', apellido: 'Perez', roles: ['Editor Principal'] },
+  { id: 2, numeroDocumento: '8.765.432-1', nombre: 'Maria', apellido: 'Gonzalez', roles: ['Editor', 'Validador'] },
+  { id: 3, numeroDocumento: '1.122.334-4', nombre: 'Pedro', apellido: 'Rodriguez', roles: ['Aprobador'] },
+  { id: 4, numeroDocumento: '5.566.778-8', nombre: 'Ana', apellido: 'Martinez', roles: ['Editor'] },
+  { id: 5, numeroDocumento: '9.988.776-6', nombre: 'Luis', apellido: 'Fernandez', roles: ['Validador', 'Aprobador'] },
+  { id: 6, numeroDocumento: '2.345.678-9', nombre: 'Carmen', apellido: 'Lopez', roles: ['Editor'] },
+  { id: 7, numeroDocumento: '3.456.789-0', nombre: 'Roberto', apellido: 'Sanchez', roles: ['Validador'] },
+  { id: 8, numeroDocumento: '4.567.890-1', nombre: 'Laura', apellido: 'Ramirez', roles: ['Editor', 'Validador'] }
+];
+
+const USUARIOS_BUSQUEDA_MOCK: UsuarioBusquedaDTO[] = [
+  { id: 10, numeroDocumento: '1.234.567-8', nombre: 'Juan', apellido: 'Perez' },
+  { id: 11, numeroDocumento: '8.765.432-1', nombre: 'Maria', apellido: 'Gonzalez' },
+  { id: 12, numeroDocumento: '1.122.334-4', nombre: 'Pedro', apellido: 'Rodriguez' },
+  { id: 13, numeroDocumento: '5.566.778-8', nombre: 'Ana', apellido: 'Martinez' },
+  { id: 14, numeroDocumento: '9.988.776-6', nombre: 'Luis', apellido: 'Fernandez' },
+  { id: 15, numeroDocumento: '2.233.445-5', nombre: 'Carolina', apellido: 'Lopez' },
+  { id: 16, numeroDocumento: '6.677.889-9', nombre: 'Diego', apellido: 'Sanchez' },
+  { id: 17, numeroDocumento: '3.344.556-6', nombre: 'Laura', apellido: 'Ramirez' },
+  { id: 18, numeroDocumento: '7.788.990-0', nombre: 'Roberto', apellido: 'Torres' },
+  { id: 19, numeroDocumento: '4.455.667-7', nombre: 'Sofia', apellido: 'Vega' },
+  { id: 20, numeroDocumento: '2.345.678-9', nombre: 'Carlos', apellido: 'Mendez' },
+  { id: 21, numeroDocumento: '3.456.789-0', nombre: 'Patricia', apellido: 'Silva' },
+  { id: 22, numeroDocumento: '4.567.890-1', nombre: 'Fernando', apellido: 'Castro' },
+  { id: 23, numeroDocumento: '5.678.901-2', nombre: 'Gabriela', apellido: 'Diaz' },
+  { id: 24, numeroDocumento: '6.789.012-3', nombre: 'Andres', apellido: 'Morales' },
+  { id: 25, numeroDocumento: '7.890.123-4', nombre: 'Valentina', apellido: 'Rojas' }
+];
 
 const crearModeloMock = (
   id: number,
@@ -230,6 +264,66 @@ export class BandejaEntradaService {
       undefined
     )
   ];
+
+  private readonly incisosMock: IncisoDTO[] = [
+    new IncisoDTO(1, 'Poder Ejecutivo'),
+    new IncisoDTO(2, 'Poder Legislativo'),
+    new IncisoDTO(3, 'Poder Judicial')
+  ];
+
+  private readonly unidadesEjecutorasFiltroMock: UnidadEjecutoraDTO[] = [
+    new UnidadEjecutoraDTO(1, new IncisoDTO(1, 'Poder Ejecutivo'), 1, 'Ministerio de Economia'),
+    new UnidadEjecutoraDTO(2, new IncisoDTO(1, 'Poder Ejecutivo'), 3, 'Ministerio de Salud'),
+    new UnidadEjecutoraDTO(3, new IncisoDTO(2, 'Poder Legislativo'), 2, 'Camara de Diputados'),
+    new UnidadEjecutoraDTO(4, new IncisoDTO(3, 'Poder Judicial'), 4, 'Suprema Corte de Justicia')
+  ];
+
+  private readonly unidadesCompraFiltroMock: UnidadCompraDTO[] = [
+    new UnidadCompraDTO(1, this.unidadesEjecutorasFiltroMock[0], 'Direccion de Compras'),
+    new UnidadCompraDTO(2, this.unidadesEjecutorasFiltroMock[1], 'Unidad de Compras Medicas'),
+    new UnidadCompraDTO(3, this.unidadesEjecutorasFiltroMock[2], 'Departamento de Adquisiciones'),
+    new UnidadCompraDTO(4, this.unidadesEjecutorasFiltroMock[3], 'Oficina de Compras')
+  ];
+
+  private readonly tiposCompraFiltroMock: TipoCompraDTO[] = [
+    new TipoCompraDTO('1', 'Licitacion Publica'),
+    new TipoCompraDTO('2', 'Contratacion Directa'),
+    new TipoCompraDTO('3', 'Licitacion Abreviada')
+  ];
+
+  obtenerUsuariosAsignadosPorProceso(_procesoId: number): Observable<UsuarioAsignadoDTO[]> {
+    return of([...USUARIOS_ASIGNADOS_MOCK]).pipe(delay(300));
+  }
+
+  buscarUsuariosParaAsignacion(texto: string, tipo: 'CI' | 'NOMBRE'): Observable<UsuarioBusquedaDTO[]> {
+    const criterio = texto.toLowerCase().trim().replace(/[.\-]/g, '');
+    if (!criterio) {
+      return of([]);
+    }
+
+    const usuarios = USUARIOS_BUSQUEDA_MOCK.filter(usuario => {
+      if (tipo === 'CI') {
+        return usuario.numeroDocumento.replace(/[.\-]/g, '').includes(criterio);
+      }
+      return `${usuario.nombre} ${usuario.apellido}`.toLowerCase().includes(criterio);
+    });
+
+    return of(usuarios).pipe(delay(300));
+  }
+
+  obtenerFiltrosBandeja(): Observable<{
+    incisos: IncisoDTO[];
+    unidadesEjecutoras: UnidadEjecutoraDTO[];
+    unidadesCompra: UnidadCompraDTO[];
+    tiposCompra: TipoCompraDTO[];
+  }> {
+    return of({
+      incisos: [...this.incisosMock],
+      unidadesEjecutoras: [...this.unidadesEjecutorasFiltroMock],
+      unidadesCompra: [...this.unidadesCompraFiltroMock],
+      tiposCompra: [...this.tiposCompraFiltroMock]
+    });
+  }
 
   buscarProcesos(
     filtro: FiltroBandejaEntradaDTO,

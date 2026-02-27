@@ -14,7 +14,8 @@ import { SeccionService } from '../../../services/seccion.service';
   selector: 'app-agregar-modificar-seccion',
   templateUrl: './agregar-modificar-seccion.component.html',
   styleUrls: ['./agregar-modificar-seccion.component.scss'],
-  standalone: false
+
+    standalone: false
 })
 export class AgregarModificarSeccionComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);
@@ -429,4 +430,5 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
     return !this.form.dirty;
   }
 }
+
 

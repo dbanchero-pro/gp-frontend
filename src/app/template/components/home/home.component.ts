@@ -7,6 +7,7 @@ import { ActualizarService } from "../../../shared/services/common/actualizar.se
     selector: "app-home",
     templateUrl: "./home.component.html",
     styleUrls: [],
+
     standalone: false
 })
 export class HomeComponent implements OnInit {
@@ -24,3 +25,5 @@ export class HomeComponent implements OnInit {
     }
 
 }
+
+

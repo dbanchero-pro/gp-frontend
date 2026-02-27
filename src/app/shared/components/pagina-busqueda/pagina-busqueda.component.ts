@@ -83,3 +83,4 @@ export abstract class PaginaBusquedaComponent<T> extends FormularioBaseComponent
         }
     } 
 }
+

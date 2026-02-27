@@ -5,9 +5,10 @@ import { LoggerService } from '../../services/common/logger.service';
 
 @Component({
     selector: 'app-confirm-dialog',
-    standalone: false,
     templateUrl: './confirm-dialog.component.html',
     styleUrls: ['./confirm-dialog.component.scss'],
+
+    standalone: false
 })
 export class ConfirmDialogComponent {
     modalRefs: BsModalRef[] = [];
@@ -76,3 +77,5 @@ export class ConfirmDialogComponent {
         this.modalRefs.push(modalRef);
     }
 }
+
+

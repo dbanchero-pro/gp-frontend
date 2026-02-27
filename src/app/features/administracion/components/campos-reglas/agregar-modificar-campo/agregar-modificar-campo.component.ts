@@ -20,7 +20,8 @@ import { AgregarModificarReglaPopupComponent } from '../agregar-modificar-regla-
   selector: 'app-agregar-modificar-campo',
   templateUrl: './agregar-modificar-campo.component.html',
   styleUrls: ['./agregar-modificar-campo.component.scss'],
-  standalone: false
+
+    standalone: false
 })
 export class AgregarModificarCampoComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);
@@ -284,3 +285,5 @@ export class AgregarModificarCampoComponent extends FormularioBaseComponent impl
     return !formularioTocado(this.form);
   }
 }
+
+

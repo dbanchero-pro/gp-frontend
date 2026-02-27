@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AccionBoton } from 'src/app/shared/models/common/accion-boton.model';
 import { IColumnaOrden } from 'src/app/shared/models/common/columna-orden.model';
 import { SeccionDTO } from 'src/app/shared/models/pliego/seccion/seccion.model';
-import { SeccionClausulaDTO } from 'src/app/shared/models/pliego/seccion/seccion-clausula.model';
 import { ClausulaDTO } from 'src/app/shared/models/pliego/clausula/clausula.model';
 import { ModeloSeccionDTO } from 'src/app/shared/models/pliego/modelo/modelo-seccion.model';
 import { FechaPipe } from 'src/app/shared/pipes/fecha.pipe';
@@ -18,7 +17,8 @@ import { SeccionService } from '../../../services/seccion.service';
   selector: 'app-consulta-secciones',
   templateUrl: './consulta-secciones.component.html',
   styleUrls: ['./consulta-secciones.component.scss'],
-  standalone: false
+
+    standalone: false
 })
 export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
   private fb = inject(FormBuilder);
@@ -355,6 +355,7 @@ export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
     return 'No vigente';
   }
 }
+
 
 
 

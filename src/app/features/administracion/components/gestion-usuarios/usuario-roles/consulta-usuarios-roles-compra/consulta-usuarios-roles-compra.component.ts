@@ -34,7 +34,8 @@ import { IConsultaUsuarioOrganismoPerfilFiltroDTO } from 'src/app/features/admin
     selector: 'app-consulta-usuarios-roles-compra',
     templateUrl: './consulta-usuarios-roles-compra.component.html',
     styleUrls: ['./consulta-usuarios-roles-compra.component.scss'],
-    standalone: false,
+
+    standalone: false
 })
 export class ConsultaUsuariosRolesCompraComponent
     extends PaginaBusquedaComponent<IConsultaUsuarioOrganismoPerfilFiltroDTO>
@@ -369,3 +370,5 @@ export class ConsultaUsuariosRolesCompraComponent
         return null;
     }
 }
+
+

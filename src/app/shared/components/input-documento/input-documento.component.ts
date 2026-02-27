@@ -6,11 +6,12 @@ import { uuidv4 } from '../../utils/functions';
     selector: 'app-input-documento',
     templateUrl: './input-documento.component.html',
     styleUrls: ['./input-documento.component.scss'],
-    standalone: false,
     providers: [
         { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => InputDocumentoComponent), multi: true },
         { provide: NG_VALIDATORS, useExisting: forwardRef(() => InputDocumentoComponent), multi: true }
-    ]
+    ],
+
+    standalone: false
 })
 export class InputDocumentoComponent implements ControlValueAccessor, Validator, OnChanges {
 
@@ -172,4 +173,6 @@ export class InputDocumentoComponent implements ControlValueAccessor, Validator,
         this.inputRef.nativeElement.value = val;
     }
 }
+
+
 

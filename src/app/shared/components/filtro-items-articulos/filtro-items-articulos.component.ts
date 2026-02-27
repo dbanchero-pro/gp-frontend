@@ -22,7 +22,8 @@ import { UsuarioOrganismoPerfilService } from '../../services/usuario/usuario-pe
     selector: 'app-filtro-items-articulos',
     templateUrl: './filtro-items-articulos.component.html',
     styleUrls: ['./filtro-items-articulos.component.scss'],
-    standalone: false,
+
+    standalone: false
 })
 export class FiltroItemsArticulosComponent implements OnInit {
 
@@ -207,3 +208,5 @@ export class FiltroItemsArticulosComponent implements OnInit {
         this.cambioDatosFiltros();
     }
 }
+
+

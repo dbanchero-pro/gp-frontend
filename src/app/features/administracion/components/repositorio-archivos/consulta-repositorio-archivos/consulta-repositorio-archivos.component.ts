@@ -18,7 +18,8 @@ import { DocumentoRepositorioService } from '../../../services/documento-reposit
   selector: 'app-consulta-repositorio-archivos',
   templateUrl: './consulta-repositorio-archivos.component.html',
   styleUrls: ['./consulta-repositorio-archivos.component.scss'],
-  standalone: false
+
+    standalone: false
 }) 
 export class ConsultaRepositorioArchivosComponent
   extends PaginaBusquedaComponent<FiltroDocumentoRepositorioDTO>
@@ -272,3 +273,5 @@ export class ConsultaRepositorioArchivosComponent
     }
   }
 }
+
+

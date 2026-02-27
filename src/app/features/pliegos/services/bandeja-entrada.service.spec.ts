@@ -59,4 +59,27 @@ describe('BandejaEntradaService', () => {
     expect(estados.length).toBeGreaterThan(0);
     expect(estados.every(e => e === EstadoProcesoPliego.PENDIENTE)).toBeTrue();
   }));
+
+  it('obtiene usuarios asignados mock por proceso', fakeAsync(() => {
+    let usuarios: any[] = [];
+
+    service.obtenerUsuariosAsignadosPorProceso(1).subscribe(resp => {
+      usuarios = resp;
+    });
+    tick(300);
+
+    expect(usuarios.length).toBeGreaterThan(0);
+    expect(usuarios[0].roles?.length).toBeGreaterThan(0);
+  }));
+
+  it('filtra usuarios para asignacion por CI', fakeAsync(() => {
+    let usuarios: any[] = [];
+
+    service.buscarUsuariosParaAsignacion('1234', 'CI').subscribe(resp => {
+      usuarios = resp;
+    });
+    tick(300);
+
+    expect(usuarios.length).toBeGreaterThan(0);
+  }));
 });

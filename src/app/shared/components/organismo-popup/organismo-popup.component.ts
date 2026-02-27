@@ -7,6 +7,7 @@ import { PopupBaseComponent } from '../popup-base/popup-base.component';
     selector: 'app-organismo-popup',
     templateUrl: './organismo-popup.component.html',
     styleUrls: ['./organismo-popup.component.scss'],
+
     standalone: false
 })
 export class OrganismoPopupComponent extends PopupBaseComponent implements OnInit {
@@ -61,3 +62,5 @@ export class OrganismoPopupComponent extends PopupBaseComponent implements OnIni
     }
 
 }
+
+

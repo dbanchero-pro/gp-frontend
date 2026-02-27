@@ -29,7 +29,8 @@ import { UsuarioPermisoAgrupadoDTO } from 'src/app/features/administracion/model
     selector: 'app-consulta-usuarios-roles',
     templateUrl: './consulta-usuarios-roles.component.html',
     styleUrls: ['./consulta-usuarios-roles.component.scss'],
-    standalone: false,
+
+    standalone: false
 })
 export class ConsultaUsuariosRolesComponent
     extends PaginaBusquedaComponent<IConsultaUsuarioOrganismoPerfilFiltroDTO>
@@ -718,3 +719,5 @@ export class ConsultaUsuariosRolesComponent
         });
     }
 }
+
+

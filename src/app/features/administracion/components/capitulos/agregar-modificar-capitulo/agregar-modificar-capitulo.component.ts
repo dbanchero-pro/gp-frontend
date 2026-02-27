@@ -13,7 +13,8 @@ import { CapituloService } from '../../../services/capitulo.service';
   selector: 'app-agregar-modificar-capitulo',
   templateUrl: './agregar-modificar-capitulo.component.html',
   styleUrls: ['./agregar-modificar-capitulo.component.scss'],
-  standalone: false
+
+    standalone: false
 })
 export class AgregarModificarCapituloComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);
@@ -318,6 +319,8 @@ export class AgregarModificarCapituloComponent extends FormularioBaseComponent i
     return !this.form.dirty;
   }
 }
+
+
 
 
 

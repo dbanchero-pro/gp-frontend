@@ -16,7 +16,8 @@ import { Logger } from 'src/app/shared/utils/logger';
     selector: 'app-nuevo-usuario-tipo-compra-popup',
     templateUrl: './nuevo-usuario-tipo-compra-popup.component.html',
     styleUrls: ['./nuevo-usuario-tipo-compra-popup.component.scss'],
-    standalone: false,
+
+    standalone: false
 })
 export class NuevoUsuarioTipoCompraPopupComponent
     extends PopupBaseComponent
@@ -150,3 +151,5 @@ export class NuevoUsuarioTipoCompraPopupComponent
             });
     }
 }
+
+

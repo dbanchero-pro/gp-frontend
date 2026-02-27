@@ -9,7 +9,8 @@ import { UsuarioOrganismoService } from 'src/app/shared/services/usuario/usuario
     selector: 'app-nuevo-usuario-uc-popup',
     templateUrl: './nuevo-usuario-uc-popup.component.html',
     styleUrls: ['./nuevo-usuario-uc-popup.component.scss'],
-    standalone: false,
+
+    standalone: false
 })
 export class NuevoUsuarioUcPopupComponent
     extends PopupBaseComponent
@@ -147,3 +148,5 @@ export class NuevoUsuarioUcPopupComponent
     }
 
 }
+
+

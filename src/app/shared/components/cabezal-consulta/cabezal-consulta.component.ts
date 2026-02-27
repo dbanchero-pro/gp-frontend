@@ -6,6 +6,7 @@ import { IColumnaOrden } from '../../models/common/columna-orden.model';
     selector: 'app-cabezal-consulta',
     templateUrl: './cabezal-consulta.component.html',
     styleUrls: ['./cabezal-consulta.component.scss'],
+
     standalone: false
 })
 export class CabezalConsultaComponent implements OnChanges {
@@ -58,3 +59,5 @@ export class CabezalConsultaComponent implements OnChanges {
         this.router.navigate(this.routerLinkBtn);
     }
 }
+
+

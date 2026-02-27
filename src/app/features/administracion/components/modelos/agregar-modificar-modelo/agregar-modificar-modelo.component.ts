@@ -20,7 +20,8 @@ import { ModeloService } from '../../../services/modelo.service';
   selector: 'app-agregar-modificar-modelo',
   templateUrl: './agregar-modificar-modelo.component.html',
   styleUrls: ['./agregar-modificar-modelo.component.scss'],
-  standalone: false
+
+    standalone: false
 })
 export class AgregarModificarModeloComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);
@@ -446,6 +447,8 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
     return !this.form.dirty;
   }
 }
+
+
 
 
 

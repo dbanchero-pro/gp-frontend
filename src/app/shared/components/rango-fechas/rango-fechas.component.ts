@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs';
     selector: 'app-rango-fechas',
     templateUrl: './rango-fechas.component.html',
     styleUrls: ['./rango-fechas.component.scss'],
-    standalone: false,
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -18,7 +17,9 @@ import { Subscription } from 'rxjs';
             useExisting: forwardRef(() => RangoFechasComponent),
             multi: true
         }
-    ]
+    ],
+
+    standalone: false
 })
 
 export class RangoFechasComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy, AfterViewInit {
@@ -197,3 +198,4 @@ export class RangoFechasComponent implements ControlValueAccessor, Validator, On
         this.subscriptions.forEach(s => s.unsubscribe());
     }
 }
+

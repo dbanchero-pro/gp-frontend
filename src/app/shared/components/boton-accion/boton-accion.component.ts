@@ -8,6 +8,7 @@ import { uuidv4 } from '../../utils/functions';
     selector: 'app-boton-accion',
     templateUrl: './boton-accion.component.html',
     styleUrls: ['./boton-accion.component.scss'],
+
     standalone: false
 })
 
@@ -80,4 +81,6 @@ export class BotonAccionComponent implements OnChanges, OnInit {
 }
 
 export { AccionBoton };
+
+
 

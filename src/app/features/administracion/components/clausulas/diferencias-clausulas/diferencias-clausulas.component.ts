@@ -25,7 +25,8 @@ interface DiferenciaRedaccion {
   selector: 'app-diferencias-clausulas',
   templateUrl: './diferencias-clausulas.component.html',
   styleUrls: ['./diferencias-clausulas.component.scss'],
-  standalone: false
+
+    standalone: false
 })
 export class DiferenciasClausulasComponent implements OnInit {
   private route = inject(ActivatedRoute);
@@ -245,5 +246,6 @@ export class DiferenciasClausulasComponent implements OnInit {
     this.router.navigate(['/administracion/clausulas'], { queryParams: { volver: 1 } });
   }
 }
+
 
 
