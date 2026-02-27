@@ -13,8 +13,8 @@
 
         <div class="row">
           <div class="form-group form-row col-12 m-0 pb-0">
-            <label for="articuloId" class="col-form-label col-12">Estado</label>
-            <select class="form-control col-12">
+            <label for="estado" class="col-form-label col-12">Estado</label>
+            <select id="estado" class="form-control col-12">
               <option value="null">Todos los estados</option>
               <option value="V"> Vigente</option>
               <option value="N"> No vigente</option>
@@ -106,19 +106,19 @@
                         <div class="card-body py-2">
                           <div class="row g-0 mb-2">
                             <div class="col-md-9">
-                              <span class="font-weight-bold"><em class="fa fa-angle-right m-2"></em>{{ capitulo.denominacion }}</span>
+                              <span class="font-weight-bold"><em class="fa fa-angle-right m-2"></em>{{ capitulo.capitulo.denominacion }}</span>
                             </div>
                             <div class="col-md-3 text-right">
-                              <span>Versión: {{ capitulo.version }}</span>
+                              <span>Versión: {{ capitulo.capitulo.version }}</span>
                             </div>
                           </div>
-                          <div *ngIf="capitulo.clausulas && capitulo.clausulas.length > 0" class="pl-3">
-                            <div *ngFor="let clausula of capitulo.clausulas" class="card mb-1">
+                          <div *ngIf="capitulo.capitulo.clausulas && (capitulo.capitulo.clausulas.length || 0) > 0" class="pl-3">
+                            <div *ngFor="let clausula of capitulo.capitulo.clausulas" class="card mb-1">
                               <div class="card-body py-1 px-2">
                                 <div class="row g-0">
                                    <div class="col-md-1 text-center">
-                                    <button
-                                      *ngFor="let accion of obtenerAccionesClausula(clausula)"
+                                    <button title="Menú de acciones"
+                                      *ngFor="let accion of obtenerAccionesClausula(clausula.clausula)"
                                       type="button"
                                       [class]="accion.clase"
                                       [attr.aria-label]="accion.ariaLabel"
@@ -126,8 +126,8 @@
                                       <em [class]="accion.icono"></em>
                                     </button>
                                   </div>
-                                  <div class="col-md-8"> {{ clausula.denominacion }}</div>
-                                  <div class="col-md-3 text-right">Versión: {{ clausula.version }}</div>
+                                  <div class="col-md-8"> {{ clausula.clausula.denominacion }}</div>
+                                  <div class="col-md-3 text-right">Versión: {{ clausula.clausula.version }}</div>
                                 </div>
                               </div>
                             </div>
@@ -154,8 +154,8 @@
                         <div class="card-body py-2">
                           <div class="row g-0">
                             <div class="col-md-1 font-weight-bold">
-                              <button
-                                *ngFor="let accion of obtenerAccionesClausula(clausula)"
+                              <button title="Menú de acciones"
+                                *ngFor="let accion of obtenerAccionesClausula(clausula.clausula)"
                                 type="button"
                                 [class]="accion.clase"
                                 [attr.aria-label]="accion.ariaLabel"
@@ -163,8 +163,8 @@
                                 <em [class]="accion.icono"></em>
                               </button>
                             </div>
-                            <div class="col-md-8">{{ clausula.denominacion }}</div>
-                            <div class="col-md-3 text-right">Versión: {{ clausula.version }}</div>
+                            <div class="col-md-8">{{ clausula.clausula.denominacion }}</div>
+                            <div class="col-md-3 text-right">Versión: {{ clausula.clausula.version }}</div>
                           </div>
                         </div>
                       </div>
@@ -190,3 +190,6 @@
     </div>
   </div>
 </div>
+
+
+

@@ -1,57 +1,69 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, delay } from 'rxjs';
-import { EliminarSeccionResponse } from '../models/eliminar-seccion-response.model';
-import { Seccion } from 'src/app/shared/models/pliego/seccion.model';
+import { SeccionDTO } from 'src/app/shared/models/pliego/seccion/seccion.model';
 import { EstadoElemento } from 'src/app/shared/enum/estado-elemento.enum';
 import { FiltroSeccion } from '../models/filtros/filtro-seccion.model';
+import { EliminarElementoResponseDTO } from '../models/eliminar-elemento-response.model';
+import { CapituloDTO } from 'src/app/shared/models/pliego/capitulo/capitulo.model';
+import { ClausulaDTO } from 'src/app/shared/models/pliego/clausula/clausula.model';
+import { CapituloClausulaDTO } from 'src/app/shared/models/pliego/capitulo/capitulo-clausula.model';
+
+const crearClausulaMock = (
+  id: number,
+  denominacion: string,
+  version: number,
+  estado: EstadoElemento = EstadoElemento.VIGENTE
+): ClausulaDTO => ({
+  id,
+  denominacion,
+  tiposCompra: [],
+  objetosCompra: [],
+  estado,
+  redacciones: [],
+  version
+});
+
+const crearCapituloMock = (
+  id: number,
+  denominacion: string,
+  version: number,
+  clausulas: CapituloClausulaDTO[],
+  estado: EstadoElemento = EstadoElemento.VIGENTE
+): CapituloDTO => ({
+  id,
+  denominacion,
+  clausulas,
+  estado,
+  version
+});
 
 @Injectable({
   providedIn: 'root'
 })
 export class SeccionService {
-  private seccionesMock: Seccion[] = [
+    private seccionesMock: SeccionDTO[] = [
     {
       id: 1,
       denominacion: 'Sección de Condiciones Generales del Contrato',
       fechaVigenciaDesde: '2024-01-01',
       fechaVigenciaHasta: '2025-12-31',
       estado: EstadoElemento.VIGENTE,
-      versionada: true,
       version: 1,
       capitulos: [
         {
-          capituloId: 1,
+          id: 1,
           orden: 1,
-          denominacion: 'Capítulo de Condiciones Generales',
-          version: 1,
-          clausulas: [
-            {
-              clausulaId: 1,
-              orden: 1,
-              denominacion: 'Cláusula de garantía de cumplimiento',
-              version: 1
-            },
-            {
-              clausulaId: 2,
-              orden: 2,
-              denominacion: 'Cláusula de plazo de entrega',
-              version: 1
-            }
-          ]
+          capitulo: crearCapituloMock(1, 'Capítulo de Condiciones Generales', 1, [
+            { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento', 1) },
+            { Id: 2, orden: 2, clausula: crearClausulaMock(2, 'Cláusula de plazo de entrega', 1) }
+          ])
         },
         {
-          capituloId: 2,
+          id: 2,
           orden: 2,
-          denominacion: 'Capítulo de Requisitos Técnicos',
-          version: 2,
-          clausulas: [
-            {
-              clausulaId: 3,
-              orden: 1,
-              denominacion: 'Cláusula de calidad y especificaciones técnicas',
-              version: 1
-            }
-          ]
+          capitulo: crearCapituloMock(2, 'Capítulo de Requisitos Técnicos', 2, [
+            { Id: 3, orden: 1, clausula: crearClausulaMock(3, 'Cláusula de calidad y especificaciones técnicas', 1) }
+          ])
         }
       ],
       clausulas: [],
@@ -66,22 +78,14 @@ export class SeccionService {
       fechaVigenciaDesde: '2024-03-01',
       fechaVigenciaHasta: null,
       estado: EstadoElemento.VIGENTE,
-      versionada: true,
       version: 1,
       capitulos: [
         {
-          capituloId: 3,
+          id: 3,
           orden: 1,
-          denominacion: 'Capítulo de Garantías',
-          version: 1,
-          clausulas: [
-            {
-              clausulaId: 1,
-              orden: 1,
-              denominacion: 'Cláusula de garantía de cumplimiento',
-              version: 1
-            }
-          ]
+          capitulo: crearCapituloMock(3, 'Capítulo de Garantías', 1, [
+            { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento', 1) }
+          ])
         }
       ],
       clausulas: [],
@@ -96,15 +100,13 @@ export class SeccionService {
       fechaVigenciaDesde: '2023-01-01',
       fechaVigenciaHasta: '2023-12-31',
       estado: EstadoElemento.NO_VIGENTE,
-      versionada: true,
       version: 1,
       capitulos: [],
       clausulas: [
         {
-          clausulaId: 4,
+          id: 1,
           orden: 1,
-          denominacion: 'Cláusula de penalidades',
-          version: 2
+          clausula: crearClausulaMock(4, 'Cláusula de penalidades', 2, EstadoElemento.NO_VIGENTE)
         }
       ],
       fechaCreacion: '2023-01-01',
@@ -118,7 +120,6 @@ export class SeccionService {
       fechaVigenciaDesde: '2024-01-01',
       fechaVigenciaHasta: null,
       estado: EstadoElemento.BORRADOR,
-      versionada: false,
       version: 1,
       capitulos: [],
       clausulas: [],
@@ -131,7 +132,7 @@ export class SeccionService {
 
   constructor() {}
 
-  buscarSecciones(filtro: FiltroSeccion): Observable<Seccion[]> {
+  buscarSecciones(filtro: FiltroSeccion): Observable<SeccionDTO[]> {
     let resultados = [...this.seccionesMock];
 
     if (filtro.denominacion) {
@@ -156,24 +157,23 @@ export class SeccionService {
     return of(resultados).pipe(delay(300));
   }
 
-  obtenerSeccion(id: number): Observable<Seccion | undefined> {
+  obtenerSeccion(id: number): Observable<SeccionDTO | undefined> {
     const seccion = this.seccionesMock.find(s => s.id === id);
     return of(seccion).pipe(delay(200));
   }
 
-  obtenerSeccionPorId(id: number): Observable<Seccion | undefined> {
+  obtenerSeccionPorId(id: number): Observable<SeccionDTO | undefined> {
     const seccion = this.seccionesMock.find(s => s.id === id);
     return of(seccion).pipe(delay(200));
   }
 
-  crearSeccion(seccion: Seccion): Observable<Seccion> {
+  crearSeccion(seccion: SeccionDTO): Observable<SeccionDTO> {
     const nuevoId = Math.max(...this.seccionesMock.map(s => s.id || 0)) + 1;
     const nuevaSeccion = {
       ...seccion,
       id: nuevoId,
       estado: EstadoElemento.BORRADOR,
-      version: 1,
-      versionada: false,
+      version: 1,
       fechaCreacion: new Date().toISOString().split('T')[0],
       usuarioCreacion: 'usuario_actual',
       fechaModificacion: null,
@@ -183,7 +183,7 @@ export class SeccionService {
     return of(nuevaSeccion).pipe(delay(300));
   }
 
-  actualizarSeccion(id: number, seccion: Seccion): Observable<Seccion> {
+  actualizarSeccion(id: number, seccion: SeccionDTO): Observable<SeccionDTO> {
     const index = this.seccionesMock.findIndex(s => s.id === id);
     if (index !== -1) {
       const seccionActualizada = {
@@ -198,15 +198,14 @@ export class SeccionService {
     return of(seccion).pipe(delay(300));
   }
 
-  aprobarSeccion(id: number): Observable<Seccion> {
+  aprobarSeccion(id: number): Observable<SeccionDTO> {
     const index = this.seccionesMock.findIndex(s => s.id === id);
     if (index !== -1) {
       const seccionActual = this.seccionesMock[index];
 
       const versionAprobada = {
         ...seccionActual,
-        estado: EstadoElemento.VIGENTE,
-        versionada: true,
+        estado: EstadoElemento.VIGENTE,
         version: (seccionActual.version || 1),
         fechaModificacion: new Date().toISOString().split('T')[0],
         usuarioModificacion: 'usuario_actual'
@@ -218,8 +217,7 @@ export class SeccionService {
         ...versionAprobada,
         id: nuevoId,
         estado: EstadoElemento.BORRADOR,
-        version: (versionAprobada.version || 1) + 1,
-        versionada: false,
+        version: (versionAprobada.version || 1) + 1,
         fechaVigenciaDesde: '',
         fechaVigenciaHasta: null,
         fechaCreacion: new Date().toISOString().split('T')[0],
@@ -234,7 +232,7 @@ export class SeccionService {
     throw new Error('Sección no encontrada');
   }
 
-  guardarSeccion(seccion: Seccion): Observable<Seccion> {
+  guardarSeccion(seccion: SeccionDTO): Observable<SeccionDTO> {
     if (seccion.id) {
       return this.actualizarSeccion(seccion.id, seccion);
     } else {
@@ -242,11 +240,11 @@ export class SeccionService {
     }
   }
 
-  eliminarSeccion(id: number): Observable<EliminarSeccionResponse> {
+  eliminarSeccion(id: number): Observable<EliminarElementoResponseDTO> {
     const seccion = this.seccionesMock.find(s => s.id === id);
 
     if (!seccion) {
-      const response: EliminarSeccionResponse = {
+      const response: EliminarElementoResponseDTO = {
         exitoso: false,
         mensaje: 'No se encontró la sección especificada.',
         tipoEliminacion: 'FISICA'
@@ -263,12 +261,12 @@ export class SeccionService {
     }
   }
 
-  private eliminarVersionEditable(id: number): Observable<EliminarSeccionResponse> {
+  private eliminarVersionEditable(id: number): Observable<EliminarElementoResponseDTO> {
     const index = this.seccionesMock.findIndex(s => s.id === id);
 
     if (index !== -1) {
       this.seccionesMock.splice(index, 1);
-      const response: EliminarSeccionResponse = {
+      const response: EliminarElementoResponseDTO = {
         exitoso: true,
         mensaje: 'Se eliminó la versión editable y se restauró la versión anteriormente aprobada.',
         tipoEliminacion: 'VERSION_EDITABLE'
@@ -276,7 +274,7 @@ export class SeccionService {
       return of(response).pipe(delay(300));
     }
 
-    const response: EliminarSeccionResponse = {
+    const response: EliminarElementoResponseDTO = {
       exitoso: false,
       mensaje: 'No se pudo eliminar la versión editable.',
       tipoEliminacion: 'VERSION_EDITABLE'
@@ -284,13 +282,13 @@ export class SeccionService {
     return of(response).pipe(delay(300));
   }
 
-  private eliminarVersionAprobada(id: number): Observable<EliminarSeccionResponse> {
+  private eliminarVersionAprobada(id: number): Observable<EliminarElementoResponseDTO> {
     const index = this.seccionesMock.findIndex(s => s.id === id);
     if (index !== -1) {
       this.seccionesMock.splice(index, 1);
     }
 
-    const response: EliminarSeccionResponse = {
+    const response: EliminarElementoResponseDTO = {
       exitoso: true,
       mensaje: 'La sección se eliminó completamente (baja física).',
       tipoEliminacion: 'FISICA'
@@ -298,15 +296,14 @@ export class SeccionService {
     return of(response).pipe(delay(300));
   }
 
-  obtenerHistorialVersiones(seccionId: number): Observable<Seccion[]> {
-    const historialMock: Seccion[] = [
+  obtenerHistorialVersiones(seccionId: number): Observable<SeccionDTO[]> {
+    const historialMock: SeccionDTO[] = [
       {
         id: 101,
         denominacion: 'Sección de Condiciones Generales del Contrato',
         fechaVigenciaDesde: '2024-01-01',
         fechaVigenciaHasta: '2025-12-31',
-        estado: EstadoElemento.VIGENTE,
-        versionada: true,
+        estado: EstadoElemento.VIGENTE,
         version: 3,
         capitulos: [],
         clausulas: [],
@@ -320,8 +317,7 @@ export class SeccionService {
         denominacion: 'Sección de Condiciones Generales del Contrato',
         fechaVigenciaDesde: '2023-06-01',
         fechaVigenciaHasta: '2024-12-31',
-        estado: EstadoElemento.NO_VIGENTE,
-        versionada: true,
+        estado: EstadoElemento.NO_VIGENTE,
         version: 2,
         capitulos: [],
         clausulas: [],
@@ -335,3 +331,5 @@ export class SeccionService {
     return of(historialMock).pipe(delay(300));
   }
 }
+
+

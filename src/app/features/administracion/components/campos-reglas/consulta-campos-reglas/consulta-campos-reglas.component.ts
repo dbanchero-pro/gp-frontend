@@ -9,7 +9,7 @@ import { AccionBoton } from '../../../../../shared/models/common/accion-boton.mo
 import { PaginaBusquedaComponent } from '../../../../../shared/components/pagina-busqueda/pagina-busqueda.component';
 import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden.model';
 import { PageModel } from '../../../../../shared/models/common/page/page.model';
-import { CampoDTO } from 'src/app/shared/models/pliego/campo.model';
+import { CampoDTO } from 'src/app/shared/models/pliego/comun/campo.model';
 import { TipoDatoCampo } from '../../../enums/tipo-dato-campo.enum';
 import { TipoFuenteCampo } from '../../../enums/tipo-fuente-campo.enum';
 import { TipoRegla } from '../../../enums/tipo-regla.enum';

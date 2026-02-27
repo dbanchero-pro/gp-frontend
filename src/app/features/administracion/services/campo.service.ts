@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { SiNoValor } from 'src/app/shared/enum/si-no-valor.enum';
 import { PageModel } from 'src/app/shared/models/common/page/page.model';
-import { CampoDTO } from 'src/app/shared/models/pliego/campo.model';
+import { CampoDTO } from 'src/app/shared/models/pliego/comun/campo.model';
 import { TipoDatoCampo } from '../enums/tipo-dato-campo.enum';
 import { TipoFuenteCampo } from '../enums/tipo-fuente-campo.enum';
 import { FiltroCampoDTO } from '../models/filtros/filtro-campo.model';

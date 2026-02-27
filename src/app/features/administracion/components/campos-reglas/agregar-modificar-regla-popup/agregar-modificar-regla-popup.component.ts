@@ -2,7 +2,7 @@ import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PopupBaseComponent } from '../../../../../shared/components/popup-base/popup-base.component';
 import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
-import { CampoDTO } from 'src/app/shared/models/pliego/campo.model';
+import { CampoDTO } from 'src/app/shared/models/pliego/comun/campo.model';
 import { OperadorRegla } from '../../../enums/operador-regla.enum';
 import { TipoDatoCampo } from '../../../enums/tipo-dato-campo.enum';
 import { TipoRegla } from '../../../enums/tipo-regla.enum';

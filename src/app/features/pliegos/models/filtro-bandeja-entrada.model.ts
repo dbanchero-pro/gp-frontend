@@ -1,14 +1,1 @@
-import { EstadoProcesoPliego } from '../enum/estado-proceso-pliego.enum';
-
-export class FiltroBandejaEntrada {
-  constructor(
-    public incisoId?: number,
-    public unidadEjecutoraId?: number,
-    public unidadCompraId?: number,
-    public numeroCompra?: number,
-    public anioCompra?: number,
-    public tipoCompraId?: string,
-    public estado?: EstadoProcesoPliego,
-    public soloPublicadosVigentes?: boolean
-  ) {}
-}
+export { FiltroBandejaEntradaDTO } from './filtros/filtro-bandeja-entrada.model';

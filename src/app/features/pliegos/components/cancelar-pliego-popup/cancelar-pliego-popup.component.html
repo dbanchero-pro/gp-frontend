@@ -11,10 +11,10 @@
     <div class="col-12">
       <div class="Box Box--colorInfo mr-3 ml-3 p-3">
         <div class="mb-2 font-weight-bold subtitle">
-          {{ proceso.incisoDescripcion }} | {{ proceso.unidadEjecutoraDescripcion }} 
+          {{ obtenerTextoOrganismo() }}
         </div>
         <div class="mb-2 font-weight-bold">
-          {{ proceso.tipoCompraDescripcion }} | {{ proceso.subtipoCompraDescripcion }} N° {{ proceso.numeroCompra }}/{{ proceso.anioCompra }}
+          {{ obtenerTextoTipoCompra() }}
         </div>
         <div class="mb-2">
             Modelo: <strong> Denominación Modelo 1</strong>
@@ -57,4 +57,5 @@
     </div>
   </div>
 </div>
+
 

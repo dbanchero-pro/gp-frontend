@@ -4,36 +4,17 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccionBoton } from 'src/app/shared/models/common/accion-boton.model';
 import { IColumnaOrden } from 'src/app/shared/models/common/columna-orden.model';
-import { Modelo, ClausulaModelo } from 'src/app/shared/models/pliego/modelo.model';
+import { ModeloDTO } from 'src/app/shared/models/pliego/modelo/modelo.model';
+import { ClausulaDTO } from 'src/app/shared/models/pliego/clausula/clausula.model';
 import { FechaPipe } from 'src/app/shared/pipes/fecha.pipe';
 import { ActualizarService } from 'src/app/shared/services/common/actualizar.service';
 import { SnapshotGenericService } from 'src/app/shared/services/common/snapshot-generic.service';
 import { FiltroModelo } from '../../../models/filtros/filtro-modelo.model';
 import { ModeloService } from '../../../services/modelo.service';
-
-interface Inciso {
-  id: number;
-  codigo: string;
-  descripcion: string;
-}
-
-interface UnidadEjecutora {
-  id: number;
-  codigo: string;
-  descripcion: string;
-  incisoId: number;
-}
-
-interface TipoCompra {
-  id: number;
-  descripcion: string;
-  subtipos: SubtipoCompra[];
-}
-
-interface SubtipoCompra {
-  id: number;
-  descripcion: string;
-}
+import { IIncisoDTO, IncisoDTO } from 'src/app/shared/models/sice/inciso.model';
+import { IUnidadEjecutoraDTO } from 'src/app/shared/models/sice/unidad-ejecutora.model';
+import { ITipoCompraDTO } from 'src/app/shared/models/sice/tipo-compra.model';
+import { ISubtipoCompraDTO } from 'src/app/shared/models/sice/subtipo-compra.model';
 
 @Component({
   selector: 'app-consulta-modelos',
@@ -52,7 +33,7 @@ export class ConsultaModelosComponent implements OnInit, AfterViewInit {
   private snapshotGenericService = inject(SnapshotGenericService);
 
   formularioFiltro: FormGroup;
-  modelos: Modelo[] = [];
+  modelos: ModeloDTO[] = [];
   cargando = false;
   mostrarSoloSeleccion = false;
 
@@ -72,22 +53,22 @@ export class ConsultaModelosComponent implements OnInit, AfterViewInit {
     { id: 'estado', nombre: 'Estado' },
   ];
 
-  incisos: Inciso[] = [
-    { id: 1, codigo: '02', descripcion: 'Presidencia de la República' },
-    { id: 2, codigo: '04', descripcion: 'Ministerio de Economía y Finanzas' },
-    { id: 3, codigo: '10', descripcion: 'Ministerio de Obras Públicas' }
+  incisos: IIncisoDTO[] = [
+    { idInciso: 1, descInciso: 'Presidencia de la República' },
+    { idInciso: 4, descInciso: 'Ministerio de Economía y Finanzas' },
+    { idInciso: 10, descInciso: 'Ministerio de Obras Públicas' }
   ];
 
-  unidadesEjecutoras: UnidadEjecutora[] = [];
-  unidadesEjecutorasCompletas: UnidadEjecutora[] = [
-    { id: 1, codigo: '001', descripcion: 'Unidad Central', incisoId: 1 },
-    { id: 2, codigo: '005', descripcion: 'Unidad de Proyectos', incisoId: 1 },
-    { id: 5, codigo: '002', descripcion: 'Dirección General', incisoId: 2 },
-    { id: 10, codigo: '001', descripcion: 'Dirección de Obras', incisoId: 3 }
+  unidadesEjecutoras: IUnidadEjecutoraDTO[] = [];
+  unidadesEjecutorasCompletas: IUnidadEjecutoraDTO[] = [
+    { idUnidadEjecutora: 1, descUnidadEjecutora: 'Unidad Central', inciso: {idInciso: 1} },
+    { idUnidadEjecutora: 5, descUnidadEjecutora: 'Unidad de Proyectos', inciso: {idInciso: 1} },
+    { idUnidadEjecutora: 2, descUnidadEjecutora: 'Dirección General', inciso: {idInciso: 2} },
+    { idUnidadEjecutora: 1, descUnidadEjecutora: 'Dirección de Obras', inciso: {idInciso: 3} },
   ];
 
-  tiposCompra: TipoCompra[] = [];
-  subtiposCompra: SubtipoCompra[] = [];
+  tiposCompra: ITipoCompraDTO[] = [];
+  subtiposCompra: ISubtipoCompraDTO[] = [];
 
   public static readonly SNAPSHOT_KEY = 'CONSULTA_MODELOS';
 
@@ -123,14 +104,9 @@ export class ConsultaModelosComponent implements OnInit, AfterViewInit {
 
   private cargarTiposCompraMock(): void {
     this.tiposCompra = [
-      { id: 1, descripcion: 'Licitación Pública', subtipos: [
-        { id: 1, descripcion: 'Nacional' },
-        { id: 2, descripcion: 'Internacional' }
-      ]},
-      { id: 2, descripcion: 'Contratación Directa', subtipos: [
-        { id: 3, descripcion: 'Por monto' }
-      ]},
-      { id: 3, descripcion: 'Licitación Abreviada', subtipos: [] }
+      { id: 'LP', descTipoCompra: 'Licitación Pública'},
+      { id: 'CD', descTipoCompra: 'Contratación Directa'},
+      { id: 'LA', descTipoCompra: 'Licitación Abreviada'}
     ];
   }
 
@@ -142,7 +118,7 @@ export class ConsultaModelosComponent implements OnInit, AfterViewInit {
 
       if (incisoId) {
         this.unidadesEjecutoras = this.unidadesEjecutorasCompletas.filter(
-          ue => ue.incisoId === incisoId
+          ue => ue.inciso?.idInciso === incisoId
         );
       } else {
         this.unidadesEjecutoras = [];
@@ -155,14 +131,31 @@ export class ConsultaModelosComponent implements OnInit, AfterViewInit {
       this.formularioFiltro.patchValue({
         subtipoCompraId: null
       }, { emitEvent: false });
-
-      if (tipoCompraId) {
-        const tipoSeleccionado = this.tiposCompra.find(tc => tc.id === tipoCompraId);
-        this.subtiposCompra = tipoSeleccionado?.subtipos || [];
+   
+      if (tipoCompraId) { 
+        this.cargarSubTiposCompraMock(tipoCompraId); 
+      
       } else {
         this.subtiposCompra = [];
       }
     });
+  }
+  cargarSubTiposCompraMock(tipoCompraId: string): void {
+    let subtipos: ISubtipoCompraDTO[] = [];
+    if (tipoCompraId === 'LP'){
+       subtipos = [
+        { idSubtipoCompra: 'NAC', descSubtipoCompra: 'Nacional', idTipoCompra: tipoCompraId },
+        { idSubtipoCompra: 'INT', descSubtipoCompra: 'Internacional', idTipoCompra: tipoCompraId }
+      ];
+    } else if (tipoCompraId=== 'CD'){
+      subtipos = [
+        { idSubtipoCompra: 'MON', descSubtipoCompra: 'Por monto', idTipoCompra: tipoCompraId  }
+      ];
+    } else if (tipoCompraId === 'LA'){
+      subtipos = [];
+
+    }
+    this.subtiposCompra = subtipos || [];
   }
 
   private buscarVolver(): void {
@@ -261,7 +254,7 @@ export class ConsultaModelosComponent implements OnInit, AfterViewInit {
     this.buscar();
   }
 
-  obtenerAccionesModelo(modelo: Modelo): AccionBoton[] {
+  obtenerAccionesModelo(modelo: ModeloDTO): AccionBoton[] {
     const acciones: AccionBoton[] = [];
 
     acciones.push({
@@ -301,8 +294,11 @@ export class ConsultaModelosComponent implements OnInit, AfterViewInit {
     return acciones;
   }
 
-  obtenerAccionesClausula(clausula: ClausulaModelo): AccionBoton[] {
+  obtenerAccionesClausula(clausula: ClausulaDTO | null | undefined): AccionBoton[] {
       const acciones: AccionBoton[] = [];
+      if (!clausula) {
+        return acciones;
+      }
   
       acciones.push({
         nombre: 'Ver',
@@ -323,19 +319,19 @@ export class ConsultaModelosComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/administracion/modelos/agregar']);
   }
 
-  modificarModelo(modelo: Modelo): void {
+  modificarModelo(modelo: ModeloDTO): void {
     if (!modelo.id) {
       return;
     }
     this.router.navigate(['/administracion/modelos/modificar', modelo.id]);
   }
 
-  verDiferencias(modelo: Modelo): void {
+  verDiferencias(modelo: ModeloDTO): void {
     console.log('Ver diferencias del modelo:', modelo);
     this.actualizarService.mensajeError('Funcionalidad en desarrollo');
   }
 
-  eliminarModelo(modelo: Modelo): void {
+  eliminarModelo(modelo: ModeloDTO): void {
     if (!modelo.id) {
       return;
     }
@@ -362,18 +358,18 @@ export class ConsultaModelosComponent implements OnInit, AfterViewInit {
       });
   }
 
-  verHistorial(modelo: Modelo): void {
+  verHistorial(modelo: ModeloDTO): void {
     if (!modelo.id) {
       return;
     }
     this.router.navigate(['/administracion/modelos/historial', modelo.id]);
   }
 
-  seleccionarModelo(modelo: Modelo): void {
+  seleccionarModelo(modelo: ModeloDTO): void {
     console.log('Modelo seleccionado:', modelo);
   }
 
-  obtenerTextoVigencia(modelo: Modelo): string {
+  obtenerTextoVigencia(modelo: ModeloDTO): string {
     const desde = modelo.fechaVigenciaDesde
       ? this.fechaPipe.transform(modelo.fechaVigenciaDesde)
       : ' ';
@@ -383,16 +379,16 @@ export class ConsultaModelosComponent implements OnInit, AfterViewInit {
     return desde + ' - ' + hasta;
   }
 
-  esBorrador(modelo: Modelo): boolean {
+  esBorrador(modelo: ModeloDTO): boolean {
     return modelo.estado === 'BORRADOR';
   }
 
-  esVigente(modelo: Modelo): boolean {
+  esVigente(modelo: ModeloDTO): boolean {
     const hoy = new Date();
     const desde = modelo.fechaVigenciaDesde ? new Date(modelo.fechaVigenciaDesde) : null;
     const hasta = modelo.fechaVigenciaHasta ? new Date(modelo.fechaVigenciaHasta) : null;
 
-    if (modelo.estado === 'BORRADOR' || !modelo.versionada) {
+    if (modelo.estado === 'BORRADOR') {
       return false;
     }
 
@@ -405,11 +401,11 @@ export class ConsultaModelosComponent implements OnInit, AfterViewInit {
     return true;
   }
 
-  obtenerEstadoVigencia(modelo: Modelo): string {
+  obtenerEstadoVigencia(modelo: ModeloDTO): string {
     return this.esVigente(modelo) ? 'VIGENTE' : 'NO_VIGENTE';
   }
 
-  obtenerTextoEstadoVigencia(modelo: Modelo): string {
+  obtenerTextoEstadoVigencia(modelo: ModeloDTO): string {
     return this.esVigente(modelo) ? 'Vigente' : 'No vigente';
   }
 

@@ -4,7 +4,10 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccionBoton } from 'src/app/shared/models/common/accion-boton.model';
 import { IColumnaOrden } from 'src/app/shared/models/common/columna-orden.model';
-import { Seccion, ClausulaSeccion } from 'src/app/shared/models/pliego/seccion.model';
+import { SeccionDTO } from 'src/app/shared/models/pliego/seccion/seccion.model';
+import { SeccionClausulaDTO } from 'src/app/shared/models/pliego/seccion/seccion-clausula.model';
+import { ClausulaDTO } from 'src/app/shared/models/pliego/clausula/clausula.model';
+import { ModeloSeccionDTO } from 'src/app/shared/models/pliego/modelo/modelo-seccion.model';
 import { FechaPipe } from 'src/app/shared/pipes/fecha.pipe';
 import { ActualizarService } from 'src/app/shared/services/common/actualizar.service';
 import { SnapshotGenericService } from 'src/app/shared/services/common/snapshot-generic.service';
@@ -28,9 +31,11 @@ export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
   private snapshotGenericService = inject(SnapshotGenericService);
 
   formularioFiltro: FormGroup;
-  secciones: Seccion[] = [];
+  secciones: SeccionDTO[] = [];
   cargando = false;
   mostrarSoloSeleccion = false;
+  origenNavegacion: string | null = null;
+  idModeloOrigen: string | null = null;
 
   colFiltro = 'col-lg-3';
   colTabla = 'col-lg-9';
@@ -58,6 +63,12 @@ export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.origenNavegacion = this.route.snapshot.queryParamMap.get('origen');
+    this.idModeloOrigen = this.route.snapshot.queryParamMap.get('idModelo');
+
+    if (this.origenNavegacion === 'modelo') {
+      this.mostrarSoloSeleccion = true;
+    }
   }
 
   ngAfterViewInit(): void {
@@ -164,8 +175,12 @@ export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
     this.buscar();
   }
 
-  obtenerAccionesSeccion(seccion: Seccion): AccionBoton[] {
+  obtenerAccionesSeccion(seccion: SeccionDTO): AccionBoton[] {
     const acciones: AccionBoton[] = [];
+
+    if (this.mostrarSoloSeleccion) {
+      return acciones;
+    }
 
     acciones.push({
       nombre: 'Modificar',
@@ -204,18 +219,22 @@ export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
     return acciones;
   }
 
-  obtenerAccionesClausula(clausula: ClausulaSeccion): AccionBoton[] {
-      const acciones: AccionBoton[] = [];
-  
-      acciones.push({
-        nombre: 'Ver',
-        clase: 'btn btn-sm',
-        icono: 'fa fa-eye',
-        ariaLabel: `Ver redacciones de cláusula ${clausula.denominacion}`,
-        //accion: () => this.eliminarClausula(clausula)
-      });
-  
+    obtenerAccionesClausula(clausula: ClausulaDTO | null | undefined): AccionBoton[] {
+    const acciones: AccionBoton[] = [];
+
+    if (!clausula) {
       return acciones;
+    }
+
+    acciones.push({
+      nombre: 'Ver',
+      clase: 'btn btn-sm',
+      icono: 'fa fa-eye',
+      ariaLabel: `Ver redacciones de cláusula ${clausula.denominacion}`,
+      //accion: () => this.eliminarClausula(clausula)
+    });
+
+    return acciones;
   }
 
   volver(): void {
@@ -226,14 +245,14 @@ export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/administracion/secciones/agregar']);
   }
 
-  modificarSeccion(seccion: Seccion): void {
+  modificarSeccion(seccion: SeccionDTO): void {
     if (!seccion.id) {
       return;
     }
     this.router.navigate(['/administracion/secciones/modificar', seccion.id]);
   }
 
-  eliminarSeccion(seccion: Seccion): void {
+  eliminarSeccion(seccion: SeccionDTO): void {
     if (!seccion.id) {
       return;
     }
@@ -260,22 +279,40 @@ export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
       });
   }
 
-  verHistorial(seccion: Seccion): void {
+  verHistorial(seccion: SeccionDTO): void {
     if (!seccion.id) {
       return;
     }
     this.router.navigate(['/administracion/secciones/historial', seccion.id]);
   }
 
-  verModelos(seccion: Seccion): void {
+  verModelos(seccion: SeccionDTO): void {
     console.log('Ver modelos de la sección:', seccion);
   }
 
-  seleccionarSeccion(seccion: Seccion): void {
-    console.log('Sección seleccionada:', seccion);
+  seleccionarSeccion(seccion: SeccionDTO): void {
+    if (this.origenNavegacion === 'modelo') {
+      const seccionParaModelo: ModeloSeccionDTO = {
+        id: 0,
+        orden: 0,
+        seccion: seccion
+      };
+
+      if (this.idModeloOrigen && this.idModeloOrigen !== 'nuevo') {
+        this.router.navigate(['/administracion/modelos/modificar', this.idModeloOrigen], {
+          state: { seccionSeleccionada: seccionParaModelo }
+        });
+      } else {
+        this.router.navigate(['/administracion/modelos/agregar'], {
+          state: { seccionSeleccionada: seccionParaModelo }
+        });
+      }
+    } else {
+      console.log('Sección seleccionada:', seccion);
+    }
   }
 
-  obtenerTextoVigencia(seccion: Seccion): string {
+  obtenerTextoVigencia(seccion: SeccionDTO): string {
     const desde = seccion.fechaVigenciaDesde
       ? this.fechaPipe.transform(seccion.fechaVigenciaDesde)
       : ' ';
@@ -285,15 +322,15 @@ export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
     return `${desde} - ${hasta}`;
   }
 
-  esBorrador(seccion: Seccion): boolean {
+  esBorrador(seccion: SeccionDTO): boolean {
     return seccion.estado === 'BORRADOR';
   }
 
-  esVigente(seccion: Seccion): boolean {
+  esVigente(seccion: SeccionDTO): boolean {
     return seccion.estado === 'VIGENTE';
   }
 
-  obtenerEstadoVigencia(seccion: Seccion): string {
+  obtenerEstadoVigencia(seccion: SeccionDTO): string {
     if (seccion.estado === 'BORRADOR') {
       const hoy = new Date();
       const desde = seccion.fechaVigenciaDesde ? new Date(seccion.fechaVigenciaDesde) : null;
@@ -310,7 +347,7 @@ export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
     return seccion.estado;
   }
 
-  obtenerTextoEstadoVigencia(seccion: Seccion): string {
+  obtenerTextoEstadoVigencia(seccion: SeccionDTO): string {
     const estado = this.obtenerEstadoVigencia(seccion);
     if (estado === 'VIGENTE') {
       return 'Vigente';
@@ -318,3 +355,10 @@ export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
     return 'No vigente';
   }
 }
+
+
+
+
+
+
+

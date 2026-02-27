@@ -4,8 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormularioBaseComponent } from 'src/app/shared/components/base/formulario-base.component';
 import { SiNoValor } from 'src/app/shared/enum/si-no-valor.enum';
 import { AccionBoton } from 'src/app/shared/models/common/accion-boton.model';
-import { TipoCompraClausula } from 'src/app/shared/models/pliego/clausula.model';
-import { SeccionModelo, Modelo } from 'src/app/shared/models/pliego/modelo.model';
+import { ModeloDTO } from 'src/app/shared/models/pliego/modelo/modelo.model';
+import { ModeloSeccionDTO } from 'src/app/shared/models/pliego/modelo/modelo-seccion.model';
+import { TipoCompraClausulaModeloDTO } from 'src/app/shared/models/pliego/comun/tipo-compra-clausula-modelo.model';
+import { SeccionDTO } from 'src/app/shared/models/pliego/seccion/seccion.model';
 import { IncisoDTO } from 'src/app/shared/models/sice/inciso.model';
 import { SubtipoCompraDTO } from 'src/app/shared/models/sice/subtipo-compra.model';
 import { TipoCompraDTO } from 'src/app/shared/models/sice/tipo-compra.model';
@@ -82,8 +84,8 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
     new SubtipoCompraDTO('2', '3', 'Por excepción', 'Contratación Directa')
   ];
 
-  seccionesAgregadas: SeccionModelo[] = [];
-  tiposCompraAgregados: TipoCompraClausula[] = [];
+  seccionesAgregadas: ModeloSeccionDTO[] = [];
+  tiposCompraAgregados: TipoCompraClausulaModeloDTO[] = [];
 
   constructor() {
     super();
@@ -126,18 +128,32 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
     }, 100);
   }
 
-  private agregarSeccionDesdeSeleccion(seccion: SeccionModelo): void {
-    const yaExiste = this.seccionesAgregadas.some(s => s.seccionId === seccion.seccionId);
+  private agregarSeccionDesdeSeleccion(seccion: ModeloSeccionDTO | SeccionDTO): void {
+    const seccionNormalizada = this.normalizarSeccionSeleccionada(seccion);
+    const seccionId = seccionNormalizada.seccion?.id;
+    const yaExiste = this.seccionesAgregadas.some(s => s.seccion?.id === seccionId);
 
     if (yaExiste) {
       this.actualizarService.mensajeError('La sección ya está agregada al modelo');
       return;
     }
 
-    seccion.orden = this.seccionesAgregadas.length + 1;
-    this.seccionesAgregadas.push(seccion);
+    seccionNormalizada.orden = this.seccionesAgregadas.length + 1;
+    this.seccionesAgregadas.push(seccionNormalizada);
     this.marcarFormularioTocado();
     this.actualizarService.mensajeCorrecto('Sección agregada exitosamente');
+  }
+
+  private normalizarSeccionSeleccionada(seccion: ModeloSeccionDTO | SeccionDTO): ModeloSeccionDTO {
+    if ('seccion' in seccion) {
+      return seccion;
+    }
+
+    return {
+      id: null,
+      seccion: seccion,
+      orden: 0
+    };
   }
 
   private inicializarFormularios(): void {
@@ -171,7 +187,7 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
     }
 
     this.modeloService.obtenerModeloPorId(this.idModelo).subscribe({
-      next: (modelo: Modelo | undefined) => {
+      next: (modelo: ModeloDTO | undefined) => {
         if (!modelo) {
           this.actualizarService.mensajeError('Modelo no encontrado');
           this.volver();
@@ -214,8 +230,8 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
     });
   }
 
-  eliminarSeccion(seccion: SeccionModelo): void {
-    const index = this.seccionesAgregadas.findIndex(s => s.seccionId === seccion.seccionId);
+  eliminarSeccion(seccion: ModeloSeccionDTO): void {
+    const index = this.seccionesAgregadas.findIndex(s => s.seccion?.id === seccion.seccion?.id);
     if (index > -1) {
       this.seccionesAgregadas.splice(index, 1);
       this.reordenarSecciones();
@@ -223,8 +239,8 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
     }
   }
 
-  moverSeccionArriba(seccion: SeccionModelo): void {
-    const index = this.seccionesAgregadas.findIndex(s => s.seccionId === seccion.seccionId);
+  moverSeccionArriba(seccion: ModeloSeccionDTO): void {
+    const index = this.seccionesAgregadas.findIndex(s => s.seccion?.id === seccion.seccion?.id);
     if (index > 0) {
       [this.seccionesAgregadas[index - 1], this.seccionesAgregadas[index]] =
         [this.seccionesAgregadas[index], this.seccionesAgregadas[index - 1]];
@@ -233,8 +249,8 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
     }
   }
 
-  moverSeccionAbajo(seccion: SeccionModelo): void {
-    const index = this.seccionesAgregadas.findIndex(s => s.seccionId === seccion.seccionId);
+  moverSeccionAbajo(seccion: ModeloSeccionDTO): void {
+    const index = this.seccionesAgregadas.findIndex(s => s.seccion?.id === seccion.seccion?.id);
     if (index < this.seccionesAgregadas.length - 1) {
       [this.seccionesAgregadas[index], this.seccionesAgregadas[index + 1]] =
         [this.seccionesAgregadas[index + 1], this.seccionesAgregadas[index]];
@@ -249,17 +265,17 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
     });
   }
 
-  obtenerAccionesSeccion(seccion: SeccionModelo): AccionBoton[] {
+  obtenerAccionesSeccion(seccion: ModeloSeccionDTO): AccionBoton[] {
     const acciones: AccionBoton[] = [];
 
-    const index = this.seccionesAgregadas.findIndex(s => s.seccionId === seccion.seccionId);
+    const index = this.seccionesAgregadas.findIndex(s => s.seccion?.id === seccion.seccion?.id);
 
     if (index > 0) {
       acciones.push({
         nombre: 'Subir',
         clase: 'btn btn-sm',
         icono: 'fa fa-arrow-up',
-        ariaLabel: 'Subir sección ' + seccion.denominacion,
+        ariaLabel: 'Subir sección ' + seccion.seccion?.denominacion || '',
         accion: () => this.moverSeccionArriba(seccion)
       });
     }
@@ -269,7 +285,7 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
         nombre: 'Bajar',
         clase: 'btn btn-sm',
         icono: 'fa fa-arrow-down',
-        ariaLabel: 'Bajar sección ' + seccion.denominacion,
+        ariaLabel: 'Bajar sección ' + seccion.seccion?.denominacion || '',
         accion: () => this.moverSeccionAbajo(seccion)
       });
     }
@@ -278,7 +294,7 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
       nombre: 'Eliminar',
       clase: 'btn btn-sm',
       icono: 'fa fa-trash',
-      ariaLabel: 'Eliminar sección ' + seccion.denominacion,
+      ariaLabel: 'Eliminar sección ' + seccion.seccion?.denominacion || '',
       accion: () => this.eliminarSeccion(seccion)
     });
 
@@ -299,9 +315,15 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
       return;
     }
 
+    const subtipoCompra = subtipoCompraId
+      ? this.subtiposCompra.find(st => st.idSubtipoCompra === subtipoCompraId)
+      : undefined;
+
     const yaExiste = this.tiposCompraAgregados.some(tc =>
-      tc.tipoCompraId === tipoCompraId &&
-      (subtipoCompraId ? tc.subtipos.some(st => st.subtipoCompraId === subtipoCompraId) : !subtipoCompraId)
+      tc.tipoCompra?.id === tipoCompraId &&
+      (subtipoCompraId
+        ? tc.subtipoCompra?.idSubtipoCompra === subtipoCompraId
+        : !tc.subtipoCompra)
     );
 
     if (yaExiste) {
@@ -309,58 +331,26 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
       return;
     }
 
-    if (!tipoCompra.descTipoCompra) {
-      this.actualizarService.mensajeError('Error al obtener la descripción del tipo de compra');
-      return;
-    }
-
-    let tipoCompraExistente = this.tiposCompraAgregados.find(tc => tc.tipoCompraId === tipoCompraId);
-
-    if (!tipoCompraExistente) {
-      tipoCompraExistente = {
-        tipoCompraId: tipoCompraId,
-        tipoCompraDescripcion: tipoCompra.descTipoCompra,
-        subtipos: []
-      };
-      this.tiposCompraAgregados.push(tipoCompraExistente);
-    }
-
-    if (subtipoCompraId && tipoCompraExistente) {
-      const subtipo = this.subtiposCompra.find(st => st.idSubtipoCompra === subtipoCompraId);
-      if (subtipo && subtipo.descSubtipoCompra) {
-        tipoCompraExistente.subtipos.push({
-          subtipoCompraId: subtipoCompraId,
-          subtipoCompraDescripcion: subtipo.descSubtipoCompra
-        });
-      }
-    }
+    this.tiposCompraAgregados.push({
+      tipoCompra: tipoCompra,
+      subtipoCompra: subtipoCompra
+    });
 
     this.formTipoCompra.reset();
     this.marcarFormularioTocado();
   }
 
-  eliminarTipoCompra(tipoCompra: TipoCompraClausula, subtipo?: any): void {
-    if (subtipo) {
-      const index = tipoCompra.subtipos.findIndex(st => st.subtipoCompraId === subtipo.subtipoCompraId);
-      if (index > -1) {
-        tipoCompra.subtipos.splice(index, 1);
-      }
-
-      if (tipoCompra.subtipos.length === 0) {
-        const indexTipo = this.tiposCompraAgregados.findIndex(tc => tc.tipoCompraId === tipoCompra.tipoCompraId);
-        if (indexTipo > -1) {
-          this.tiposCompraAgregados.splice(indexTipo, 1);
-        }
-      }
-    } else {
-      const index = this.tiposCompraAgregados.findIndex(tc => tc.tipoCompraId === tipoCompra.tipoCompraId);
-      if (index > -1) {
-        this.tiposCompraAgregados.splice(index, 1);
-      }
+  eliminarTipoCompra(tipoCompra: TipoCompraClausulaModeloDTO): void {
+    const index = this.tiposCompraAgregados.findIndex(tc =>
+      tc.tipoCompra?.id === tipoCompra.tipoCompra?.id &&
+      tc.subtipoCompra?.idSubtipoCompra === tipoCompra.subtipoCompra?.idSubtipoCompra
+    );
+    if (index > -1) {
+      this.tiposCompraAgregados.splice(index, 1);
     }
     this.marcarFormularioTocado();
   }
-  
+
   private marcarFormularioTocado(): void {
     this.form.markAsDirty();
   }
@@ -378,16 +368,27 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
 
     const valores = this.form.value;
 
-    const modelo: Partial<Modelo> = {
+    const inciso = this.incisos.find(i => i.id === valores.incisoId) || null;
+    const unidadEjecutora = valores.unidadEjecutoraId
+      ? this.unidadesEjecutorasMock.find(ue => ue.id === valores.unidadEjecutoraId) || null
+      : null;
+
+    const organismo = inciso
+      ? {
+          inciso: inciso,
+          unidadEjecutora: unidadEjecutora || undefined
+        }
+      : undefined;
+
+    const modelo: Partial<ModeloDTO> = {
       id: this.modoIngreso ? null : this.idModelo,
       denominacion: valores.denominacion!,
       fechaVigenciaDesde: valores.fechaVigenciaDesde || null,
       fechaVigenciaHasta: valores.fechaVigenciaHasta || null,
       secciones: this.seccionesAgregadas,
-      tiposCompra: [],
-      organismos: [],
+      tiposCompra: this.tiposCompraAgregados,
+      organismo: organismo,
       estado: EstadoElemento.BORRADOR,
-      versionada: false,
       version: this.modoIngreso ? 1 : undefined,
       fechaCreacion: null,
       usuarioCreacion: null,
@@ -396,8 +397,8 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
     };
 
     const operacion = this.modoIngreso
-      ? this.modeloService.crearModelo(modelo as Modelo)
-      : this.modeloService.actualizarModelo(this.idModelo, modelo as Modelo);
+      ? this.modeloService.crearModelo(modelo as ModeloDTO)
+      : this.modeloService.actualizarModelo(this.idModelo, modelo as ModeloDTO);
 
     operacion.subscribe({
       next: () => {
@@ -445,3 +446,8 @@ export class AgregarModificarModeloComponent extends FormularioBaseComponent imp
     return !this.form.dirty;
   }
 }
+
+
+
+
+

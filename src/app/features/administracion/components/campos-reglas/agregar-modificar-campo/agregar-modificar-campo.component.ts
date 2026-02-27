@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { CanComponentDeactivate } from '../../../../../shared/utils/can-component-deactivate';
 import { formularioTocado } from '../../../../../shared/utils/functions';
 import { FormularioBaseComponent } from '../../../../../shared/components/base/formulario-base.component';
-import { CampoDTO } from 'src/app/shared/models/pliego/campo.model';
+import { CampoDTO } from 'src/app/shared/models/pliego/comun/campo.model';
 import { SiNoValor } from 'src/app/shared/enum/si-no-valor.enum';
 import { AccionBoton } from 'src/app/shared/models/common/accion-boton.model';
 import { TipoDatoCampo } from '../../../enums/tipo-dato-campo.enum';

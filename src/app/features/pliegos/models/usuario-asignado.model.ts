@@ -1,4 +1,4 @@
-export interface UsuarioAsignado {
+export interface UsuarioAsignadoDTO {
   id: number;
   numeroDocumento: string;
   nombre: string;

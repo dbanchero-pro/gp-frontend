@@ -1,42 +1,43 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, delay } from 'rxjs';
-import { EliminarCapituloResponse } from '../models/eliminar-capitulo-response.model';
-import { Capitulo } from 'src/app/shared/models/pliego/capitulo.model';
+import { CapituloDTO } from 'src/app/shared/models/pliego/capitulo/capitulo.model';
 import { EstadoElemento } from 'src/app/shared/enum/estado-elemento.enum';
 import { FiltroCapitulo } from '../models/filtros/filtro-capitulo.model';
+import { EliminarElementoResponseDTO } from '../models/eliminar-elemento-response.model';
+import { ClausulaDTO } from 'src/app/shared/models/pliego/clausula/clausula.model';
+import { CapituloClausulaDTO } from 'src/app/shared/models/pliego/capitulo/capitulo-clausula.model';
+
+const crearClausulaMock = (
+  id: number,
+  denominacion: string,
+  version: number,
+  estado: EstadoElemento = EstadoElemento.VIGENTE
+): ClausulaDTO => ({
+  id,
+  denominacion,
+  tiposCompra: [],
+  objetosCompra: [],
+  estado,
+  redacciones: [],
+  version
+});
 
 @Injectable({
   providedIn: 'root'
 })
 export class CapituloService {
-  private capitulosMock: Capitulo[] = [
+    private capitulosMock: CapituloDTO[] = [
     {
       id: 1,
       denominacion: 'Capítulo de Condiciones Generales',
       fechaVigenciaDesde: '2024-01-01',
       fechaVigenciaHasta: '2025-12-31',
       estado: EstadoElemento.VIGENTE,
-      versionada: true,
       version: 1,
       clausulas: [
-        {
-          clausulaId: 1,
-          orden: 1,
-          denominacion: 'Cláusula de garantía de cumplimiento',
-          version: 1
-        },
-        {
-          clausulaId: 2,
-          orden: 2,
-          denominacion: 'Cláusula de plazo de entrega',
-          version: 1
-        },
-        {
-          clausulaId: 4,
-          orden: 3,
-          denominacion: 'Cláusula de penalidades',
-          version: 2
-        }
+        { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento', 1) },
+        { Id: 2, orden: 2, clausula: crearClausulaMock(2, 'Cláusula de plazo de entrega', 1) },
+        { Id: 4, orden: 3, clausula: crearClausulaMock(4, 'Cláusula de penalidades', 2) }
       ],
       fechaCreacion: '2024-01-01',
       usuarioCreacion: 'admin',
@@ -49,15 +50,9 @@ export class CapituloService {
       fechaVigenciaDesde: '2024-03-01',
       fechaVigenciaHasta: null,
       estado: EstadoElemento.VIGENTE,
-      versionada: true,
       version: 2,
       clausulas: [
-        {
-          clausulaId: 3,
-          orden: 1,
-          denominacion: 'Cláusula de calidad y especificaciones técnicas',
-          version: 1
-        }
+        { Id: 3, orden: 1, clausula: crearClausulaMock(3, 'Cláusula de calidad y especificaciones técnicas', 1) }
       ],
       fechaCreacion: '2024-03-01',
       usuarioCreacion: 'admin',
@@ -70,15 +65,9 @@ export class CapituloService {
       fechaVigenciaDesde: '2023-01-01',
       fechaVigenciaHasta: '2023-12-31',
       estado: EstadoElemento.NO_VIGENTE,
-      versionada: true,
       version: 1,
       clausulas: [
-        {
-          clausulaId: 1,
-          orden: 1,
-          denominacion: 'Cláusula de garantía de cumplimiento',
-          version: 1
-        }
+        { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento', 1) }
       ],
       fechaCreacion: '2023-01-01',
       usuarioCreacion: 'admin',
@@ -91,21 +80,10 @@ export class CapituloService {
       fechaVigenciaDesde: '2024-06-01',
       fechaVigenciaHasta: '2025-06-30',
       estado: EstadoElemento.VIGENTE,
-      versionada: true,
       version: 1,
       clausulas: [
-        {
-          clausulaId: 2,
-          orden: 1,
-          denominacion: 'Cláusula de plazo de entrega',
-          version: 1
-        },
-        {
-          clausulaId: 3,
-          orden: 2,
-          denominacion: 'Cláusula de calidad y especificaciones técnicas',
-          version: 1
-        }
+        { Id: 2, orden: 1, clausula: crearClausulaMock(2, 'Cláusula de plazo de entrega', 1) },
+        { Id: 3, orden: 2, clausula: crearClausulaMock(3, 'Cláusula de calidad y especificaciones técnicas', 1) }
       ],
       fechaCreacion: '2024-06-01',
       usuarioCreacion: 'admin',
@@ -118,7 +96,6 @@ export class CapituloService {
       fechaVigenciaDesde: '2024-01-01',
       fechaVigenciaHasta: null,
       estado: EstadoElemento.BORRADOR,
-      versionada: false,
       version: 1,
       clausulas: [],
       fechaCreacion: '2024-11-20',
@@ -130,7 +107,7 @@ export class CapituloService {
 
   constructor() {}
 
-  buscarCapitulos(filtro: FiltroCapitulo): Observable<Capitulo[]> {
+  buscarCapitulos(filtro: FiltroCapitulo): Observable<CapituloDTO[]> {
     let resultados = [...this.capitulosMock];
 
     if (filtro.denominacion) {
@@ -155,24 +132,23 @@ export class CapituloService {
     return of(resultados).pipe(delay(300));
   }
 
-  obtenerCapitulo(id: number): Observable<Capitulo | undefined> {
+  obtenerCapitulo(id: number): Observable<CapituloDTO | undefined> {
     const capitulo = this.capitulosMock.find(c => c.id === id);
     return of(capitulo).pipe(delay(200));
   }
 
-  obtenerCapituloPorId(id: number): Observable<Capitulo | undefined> {
+  obtenerCapituloPorId(id: number): Observable<CapituloDTO | undefined> {
     const capitulo = this.capitulosMock.find(c => c.id === id);
     return of(capitulo).pipe(delay(200));
   }
 
-  crearCapitulo(capitulo: Capitulo): Observable<Capitulo> {
+  crearCapitulo(capitulo: CapituloDTO): Observable<CapituloDTO> {
     const nuevoId = Math.max(...this.capitulosMock.map(c => c.id || 0)) + 1;
     const nuevoCapitulo = {
       ...capitulo,
       id: nuevoId,
       estado: EstadoElemento.BORRADOR,
-      version: 1,
-      versionada: false,
+      version: 1,
       fechaCreacion: new Date().toISOString().split('T')[0],
       usuarioCreacion: 'usuario_actual',
       fechaModificacion: null,
@@ -182,7 +158,7 @@ export class CapituloService {
     return of(nuevoCapitulo).pipe(delay(300));
   }
 
-  actualizarCapitulo(id: number, capitulo: Capitulo): Observable<Capitulo> {
+  actualizarCapitulo(id: number, capitulo: CapituloDTO): Observable<CapituloDTO> {
     const index = this.capitulosMock.findIndex(c => c.id === id);
     if (index !== -1) {
       const capituloActualizado = {
@@ -197,15 +173,14 @@ export class CapituloService {
     return of(capitulo).pipe(delay(300));
   }
 
-  aprobarCapitulo(id: number): Observable<Capitulo> {
+  aprobarCapitulo(id: number): Observable<CapituloDTO> {
     const index = this.capitulosMock.findIndex(c => c.id === id);
     if (index !== -1) {
       const capituloActual = this.capitulosMock[index];
 
       const versionAprobada = {
         ...capituloActual,
-        estado: EstadoElemento.VIGENTE,
-        versionada: true,
+        estado: EstadoElemento.VIGENTE,
         version: (capituloActual.version || 1),
         fechaModificacion: new Date().toISOString().split('T')[0],
         usuarioModificacion: 'usuario_actual'
@@ -217,8 +192,7 @@ export class CapituloService {
         ...versionAprobada,
         id: nuevoId,
         estado: EstadoElemento.BORRADOR,
-        version: (versionAprobada.version || 1) + 1,
-        versionada: false,
+        version: (versionAprobada.version || 1) + 1,
         fechaVigenciaDesde: '',
         fechaVigenciaHasta: null,
         fechaCreacion: new Date().toISOString().split('T')[0],
@@ -233,7 +207,7 @@ export class CapituloService {
     throw new Error('Capítulo no encontrado');
   }
 
-  guardarCapitulo(capitulo: Capitulo): Observable<Capitulo> {
+  guardarCapitulo(capitulo: CapituloDTO): Observable<CapituloDTO> {
     if (capitulo.id) {
       return this.actualizarCapitulo(capitulo.id, capitulo);
     } else {
@@ -241,11 +215,11 @@ export class CapituloService {
     }
   }
 
-  eliminarCapitulo(id: number): Observable<EliminarCapituloResponse> {
+  eliminarCapitulo(id: number): Observable<EliminarElementoResponseDTO> {
     const capitulo = this.capitulosMock.find(c => c.id === id);
 
     if (!capitulo) {
-      const response: EliminarCapituloResponse = {
+      const response: EliminarElementoResponseDTO = {
         exitoso: false,
         mensaje: 'No se encontró el capítulo especificado.',
         tipoEliminacion: 'FISICA'
@@ -262,12 +236,12 @@ export class CapituloService {
     }
   }
 
-  private eliminarVersionEditable(id: number): Observable<EliminarCapituloResponse> {
+  private eliminarVersionEditable(id: number): Observable<EliminarElementoResponseDTO> {
     const index = this.capitulosMock.findIndex(c => c.id === id);
 
     if (index !== -1) {
       this.capitulosMock.splice(index, 1);
-      const response: EliminarCapituloResponse = {
+      const response: EliminarElementoResponseDTO = {
         exitoso: true,
         mensaje: 'Se eliminó la versión editable y se restauró la versión anteriormente aprobada.',
         tipoEliminacion: 'VERSION_EDITABLE'
@@ -275,7 +249,7 @@ export class CapituloService {
       return of(response).pipe(delay(300));
     }
 
-    const response: EliminarCapituloResponse = {
+    const response: EliminarElementoResponseDTO = {
       exitoso: false,
       mensaje: 'No se pudo eliminar la versión editable.',
       tipoEliminacion: 'VERSION_EDITABLE'
@@ -283,13 +257,13 @@ export class CapituloService {
     return of(response).pipe(delay(300));
   }
 
-  private eliminarVersionAprobada(id: number): Observable<EliminarCapituloResponse> {
+  private eliminarVersionAprobada(id: number): Observable<EliminarElementoResponseDTO> {
     const index = this.capitulosMock.findIndex(c => c.id === id);
     if (index !== -1) {
       this.capitulosMock.splice(index, 1);
     }
 
-    const response: EliminarCapituloResponse = {
+    const response: EliminarElementoResponseDTO = {
       exitoso: true,
       mensaje: 'El capítulo se eliminó completamente (baja física).',
       tipoEliminacion: 'FISICA'
@@ -297,23 +271,17 @@ export class CapituloService {
     return of(response).pipe(delay(300));
   }
 
-  obtenerHistorialVersiones(capituloId: number): Observable<Capitulo[]> {
-    const historialMock: Capitulo[] = [
+  obtenerHistorialVersiones(capituloId: number): Observable<CapituloDTO[]> {
+        const historialMock: CapituloDTO[] = [
       {
         id: 101,
         denominacion: 'Capítulo de Condiciones Generales',
         fechaVigenciaDesde: '2024-01-01',
         fechaVigenciaHasta: '2025-12-31',
         estado: EstadoElemento.VIGENTE,
-        versionada: true,
         version: 3,
         clausulas: [
-          {
-            clausulaId: 1,
-            orden: 1,
-            denominacion: 'Cláusula de garantía de cumplimiento',
-            version: 1
-          }
+          { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento', 1) }
         ],
         fechaCreacion: '2024-10-15',
         usuarioCreacion: 'admin',
@@ -326,15 +294,9 @@ export class CapituloService {
         fechaVigenciaDesde: '2023-06-01',
         fechaVigenciaHasta: '2024-12-31',
         estado: EstadoElemento.NO_VIGENTE,
-        versionada: true,
         version: 2,
         clausulas: [
-          {
-            clausulaId: 1,
-            orden: 1,
-            denominacion: 'Cláusula de garantía de cumplimiento',
-            version: 1
-          }
+          { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento', 1) }
         ],
         fechaCreacion: '2023-06-01',
         usuarioCreacion: 'admin',
@@ -346,3 +308,7 @@ export class CapituloService {
     return of(historialMock).pipe(delay(300));
   }
 }
+
+
+
+

@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { EstadoProcesoPliego } from '../../enum/estado-proceso-pliego.enum';
-import { ProcesoPliego } from '../../models/proceso-pliego.model';
+import { PliegoDTO } from '../../models/pliego.model';
 
 @Component({
   selector: 'app-cancelar-pliego-popup',
@@ -14,7 +14,7 @@ export class CancelarPliegoPopupComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   public readonly bsModalRef = inject(BsModalRef);
 
-  proceso!: ProcesoPliego;
+  proceso!: PliegoDTO;
   form!: FormGroup;
   guardando = false;
 
@@ -78,5 +78,15 @@ export class CancelarPliegoPopupComponent implements OnInit {
   get motivoInvalido(): boolean {
     const control = this.form.get('motivo');
     return !!(control && control.invalid && control.touched);
+  }
+
+  obtenerTextoOrganismo(): string {
+    return `${this.proceso?.unidadEjecutora?.inciso?.descInciso ?? ''} | ${this.proceso?.unidadEjecutora?.descUnidadEjecutora ?? ''}`;
+  }
+
+  obtenerTextoTipoCompra(): string {
+    const tipo = this.proceso?.subtipoCompra?.descTipoCompra ?? '';
+    const subtipo = this.proceso?.subtipoCompra?.descSubtipoCompra ?? '';
+    return `${tipo} | ${subtipo} N° ${this.proceso?.numeroCompra ?? ''}/${this.proceso?.anioCompra ?? ''}`;
   }
 }

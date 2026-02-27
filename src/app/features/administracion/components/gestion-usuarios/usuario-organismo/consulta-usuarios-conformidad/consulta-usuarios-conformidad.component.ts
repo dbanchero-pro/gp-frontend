@@ -25,7 +25,7 @@ import { NuevoUsuarioPopupComponent } from '../nuevo-usuario-popup/nuevo-usuario
 import { NuevoUsuarioUcPopupComponent } from '../nuevo-usuario-uc-popup/nuevo-usuario-uc-popup.component';
 import { UnidadesCompraSicePopupComponent } from '../unidades-compra-sice-popup/unidades-compra-sice-popup.component';
 import { IConsultaUsuarioOrganismoPerfilFiltroDTO } from 'src/app/features/administracion/models/filtros/consulta-usuario-organismo-perfil-filtro.model';
-import { UsuarioPermisoAgrupado } from 'src/app/features/administracion/models/usuario-permiso-agrupado.model';
+import { UsuarioPermisoAgrupadoDTO } from 'src/app/features/administracion/models/usuario-permiso-agrupado.model';
 
 @Component({
     selector: 'app-consulta-usuarios-conformidad',
@@ -64,7 +64,7 @@ export class ConsultaUsuariosConformidadComponent
     ordenInicial: 'asc' | 'desc' = 'asc';
     permisos: any = {};
     nroCompra!: number;
-    usuariosAgrupados: UsuarioPermisoAgrupado[] = [];
+    usuariosAgrupados: UsuarioPermisoAgrupadoDTO[] = [];
     filtroItem?: FiltroItemCompraDTO;
 
     tiposCompra: TipoCompraDTO[] = [];
@@ -220,7 +220,7 @@ export class ConsultaUsuariosConformidadComponent
 
         this.usuarioOrganismoPerfilService.obtenerTodos(filtro, pagina, tamanoPagina, sortParam)
             .pipe(map((response) => {
-                const mapa = new Map<string, UsuarioPermisoAgrupado>();
+                const mapa = new Map<string, UsuarioPermisoAgrupadoDTO>();
 
                 this.agruparPorUsuario(response, mapa);
 
@@ -316,7 +316,7 @@ export class ConsultaUsuariosConformidadComponent
         this.usuarioOrganismoPerfilService.exportarUsuariosPerfil(filtro);
     }
 
-    obtenerAcciones(usuario: UsuarioPermisoAgrupado, modoBusqueda: string): AccionBoton[] {
+    obtenerAcciones(usuario: UsuarioPermisoAgrupadoDTO, modoBusqueda: string): AccionBoton[] {
         let acciones: AccionBoton[] = [];
 
         if (usuario.tienePermisoTodas) {
@@ -412,7 +412,7 @@ export class ConsultaUsuariosConformidadComponent
         );
     }
 
-    abrirOrganismoPopup(usuario: UsuarioPermisoAgrupado) {
+    abrirOrganismoPopup(usuario: UsuarioPermisoAgrupadoDTO) {
         const comp = this.abrirPopup(OrganismoPopupComponent, undefined, {
             initialState: {
                 usuario: usuario,
@@ -463,7 +463,7 @@ export class ConsultaUsuariosConformidadComponent
         }, 100);
     }
 
-    guardarPerfilUsuarioPorUc(data: any, usuario: UsuarioPermisoAgrupado): void {
+    guardarPerfilUsuarioPorUc(data: any, usuario: UsuarioPermisoAgrupadoDTO): void {
         const filtros = {
             idInciso: data.idInciso,
             idUnidadEjecutora: data.idUnidadEjecutora,
@@ -477,7 +477,7 @@ export class ConsultaUsuariosConformidadComponent
             });
     }
 
-    guardarPerfilUsuarioParaTodasUc(usuario: UsuarioPermisoAgrupado): void {
+    guardarPerfilUsuarioParaTodasUc(usuario: UsuarioPermisoAgrupadoDTO): void {
         this.actualizarServ.confirmar('¿Está seguro que desea agregar el permiso a nivel de todas las UC que tiene el usuario en SICE?',
             () => {
                 this.usuarioOrganismoPerfilService.agregarConformidadTodasUc(usuario.id).subscribe(() => {
@@ -544,7 +544,7 @@ export class ConsultaUsuariosConformidadComponent
         this.actualizarFiltro();
     }
 
-    private agruparPorUsuario(response: PageModel<UsuarioOrganismoPerfilDTO>, mapa: Map<string, UsuarioPermisoAgrupado>) {
+    private agruparPorUsuario(response: PageModel<UsuarioOrganismoPerfilDTO>, mapa: Map<string, UsuarioPermisoAgrupadoDTO>) {
         const usuariosConPermisoGlobal = new Set<string>();
         response.content.forEach((p: UsuarioOrganismoPerfilDTO) => {
             const key = p.idUsuario ?? '';

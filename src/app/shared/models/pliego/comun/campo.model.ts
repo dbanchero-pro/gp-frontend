@@ -2,7 +2,7 @@
 import { TipoDatoCampo } from "src/app/features/administracion/enums/tipo-dato-campo.enum";
 import { TipoFuenteCampo } from "src/app/features/administracion/enums/tipo-fuente-campo.enum";
 import { IReglaDTO } from "src/app/features/administracion/models/regla.model";
-import { SiNoValor } from "../../enum/si-no-valor.enum";
+import { SiNoValor } from "../../../enum/si-no-valor.enum";
 
 
 export interface ICampoDTO {

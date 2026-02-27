@@ -2,7 +2,7 @@ import { Component, OnInit, Version, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden.model';
 import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
-import { Clausula } from 'src/app/shared/models/pliego/clausula.model';
+import { ClausulaDTO } from 'src/app/shared/models/pliego/clausula/clausula.model';
 import { ClausulaService } from '../../../services/clausula.service';
 
 @Component({
@@ -19,8 +19,8 @@ export class HistorialClausulasComponent implements OnInit {
 
   clausulaId: number | null = null;
   denominacionClausula = '';
-  versiones: Clausula[] = [];
-  versionesFiltradas: Clausula[] = [];
+  versiones: ClausulaDTO[] = [];
+  versionesFiltradas: ClausulaDTO[] = [];
   cargando = false;
 
   total = 0;
@@ -122,47 +122,53 @@ export class HistorialClausulasComponent implements OnInit {
     this.aplicarOrdenYPaginacion();
   }
 
-  obtenerResumenTiposCompra(clausula: Clausula): string {
+  obtenerResumenTiposCompra(clausula: ClausulaDTO): string {
     return clausula.tiposCompra
       .map(tc => {
-        const subtipos = tc.subtipos.map(st => st.subtipoCompraDescripcion).join(', ');
-        return `${tc.tipoCompraDescripcion} | ${subtipos}`;
+        const tipo = tc.tipoCompra?.descTipoCompra || '';
+        const subtipo = tc.subtipoCompra?.descSubtipoCompra || 'Todos los subtipos';
+        if (!tipo) {
+          return '';
+        }
+        return `${tipo} | ${subtipo}`;
       })
+      .filter(Boolean)
       .join(' • ');
   }
 
-  obtenerResumenObjetosCompra(clausula: Clausula): string {
+  obtenerResumenObjetosCompra(clausula: ClausulaDTO): string {
     return clausula.objetosCompra
       .map(oc => {
-        const partes = [oc.familiaDescripcion];
-        if (oc.subfamiliaDescripcion) partes.push(oc.subfamiliaDescripcion);
-        if (oc.claseDescripcion) partes.push(oc.claseDescripcion);
-        if (oc.subclaseDescripcion) partes.push(oc.subclaseDescripcion);
+        const partes: string[] = [];
+        if (oc.familia?.descFamilia) partes.push(oc.familia.descFamilia);
+        if (oc.subfamilia?.descSubfamilia) partes.push(oc.subfamilia.descSubfamilia);
+        if (oc.clase?.descClase) partes.push(oc.clase.descClase);
+        if (oc.subclase?.descSubclase) partes.push(oc.subclase.descSubclase);
 
         let resultado = partes.join(' | ');
 
-        if (oc.articulo) {
-          resultado += ` | ${oc.articulo.articuloDescripcion} (${oc.articulo.articuloCodigo})`;
+        if (oc.articulo?.descArticuloServObra) {
+          resultado += ` | ${oc.articulo.descArticuloServObra}`;
         }
 
         return resultado;
       })
+      .filter(texto => texto.length > 0)
       .join(' • ');
   }
 
-  obtenerResumenIncisos(clausula: Clausula): string {
-    return clausula.incisos
-      .map(i => {
-        const inciso = `${i.incisoDescripcion}`;
-        if (i.unidadEjecutora) {
-          return `${inciso} | ${i.unidadEjecutora.unidadEjecutoraDescripcion}`;
-        }
-        return inciso;
-      })
-      .join(' • ');
+  obtenerResumenIncisos(clausula: ClausulaDTO): string {
+    if (!clausula.organismo?.inciso?.descInciso) {
+      return '';
+    }
+
+    const inciso = clausula.organismo.inciso.descInciso;
+    const unidad = clausula.organismo.unidadEjecutora?.descUnidadEjecutora;
+
+    return unidad ? `${inciso} | ${unidad}` : inciso;
   }
 
-  obtenerTextoVigencia(clausula: Clausula): string {
+  obtenerTextoVigencia(clausula: ClausulaDTO): string {
     const desde = clausula.fechaVigenciaDesde
       ? this.fechaPipe.transform(clausula.fechaVigenciaDesde)
       : '';
@@ -172,7 +178,7 @@ export class HistorialClausulasComponent implements OnInit {
     return `${desde} - ${hasta}`;
   }
 
-  obtenerFechaAprobacion(clausula: Clausula): string {
+  obtenerFechaAprobacion(clausula: ClausulaDTO): string {
     return clausula.fechaModificacion
       ? this.fechaPipe.transform(clausula.fechaModificacion)
       : '';
@@ -261,7 +267,7 @@ export class HistorialClausulasComponent implements OnInit {
     this.router.navigate(['/administracion/clausulas'], { queryParams: { volver: 1 } });
   }
 
-  obtenerEstadoVigencia(clausula: Clausula): string {
+  obtenerEstadoVigencia(clausula: ClausulaDTO): string {
       if (clausula.estado === 'BORRADOR') {
         const hoy = new Date();
         const desde = clausula.fechaVigenciaDesde ? new Date(clausula.fechaVigenciaDesde) : null;
@@ -278,11 +284,11 @@ export class HistorialClausulasComponent implements OnInit {
       return clausula.estado;
     }
 
-   esBorrador(clausula: Clausula): boolean {
+   esBorrador(clausula: ClausulaDTO): boolean {
      return clausula.estado === 'BORRADOR';
    }
 
-  obtenerTextoEstadoVigencia(clausula: Clausula): string {
+  obtenerTextoEstadoVigencia(clausula: ClausulaDTO): string {
       const estado = this.obtenerEstadoVigencia(clausula);
       if (estado === 'VIGENTE') {
         return 'Vigente';
@@ -290,3 +296,5 @@ export class HistorialClausulasComponent implements OnInit {
       return 'No vigente';
     }
 }
+
+

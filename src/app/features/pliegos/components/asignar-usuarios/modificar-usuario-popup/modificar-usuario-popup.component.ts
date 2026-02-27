@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PopupBaseComponent } from 'src/app/shared/components/popup-base/popup-base.component';
 import { TipoMensajeEnum } from 'src/app/shared/enum/tipo-mensaje.enum';
-import { UsuarioAsignado } from '../models/usuario-asignado.model';
+import { UsuarioAsignadoDTO } from '../../../models/usuario-asignado.model';
 
 @Component({
   selector: 'app-modificar-usuario-popup',
@@ -11,8 +11,8 @@ import { UsuarioAsignado } from '../models/usuario-asignado.model';
   standalone: false,
 })
 export class ModificarUsuarioPopupComponent extends PopupBaseComponent implements OnInit {
-  @Input() usuario!: UsuarioAsignado;
-  @Output() guardarEvento = new EventEmitter<UsuarioAsignado>();
+  @Input() usuario!: UsuarioAsignadoDTO;
+  @Output() guardarEvento = new EventEmitter<UsuarioAsignadoDTO>();
 
   override form!: FormGroup;
   intentoGuardar = false;
@@ -57,7 +57,7 @@ export class ModificarUsuarioPopupComponent extends PopupBaseComponent implement
     if (this.form.value.esValidador) roles.push('Validador');
     if (this.form.value.esAprobador) roles.push('Aprobador');
 
-    const usuarioModificado: UsuarioAsignado = {
+    const usuarioModificado: UsuarioAsignadoDTO = {
       ...this.usuario,
       roles: roles
     };

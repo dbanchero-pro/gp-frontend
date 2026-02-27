@@ -3,7 +3,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormularioBaseComponent } from 'src/app/shared/components/base/formulario-base.component';
 import { AccionBoton } from 'src/app/shared/models/common/accion-boton.model';
-import { CapituloSeccion, ClausulaSeccion, Seccion } from 'src/app/shared/models/pliego/seccion.model';
+import { SeccionCapituloDTO } from 'src/app/shared/models/pliego/seccion/seccion-capitulo.model';
+import { SeccionClausulaDTO } from 'src/app/shared/models/pliego/seccion/seccion-clausula.model';
+import { SeccionDTO } from 'src/app/shared/models/pliego/seccion/seccion.model';
 import { CanComponentDeactivate } from 'src/app/shared/utils/can-component-deactivate';
 import { EstadoElemento } from 'src/app/shared/enum/estado-elemento.enum';
 import { SeccionService } from '../../../services/seccion.service';
@@ -30,8 +32,8 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
     fechaVigenciaHasta: FormControl<string>;
   }>;
 
-  capitulosAgregados: CapituloSeccion[] = [];
-  clausulasAgregadas: ClausulaSeccion[] = [];
+  capitulosAgregados: SeccionCapituloDTO[] = [];
+  clausulasAgregadas: SeccionClausulaDTO[] = [];
 
   constructor() {
     super();
@@ -94,8 +96,8 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
     }, 100);
   }
 
-  private agregarCapituloDesdeSeleccion(capitulo: CapituloSeccion): void {
-    const yaExiste = this.capitulosAgregados.some(c => c.capituloId === capitulo.capituloId);
+  private agregarCapituloDesdeSeleccion(capitulo: SeccionCapituloDTO): void {
+    const yaExiste = this.capitulosAgregados.some(c => c.capitulo?.id === capitulo.capitulo?.id);
 
     if (yaExiste) {
       this.actualizarService.mensajeError('El capítulo ya está agregado a la sección');
@@ -108,8 +110,8 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
     this.actualizarService.mensajeCorrecto('Capítulo agregado exitosamente');
   }
 
-  private agregarClausulaDesdeSeleccion(clausula: ClausulaSeccion): void {
-    const yaExiste = this.clausulasAgregadas.some(c => c.clausulaId === clausula.clausulaId);
+  private agregarClausulaDesdeSeleccion(clausula: SeccionClausulaDTO): void {
+    const yaExiste = this.clausulasAgregadas.some(c => c.clausula?.id === clausula.clausula?.id);
 
     if (yaExiste) {
       this.actualizarService.mensajeError('La cláusula ya está agregada a la sección');
@@ -149,7 +151,7 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
     }
 
     this.seccionService.obtenerSeccionPorId(this.idSeccion).subscribe({
-      next: (seccion: Seccion | undefined) => {
+      next: (seccion: SeccionDTO | undefined) => {
         if (!seccion) {
           this.actualizarService.mensajeError('Sección no encontrada');
           this.volver();
@@ -203,8 +205,8 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
     });
   }
 
-  eliminarCapitulo(capitulo: CapituloSeccion): void {
-      const index = this.capitulosAgregados.findIndex(c => c.capituloId === capitulo.capituloId);
+  eliminarCapitulo(capitulo: SeccionCapituloDTO): void {
+      const index = this.capitulosAgregados.findIndex(c => c.capitulo?.id === capitulo.capitulo?.id);
       if (index > -1) {
         this.capitulosAgregados.splice(index, 1);
         this.reordenarCapitulos();
@@ -212,8 +214,8 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
       }
   }
 
-  eliminarClausula(clausula: ClausulaSeccion): void {
-      const index = this.clausulasAgregadas.findIndex(c => c.clausulaId === clausula.clausulaId);
+  eliminarClausula(clausula: SeccionClausulaDTO): void {
+      const index = this.clausulasAgregadas.findIndex(c => c.clausula?.id === clausula.clausula?.id);
       if (index > -1) {
         this.clausulasAgregadas.splice(index, 1);
         this.reordenarClausulas();
@@ -221,8 +223,8 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
       }
   }
 
-  moverCapituloArriba(capitulo: CapituloSeccion): void {
-    const index = this.capitulosAgregados.findIndex(c => c.capituloId === capitulo.capituloId);
+  moverCapituloArriba(capitulo: SeccionCapituloDTO): void {
+    const index = this.capitulosAgregados.findIndex(c => c.capitulo?.id === capitulo.capitulo?.id);
     if (index > 0) {
       [this.capitulosAgregados[index - 1], this.capitulosAgregados[index]] =
         [this.capitulosAgregados[index], this.capitulosAgregados[index - 1]];
@@ -231,8 +233,8 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
     }
   }
 
-  moverCapituloAbajo(capitulo: CapituloSeccion): void {
-    const index = this.capitulosAgregados.findIndex(c => c.capituloId === capitulo.capituloId);
+  moverCapituloAbajo(capitulo: SeccionCapituloDTO): void {
+    const index = this.capitulosAgregados.findIndex(c => c.capitulo?.id === capitulo.capitulo?.id);
     if (index < this.capitulosAgregados.length - 1) {
       [this.capitulosAgregados[index], this.capitulosAgregados[index + 1]] =
         [this.capitulosAgregados[index + 1], this.capitulosAgregados[index]];
@@ -241,8 +243,8 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
     }
   }
 
-  moverClausulaArriba(clausula: ClausulaSeccion): void {
-    const index = this.clausulasAgregadas.findIndex(c => c.clausulaId === clausula.clausulaId);
+  moverClausulaArriba(clausula: SeccionClausulaDTO): void {
+    const index = this.clausulasAgregadas.findIndex(c => c.clausula?.id === clausula.clausula?.id);
     if (index > 0) {
       [this.clausulasAgregadas[index - 1], this.clausulasAgregadas[index]] =
         [this.clausulasAgregadas[index], this.clausulasAgregadas[index - 1]];
@@ -251,8 +253,8 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
     }
   }
 
-  moverClausulaAbajo(clausula: ClausulaSeccion): void {
-    const index = this.clausulasAgregadas.findIndex(c => c.clausulaId === clausula.clausulaId);
+  moverClausulaAbajo(clausula: SeccionClausulaDTO): void {
+    const index = this.clausulasAgregadas.findIndex(c => c.clausula?.id === clausula.clausula?.id);
     if (index < this.clausulasAgregadas.length - 1) {
       [this.clausulasAgregadas[index], this.clausulasAgregadas[index + 1]] =
         [this.clausulasAgregadas[index + 1], this.clausulasAgregadas[index]];
@@ -273,17 +275,17 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
     });
   }
 
-  obtenerAccionesCapitulo(capitulo: CapituloSeccion): AccionBoton[] {
+  obtenerAccionesCapitulo(capitulo: SeccionCapituloDTO): AccionBoton[] {
     const acciones: AccionBoton[] = [];
 
-    const index = this.capitulosAgregados.findIndex(c => c.capituloId === capitulo.capituloId);
+    const index = this.capitulosAgregados.findIndex(c => c.capitulo?.id === capitulo.capitulo?.id);
 
     if (index > 0) {
       acciones.push({
         nombre: 'Subir',
         clase: 'btn btn-sm',
         icono: 'fa fa-arrow-up',
-        ariaLabel: `Subir capítulo ${capitulo.denominacion}`,
+        ariaLabel: `Subir capítulo ${capitulo.capitulo?.denominacion}`,
         accion: () => this.moverCapituloArriba(capitulo)
       });
     }
@@ -293,7 +295,7 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
         nombre: 'Bajar',
         clase: 'btn btn-sm',
         icono: 'fa fa-arrow-down',
-        ariaLabel: `Bajar capítulo ${capitulo.denominacion}`,
+        ariaLabel: `Bajar capítulo ${capitulo.capitulo?.denominacion}`,
         accion: () => this.moverCapituloAbajo(capitulo)
       });
     }
@@ -302,24 +304,24 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
       nombre: 'Eliminar',
       clase: 'btn btn-sm',
       icono: 'fa fa-trash',
-      ariaLabel: `Eliminar capítulo ${capitulo.denominacion}`,
+      ariaLabel: `Eliminar capítulo ${capitulo.capitulo?.denominacion}`,
       accion: () => this.eliminarCapitulo(capitulo)
     });
 
     return acciones;
   }
 
-  obtenerAccionesClausula(clausula: ClausulaSeccion): AccionBoton[] {
+  obtenerAccionesClausula(clausula: SeccionClausulaDTO): AccionBoton[] {
     const acciones: AccionBoton[] = [];
 
-    const index = this.clausulasAgregadas.findIndex(c => c.clausulaId === clausula.clausulaId);
+    const index = this.clausulasAgregadas.findIndex(c => c.clausula?.id === clausula.clausula?.id);
 
     if (index > 0) {
       acciones.push({
         nombre: 'Subir',
         clase: 'btn btn-sm',
         icono: 'fa fa-arrow-up',
-        ariaLabel: `Subir cláusula ${clausula.denominacion}`,
+        ariaLabel: `Subir cláusula ${clausula.clausula?.denominacion}`,
         accion: () => this.moverClausulaArriba(clausula)
       });
     }
@@ -329,7 +331,7 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
         nombre: 'Bajar',
         clase: 'btn btn-sm',
         icono: 'fa fa-arrow-down',
-        ariaLabel: `Bajar cláusula ${clausula.denominacion}`,
+        ariaLabel: `Bajar cláusula ${clausula.clausula?.denominacion}`,
         accion: () => this.moverClausulaAbajo(clausula)
       });
     }
@@ -338,7 +340,7 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
       nombre: 'Eliminar',
       clase: 'btn btn-sm',
       icono: 'fa fa-trash',
-      ariaLabel: `Eliminar cláusula ${clausula.denominacion}`,
+      ariaLabel: `Eliminar cláusula ${clausula.clausula?.denominacion}`,
       accion: () => this.eliminarClausula(clausula)
     });
 
@@ -362,7 +364,7 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
 
     const valores = this.form.value;
 
-    const seccion: Partial<Seccion> = {
+    const seccion: Partial<SeccionDTO> = {
       id: this.modoIngreso ? null : this.idSeccion,
       denominacion: valores.denominacion!,
       fechaVigenciaDesde: valores.fechaVigenciaDesde || null,
@@ -370,7 +372,6 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
       capitulos: this.capitulosAgregados,
       clausulas: this.clausulasAgregadas,
       estado: EstadoElemento.BORRADOR,
-      versionada: false,
       version: this.modoIngreso ? 1 : undefined,
       fechaCreacion: null,
       usuarioCreacion: null,
@@ -379,8 +380,8 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
     };
 
     const operacion = this.modoIngreso
-      ? this.seccionService.crearSeccion(seccion as Seccion)
-      : this.seccionService.actualizarSeccion(this.idSeccion, seccion as Seccion);
+      ? this.seccionService.crearSeccion(seccion as SeccionDTO)
+      : this.seccionService.actualizarSeccion(this.idSeccion, seccion as SeccionDTO);
 
     operacion.subscribe({
       next: () => {
@@ -428,3 +429,4 @@ export class AgregarModificarSeccionComponent extends FormularioBaseComponent im
     return !this.form.dirty;
   }
 }
+

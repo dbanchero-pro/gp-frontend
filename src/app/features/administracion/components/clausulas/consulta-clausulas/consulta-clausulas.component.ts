@@ -17,8 +17,9 @@ import { NumeroNulo } from '../../../../../shared/types/numero-nulo.type';
 import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
 import { ActualizarService } from '../../../../../shared/services/common/actualizar.service';
 import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
-import { Clausula } from 'src/app/shared/models/pliego/clausula.model';
-import { RedaccionClausula } from '../../../../../shared/models/pliego/redaccion-clausula.model';
+import { ClausulaDTO } from 'src/app/shared/models/pliego/clausula/clausula.model';
+import { RedaccionDTO } from '../../../../../shared/models/pliego/clausula/redaccion.model';
+import { CapituloClausulaDTO } from 'src/app/shared/models/pliego/capitulo/capitulo-clausula.model';
 import { FiltroClausula } from '../../../models/filtros/filtro-clausula.model';
 import { ClausulaService } from '../../../services/clausula.service';
 
@@ -39,7 +40,7 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
   private snapshotGenericService = inject(SnapshotGenericService);
 
   formularioFiltro: FormGroup;
-  clausulas: Clausula[] = [];
+  clausulas: ClausulaDTO[] = [];
   cargando = false;
   mostrarSoloSeleccion = false;
   origenNavegacion: string | null = null;
@@ -320,7 +321,7 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
   }
 
 
-  obtenerAccionesClausula(clausula: Clausula): AccionBoton[] {
+  obtenerAccionesClausula(clausula: ClausulaDTO): AccionBoton[] {
     const acciones: AccionBoton[] = [];
 
     if (this.mostrarSoloSeleccion) {
@@ -373,7 +374,7 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
   }
 
 
-   obtenerAccionesRedaccion(redaccion: RedaccionClausula): AccionBoton[] {
+   obtenerAccionesRedaccion(redaccion: RedaccionDTO): AccionBoton[] {
     const acciones: AccionBoton[] = [];
 
     acciones.push({
@@ -403,14 +404,14 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/administracion/clausulas/agregar']);
   }
 
-  modificarClausula(clausula: Clausula): void {
+  modificarClausula(clausula: ClausulaDTO): void {
     if (!clausula.id) {
       return;
     }
     this.router.navigate(['/administracion/clausulas/modificar', clausula.id]);
   }
 
-  eliminarClausula(clausula: Clausula): void {
+  eliminarClausula(clausula: ClausulaDTO): void {
     if (!clausula.id) {
       return;
     }
@@ -437,34 +438,33 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
       });
     }
 
-  verHistorial(clausula: Clausula): void {
+  verHistorial(clausula: ClausulaDTO): void {
     if (!clausula.id) {
       return;
     }
     this.router.navigate(['/administracion/clausulas/historial', clausula.id]);
   }
 
-  verDiferencias(clausula: Clausula): void {
+  verDiferencias(clausula: ClausulaDTO): void {
     if (!clausula.id) {
       return;
     }
     this.router.navigate(['/administracion/clausulas/diferencias', clausula.id]);
   }
 
-  verModelos(clausula: Clausula): void {
+  verModelos(clausula: ClausulaDTO): void {
     if (!clausula.id) {
       return;
     }
     this.router.navigate(['/administracion/clausulas/modelos', clausula.id]);
   }
 
-  seleccionarClausula(clausula: Clausula): void {
+  seleccionarClausula(clausula: ClausulaDTO): void {
     if (this.origenNavegacion === 'capitulo') {
-      const clausulaParaCapitulo = {
-        clausulaId: clausula.id!,
-        denominacion: clausula.denominacion,
-        version: clausula.version,
-        orden: 0
+      const clausulaParaCapitulo: CapituloClausulaDTO = {
+        Id: 0,
+        orden: 0,
+        clausula: clausula
       };
 
       if (this.idCapituloOrigen && this.idCapituloOrigen !== 'nuevo') {
@@ -481,47 +481,53 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
     }
   }
 
-  obtenerResumenTiposCompra(clausula: Clausula): string {
+  obtenerResumenTiposCompra(clausula: ClausulaDTO): string {
     return clausula.tiposCompra
       .map(tc => {
-        const subtipos = tc.subtipos.map(st => st.subtipoCompraDescripcion).join(', ');
-        return `${tc.tipoCompraDescripcion} | ${subtipos}`;
+        const tipo = tc.tipoCompra?.descTipoCompra || '';
+        const subtipo = tc.subtipoCompra?.descSubtipoCompra || 'Todos los subtipos';
+        if (!tipo) {
+          return '';
+        }
+        return `${tipo} | ${subtipo}`;
       })
+      .filter(Boolean)
       .join(' • ');
   }
 
-  obtenerResumenObjetosCompra(clausula: Clausula): string {
+  obtenerResumenObjetosCompra(clausula: ClausulaDTO): string {
     return clausula.objetosCompra
       .map(oc => {
-        const partes = [oc.familiaDescripcion];
-        if (oc.subfamiliaDescripcion) partes.push(oc.subfamiliaDescripcion);
-        if (oc.claseDescripcion) partes.push(oc.claseDescripcion);
-        if (oc.subclaseDescripcion) partes.push(oc.subclaseDescripcion);
+        const partes: string[] = [];
+        if (oc.familia?.descFamilia) partes.push(oc.familia.descFamilia);
+        if (oc.subfamilia?.descSubfamilia) partes.push(oc.subfamilia.descSubfamilia);
+        if (oc.clase?.descClase) partes.push(oc.clase.descClase);
+        if (oc.subclase?.descSubclase) partes.push(oc.subclase.descSubclase);
 
         let resultado = partes.join(' | ');
 
-        if (oc.articulo) {
-          resultado += ` | ${oc.articulo.articuloDescripcion} (${oc.articulo.articuloCodigo})`;
+        if (oc.articulo?.descArticuloServObra) {
+          resultado += ` | ${oc.articulo.descArticuloServObra}`;
         }
 
         return resultado;
       })
+      .filter(texto => texto.length > 0)
       .join(' • ');
   }
 
-  obtenerResumenIncisos(clausula: Clausula): string {
-    return clausula.incisos
-      .map(i => {
-        const inciso = `${i.incisoDescripcion}`;
-        if (i.unidadEjecutora) {
-          return `${inciso} | ${i.unidadEjecutora.unidadEjecutoraDescripcion}`;
-        }
-        return inciso;
-      })
-      .join(' • ');
+  obtenerResumenIncisos(clausula: ClausulaDTO): string {
+    if (!clausula.organismo?.inciso?.descInciso) {
+      return '';
+    }
+
+    const inciso = clausula.organismo.inciso.descInciso;
+    const unidad = clausula.organismo.unidadEjecutora?.descUnidadEjecutora;
+
+    return unidad ? `${inciso} | ${unidad}` : inciso;
   }
 
-  obtenerTextoVigencia(clausula: Clausula): string {
+  obtenerTextoVigencia(clausula: ClausulaDTO): string {
     const desde = clausula.fechaVigenciaDesde
       ? this.fechaPipe.transform(clausula.fechaVigenciaDesde)
       : '';
@@ -610,7 +616,7 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
     return resultadoHTML;
   }
 
-  obtenerEstadoVigencia(clausula: Clausula): string {
+  obtenerEstadoVigencia(clausula: ClausulaDTO): string {
       if (clausula.estado === 'BORRADOR') {
         const hoy = new Date();
         const desde = clausula.fechaVigenciaDesde ? new Date(clausula.fechaVigenciaDesde) : null;
@@ -627,11 +633,11 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
       return clausula.estado;
     }
 
-  esBorrador(clausula: Clausula): boolean {
+  esBorrador(clausula: ClausulaDTO): boolean {
      return clausula.estado === 'BORRADOR';
    }
 
-  obtenerTextoEstadoVigencia(clausula: Clausula): string {
+  obtenerTextoEstadoVigencia(clausula: ClausulaDTO): string {
       const estado = this.obtenerEstadoVigencia(clausula);
       if (estado === 'VIGENTE') {
         return 'Vigente';
@@ -640,3 +646,8 @@ export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
     }
 
 }
+
+
+
+
+

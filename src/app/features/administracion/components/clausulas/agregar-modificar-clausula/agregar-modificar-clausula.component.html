@@ -145,7 +145,6 @@
                 </div></div>
               </div>
             </div>
-
             <div *ngIf="tiposCompraAgregados.length > 0" class="table-responsive">
               <table class="table table-bordered table-hover">
                 <thead>
@@ -156,28 +155,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <ng-container *ngFor="let tipoCompra of tiposCompraAgregados">
-                    <tr *ngIf="tipoCompra.subtipos.length === 0">
-                       <td class="text-center">
-                        <button type="button" class="btn btn-sm" (click)="eliminarTipoCompra(tipoCompra)"
-                          [attr.aria-label]="'Eliminar tipo de compra ' + tipoCompra.tipoCompraDescripcion">
-                          <em class="fa fa-trash"></em>
-                        </button>
-                      </td>
-                      <td>{{ tipoCompra.tipoCompraDescripcion }}</td>
-                      <td>Todos los subtipos</td>
-                    </tr>
-                    <tr *ngFor="let subtipo of tipoCompra.subtipos">
-                       <td class="text-center">
-                        <button type="button" class="btn btn-sm" (click)="eliminarTipoCompra(tipoCompra, subtipo)"
-                          [attr.aria-label]="'Eliminar subtipo de compra ' + subtipo.subtipoCompraDescripcion">
-                          <em class="fa fa-trash"></em>
-                        </button>
-                      </td>
-                      <td>{{ tipoCompra.tipoCompraDescripcion }}</td>
-                      <td>{{ subtipo.subtipoCompraDescripcion }}</td>
-                    </tr>
-                  </ng-container>
+                  <tr *ngFor="let tipoCompra of tiposCompraAgregados">
+                    <td class="text-center">
+                      <button type="button" class="btn btn-sm" (click)="eliminarTipoCompra(tipoCompra)"
+                        [attr.aria-label]="'Eliminar tipo de compra ' + (tipoCompra.tipoCompra.descTipoCompra || '')">
+                        <em class="fa fa-trash"></em>
+                      </button>
+                    </td>
+                    <td>{{ tipoCompra.tipoCompra.descTipoCompra }}</td>
+                    <td>{{ tipoCompra.subtipoCompra?.descSubtipoCompra || 'Todos los subtipos' }}</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -292,13 +279,13 @@
                         <em class="fa fa-trash"></em>
                       </button>
                     </td>
-                    <td>{{ objeto.familiaDescripcion }}</td>
-                    <td>{{ objeto.subfamiliaDescripcion || 'Todas las subfamilias' }}</td>
-                    <td>{{ objeto.claseDescripcion || 'Todas las clases' }}</td>
-                    <td>{{ objeto.subclaseDescripcion || 'Todas las subclases' }}</td>
+                    <td>{{ objeto.familia.descFamilia }}</td>
+                    <td>{{ objeto.subfamilia?.descSubfamilia || 'Todas las subfamilias' }}</td>
+                    <td>{{ objeto.clase?.descClase || 'Todas las clases' }}</td>
+                    <td>{{ objeto.subclase?.descSubclase || 'Todas las subclases' }}</td>
                     <td>
                       <span *ngIf="objeto.articulo">
-                        {{ objeto.articulo.articuloDescripcion }} ({{ objeto.articulo.articuloCodigo }})
+                        {{ objeto.articulo.descArticuloServObra }}
                       </span>
                       <span *ngIf="!objeto.articulo">Todos los artículos</span>
                     </td>
@@ -355,3 +342,5 @@
     </div>
   </div>
 </div>
+
+

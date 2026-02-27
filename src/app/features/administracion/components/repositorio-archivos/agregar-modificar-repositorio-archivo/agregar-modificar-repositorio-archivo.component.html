@@ -133,39 +133,26 @@
                             </div>
                         </div>
                         <div *ngIf="tiposCompraAgregados.length > 0" class="table-responsive">
-                            <table class="table table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th class="text-center" style="width: 5%">Acciones</th>
-                                    <th>Descripción tipo de compra</th>
-                                    <th>Descripción subtipo de compra</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <ng-container *ngFor="let tipoCompra of tiposCompraAgregados">
-                                    <tr *ngIf="tipoCompra.subtipos.length === 0">
-                                    <td class="text-center">
-                                        <button type="button" class="btn btn-sm"
-                                        [attr.aria-label]="'Eliminar tipo de compra ' + tipoCompra.tipoCompraDescripcion">
-                                        <em class="fa fa-trash"></em>
-                                        </button>
-                                    </td>
-                                    <td>{{ tipoCompra.tipoCompraDescripcion }}</td>
-                                    <td>Todos los subtipos</td>
-                                    </tr>
-                                    <tr *ngFor="let subtipo of tipoCompra.subtipos">
-                                    <td>{{ tipoCompra.tipoCompraDescripcion }}</td>
-                                    <td>{{ subtipo.subtipoCompraDescripcion }}</td>
-                                    <td class="text-center">
-                                        <button type="button" class="btn btn-sm"
-                                        [attr.aria-label]="'Eliminar subtipo de compra ' + subtipo.subtipoCompraDescripcion">
-                                        <em class="fa fa-trash"></em>
-                                        </button>
-                                    </td>
-                                    </tr>
-                                </ng-container>
-                                </tbody>
-                            </table>
+                          <table class="table table-bordered table-hover">
+                            <thead>
+                              <tr>
+                                <th class="text-center" style="width: 100px;">Acciones</th>
+                                <th>Descripción tipo de compra</th>
+                                <th>Descripción subtipo de compra</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let tipoCompra of tiposCompraAgregados">
+                                <td class="text-center">
+                                  <button type="button" class="btn btn-sm">
+                                    <em class="fa fa-trash"></em>
+                                  </button>
+                                </td>
+                                <td>{{ tipoCompra.tipoCompra.descTipoCompra }}</td>
+                                <td>{{ tipoCompra.subtipoCompra?.descSubtipoCompra || 'Todos los subtipos' }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
 
                         <div *ngIf="tiposCompraAgregados.length === 0" class="alert alert-info">
@@ -204,3 +191,4 @@
         </div>
     </div>
 </div>
+

@@ -1,139 +1,251 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
-import { ProcesoPliego } from '../models/proceso-pliego.model';
-import { FiltroBandejaEntrada } from '../models/filtro-bandeja-entrada.model';
+import { delay } from 'rxjs/operators';
 import { EstadoProcesoPliego } from '../enum/estado-proceso-pliego.enum';
 import { PageModel } from '../../../shared/models/common/page/page.model';
-import { PliegoBase } from '../models/pliego-base.model';
+import { PliegoDTO } from '../models/pliego.model';
+import { TipoCompraDTO } from 'src/app/shared/models/sice/tipo-compra.model';
+import { SubtipoCompraDTO } from 'src/app/shared/models/sice/subtipo-compra.model';
+import { EstadoElemento } from 'src/app/shared/enum/estado-elemento.enum';
+import { ModeloDTO } from 'src/app/shared/models/pliego/modelo/modelo.model';
+import { UnidadEjecutoraDTO } from 'src/app/shared/models/sice/unidad-ejecutora.model';
+import { SiNoAmbasValor } from 'src/app/shared/enum/si-no-ambas-valor.enum';
+import { FiltroBandejaEntradaDTO } from '../models/filtros/filtro-bandeja-entrada.model';
+import { CampoPliegoDTO } from '../models/campo-pliego.model';
+
+const CAMPO_PLIEGO_VACIO: CampoPliegoDTO = {
+  id: 0,
+  valorString: '',
+  campo: {} as any,
+  bloqueado: 'N'
+};
+
+const crearModeloMock = (
+  id: number,
+  denominacion: string,
+  estado: EstadoElemento,
+  version: number
+): ModeloDTO => ({
+  id,
+  denominacion,
+  fechaVigenciaDesde: '2024-01-01',
+  fechaVigenciaHasta: '2025-12-31',
+  estado,
+  version,
+  secciones: [],
+  tiposCompra: [],
+  organismo: undefined,
+  fechaCreacion: null,
+  usuarioCreacion: null,
+  fechaModificacion: null,
+  usuarioModificacion: null
+});
+
+const crearUnidadEjecutoraMock = (
+  incisoId: number,
+  incisoDesc: string,
+  unidadId: number,
+  unidadDesc: string
+): UnidadEjecutoraDTO =>
+  new UnidadEjecutoraDTO(unidadId, { idInciso: incisoId, descInciso: incisoDesc }, unidadId, unidadDesc);
+
+const crearPliegoMock = (
+  id: number,
+  estado: EstadoProcesoPliego,
+  modelo: ModeloDTO,
+  unidadEjecutora: UnidadEjecutoraDTO,
+  subtipoCompra: SubtipoCompraDTO,
+  numeroCompra: number,
+  anioCompra: number,
+  aperturaElectronica: SiNoAmbasValor,
+  fechaPublicacion: Date | undefined,
+  fechaTopeRecepcionOfertas: Date | undefined
+): PliegoDTO => ({
+  id,
+  modelo,
+  estado,
+  unidadEjecutora,
+  subtipoCompra,
+  numeroCompra,
+  anioCompra,
+  aperturaElectronica,
+  fechaPublicacion,
+  fechaTopeRecepcionOfertas,
+  version: 1,
+  notas: [],
+  campos: CAMPO_PLIEGO_VACIO,
+  historial: []
+});
 
 @Injectable({
   providedIn: 'root'
 })
 export class BandejaEntradaService {
-
-  private procesosMock: ProcesoPliego[] = [
-    {
-      id: 1,
-      estado: EstadoProcesoPliego.PENDIENTE,
-      incisoDescripcion: 'Poder Ejecutivo',
-      unidadEjecutoraDescripcion: 'Ministerio de Economía',
-      unidadCompraDescripcion: 'Dirección de Compras',
-      tipoCompraDescripcion: 'Licitación Pública',
-      subtipoCompraDescripcion: 'Nacional',
-      numeroCompra: 2023,
-      anioCompra: 2024,
-      fechaPublicacion: undefined,
-      fechaTopeRecepcionOfertas: undefined,
-      vigente: false
-    },
-    {
-      id: 2,
-      estado: EstadoProcesoPliego.ASIGNADO,
-      incisoDescripcion: 'Poder Ejecutivo',
-      unidadEjecutoraDescripcion: 'Ministerio de Salud',
-      unidadCompraDescripcion: 'Unidad de Compras Médicas',
-      tipoCompraDescripcion: 'Contratación Directa',
-      subtipoCompraDescripcion: 'Por excepción',
-      numeroCompra: 3045,
-      anioCompra: 2024,
-      fechaPublicacion: undefined,
-      fechaTopeRecepcionOfertas: undefined,
-      vigente: false
-    },
-    {
-      id: 3,
-      estado: EstadoProcesoPliego.EN_PROCESO,
-      incisoDescripcion: 'Poder Legislativo',
-      unidadEjecutoraDescripcion: 'Cámara de Diputados',
-      unidadCompraDescripcion: 'Departamento de Adquisiciones',
-      tipoCompraDescripcion: 'Licitación Abreviada',
-      subtipoCompraDescripcion: 'Menor cuantía',
-      numeroCompra: 4567,
-      anioCompra: 2024,
-      fechaPublicacion: undefined,
-      fechaTopeRecepcionOfertas: undefined,
-      vigente: false
-    },
-    {
-      id: 4,
-      estado: EstadoProcesoPliego.PENDIENTE_VALIDACION,
-      incisoDescripcion: 'Poder Ejecutivo',
-      unidadEjecutoraDescripcion: 'Ministerio de Educación',
-      unidadCompraDescripcion: 'Dirección de Compras',
-      tipoCompraDescripcion: 'Licitación Pública',
-      subtipoCompraDescripcion: 'Internacional',
-      numeroCompra: 5890,
-      anioCompra: 2024,
-      fechaPublicacion: undefined,
-      fechaTopeRecepcionOfertas: undefined,
-      vigente: false
-    },
-    {
-      id: 5,
-      estado: EstadoProcesoPliego.PENDIENTE_APROBACION,
-      incisoDescripcion: 'Poder Judicial',
-      unidadEjecutoraDescripcion: 'Suprema Corte de Justicia',
-      unidadCompraDescripcion: 'Oficina de Compras',
-      tipoCompraDescripcion: 'Licitación Pública',
-      subtipoCompraDescripcion: 'Nacional',
-      numeroCompra: 6712,
-      anioCompra: 2024,
-      fechaPublicacion: undefined,
-      fechaTopeRecepcionOfertas: undefined,
-      vigente: false
-    },
-    {
-      id: 6,
-      estado: EstadoProcesoPliego.APROBADO,
-      incisoDescripcion: 'Poder Ejecutivo',
-      unidadEjecutoraDescripcion: 'Ministerio de Obras Públicas',
-      unidadCompraDescripcion: 'Unidad de Infraestructura',
-      tipoCompraDescripcion: 'Licitación Pública',
-      subtipoCompraDescripcion: 'Nacional',
-      numeroCompra: 7834,
-      anioCompra: 2024,
-      fechaPublicacion: new Date('2024-11-15'),
-      fechaTopeRecepcionOfertas: new Date('2024-12-20'),
-      vigente: false
-    },
-    {
-      id: 7,
-      estado: EstadoProcesoPliego.PUBLICADO,
-      incisoDescripcion: 'Poder Ejecutivo',
-      unidadEjecutoraDescripcion: 'Ministerio de Transporte',
-      unidadCompraDescripcion: 'Dirección de Logística',
-      tipoCompraDescripcion: 'Licitación Abreviada',
-      subtipoCompraDescripcion: 'Menor cuantía',
-      numeroCompra: 8901,
-      anioCompra: 2024,
-      fechaPublicacion: new Date('2024-10-01'),
-      fechaTopeRecepcionOfertas: new Date('2025-03-15'),
-      vigente: true
-    },
+  private procesosMock: PliegoDTO[] = [
+    crearPliegoMock(
+      1,
+      EstadoProcesoPliego.PENDIENTE,
+      crearModeloMock(101, 'Proceso pendiente', EstadoElemento.VIGENTE, 1),
+      crearUnidadEjecutoraMock(1, 'Poder Ejecutivo', 1, 'Ministerio de Economia'),
+      new SubtipoCompraDTO('1', '1', 'Nacional', 'Licitacion Publica'),
+      2023,
+      2024,
+      SiNoAmbasValor.SI,
+      undefined,
+      undefined
+    ),
+    crearPliegoMock(
+      2,
+      EstadoProcesoPliego.ASIGNADO,
+      crearModeloMock(102, 'Proceso asignado', EstadoElemento.VIGENTE, 1),
+      crearUnidadEjecutoraMock(1, 'Poder Ejecutivo', 2, 'Ministerio de Salud'),
+      new SubtipoCompraDTO('2', '3', 'Por excepcion', 'Contratacion Directa'),
+      3045,
+      2024,
+      SiNoAmbasValor.SI,
+      undefined,
+      undefined
+    ),
+    crearPliegoMock(
+      3,
+      EstadoProcesoPliego.EN_PROCESO,
+      crearModeloMock(103, 'Proceso en elaboracion', EstadoElemento.VIGENTE, 1),
+      crearUnidadEjecutoraMock(2, 'Poder Legislativo', 3, 'Camara de Diputados'),
+      new SubtipoCompraDTO('3', '1', 'Menor cuantia', 'Licitacion Abreviada'),
+      4567,
+      2024,
+      SiNoAmbasValor.SI,
+      undefined,
+      undefined
+    ),
+    crearPliegoMock(
+      4,
+      EstadoProcesoPliego.PENDIENTE_VALIDACION,
+      crearModeloMock(104, 'Proceso en validacion', EstadoElemento.VIGENTE, 1),
+      crearUnidadEjecutoraMock(1, 'Poder Ejecutivo', 4, 'Ministerio de Educacion'),
+      new SubtipoCompraDTO('1', '2', 'Internacional', 'Licitacion Publica'),
+      5890,
+      2024,
+      SiNoAmbasValor.SI,
+      undefined,
+      undefined
+    ),
+    crearPliegoMock(
+      5,
+      EstadoProcesoPliego.PENDIENTE_APROBACION,
+      crearModeloMock(105, 'Proceso pendiente aprobacion', EstadoElemento.VIGENTE, 1),
+      crearUnidadEjecutoraMock(3, 'Poder Judicial', 5, 'Suprema Corte de Justicia'),
+      new SubtipoCompraDTO('1', '1', 'Nacional', 'Licitacion Publica'),
+      6712,
+      2024,
+      SiNoAmbasValor.SI,
+      undefined,
+      undefined
+    ),
+    crearPliegoMock(
+      6,
+      EstadoProcesoPliego.APROBADO,
+      crearModeloMock(106, 'Proceso aprobado', EstadoElemento.VIGENTE, 1),
+      crearUnidadEjecutoraMock(1, 'Poder Ejecutivo', 6, 'Ministerio de Obras Publicas'),
+      new SubtipoCompraDTO('1', '1', 'Nacional', 'Licitacion Publica'),
+      7834,
+      2024,
+      SiNoAmbasValor.SI,
+      new Date('2024-11-15'),
+      new Date('2024-12-20')
+    ),
+    crearPliegoMock(
+      7,
+      EstadoProcesoPliego.PUBLICADO,
+      crearModeloMock(107, 'Proceso publicado', EstadoElemento.VIGENTE, 1),
+      crearUnidadEjecutoraMock(1, 'Poder Ejecutivo', 7, 'Ministerio de Transporte'),
+      new SubtipoCompraDTO('3', '1', 'Menor cuantia', 'Licitacion Abreviada'),
+      8901,
+      2024,
+      SiNoAmbasValor.SI,
+      new Date('2024-10-01'),
+      new Date('2026-12-15')
+    )
   ];
 
-  constructor() { }
+  private pliegosBaseMock: PliegoDTO[] = [
+    crearPliegoMock(
+      101,
+      EstadoProcesoPliego.EN_PROCESO,
+      crearModeloMock(1, 'Modelo de Licitacion Publica Nacional', EstadoElemento.BORRADOR, 1),
+      crearUnidadEjecutoraMock(1, 'Poder Ejecutivo', 1, 'Ministerio de Economia'),
+      new SubtipoCompraDTO('1', '1', 'Nacional', 'Licitacion Publica'),
+      1234,
+      2024,
+      SiNoAmbasValor.SI,
+      new Date('2024-01-15'),
+      undefined
+    ),
+    crearPliegoMock(
+      102,
+      EstadoProcesoPliego.EN_PROCESO,
+      crearModeloMock(2, 'Modelo de Contratacion Directa', EstadoElemento.BORRADOR, 1),
+      crearUnidadEjecutoraMock(1, 'Poder Ejecutivo', 2, 'Ministerio de Salud'),
+      new SubtipoCompraDTO('2', '3', 'Por excepcion', 'Contratacion Directa'),
+      5678,
+      2024,
+      SiNoAmbasValor.NO,
+      new Date('2024-02-20'),
+      undefined
+    ),
+    crearPliegoMock(
+      103,
+      EstadoProcesoPliego.EN_PROCESO,
+      crearModeloMock(3, 'Modelo Borrador - Obras Publicas', EstadoElemento.BORRADOR, 1),
+      crearUnidadEjecutoraMock(2, 'Poder Legislativo', 3, 'Camara de Diputados'),
+      new SubtipoCompraDTO('3', '1', 'Menor cuantia', 'Licitacion Abreviada'),
+      9012,
+      2024,
+      SiNoAmbasValor.A,
+      new Date('2024-03-10'),
+      undefined
+    ),
+    crearPliegoMock(
+      104,
+      EstadoProcesoPliego.PENDIENTE,
+      crearModeloMock(4, 'Modelo de Licitacion Publica Internacional', EstadoElemento.BORRADOR, 1),
+      crearUnidadEjecutoraMock(1, 'Poder Ejecutivo', 4, 'Ministerio de Educacion'),
+      new SubtipoCompraDTO('1', '2', 'Internacional', 'Licitacion Publica'),
+      3456,
+      2024,
+      SiNoAmbasValor.SI,
+      new Date('2024-04-05'),
+      undefined
+    ),
+    crearPliegoMock(
+      105,
+      EstadoProcesoPliego.PENDIENTE,
+      crearModeloMock(5, 'Modelo de Licitacion Publica Nacional', EstadoElemento.BORRADOR, 1),
+      crearUnidadEjecutoraMock(3, 'Poder Judicial', 5, 'Suprema Corte de Justicia'),
+      new SubtipoCompraDTO('1', '1', 'Nacional', 'Licitacion Publica'),
+      7890,
+      2024,
+      SiNoAmbasValor.NO,
+      new Date('2024-05-12'),
+      undefined
+    )
+  ];
 
   buscarProcesos(
-    filtro: FiltroBandejaEntrada,
+    filtro: FiltroBandejaEntradaDTO,
     pagina: number,
     tamanoPagina: number,
     sort: string,
     order: 'asc' | 'desc'
-  ): Observable<PageModel<ProcesoPliego>> {
+  ): Observable<PageModel<PliegoDTO>> {
     let resultados = [...this.procesosMock];
 
     if (filtro.incisoId) {
-      resultados = resultados.filter(p => p.incisoDescripcion.includes('Ejecutivo'));
+      resultados = resultados.filter(p => p.unidadEjecutora?.inciso?.idInciso === filtro.incisoId);
     }
 
     if (filtro.unidadEjecutoraId) {
-      resultados = resultados.filter(p => p.unidadEjecutoraDescripcion !== '');
-    }
-
-    if (filtro.unidadCompraId) {
-      resultados = resultados.filter(p => p.unidadCompraDescripcion !== '');
+      resultados = resultados.filter(p => p.unidadEjecutora?.idUnidadEjecutora === filtro.unidadEjecutoraId);
     }
 
     if (filtro.numeroCompra) {
@@ -145,7 +257,7 @@ export class BandejaEntradaService {
     }
 
     if (filtro.tipoCompraId) {
-      resultados = resultados.filter(p => p.tipoCompraDescripcion !== '');
+      resultados = resultados.filter(p => p.subtipoCompra?.idTipoCompra === filtro.tipoCompraId);
     }
 
     if (filtro.estado) {
@@ -153,14 +265,12 @@ export class BandejaEntradaService {
     }
 
     if (filtro.soloPublicadosVigentes) {
-      resultados = resultados.filter(p =>
-        p.estado === EstadoProcesoPliego.PUBLICADO && p.vigente === true
-      );
+      resultados = resultados.filter(p => this.esPublicadoVigente(p));
     }
 
     resultados.sort((a, b) => {
       if (sort === 'estado') {
-        const ordenEstado: { [key in EstadoProcesoPliego]: number } = {
+        const ordenEstado: Record<EstadoProcesoPliego, number> = {
           [EstadoProcesoPliego.PENDIENTE]: 1,
           [EstadoProcesoPliego.ASIGNADO]: 2,
           [EstadoProcesoPliego.EN_PROCESO]: 3,
@@ -174,18 +284,19 @@ export class BandejaEntradaService {
         const valorA = ordenEstado[a.estado];
         const valorB = ordenEstado[b.estado];
         return order === 'asc' ? valorA - valorB : valorB - valorA;
-      } else if (sort === 'numeroCompra') {
-        const valorA = a.numeroCompra;
-        const valorB = b.numeroCompra;
-        if (valorA < valorB) return order === 'asc' ? -1 : 1;
-        if (valorA > valorB) return order === 'asc' ? 1 : -1;
-        return 0;
-      } else if (sort === 'tipoCompraDescripcion') {
-        const valorA = a.tipoCompraDescripcion || '';
-        const valorB = b.tipoCompraDescripcion || '';
+      }
+
+      if (sort === 'numeroCompra') {
+        return order === 'asc' ? a.numeroCompra - b.numeroCompra : b.numeroCompra - a.numeroCompra;
+      }
+
+      if (sort === 'tipoCompraDescripcion') {
+        const valorA = a.subtipoCompra?.descTipoCompra ?? '';
+        const valorB = b.subtipoCompra?.descTipoCompra ?? '';
         const comparacion = valorA.localeCompare(valorB);
         return order === 'asc' ? comparacion : -comparacion;
       }
+
       return 0;
     });
 
@@ -195,11 +306,11 @@ export class BandejaEntradaService {
     const fin = inicio + tamanoPagina;
     const contenidoPaginado = resultados.slice(inicio, fin);
 
-    const page: PageModel<ProcesoPliego> = {
+    const page: PageModel<PliegoDTO> = {
       page: pagina,
       content: contenidoPaginado,
-      totalPages: totalPages,
-      totalElements: totalElements,
+      totalPages,
+      totalElements,
       last: pagina >= totalPages - 1,
       size: tamanoPagina,
       number: pagina,
@@ -212,7 +323,7 @@ export class BandejaEntradaService {
     return of(page).pipe(delay(500));
   }
 
-  obtenerProceso(id: number): Observable<ProcesoPliego> {
+  obtenerProceso(id: number): Observable<PliegoDTO> {
     const proceso = this.procesosMock.find(p => p.id === id);
     if (!proceso) {
       throw new Error(`Proceso con id ${id} no encontrado`);
@@ -226,7 +337,7 @@ export class BandejaEntradaService {
   }
 
   asignarUsuariosYFinalizar(procesoId: number, usuariosConRoles: any[]): Observable<void> {
-    console.log('Finalizando asignación para el proceso:', procesoId, usuariosConRoles);
+    console.log('Finalizando asignacion para el proceso:', procesoId, usuariosConRoles);
     const proceso = this.procesosMock.find(p => p.id === procesoId);
     if (proceso) {
       proceso.estado = EstadoProcesoPliego.ASIGNADO;
@@ -234,238 +345,62 @@ export class BandejaEntradaService {
     return of(void 0).pipe(delay(500));
   }
 
-  private pliegosBaseMock: PliegoBase[] = [
-    {
-      id: 101,
-      denominacionModelo: 'Modelo Estándar Licitación Pública Nacional',
-      vigenciaModelo: '01/01/2024 - 31/12/2024',
-      estadoModelo: 'VIGENTE',
-      versionadaModelo: true,
-      fechaVigenciaDesdeModelo: new Date('2024-01-01'),
-      fechaVigenciaHastaModelo: new Date('2024-12-31'),
-      incisoDescripcion: 'Poder Ejecutivo',
-      unidadEjecutoraDescripcion: 'Ministerio de Economía',
-      tipoCompraDescripcion: 'Licitación Pública',
-      subtipoCompraDescripcion: 'Nacional',
-      numeroCompra: 1234,
-      anioCompra: 2024,
-      aperturaElectronica: 'SI',
-      fechaPublicacion: new Date('2024-01-15')
-    },
-    {
-      id: 102,
-      denominacionModelo: 'Modelo Estándar Contratación Directa',
-      vigenciaModelo: '01/06/2023 - 31/05/2024',
-      estadoModelo: 'NO_VIGENTE',
-      versionadaModelo: true,
-      fechaVigenciaDesdeModelo: new Date('2023-06-01'),
-      fechaVigenciaHastaModelo: new Date('2024-05-31'),
-      incisoDescripcion: 'Poder Ejecutivo',
-      unidadEjecutoraDescripcion: 'Ministerio de Salud',
-      tipoCompraDescripcion: 'Contratación Directa',
-      subtipoCompraDescripcion: 'Por excepción',
-      numeroCompra: 5678,
-      anioCompra: 2024,
-      aperturaElectronica: 'NO',
-      fechaPublicacion: new Date('2024-02-20')
-    },
-    {
-      id: 103,
-      denominacionModelo: 'Modelo Licitación Abreviada',
-      vigenciaModelo: '15/03/2024 - 15/03/2025',
-      estadoModelo: 'VIGENTE',
-      versionadaModelo: true,
-      fechaVigenciaDesdeModelo: new Date('2024-03-15'),
-      fechaVigenciaHastaModelo: new Date('2025-03-15'),
-      incisoDescripcion: 'Poder Legislativo',
-      unidadEjecutoraDescripcion: 'Cámara de Diputados',
-      tipoCompraDescripcion: 'Licitación Abreviada',
-      subtipoCompraDescripcion: 'Menor cuantía',
-      numeroCompra: 9012,
-      anioCompra: 2024,
-      aperturaElectronica: 'AMBAS',
-      fechaPublicacion: new Date('2024-03-10')
-    },
-    {
-      id: 104,
-      denominacionModelo: 'Modelo Internacional de Bienes',
-      vigenciaModelo: '01/01/2024 - 31/12/2024',
-      estadoModelo: 'VIGENTE',
-      versionadaModelo: true,
-      fechaVigenciaDesdeModelo: new Date('2024-01-01'),
-      fechaVigenciaHastaModelo: new Date('2024-12-31'),
-      incisoDescripcion: 'Poder Ejecutivo',
-      unidadEjecutoraDescripcion: 'Ministerio de Educación',
-      tipoCompraDescripcion: 'Licitación Pública',
-      subtipoCompraDescripcion: 'Internacional',
-      numeroCompra: 3456,
-      anioCompra: 2024,
-      aperturaElectronica: 'SI',
-      fechaPublicacion: new Date('2024-04-05')
-    },
-    {
-      id: 105,
-      denominacionModelo: 'Modelo Estándar Servicios Profesionales',
-      vigenciaModelo: '01/07/2023 - 30/06/2024',
-      estadoModelo: 'NO_VIGENTE',
-      versionadaModelo: true,
-      fechaVigenciaDesdeModelo: new Date('2023-07-01'),
-      fechaVigenciaHastaModelo: new Date('2024-06-30'),
-      incisoDescripcion: 'Poder Judicial',
-      unidadEjecutoraDescripcion: 'Suprema Corte de Justicia',
-      tipoCompraDescripcion: 'Licitación Pública',
-      subtipoCompraDescripcion: 'Nacional',
-      numeroCompra: 7890,
-      anioCompra: 2024,
-      aperturaElectronica: 'NO',
-      fechaPublicacion: new Date('2024-05-12')
-    },
-    {
-      id: 106,
-      denominacionModelo: 'Modelo Obras Públicas',
-      vigenciaModelo: '01/01/2024 - 31/12/2024',
-      estadoModelo: 'VIGENTE',
-      versionadaModelo: true,
-      fechaVigenciaDesdeModelo: new Date('2024-01-01'),
-      fechaVigenciaHastaModelo: new Date('2024-12-31'),
-      incisoDescripcion: 'Poder Ejecutivo',
-      unidadEjecutoraDescripcion: 'Ministerio de Obras Públicas',
-      tipoCompraDescripcion: 'Licitación Pública',
-      subtipoCompraDescripcion: 'Nacional',
-      numeroCompra: 2345,
-      anioCompra: 2024,
-      aperturaElectronica: 'AMBAS',
-      fechaPublicacion: new Date('2024-06-18')
-    },
-    {
-      id: 107,
-      denominacionModelo: 'Modelo Transporte y Logística',
-      vigenciaModelo: '01/09/2023 - 31/08/2024',
-      estadoModelo: 'NO_VIGENTE',
-      versionadaModelo: true,
-      fechaVigenciaDesdeModelo: new Date('2023-09-01'),
-      fechaVigenciaHastaModelo: new Date('2024-08-31'),
-      incisoDescripcion: 'Poder Ejecutivo',
-      unidadEjecutoraDescripcion: 'Ministerio de Transporte',
-      tipoCompraDescripcion: 'Licitación Abreviada',
-      subtipoCompraDescripcion: 'Menor cuantía',
-      numeroCompra: 6789,
-      anioCompra: 2024,
-      aperturaElectronica: 'SI',
-      fechaPublicacion: new Date('2024-07-22')
-    },
-    {
-      id: 108,
-      denominacionModelo: 'Modelo Tecnología e Informática',
-      vigenciaModelo: '01/01/2024 - 31/12/2024',
-      estadoModelo: 'BORRADOR',
-      versionadaModelo: false,
-      fechaVigenciaDesdeModelo: new Date('2024-01-01'),
-      fechaVigenciaHastaModelo: new Date('2024-12-31'),
-      incisoDescripcion: 'Poder Ejecutivo',
-      unidadEjecutoraDescripcion: 'Agencia de Gobierno Electrónico',
-      tipoCompraDescripcion: 'Licitación Pública',
-      subtipoCompraDescripcion: 'Nacional',
-      numeroCompra: 4567,
-      anioCompra: 2024,
-      aperturaElectronica: 'AMBAS',
-      fechaPublicacion: new Date('2024-08-30')
-    }
-  ];
-
   buscarPliegos(
     tipoBusqueda: string,
     incisoId: number | null,
     unidadEjecutoraId: number | null,
-    tipoCompraId: number | null,
-    subtipoCompraId: number | null,
+    tipoCompraId: string | null,
+    subtipoCompraId: string | null,
     denominacion: string | null
-  ): Observable<PliegoBase[]> {
+  ): Observable<PliegoDTO[]> {
     let resultados = [...this.pliegosBaseMock];
 
-    // Filtrar según tipo de búsqueda
     if (tipoBusqueda === 'P') {
-      // Pliegos de mi organismo (simular filtrado por organismo actual)
-      resultados = resultados.filter(p => p.incisoDescripcion === 'Poder Ejecutivo');
+      resultados = resultados.filter(p => p.unidadEjecutora?.inciso?.idInciso === 1);
     } else if (tipoBusqueda === 'PO') {
-      // Pliegos de otros organismos
-      // Si se selecciona un inciso específico, filtrar por él
       if (incisoId) {
-        const incisoSeleccionado = this.getIncisoById(incisoId);
-        if (incisoSeleccionado) {
-          resultados = resultados.filter(p => p.incisoDescripcion === incisoSeleccionado.descripcion);
-        }
+        resultados = resultados.filter(p => p.unidadEjecutora?.inciso?.idInciso === incisoId);
       }
 
-      // Si se selecciona una unidad ejecutora, filtrar por ella
       if (unidadEjecutoraId) {
-        const ueSeleccionada = this.getUnidadEjecutoraById(unidadEjecutoraId);
-        if (ueSeleccionada) {
-          resultados = resultados.filter(p => p.unidadEjecutoraDescripcion === ueSeleccionada.descripcion);
-        }
+        resultados = resultados.filter(p => p.unidadEjecutora?.idUnidadEjecutora === unidadEjecutoraId);
       }
     }
 
-    // Aplicar otros filtros
     if (tipoCompraId) {
-      const tipoSeleccionado = this.getTipoCompraById(tipoCompraId);
-      if (tipoSeleccionado) {
-        resultados = resultados.filter(p => p.tipoCompraDescripcion === tipoSeleccionado.descripcion);
-      }
-    }
+      resultados = resultados.filter(p => p.subtipoCompra?.idTipoCompra === tipoCompraId);
 
-    if (subtipoCompraId) {
-      const subtipoSeleccionado = this.getSubtipoCompraById(subtipoCompraId);
-      if (subtipoSeleccionado) {
-        resultados = resultados.filter(p => p.subtipoCompraDescripcion === subtipoSeleccionado.descripcion);
+      if (subtipoCompraId) {
+        resultados = resultados.filter(p => p.subtipoCompra?.idSubtipoCompra === subtipoCompraId);
       }
     }
 
     if (denominacion && denominacion.trim()) {
       const denominacionLower = denominacion.toLowerCase().trim();
-      resultados = resultados.filter(p =>
-        p.denominacionModelo.toLowerCase().includes(denominacionLower)
-      );
+      resultados = resultados.filter(p => (p.modelo?.denominacion ?? '').toLowerCase().includes(denominacionLower));
     }
 
     return of(resultados).pipe(delay(500));
   }
 
-  // Métodos auxiliares para simular búsquedas en catálogos
-  private getIncisoById(id: number): { id: number; codigo: string; descripcion: string } | undefined {
-    const incisos = [
-      { id: 1, codigo: '02', descripcion: 'Presidencia de la República' },
-      { id: 2, codigo: '04', descripcion: 'Ministerio de Economía y Finanzas' },
-      { id: 3, codigo: '10', descripcion: 'Ministerio de Obras Públicas' }
-    ];
-    return incisos.find(i => i.id === id);
+  private esPublicadoVigente(pliego: PliegoDTO): boolean {
+    if (pliego.estado !== EstadoProcesoPliego.PUBLICADO) {
+      return false;
+    }
+    if (!pliego.fechaTopeRecepcionOfertas) {
+      return false;
+    }
+    return new Date(pliego.fechaTopeRecepcionOfertas) >= new Date();
   }
 
-  private getUnidadEjecutoraById(id: number): { id: number; descripcion: string } | undefined {
-    const unidades = [
-      { id: 1, descripcion: 'Unidad Central' },
-      { id: 2, descripcion: 'Unidad de Proyectos' },
-      { id: 5, descripcion: 'Dirección General' },
-      { id: 10, descripcion: 'Dirección de Obras' }
-    ];
-    return unidades.find(u => u.id === id);
-  }
-
-  private getTipoCompraById(id: number): { id: number; descripcion: string } | undefined {
-    const tipos = [
-      { id: 1, descripcion: 'Licitación Pública' },
-      { id: 2, descripcion: 'Contratación Directa' },
-      { id: 3, descripcion: 'Licitación Abreviada' }
+  private getTipoCompraById(id: string): TipoCompraDTO | undefined {
+    const tipos: TipoCompraDTO[] = [
+      { id: '1', descTipoCompra: 'Licitacion Publica' },
+      { id: '2', descTipoCompra: 'Contratacion Directa' },
+      { id: '3', descTipoCompra: 'Licitacion Abreviada' }
     ];
     return tipos.find(t => t.id === id);
   }
-
-  private getSubtipoCompraById(id: number): { id: number; descripcion: string } | undefined {
-    const subtipos = [
-      { id: 1, descripcion: 'Nacional' },
-      { id: 2, descripcion: 'Internacional' },
-      { id: 3, descripcion: 'Por monto' }
-    ];
-    return subtipos.find(s => s.id === id);
-  }
 }
+
+

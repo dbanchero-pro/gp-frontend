@@ -1,53 +1,85 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, delay, map } from 'rxjs';
-import { EliminarClausulaResponse } from '../models/eliminar-clausula-response.model';
 import { EstadoElemento } from 'src/app/shared/enum/estado-elemento.enum';
-import { Clausula } from 'src/app/shared/models/pliego/clausula.model';
+import { ClausulaDTO } from 'src/app/shared/models/pliego/clausula/clausula.model';
+import { ModeloDTO } from 'src/app/shared/models/pliego/modelo/modelo.model';
+import { TipoCompraClausulaModeloDTO } from 'src/app/shared/models/pliego/comun/tipo-compra-clausula-modelo.model';
+import { OrganismoClausulaModeloDTO } from 'src/app/shared/models/pliego/comun/organismo-clausula-modelo.model';
+import { ObjetoCompraDTO } from 'src/app/shared/models/pliego/clausula/objeto-compra.model';
+import { TipoCompraDTO } from 'src/app/shared/models/sice/tipo-compra.model';
+import { SubtipoCompraDTO } from 'src/app/shared/models/sice/subtipo-compra.model';
+import { IncisoDTO } from 'src/app/shared/models/sice/inciso.model';
+import { UnidadEjecutoraDTO } from 'src/app/shared/models/sice/unidad-ejecutora.model';
+import { FamiliaDTO } from 'src/app/shared/models/cbso/familia.model';
+import { SubfamiliaDTO } from 'src/app/shared/models/cbso/subfamilia.model';
+import { ClaseDTO } from 'src/app/shared/models/cbso/clase.model';
+import { SubclaseDTO } from 'src/app/shared/models/cbso/subclase.model';
+import { ArticuloServObraDTO } from 'src/app/shared/models/cbso/articulo-serv-obra.model';
 import { FiltroClausula } from '../models/filtros/filtro-clausula.model';
+import { EliminarElementoResponseDTO } from '../models/eliminar-elemento-response.model';
+
+const crearTipoCompraMock = (
+  id: string,
+  descripcion: string,
+  subtipoId?: string,
+  subtipoDescripcion?: string
+): TipoCompraClausulaModeloDTO => ({
+  tipoCompra: new TipoCompraDTO(id, descripcion),
+  subtipoCompra: subtipoId ? new SubtipoCompraDTO(id, subtipoId, subtipoDescripcion, descripcion) : undefined
+});
+
+const crearObjetoCompraMock = (
+  familiaId: number,
+  familiaDesc: string,
+  subfamiliaId?: number,
+  subfamiliaDesc?: string,
+  claseId?: number,
+  claseDesc?: string,
+  subclaseId?: number,
+  subclaseDesc?: string,
+  articuloId?: number,
+  articuloDesc?: string
+): ObjetoCompraDTO => ({
+  familia: new FamiliaDTO(familiaId, '', familiaDesc),
+  subfamilia: subfamiliaId ? new SubfamiliaDTO(subfamiliaId, '', subfamiliaDesc, familiaId.toString()) : undefined,
+  clase: claseId ? new ClaseDTO(claseId, claseId, claseDesc, familiaId, subfamiliaId) : undefined,
+  subclase: subclaseId
+    ? new SubclaseDTO(subclaseId, '', subclaseDesc, familiaId.toString(), subfamiliaId?.toString(), claseId?.toString())
+    : undefined,
+  articulo: articuloId ? new ArticuloServObraDTO(articuloId, articuloDesc) : undefined
+});
+
+const crearOrganismoMock = (
+  incisoId: number,
+  incisoDesc: string,
+  unidadEjecutoraId?: number,
+  unidadEjecutoraDesc?: string
+): OrganismoClausulaModeloDTO => ({
+  inciso: new IncisoDTO(incisoId, incisoDesc),
+  unidadEjecutora: unidadEjecutoraId
+    ? new UnidadEjecutoraDTO(unidadEjecutoraId, new IncisoDTO(incisoId, incisoDesc), unidadEjecutoraId, unidadEjecutoraDesc)
+    : undefined
+});
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClausulaService {
-  private clausulasMock: Clausula[] = [
-     {
+    private clausulasMock: ClausulaDTO[] = [
+    {
       id: 100,
       denominacion: 'Cláusula vacía',
       aperturaElectronica: false,
       tiposCompra: [
-        {
-          tipoCompraId: 1,
-          tipoCompraDescripcion: 'Licitación Pública',
-          subtipos: [
-            { subtipoCompraId: 1, subtipoCompraDescripcion: 'Común' }
-          ]
-        }
+        crearTipoCompraMock('1', 'Licitación Pública', '1', 'Común')
       ],
       objetosCompra: [
-        {
-          familiaId: 1,
-          familiaDescripcion: 'Equipos de computación',
-          subfamiliaId: 1,
-          subfamiliaDescripcion: 'Computadoras',
-          claseId: 1,
-          claseDescripcion: 'Notebooks',
-          subclaseId: 1,
-          subclaseDescripcion: 'Portátiles',
-          articulo: { articuloId: 1, articuloCodigo: 'ART001', articuloDescripcion: 'Notebook HP' }
-        }
+        crearObjetoCompraMock(1, 'Equipos de computación', 1, 'Computadoras', 1, 'Notebooks', 1, 'Portátiles', 1, 'Notebook HP')
       ],
-      incisos: [
-        {
-          incisoId: 1,
-          incisoCodigo: '01',
-          incisoDescripcion: 'Poder Ejecutivo',
-          unidadEjecutora: { unidadEjecutoraId: 1, unidadEjecutoraCodigo: '001', unidadEjecutoraDescripcion: 'Ministerio de Economía' }
-        }
-      ],
+      organismo: crearOrganismoMock(1, 'Poder Ejecutivo', 1, 'Ministerio de Economía'),
       fechaVigenciaDesde: '2023-01-01',
       fechaVigenciaHasta: '2023-12-31',
       estado: EstadoElemento.NO_VIGENTE,
-      versionada: true,
       version: 1,
       redacciones: [],
       fechaCreacion: '2023-01-01',
@@ -60,45 +92,20 @@ export class ClausulaService {
       denominacion: 'Cláusula de garantía de cumplimiento',
       aperturaElectronica: true,
       tiposCompra: [
-        {
-          tipoCompraId: 1,
-          tipoCompraDescripcion: 'Licitación Pública',
-          subtipos: [
-            { subtipoCompraId: 1, subtipoCompraDescripcion: 'Nacional' },
-            { subtipoCompraId: 2, subtipoCompraDescripcion: 'Internacional' }
-          ]
-        }
+        crearTipoCompraMock('1', 'Licitación Pública', '1', 'Nacional'),
+        crearTipoCompraMock('1', 'Licitación Pública', '2', 'Internacional')
       ],
       objetosCompra: [
-        {
-          familiaId: 1,
-          familiaDescripcion: 'Equipos de computación',
-          subfamiliaId: 1,
-          subfamiliaDescripcion: 'Computadoras',
-          claseId: 1,
-          claseDescripcion: 'Notebooks',
-          subclaseId: 1,
-          subclaseDescripcion: 'Portátiles',
-          articulo: { articuloId: 1, articuloCodigo: 'ART001', articuloDescripcion: 'Notebook HP' }
-        }
+        crearObjetoCompraMock(1, 'Equipos de computación', 1, 'Computadoras', 1, 'Notebooks', 1, 'Portátiles', 1, 'Notebook HP')
       ],
-      incisos: [
-        {
-          incisoId: 1,
-          incisoCodigo: '01',
-          incisoDescripcion: 'Poder Ejecutivo',
-          unidadEjecutora: { unidadEjecutoraId: 1, unidadEjecutoraCodigo: '001', unidadEjecutoraDescripcion: 'Ministerio de Economía' }
-        }
-      ],
+      organismo: crearOrganismoMock(1, 'Poder Ejecutivo', 1, 'Ministerio de Economía'),
       fechaVigenciaDesde: '2024-01-01',
       fechaVigenciaHasta: '2025-12-31',
       estado: EstadoElemento.VIGENTE,
-      versionada: true,
       version: 3,
       redacciones: [
         {
           id: 1,
-          clausulaId: 1,
           prioridad: 1,
           redaccion: '<p>El proveedor deberá presentar una <strong>garantía de cumplimiento</strong> por el <em>10% del monto total del contrato</em>.</p><p>Esta garantía deberá mantenerse vigente durante:</p><ul><li>Toda la ejecución del contrato</li><li>Hasta 90 días posteriores a la recepción definitiva de los bienes</li></ul><p>La garantía podrá presentarse en cualquiera de las siguientes formas:</p><ol><li>Póliza de seguro de caución</li><li>Garantía bancaria</li><li>Pagaré con firma certificada</li></ol>',
           fechaCreacion: '2024-01-01',
@@ -117,44 +124,19 @@ export class ClausulaService {
       denominacion: 'Cláusula de plazo de entrega',
       aperturaElectronica: true,
       tiposCompra: [
-        {
-          tipoCompraId: 2,
-          tipoCompraDescripcion: 'Contratación Directa',
-          subtipos: [
-            { subtipoCompraId: 3, subtipoCompraDescripcion: 'Por excepción' }
-          ]
-        }
+        crearTipoCompraMock('2', 'Contratación Directa', '3', 'Por excepción')
       ],
       objetosCompra: [
-        {
-          familiaId: 2,
-          familiaDescripcion: 'Mobiliario',
-          subfamiliaId: 2,
-          subfamiliaDescripcion: 'Muebles de oficina',
-          claseId: 2,
-          claseDescripcion: 'Escritorios',
-          subclaseId: 2,
-          subclaseDescripcion: 'Ejecutivos',
-          articulo: { articuloId: 3, articuloCodigo: 'ART003', articuloDescripcion: 'Escritorio ejecutivo' }
-        }
+        crearObjetoCompraMock(2, 'Mobiliario', 2, 'Muebles de oficina', 2, 'Escritorios', 2, 'Ejecutivos', 3, 'Escritorio ejecutivo')
       ],
-      incisos: [
-        {
-          incisoId: 2,
-          incisoCodigo: '02',
-          incisoDescripcion: 'Poder Legislativo',
-          unidadEjecutora: { unidadEjecutoraId: 2, unidadEjecutoraCodigo: '002', unidadEjecutoraDescripcion: 'Cámara de Diputados' }
-        }
-      ],
+      organismo: crearOrganismoMock(2, 'Poder Legislativo', 2, 'Cámara de Diputados'),
       fechaVigenciaDesde: '2024-06-01',
       fechaVigenciaHasta: null,
       estado: EstadoElemento.VIGENTE,
-      versionada: true,
       version: 1,
       redacciones: [
         {
           id: 2,
-          clausulaId: 2,
           prioridad: 1,
           redaccion: '<p>El proveedor se compromete a entregar los bienes en un <strong>plazo máximo de 30 días corridos</strong> a partir de la fecha de adjudicación.</p><p>En caso de <span style="color: #d32f2f;">incumplimiento del plazo</span>, se aplicarán las multas correspondientes según lo establecido en el pliego de condiciones.</p>',
           fechaCreacion: '2024-06-01',
@@ -164,7 +146,6 @@ export class ClausulaService {
         },
         {
           id: 3,
-          clausulaId: 2,
           prioridad: 2,
           redaccion: '<p>La entrega deberá realizarse en el lugar indicado por la contratante, corriendo por cuenta del proveedor todos los gastos de:</p><ul><li><strong>Transporte</strong></li><li><strong>Seguro</strong></li><li><strong>Descarga</strong></li></ul>',
           fechaCreacion: '2024-06-01',
@@ -183,44 +164,19 @@ export class ClausulaService {
       denominacion: 'Cláusula de calidad y especificaciones técnicas',
       aperturaElectronica: false,
       tiposCompra: [
-        {
-          tipoCompraId: 1,
-          tipoCompraDescripcion: 'Licitación Pública',
-          subtipos: [
-            { subtipoCompraId: 1, subtipoCompraDescripcion: 'Nacional' }
-          ]
-        }
+        crearTipoCompraMock('1', 'Licitación Pública', '1', 'Nacional')
       ],
       objetosCompra: [
-        {
-          familiaId: 1,
-          familiaDescripcion: 'Equipos de computación',
-          subfamiliaId: 1,
-          subfamiliaDescripcion: 'Computadoras',
-          claseId: 1,
-          claseDescripcion: 'Notebooks',
-          subclaseId: 1,
-          subclaseDescripcion: 'Portátiles',
-          articulo: { articuloId: 1, articuloCodigo: 'ART001', articuloDescripcion: 'Notebook HP' }
-        }
+        crearObjetoCompraMock(1, 'Equipos de computación', 1, 'Computadoras', 1, 'Notebooks', 1, 'Portátiles', 1, 'Notebook HP')
       ],
-      incisos: [
-        {
-          incisoId: 1,
-          incisoCodigo: '01',
-          incisoDescripcion: 'Poder Ejecutivo',
-          unidadEjecutora: { unidadEjecutoraId: 1, unidadEjecutoraCodigo: '001', unidadEjecutoraDescripcion: 'Ministerio de Economía' }
-        }
-      ],
+      organismo: crearOrganismoMock(1, 'Poder Ejecutivo', 1, 'Ministerio de Economía'),
       fechaVigenciaDesde: '2023-01-01',
       fechaVigenciaHasta: '2023-12-31',
       estado: EstadoElemento.NO_VIGENTE,
-      versionada: true,
       version: 1,
       redacciones: [
         {
           id: 4,
-          clausulaId: 3,
           prioridad: 1,
           redaccion: '<p>Los bienes a entregar deberán cumplir con las <strong>especificaciones técnicas</strong> detalladas en el pliego de condiciones.</p><p>El proveedor garantiza que los productos son:</p><ul><li>Nuevos</li><li>De primera calidad</li><li>Libres de defectos de fabricación</li></ul><blockquote><em>Nota: Se realizarán inspecciones de calidad durante la recepción de los bienes.</em></blockquote>',
           fechaCreacion: '2023-01-01',
@@ -239,58 +195,21 @@ export class ClausulaService {
       denominacion: 'Cláusula de penalidades',
       aperturaElectronica: true,
       tiposCompra: [
-        {
-          tipoCompraId: 1,
-          tipoCompraDescripcion: 'Licitación Pública',
-          subtipos: [
-            { subtipoCompraId: 1, subtipoCompraDescripcion: 'Nacional' },
-            { subtipoCompraId: 2, subtipoCompraDescripcion: 'Internacional' }
-          ]
-        },
-        {
-          tipoCompraId: 2,
-          tipoCompraDescripcion: 'Contratación Directa',
-          subtipos: [
-            { subtipoCompraId: 3, subtipoCompraDescripcion: 'Por excepción' }
-          ]
-        }
+        crearTipoCompraMock('1', 'Licitación Pública', '1', 'Nacional'),
+        crearTipoCompraMock('1', 'Licitación Pública', '2', 'Internacional'),
+        crearTipoCompraMock('2', 'Contratación Directa', '3', 'Por excepción')
       ],
       objetosCompra: [
-        {
-          familiaId: 3,
-          familiaDescripcion: 'Servicios',
-          subfamiliaId: 3,
-          subfamiliaDescripcion: 'Servicios profesionales',
-          claseId: 3,
-          claseDescripcion: 'Consultoría',
-          subclaseId: 3,
-          subclaseDescripcion: 'Asesoría técnica',
-          articulo: null
-        }
+        crearObjetoCompraMock(3, 'Servicios', 3, 'Servicios profesionales', 3, 'Consultoría', 3, 'Asesoría técnica')
       ],
-      incisos: [
-        {
-          incisoId: 1,
-          incisoCodigo: '01',
-          incisoDescripcion: 'Poder Ejecutivo',
-          unidadEjecutora: { unidadEjecutoraId: 1, unidadEjecutoraCodigo: '001', unidadEjecutoraDescripcion: 'Ministerio de Economía' }
-        },
-        {
-          incisoId: 2,
-          incisoCodigo: '02',
-          incisoDescripcion: 'Poder Legislativo',
-          unidadEjecutora: null
-        }
-      ],
+      organismo: crearOrganismoMock(1, 'Poder Ejecutivo', 1, 'Ministerio de Economía'),
       fechaVigenciaDesde: '2024-01-01',
       fechaVigenciaHasta: null,
       estado: EstadoElemento.VIGENTE,
-      versionada: true,
       version: 2,
       redacciones: [
         {
           id: 5,
-          clausulaId: 4,
           prioridad: 1,
           redaccion: '<p>En caso de incumplimiento de los plazos establecidos en el contrato, se aplicarán penalidades según el siguiente esquema:</p><table border="1" cellpadding="5" style="border-collapse: collapse; width: 100%;"><thead><tr style="background-color: #f5f5f5;"><th>Concepto</th><th>Porcentaje</th></tr></thead><tbody><tr><td>Penalidad diaria</td><td><strong>0.5%</strong> del monto total</td></tr><tr><td>Penalidad máxima</td><td><strong>10%</strong> del valor total</td></tr></tbody></table><p><em>Las penalidades serán descontadas de los pagos a realizar al proveedor.</em></p>',
           fechaCreacion: '2024-01-01',
@@ -303,125 +222,67 @@ export class ClausulaService {
       usuarioCreacion: 'admin',
       fechaModificacion: null,
       usuarioModificacion: null
-    },
-     {
-      id: 5,
-      denominacion: 'Evaluación económica',
-      aperturaElectronica: true,
-      tiposCompra: [
-        {
-          tipoCompraId: 1,
-          tipoCompraDescripcion: 'Licitación Pública',
-          subtipos: [
-            { subtipoCompraId: 1, subtipoCompraDescripcion: 'Común' },
-          ]
-        }
-      ],
-      objetosCompra: [
-        {
-          familiaId: 1,
-          familiaDescripcion: 'Equipos de computación',
-          subfamiliaId: 1,
-          subfamiliaDescripcion: 'Computadoras',
-          claseId: 1,
-          claseDescripcion: 'Notebooks',
-          subclaseId: 1,
-          subclaseDescripcion: 'Portátiles',
-          articulo: { articuloId: 1, articuloCodigo: 'ART001', articuloDescripcion: 'Notebook HP' }
-        }
-      ],
-      incisos: [
-        {
-          incisoId: 1,
-          incisoCodigo: '01',
-          incisoDescripcion: 'Poder Ejecutivo',
-          unidadEjecutora: { unidadEjecutoraId: 1, unidadEjecutoraCodigo: '001', unidadEjecutoraDescripcion: 'Ministerio de Economía' }
-        }
-      ],
-      fechaVigenciaDesde: '2024-01-01',
-      fechaVigenciaHasta: '2027-01-01',
-      estado: EstadoElemento.BORRADOR,
-      versionada: true,
-      version: 3,
-      redacciones: [
-        {
-          id: 1,
-          clausulaId: 1,
-          prioridad: 1,
-          redaccion: '<p>La propuesta será evaluada por el organismo comprador teniendo en cuenta el valor hora presentado</p>',
-          fechaCreacion: '2024-01-01',
-          usuarioCreacion: 'admin',
-          fechaModificacion: null,
-          usuarioModificacion: null
-        }
-      ],
-      fechaCreacion: '2024-01-01',
-      usuarioCreacion: 'admin',
-      fechaModificacion: null,
-      usuarioModificacion: null
-    },
+    }
   ];
 
   constructor() {}
 
-  buscarClausulas(filtro: FiltroClausula): Observable<Clausula[]> {
+  buscarClausulas(filtro: FiltroClausula): Observable<ClausulaDTO[]> {
     let resultados = [...this.clausulasMock];
 
     // Aplicar filtros
     if (filtro.incisoId) {
       resultados = resultados.filter(c =>
-        c.incisos.some(i => i.incisoId === filtro.incisoId)
+        c.organismo?.inciso?.id === filtro.incisoId
       );
     }
 
     if (filtro.unidadEjecutoraId) {
       resultados = resultados.filter(c =>
-        c.incisos.some(i => i.unidadEjecutora?.unidadEjecutoraId === filtro.unidadEjecutoraId)
+        c.organismo?.unidadEjecutora?.id === filtro.unidadEjecutoraId
       );
     }
 
     if (filtro.tipoCompraId) {
       resultados = resultados.filter(c =>
-        c.tiposCompra.some(tc => tc.tipoCompraId === filtro.tipoCompraId)
+        c.tiposCompra?.some(tc => tc.tipoCompra?.id === filtro.tipoCompraId)
       );
     }
 
     if (filtro.subtipoCompraId) {
       resultados = resultados.filter(c =>
-        c.tiposCompra.some(tc =>
-          tc.subtipos.some(st => st.subtipoCompraId === filtro.subtipoCompraId)
-        )
+        c.tiposCompra?.some(tc => tc.subtipoCompra?.idSubtipoCompra === filtro.subtipoCompraId)
       );
     }
 
     if (filtro.familiaId) {
       resultados = resultados.filter(c =>
-        c.objetosCompra.some(oc => oc.familiaId === filtro.familiaId)
+        c.objetosCompra.some(oc => oc.familia?.id === filtro.familiaId)
       );
     }
 
     if (filtro.subfamiliaId) {
       resultados = resultados.filter(c =>
-        c.objetosCompra.some(oc => oc.subfamiliaId === filtro.subfamiliaId)
+        c.objetosCompra.some(oc => oc.subfamilia?.id === filtro.subfamiliaId)
       );
     }
 
     if (filtro.claseId) {
       resultados = resultados.filter(c =>
-        c.objetosCompra.some(oc => oc.claseId === filtro.claseId)
+        c.objetosCompra.some(oc => oc.clase?.id === filtro.claseId)
       );
     }
 
     if (filtro.subclaseId) {
       resultados = resultados.filter(c =>
-        c.objetosCompra.some(oc => oc.subclaseId === filtro.subclaseId)
+        c.objetosCompra.some(oc => oc.subclase?.id === filtro.subclaseId)
       );
     }
 
     if (filtro.articuloId) {
       resultados = resultados.filter(c =>
         c.objetosCompra.some(oc =>
-          oc.articulo?.articuloId === filtro.articuloId
+          oc.articulo?.id === filtro.articuloId
         )
       );
     }
@@ -449,24 +310,23 @@ export class ClausulaService {
     return of(resultados).pipe(delay(300));
   }
 
-  obtenerClausula(id: number): Observable<Clausula | undefined> {
+  obtenerClausula(id: number): Observable<ClausulaDTO | undefined> {
     const clausula = this.clausulasMock.find(c => c.id === id);
     return of(clausula).pipe(delay(200));
   }
 
-  obtenerClausulaPorId(id: number): Observable<Clausula | undefined> {
+  obtenerClausulaPorId(id: number): Observable<ClausulaDTO | undefined> {
     const clausula = this.clausulasMock.find(c => c.id === id);
     return of(clausula).pipe(delay(200));
   }
 
-  crearClausula(clausula: Clausula): Observable<Clausula> {
+  crearClausula(clausula: ClausulaDTO): Observable<ClausulaDTO> {
     const nuevoId = Math.max(...this.clausulasMock.map(c => c.id || 0)) + 1;
     const nuevaClausula = {
       ...clausula,
       id: nuevoId,
       estado: EstadoElemento.BORRADOR,
-      version: 1,
-      versionada: false,
+      version: 1,
       fechaCreacion: new Date().toISOString().split('T')[0],
       usuarioCreacion: 'usuario_actual',
       fechaModificacion: null,
@@ -476,7 +336,7 @@ export class ClausulaService {
     return of(nuevaClausula).pipe(delay(300));
   }
 
-  actualizarClausula(id: number, clausula: Clausula): Observable<Clausula> {
+  actualizarClausula(id: number, clausula: ClausulaDTO): Observable<ClausulaDTO> {
     const index = this.clausulasMock.findIndex(c => c.id === id);
     if (index !== -1) {
       const clausulaActualizada = {
@@ -491,15 +351,14 @@ export class ClausulaService {
     return of(clausula).pipe(delay(300));
   }
 
-  aprobarClausula(id: number): Observable<Clausula> {
+  aprobarClausula(id: number): Observable<ClausulaDTO> {
     const index = this.clausulasMock.findIndex(c => c.id === id);
     if (index !== -1) {
       const clausulaActual = this.clausulasMock[index];
 
       const versionAprobada = {
         ...clausulaActual,
-        estado: EstadoElemento.VIGENTE,
-        versionada: true,
+        estado: EstadoElemento.VIGENTE,
         version: (clausulaActual.version || 1),
         fechaModificacion: new Date().toISOString().split('T')[0],
         usuarioModificacion: 'usuario_actual'
@@ -511,8 +370,7 @@ export class ClausulaService {
         ...versionAprobada,
         id: nuevoId,
         estado: EstadoElemento.BORRADOR,
-        version: (versionAprobada.version || 1) + 1,
-        versionada: false,
+        version: (versionAprobada.version || 1) + 1,
         fechaVigenciaDesde: '',
         fechaVigenciaHasta: null,
         fechaCreacion: new Date().toISOString().split('T')[0],
@@ -527,7 +385,7 @@ export class ClausulaService {
     throw new Error('Cláusula no encontrada');
   }
 
-  guardarClausula(clausula: Clausula): Observable<Clausula> {
+  guardarClausula(clausula: ClausulaDTO): Observable<ClausulaDTO> {
     if (clausula.id) {
       return this.actualizarClausula(clausula.id, clausula);
     } else {
@@ -535,11 +393,11 @@ export class ClausulaService {
     }
   }
 
-  eliminarClausula(id: number): Observable<EliminarClausulaResponse> {
+  eliminarClausula(id: number): Observable<EliminarElementoResponseDTO> {
     const clausula = this.clausulasMock.find(c => c.id === id);
 
     if (!clausula) {
-      const response: EliminarClausulaResponse = {
+      const response: EliminarElementoResponseDTO = {
         exitoso: false,
         mensaje: 'No se encontró la cláusula especificada.',
         tipoEliminacion: 'FISICA'
@@ -559,14 +417,14 @@ export class ClausulaService {
     }
   }
 
-  private eliminarVersionEditable(id: number): Observable<EliminarClausulaResponse> {
+  private eliminarVersionEditable(id: number): Observable<EliminarElementoResponseDTO> {
     // Simular eliminación de versión editable
     // En realidad, aquí se eliminaría la versión BORRADOR y se restauraría la versión anterior aprobada
     const index = this.clausulasMock.findIndex(c => c.id === id);
 
     if (index !== -1) {
       this.clausulasMock.splice(index, 1);
-      const response: EliminarClausulaResponse = {
+      const response: EliminarElementoResponseDTO = {
         exitoso: true,
         mensaje: 'Se eliminó la versión editable y se restauró la versión anteriormente aprobada.',
         tipoEliminacion: 'VERSION_EDITABLE'
@@ -574,7 +432,7 @@ export class ClausulaService {
       return of(response).pipe(delay(300));
     }
 
-    const response: EliminarClausulaResponse = {
+    const response: EliminarElementoResponseDTO = {
       exitoso: false,
       mensaje: 'No se pudo eliminar la versión editable.',
       tipoEliminacion: 'VERSION_EDITABLE'
@@ -582,7 +440,7 @@ export class ClausulaService {
     return of(response).pipe(delay(300));
   }
 
-  private eliminarVersionAprobada(id: number, clausula: Clausula): Observable<EliminarClausulaResponse> {
+  private eliminarVersionAprobada(id: number, clausula: ClausulaDTO): Observable<EliminarElementoResponseDTO> {
 
     // Baja física: eliminar completamente
     const index = this.clausulasMock.findIndex(c => c.id === id);
@@ -590,7 +448,7 @@ export class ClausulaService {
       this.clausulasMock.splice(index, 1);
     }
 
-    const response: EliminarClausulaResponse = {
+    const response: EliminarElementoResponseDTO = {
       exitoso: true,
       mensaje: 'La cláusula se eliminó completamente (baja física).',
       tipoEliminacion: 'FISICA'
@@ -598,104 +456,24 @@ export class ClausulaService {
     return of(response).pipe(delay(300));
   }
 
-  obtenerHistorialVersiones(clausulaId: number): Observable<Clausula[]> {
-    const historialMock: Clausula[] = [
+  obtenerHistorialVersiones(clausulaId: number): Observable<ClausulaDTO[]> {
+        const historialMock: ClausulaDTO[] = [
       {
         id: 101,
         denominacion: 'Cláusula vacía',
         aperturaElectronica: true,
         tiposCompra: [
-          {
-            tipoCompraId: 1,
-            tipoCompraDescripcion: 'Licitación Pública',
-            subtipos: [
-              { subtipoCompraId: 1, subtipoCompraDescripcion: 'Nacional' }
-            ]
-          }
+          crearTipoCompraMock('1', 'Licitación Pública', '1', 'Nacional')
         ],
         objetosCompra: [
-          {
-            familiaId: 1,
-            familiaDescripcion: 'Equipos de computación',
-            subfamiliaId: 1,
-            subfamiliaDescripcion: 'Computadoras',
-            claseId: 1,
-            claseDescripcion: 'Notebooks',
-            subclaseId: 1,
-            subclaseDescripcion: 'Portátiles',
-            articulo: { articuloId: 1, articuloCodigo: 'ART001', articuloDescripcion: 'Notebook HP' }
-          }
+          crearObjetoCompraMock(1, 'Equipos de computación', 1, 'Computadoras', 1, 'Notebooks', 1, 'Portátiles', 1, 'Notebook HP')
         ],
-        incisos: [
-          {
-            incisoId: 1,
-            incisoCodigo: '01',
-            incisoDescripcion: 'Poder Ejecutivo',
-            unidadEjecutora: { unidadEjecutoraId: 1, unidadEjecutoraCodigo: '001', unidadEjecutoraDescripcion: 'Ministerio de Economía' }
-          }
-        ],
+        organismo: crearOrganismoMock(1, 'Poder Ejecutivo', 1, 'Ministerio de Economía'),
         fechaVigenciaDesde: '2024-01-01',
         fechaVigenciaHasta: '2025-12-31',
         estado: EstadoElemento.VIGENTE,
-        versionada: true,
         version: 3,
         redacciones: [],
-        fechaCreacion: '2024-10-15',
-        usuarioCreacion: 'admin',
-        fechaModificacion: '2024-10-15',
-        usuarioModificacion: 'admin'
-      },
-      {
-        id: 101,
-        denominacion: 'Cláusula de garantía de cumplimiento',
-        aperturaElectronica: true,
-        tiposCompra: [
-          {
-            tipoCompraId: 1,
-            tipoCompraDescripcion: 'Licitación Pública',
-            subtipos: [
-              { subtipoCompraId: 1, subtipoCompraDescripcion: 'Nacional' }
-            ]
-          }
-        ],
-        objetosCompra: [
-          {
-            familiaId: 1,
-            familiaDescripcion: 'Equipos de computación',
-            subfamiliaId: 1,
-            subfamiliaDescripcion: 'Computadoras',
-            claseId: 1,
-            claseDescripcion: 'Notebooks',
-            subclaseId: 1,
-            subclaseDescripcion: 'Portátiles',
-            articulo: { articuloId: 1, articuloCodigo: 'ART001', articuloDescripcion: 'Notebook HP' }
-          }
-        ],
-        incisos: [
-          {
-            incisoId: 1,
-            incisoCodigo: '01',
-            incisoDescripcion: 'Poder Ejecutivo',
-            unidadEjecutora: { unidadEjecutoraId: 1, unidadEjecutoraCodigo: '001', unidadEjecutoraDescripcion: 'Ministerio de Economía' }
-          }
-        ],
-        fechaVigenciaDesde: '2024-01-01',
-        fechaVigenciaHasta: '2025-12-31',
-        estado: EstadoElemento.VIGENTE,
-        versionada: true,
-        version: 3,
-        redacciones: [
-          {
-            id: 1,
-            clausulaId: 101,
-            prioridad: 1,
-            redaccion: '<p>El proveedor deberá presentar una <strong>garantía de cumplimiento</strong> por el <em>10% del monto total del contrato</em>.</p>',
-            fechaCreacion: '2024-01-01',
-            usuarioCreacion: 'admin',
-            fechaModificacion: null,
-            usuarioModificacion: null
-          }
-        ],
         fechaCreacion: '2024-10-15',
         usuarioCreacion: 'admin',
         fechaModificacion: '2024-10-15',
@@ -706,56 +484,21 @@ export class ClausulaService {
         denominacion: 'Cláusula de garantía de cumplimiento',
         aperturaElectronica: true,
         tiposCompra: [
-          {
-            tipoCompraId: 1,
-            tipoCompraDescripcion: 'Licitación Pública',
-            subtipos: [
-              { subtipoCompraId: 1, subtipoCompraDescripcion: 'Nacional' }
-            ]
-          }
+          crearTipoCompraMock('1', 'Licitación Pública', '1', 'Nacional')
         ],
         objetosCompra: [
-          {
-            familiaId: 1,
-            familiaDescripcion: 'Equipos de computación',
-            subfamiliaId: 1,
-            subfamiliaDescripcion: 'Computadoras',
-            claseId: null,
-            claseDescripcion: null,
-            subclaseId: null,
-            subclaseDescripcion: null,
-            articulo: null
-          }
+          crearObjetoCompraMock(1, 'Equipos de computación', 1, 'Computadoras', 1, 'Notebooks')
         ],
-        incisos: [
-          {
-            incisoId: 1,
-            incisoCodigo: '01',
-            incisoDescripcion: 'Poder Ejecutivo',
-            unidadEjecutora: null
-          }
-        ],
+        organismo: crearOrganismoMock(1, 'Poder Ejecutivo'),
         fechaVigenciaDesde: '2023-06-01',
         fechaVigenciaHasta: '2024-12-31',
         estado: EstadoElemento.NO_VIGENTE,
-        versionada: true,
         version: 2,
         redacciones: [
           {
             id: 2,
-            clausulaId: 102,
             prioridad: 1,
             redaccion: '<p>El proveedor deberá presentar una <strong>garantía de cumplimiento</strong> por el <em>8% del monto total del contrato</em>.</p>',
-            fechaCreacion: '2023-06-01',
-            usuarioCreacion: 'admin',
-            fechaModificacion: null,
-            usuarioModificacion: null
-          },
-          {
-            id: 6,
-            clausulaId: 102,
-            prioridad: 2,
-            redaccion: '<p>La garantía deberá mantenerse vigente durante:</p><ul><li>Toda la ejecución del contrato</li><li>Hasta 60 días posteriores a la recepción definitiva de los bienes</li></ul><p>La garantía podrá presentarse en cualquiera de las siguientes formas:</p><ol><li>Póliza de seguro de caución</li><li>Garantía bancaria</li></ol>',
             fechaCreacion: '2023-06-01',
             usuarioCreacion: 'admin',
             fechaModificacion: null,
@@ -772,44 +515,19 @@ export class ClausulaService {
         denominacion: 'Cláusula de garantía de cumplimiento',
         aperturaElectronica: false,
         tiposCompra: [
-          {
-            tipoCompraId: 1,
-            tipoCompraDescripcion: 'Licitación Pública',
-            subtipos: [
-              { subtipoCompraId: 1, subtipoCompraDescripcion: 'Nacional' }
-            ]
-          }
+          crearTipoCompraMock('1', 'Licitación Pública', '1', 'Nacional')
         ],
         objetosCompra: [
-          {
-            familiaId: 1,
-            familiaDescripcion: 'Equipos de computación',
-            subfamiliaId: null,
-            subfamiliaDescripcion: null,
-            claseId: null,
-            claseDescripcion: null,
-            subclaseId: null,
-            subclaseDescripcion: null,
-            articulo: null
-          }
+          crearObjetoCompraMock(1, 'Equipos de computación')
         ],
-        incisos: [
-          {
-            incisoId: 1,
-            incisoCodigo: '01',
-            incisoDescripcion: 'Poder Ejecutivo',
-            unidadEjecutora: null
-          }
-        ],
+        organismo: crearOrganismoMock(1, 'Poder Ejecutivo'),
         fechaVigenciaDesde: '2022-01-01',
         fechaVigenciaHasta: '2023-05-31',
         estado: EstadoElemento.NO_VIGENTE,
-        versionada: true,
         version: 1,
         redacciones: [
           {
             id: 3,
-            clausulaId: 103,
             prioridad: 1,
             redaccion: '<p>El proveedor deberá presentar una <strong>garantía de cumplimiento</strong> por el <em>5% del monto total del contrato</em>.</p>',
             fechaCreacion: '2022-01-01',
@@ -828,7 +546,7 @@ export class ClausulaService {
     return of(historialMock).pipe(delay(300));
   }
 
-  obtenerVersionAnterior(clausulaId: number): Observable<Clausula | null> {
+  obtenerVersionAnterior(clausulaId: number): Observable<ClausulaDTO | null> {
     return this.obtenerHistorialVersiones(clausulaId).pipe(
       delay(300),
       map(versiones => {
@@ -842,111 +560,61 @@ export class ClausulaService {
   }
 
   obtenerModelosPorClausula(clausulaId: number): Observable<any[]> {
-    const modelosMock = [
+        const modelosMock: ModeloDTO[] = [
       {
         id: 1,
         denominacion: 'Modelo de Licitación Pública Nacional',
         fechaVigenciaDesde: '2024-01-01',
         fechaVigenciaHasta: '2025-12-31',
-        estado: 'ACTIVO',
-        versionada: true,
+        estado: EstadoElemento.VIGENTE,
         version: 1,
-        secciones: [
-          {
-            seccionId: 1,
-            orden: 1,
-            denominacion: 'Condiciones Generales',
-            version: 1,
-            capitulos: [
-              {
-                capituloId: 1,
-                orden: 1,
-                denominacion: 'Objeto del llamado',
-                version: 1
-              },
-              {
-                capituloId: 2,
-                orden: 2,
-                denominacion: 'Garantías',
-                version: 1
-              }
-            ]
-          },
-          {
-            seccionId: 2,
-            orden: 2,
-            denominacion: 'Condiciones Particulares',
-            version: 1,
-            capitulos: [
-              {
-                capituloId: 3,
-                orden: 1,
-                denominacion: 'Plazos de entrega',
-                version: 2
-              }
-            ]
-          }
-        ]
+        secciones: [],
+        tiposCompra: [],
+        organismo: undefined,
+        fechaCreacion: '2024-01-01',
+        usuarioCreacion: 'admin',
+        fechaModificacion: null,
+        usuarioModificacion: null
       },
       {
         id: 2,
         denominacion: 'Modelo de Contratación Directa',
         fechaVigenciaDesde: '2024-06-01',
         fechaVigenciaHasta: null,
-        estado: 'ACTIVO',
-        versionada: true,
+        estado: EstadoElemento.VIGENTE,
         version: 2,
-        secciones: [
-          {
-            seccionId: 3,
-            orden: 1,
-            denominacion: 'Objetivo del llamado',
-            version: 1,
-            capitulos: [
-              {
-                capituloId: 4,
-                orden: 1,
-                denominacion: 'Descripción',
-                version: 1
-              }
-            ]
-          }
-        ]
+        secciones: [],
+        tiposCompra: [],
+        organismo: undefined,
+        fechaCreacion: '2024-06-01',
+        usuarioCreacion: 'admin',
+        fechaModificacion: null,
+        usuarioModificacion: null
       },
       {
         id: 3,
         denominacion: 'Modelo Borrador - Obras Públicas',
         fechaVigenciaDesde: '2025-01-01',
         fechaVigenciaHasta: '2025-12-31',
-        estado: 'BORRADOR',
-        versionada: false,
+        estado: EstadoElemento.BORRADOR,
         version: 1,
-        secciones: [
-          {
-            seccionId: 4,
-            orden: 1,
-            denominacion: 'Generalidades',
-            version: 1,
-            capitulos: [
-              {
-                capituloId: 5,
-                orden: 1,
-                denominacion: 'Especificaciones técnicas',
-                version: 1
-              },
-              {
-                capituloId: 6,
-                orden: 2,
-                denominacion: 'Requisitos de seguridad',
-                version: 1
-              }
-            ]
-          }
-        ]
+        secciones: [],
+        tiposCompra: [],
+        organismo: undefined,
+        fechaCreacion: '2025-01-01',
+        usuarioCreacion: 'admin',
+        fechaModificacion: null,
+        usuarioModificacion: null
       }
     ];
 
     return of(modelosMock).pipe(delay(300));
   }
 }
+
+
+
+
+
+
 

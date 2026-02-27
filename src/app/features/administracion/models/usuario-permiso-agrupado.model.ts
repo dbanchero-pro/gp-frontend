@@ -1,7 +1,7 @@
 import { AccionBoton } from 'src/app/shared/models/common/accion-boton.model';
 import { UsuarioOrganismoPerfilDTO } from 'src/app/shared/models/usuario/usuario-organismo-perfil.model';
 
-export interface UsuarioPermisoAgrupado {
+export interface UsuarioPermisoAgrupadoDTO {
     id: string;
     nombre: string | undefined;
     permisos: UsuarioOrganismoPerfilDTO[];

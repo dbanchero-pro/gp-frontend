@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
 import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden.model';
-import { Modelo } from 'src/app/shared/models/pliego/modelo.model';
+import { ModeloDTO } from 'src/app/shared/models/pliego/modelo/modelo.model';
 import { ClausulaService } from '../../../services/clausula.service';
 
 @Component({
@@ -21,8 +21,8 @@ export class ModelosClausulaComponent implements OnInit {
 
   clausulaId: number | null = null;
   denominacionClausula = '';
-  modelos: Modelo[] = [];
-  modelosFiltrados: Modelo[] = [];
+  modelos: ModeloDTO[] = [];
+  modelosFiltrados: ModeloDTO[] = [];
   cargando = false;
 
   total = 0;
@@ -131,7 +131,7 @@ export class ModelosClausulaComponent implements OnInit {
     });
   }
 
-  obtenerTextoVigencia(modelo: Modelo): string {
+  obtenerTextoVigencia(modelo: ModeloDTO): string {
     const desde = modelo.fechaVigenciaDesde
       ? this.fechaPipe.transform(modelo.fechaVigenciaDesde)
       : '';
@@ -141,7 +141,7 @@ export class ModelosClausulaComponent implements OnInit {
     return `${desde} - ${hasta}`;
   }
 
-  obtenerEstadoVigencia(modelo: Modelo): string {
+  obtenerEstadoVigencia(modelo: ModeloDTO): string {
     if (modelo.estado === 'BORRADOR') {
       return 'BORRADOR';
     }
@@ -159,7 +159,7 @@ export class ModelosClausulaComponent implements OnInit {
     return 'VIGENTE';
   }
 
-  obtenerTextoEstadoVigencia(modelo: Modelo): string {
+  obtenerTextoEstadoVigencia(modelo: ModeloDTO): string {
     const estado = this.obtenerEstadoVigencia(modelo);
     if (estado === 'VIGENTE') {
       return 'Vigente';
@@ -170,7 +170,7 @@ export class ModelosClausulaComponent implements OnInit {
     return 'No vigente';
   }
 
-  esBorrador(modelo: Modelo): boolean {
+  esBorrador(modelo: ModeloDTO): boolean {
     return modelo.estado === 'BORRADOR';
   }
 }

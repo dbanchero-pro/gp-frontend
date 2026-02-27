@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
 import { forkJoin } from 'rxjs';
-import { Clausula } from 'src/app/shared/models/pliego/clausula.model';
+import { ClausulaDTO } from 'src/app/shared/models/pliego/clausula/clausula.model';
 import { ClausulaService } from '../../../services/clausula.service';
 
 interface DiferenciaAtributo {
@@ -34,8 +34,8 @@ export class DiferenciasClausulasComponent implements OnInit {
   private fechaPipe = inject(FechaPipe);
 
   clausulaId: number | null = null;
-  versionActual: Clausula | null = null;
-  versionAnterior: Clausula | null = null;
+  versionActual: ClausulaDTO | null = null;
+  versionAnterior: ClausulaDTO | null = null;
   cargando = false;
   errorCarga = false;
   mensajeError = '';
@@ -189,44 +189,50 @@ export class DiferenciasClausulasComponent implements OnInit {
     }
   }
 
-  obtenerResumenTiposCompra(clausula: Clausula): string {
+  obtenerResumenTiposCompra(clausula: ClausulaDTO): string {
     return clausula.tiposCompra
       .map(tc => {
-        const subtipos = tc.subtipos.map(st => st.subtipoCompraDescripcion).join(', ');
-        return `${tc.tipoCompraDescripcion} | ${subtipos}`;
+        const tipo = tc.tipoCompra?.descTipoCompra || '';
+        const subtipo = tc.subtipoCompra?.descSubtipoCompra || 'Todos los subtipos';
+        if (!tipo) {
+          return '';
+        }
+        return `${tipo} | ${subtipo}`;
       })
+      .filter(Boolean)
       .join(' • ');
   }
 
-  obtenerResumenObjetosCompra(clausula: Clausula): string {
+  obtenerResumenObjetosCompra(clausula: ClausulaDTO): string {
     return clausula.objetosCompra
       .map(oc => {
-        const partes = [oc.familiaDescripcion];
-        if (oc.subfamiliaDescripcion) partes.push(oc.subfamiliaDescripcion);
-        if (oc.claseDescripcion) partes.push(oc.claseDescripcion);
-        if (oc.subclaseDescripcion) partes.push(oc.subclaseDescripcion);
+        const partes: string[] = [];
+        if (oc.familia?.descFamilia) partes.push(oc.familia.descFamilia);
+        if (oc.subfamilia?.descSubfamilia) partes.push(oc.subfamilia.descSubfamilia);
+        if (oc.clase?.descClase) partes.push(oc.clase.descClase);
+        if (oc.subclase?.descSubclase) partes.push(oc.subclase.descSubclase);
 
         let resultado = partes.join(' | ');
 
-        if (oc.articulo) {
-          resultado += ` | ${oc.articulo.articuloDescripcion} (${oc.articulo.articuloCodigo})`;
+        if (oc.articulo?.descArticuloServObra) {
+          resultado += ` | ${oc.articulo.descArticuloServObra}`;
         }
 
         return resultado;
       })
+      .filter(texto => texto.length > 0)
       .join(' • ');
   }
 
-  obtenerResumenIncisos(clausula: Clausula): string {
-    return clausula.incisos
-      .map(i => {
-        const inciso = `${i.incisoCodigo} - ${i.incisoDescripcion}`;
-        if (i.unidadEjecutora) {
-          return `${inciso} | ${i.unidadEjecutora.unidadEjecutoraCodigo} - ${i.unidadEjecutora.unidadEjecutoraDescripcion}`;
-        }
-        return inciso;
-      })
-      .join(' • ');
+  obtenerResumenIncisos(clausula: ClausulaDTO): string {
+    if (!clausula.organismo?.inciso?.descInciso) {
+      return '';
+    }
+
+    const inciso = clausula.organismo.inciso.descInciso;
+    const unidad = clausula.organismo.unidadEjecutora?.descUnidadEjecutora;
+
+    return unidad ? `${inciso} | ${unidad}` : inciso;
   }
 
   hayDiferencias(): boolean {
@@ -239,3 +245,5 @@ export class DiferenciasClausulasComponent implements OnInit {
     this.router.navigate(['/administracion/clausulas'], { queryParams: { volver: 1 } });
   }
 }
+
+

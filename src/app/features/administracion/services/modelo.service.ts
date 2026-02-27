@@ -1,226 +1,57 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { EliminarModeloResponse } from '../models/eliminar-modelo-response.model';
-import { Modelo } from 'src/app/shared/models/pliego/modelo.model';
+import { ModeloDTO } from 'src/app/shared/models/pliego/modelo/modelo.model';
+import { TipoCompraClausulaModeloDTO } from 'src/app/shared/models/pliego/comun/tipo-compra-clausula-modelo.model';
+import { OrganismoClausulaModeloDTO } from 'src/app/shared/models/pliego/comun/organismo-clausula-modelo.model';
+import { TipoCompraDTO } from 'src/app/shared/models/sice/tipo-compra.model';
+import { SubtipoCompraDTO } from 'src/app/shared/models/sice/subtipo-compra.model';
+import { IncisoDTO } from 'src/app/shared/models/sice/inciso.model';
+import { UnidadEjecutoraDTO } from 'src/app/shared/models/sice/unidad-ejecutora.model';
+import { EstadoElemento } from 'src/app/shared/enum/estado-elemento.enum';
 import { FiltroModelo } from '../models/filtros/filtro-modelo.model';
+import { EliminarElementoResponseDTO } from '../models/eliminar-elemento-response.model';
+
+const crearTipoCompraMock = (
+  id: string,
+  descripcion: string,
+  subtipoId?: string,
+  subtipoDescripcion?: string
+): TipoCompraClausulaModeloDTO => ({
+  tipoCompra: new TipoCompraDTO(id, descripcion),
+  subtipoCompra: subtipoId ? new SubtipoCompraDTO(id, subtipoId, subtipoDescripcion, descripcion) : undefined
+});
+
+const crearOrganismoMock = (
+  incisoId: number,
+  incisoDesc: string,
+  unidadEjecutoraId?: number,
+  unidadEjecutoraDesc?: string
+): OrganismoClausulaModeloDTO => ({
+  inciso: new IncisoDTO(incisoId, incisoDesc),
+  unidadEjecutora: unidadEjecutoraId
+    ? new UnidadEjecutoraDTO(unidadEjecutoraId, new IncisoDTO(incisoId, incisoDesc), unidadEjecutoraId, unidadEjecutoraDesc)
+    : undefined
+});
 
 @Injectable({
   providedIn: 'root'
 })
 export class ModeloService {
 
-  private modelos: Modelo[] = [
+    private modelos: ModeloDTO[] = [
     {
       id: 1,
       denominacion: 'Modelo de Licitación Pública Nacional',
       fechaVigenciaDesde: '2024-01-01',
       fechaVigenciaHasta: '2025-12-31',
-      estado: 'ACTIVO',
-      versionada: true,
+      estado: EstadoElemento.VIGENTE,
       version: 1,
-      secciones: [
-        {
-          seccionId: 1,
-          orden: 1,
-          denominacion: 'Condiciones Generales',
-          version: 1,
-          capitulos: [
-            {
-              capituloId: 1,
-              orden: 1,
-              denominacion: 'Objeto del llamado',
-              version: 1,
-              clausulas: [
-                {
-                  clausulaId: 1,
-                  orden: 1,
-                  denominacion: 'Objeto de la licitación',
-                  version: 1,
-                  redacciones: [
-                    {
-                      id: 1,
-                      prioridad: 1,
-                      redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              capituloId: 2,
-              orden: 1,
-              denominacion: 'Aclaraciones',
-              version: 1,
-              clausulas: [
-                {
-                  clausulaId: 1,
-                  orden: 1,
-                  denominacion: 'Importante',
-                  version: 1,
-                  redacciones: [
-                    {
-                      id: 1,
-                      prioridad: 1,
-                      redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              capituloId: 2,
-              orden: 1,
-              denominacion: 'Opcional',
-              version: 1,
-              clausulas: [
-                {
-                  clausulaId: 1,
-                  orden: 1,
-                  denominacion: 'Sugerencias',
-                  version: 1,
-                  redacciones: [
-                    {
-                      id: 1,
-                      prioridad: 1,
-                      redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          clausulas: []
-        },
-        {
-          seccionId: 2,
-          orden: 1,
-          denominacion: 'Condiciones Generales 2',
-          version: 1,
-          capitulos: [
-            {
-              capituloId: 1,
-              orden: 1,
-              denominacion: 'Objeto del llamado 2',
-              version: 1,
-              clausulas: [
-                {
-                  clausulaId: 1,
-                  orden: 1,
-                  denominacion: 'Objeto de la licitación 2',
-                  version: 1,
-                  redacciones: [
-                    {
-                      id: 1,
-                      prioridad: 1,
-                      redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
-                    }
-                  ]
-                },
-                 {
-                  clausulaId: 2,
-                  orden: 1,
-                  denominacion: 'Objeto de la licitación 3',
-                  version: 1,
-                  redacciones: [
-                    {
-                      id: 1,
-                      prioridad: 1,
-                      redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              capituloId: 2,
-              orden: 1,
-              denominacion: 'Aclaraciones',
-              version: 1,
-              clausulas: [
-                {
-                  clausulaId: 1,
-                  orden: 1,
-                  denominacion: 'Importante',
-                  version: 1,
-                  redacciones: [
-                    {
-                      id: 1,
-                      prioridad: 1,
-                      redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
-                    }
-                  ]
-                },
-                {
-                  clausulaId: 2,
-                  orden: 1,
-                  denominacion: 'Importante 2',
-                  version: 1,
-                  redacciones: [
-                    {
-                      id: 1,
-                      prioridad: 1,
-                      redaccion: 'La presente licitación 2 tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
-                    }
-                  ]
-                },
-                {
-                  clausulaId: 3,
-                  orden: 1,
-                  denominacion: 'Importante 3',
-                  version: 1,
-                  redacciones: [
-                    {
-                      id: 1,
-                      prioridad: 1,
-                      redaccion: 'La presente licitación 3 tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              capituloId: 2,
-              orden: 1,
-              denominacion: 'Opcional',
-              version: 1,
-              clausulas: [
-                {
-                  clausulaId: 1,
-                  orden: 1,
-                  denominacion: 'Sugerencias',
-                  version: 1,
-                  redacciones: [
-                    {
-                      id: 1,
-                      prioridad: 1,
-                      redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          clausulas: []
-        },
-      ],
+      secciones: [],
       tiposCompra: [
-        {
-          tipoCompraId: 1,
-          descripcion: 'Licitación Pública',
-          subtipos: [
-            { subtipoCompraId: 1, descripcion: 'Nacional' }
-          ]
-        }
+        crearTipoCompraMock('LP', 'Licitación Pública', 'NAC', 'Nacional')
       ],
-      organismos: [
-        {
-          incisoId: 1,
-          incisoDescripcion: '02 - Presidencia de la República',
-          unidadEjecutoraId: 1,
-          unidadEjecutoraDescripcion: '001 - Unidad Central'
-        }
-      ],
+      organismo: crearOrganismoMock(1, 'Presidencia de la República', 1, 'Unidad Central'),
       fechaCreacion: '2024-01-01',
       usuarioCreacion: 'admin',
       fechaModificacion: null,
@@ -231,72 +62,13 @@ export class ModeloService {
       denominacion: 'Modelo de Contratación Directa',
       fechaVigenciaDesde: '2024-06-01',
       fechaVigenciaHasta: null,
-      estado: 'ACTIVO',
-      versionada: true,
+      estado: EstadoElemento.VIGENTE,
       version: 2,
-      secciones: [
-        {
-          seccionId: 1,
-          orden: 1,
-          denominacion: 'Objetivo del llamado',
-          version: 1,
-          capitulos: [],
-          clausulas: [
-                {
-                  clausulaId: 1,
-                  orden: 1,
-                  denominacion: 'Objeto de la licitación',
-                  version: 1,
-                  redacciones: [
-                    {
-                      id: 1,
-                      prioridad: 1,
-                      redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
-                    }
-                  ]
-                }
-              ]
-        },
-        {
-          seccionId: 1,
-          orden: 1,
-          denominacion: 'Condiciones generales',
-          version: 1,
-          capitulos: [],
-          clausulas: [
-                {
-                  clausulaId: 1,
-                  orden: 1,
-                  denominacion: 'Resumen',
-                  version: 1,
-                  redacciones: [
-                    {
-                      id: 1,
-                      prioridad: 1,
-                      redaccion: 'La presente licitación tiene por objeto la adquisición de bienes y servicios según lo establecido en el pliego de condiciones.'
-                    }
-                  ]
-                }
-              ]
-        }
-      ],
+      secciones: [],
       tiposCompra: [
-        {
-          tipoCompraId: 2,
-          descripcion: 'Contratación Directa',
-          subtipos: [
-            { subtipoCompraId: 3, descripcion: 'Por monto' }
-          ]
-        }
+        crearTipoCompraMock('CD', 'Contratación Directa', 'MON', 'Por monto')
       ],
-      organismos: [
-        {
-          incisoId: 2,
-          incisoDescripcion: '04 - Ministerio de Economía y Finanzas',
-          unidadEjecutoraId: 5,
-          unidadEjecutoraDescripcion: '002 - Dirección General'
-        }
-      ],
+      organismo: crearOrganismoMock(2, 'Ministerio de Economía y Finanzas', 5, 'Dirección General'),
       fechaCreacion: '2024-05-15',
       usuarioCreacion: 'admin',
       fechaModificacion: '2024-06-01',
@@ -307,21 +79,11 @@ export class ModeloService {
       denominacion: 'Modelo Borrador - Obras Públicas',
       fechaVigenciaDesde: '2025-01-01',
       fechaVigenciaHasta: '2025-12-31',
-      estado: 'BORRADOR',
-      versionada: false,
+      estado: EstadoElemento.BORRADOR,
       version: 1,
-       secciones: [
-        {
-          seccionId: 1,
-          orden: 1,
-          denominacion: 'Objetivo del llamado',
-          version: 1,
-          capitulos: [],
-          clausulas: []
-        }
-      ],
+      secciones: [],
       tiposCompra: [],
-      organismos: [],
+      organismo: undefined,
       fechaCreacion: '2024-12-01',
       usuarioCreacion: 'user1',
       fechaModificacion: null,
@@ -331,32 +93,30 @@ export class ModeloService {
 
   private contadorId = 4;
 
-  buscarModelos(filtro: FiltroModelo): Observable<Modelo[]> {
+  buscarModelos(filtro: FiltroModelo): Observable<ModeloDTO[]> {
     let resultado = [...this.modelos];
 
     if (filtro.incisoId) {
       resultado = resultado.filter(m =>
-        m.organismos.some(o => o.incisoId === filtro.incisoId)
+        m.organismo?.inciso?.id === filtro.incisoId
       );
     }
 
     if (filtro.unidadEjecutoraId) {
       resultado = resultado.filter(m =>
-        m.organismos.some(o => o.unidadEjecutoraId === filtro.unidadEjecutoraId)
+        m.organismo?.unidadEjecutora?.id === filtro.unidadEjecutoraId
       );
     }
 
     if (filtro.tipoCompraId) {
       resultado = resultado.filter(m =>
-        m.tiposCompra.some(tc => tc.tipoCompraId === filtro.tipoCompraId)
+        m.tiposCompra.some(tc => tc.tipoCompra?.id === filtro.tipoCompraId)
       );
     }
 
     if (filtro.subtipoCompraId) {
       resultado = resultado.filter(m =>
-        m.tiposCompra.some(tc =>
-          tc.subtipos.some(st => st.subtipoCompraId === filtro.subtipoCompraId)
-        )
+        m.tiposCompra.some(tc => tc.subtipoCompra?.idSubtipoCompra === filtro.subtipoCompraId)
       );
     }
 
@@ -384,13 +144,13 @@ export class ModeloService {
     return of(resultado).pipe(delay(300));
   }
 
-  obtenerModeloPorId(id: number): Observable<Modelo | undefined> {
+  obtenerModeloPorId(id: number): Observable<ModeloDTO | undefined> {
     const modelo = this.modelos.find(m => m.id === id);
     return of(modelo).pipe(delay(200));
   }
 
-  crearModelo(modelo: Modelo): Observable<Modelo> {
-    const nuevoModelo: Modelo = {
+  crearModelo(modelo: ModeloDTO): Observable<ModeloDTO> {
+    const nuevoModelo: ModeloDTO = {
       ...modelo,
       id: this.contadorId++,
       fechaCreacion: new Date().toISOString(),
@@ -403,14 +163,14 @@ export class ModeloService {
     return of(nuevoModelo).pipe(delay(300));
   }
 
-  actualizarModelo(id: number, modelo: Modelo): Observable<Modelo> {
+  actualizarModelo(id: number, modelo: ModeloDTO): Observable<ModeloDTO> {
     const index = this.modelos.findIndex(m => m.id === id);
 
     if (index === -1) {
       return throwError(() => new Error('Modelo no encontrado'));
     }
 
-    const modeloActualizado: Modelo = {
+    const modeloActualizado: ModeloDTO = {
       ...modelo,
       id: id,
       fechaModificacion: new Date().toISOString(),
@@ -421,7 +181,7 @@ export class ModeloService {
     return of(modeloActualizado).pipe(delay(300));
   }
 
-  eliminarModelo(id: number): Observable<EliminarModeloResponse> {
+  eliminarModelo(id: number): Observable<EliminarElementoResponseDTO> {
     const index = this.modelos.findIndex(m => m.id === id);
 
     if (index === -1) {
@@ -448,7 +208,7 @@ export class ModeloService {
     }).pipe(delay(300));
   }
 
-  aprobarModelo(id: number): Observable<Modelo> {
+  aprobarModelo(id: number): Observable<ModeloDTO> {
     const index = this.modelos.findIndex(m => m.id === id);
 
     if (index === -1) {
@@ -461,11 +221,12 @@ export class ModeloService {
       return throwError(() => new Error('El modelo ya está aprobado'));
     }
 
-    modelo.estado = 'ACTIVO';
-    modelo.versionada = true;
+    modelo.estado = EstadoElemento.VIGENTE;
     modelo.fechaModificacion = new Date().toISOString();
     modelo.usuarioModificacion = 'usuario_actual';
 
     return of(modelo).pipe(delay(300));
   }
 }
+
+

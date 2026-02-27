@@ -5,7 +5,7 @@ import { Observable, of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { PopupBaseComponent } from 'src/app/shared/components/popup-base/popup-base.component';
 import { TipoMensajeEnum } from 'src/app/shared/enum/tipo-mensaje.enum';
-import { UsuarioAsignado } from '../models/usuario-asignado.model';
+import { UsuarioAsignadoDTO } from '../../../models/usuario-asignado.model';
 
 enum TipoBusquedaUsuario {
   CI = 'CI',
@@ -26,7 +26,7 @@ interface UsuarioBusqueda {
   standalone: false,
 })
 export class AgregarUsuarioPopupComponent extends PopupBaseComponent implements OnInit, OnDestroy {
-  @Output() guardarEvento = new EventEmitter<UsuarioAsignado>();
+  @Output() guardarEvento = new EventEmitter<UsuarioAsignadoDTO>();
 
   override form!: FormGroup;
   intentoGuardar = false;
@@ -223,7 +223,7 @@ export class AgregarUsuarioPopupComponent extends PopupBaseComponent implements 
     if (this.form.value.esValidador) roles.push('Validador');
     if (this.form.value.esAprobador) roles.push('Aprobador');
 
-    const nuevoUsuario: UsuarioAsignado = {
+    const nuevoUsuario: UsuarioAsignadoDTO = {
       id: this.usuarioSeleccionado.id,
       numeroDocumento: this.usuarioSeleccionado.numeroDocumento,
       nombre: this.usuarioSeleccionado.nombre,

@@ -4,8 +4,8 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccionBoton } from 'src/app/shared/models/common/accion-boton.model';
 import { IColumnaOrden } from 'src/app/shared/models/common/columna-orden.model';
-import { Capitulo } from 'src/app/shared/models/pliego/capitulo.model';
-import { ClausulaCapitulo } from 'src/app/shared/models/pliego/seccion.model';
+import { CapituloDTO } from 'src/app/shared/models/pliego/capitulo/capitulo.model';
+import { CapituloClausulaDTO } from 'src/app/shared/models/pliego/capitulo/capitulo-clausula.model';
 import { FechaPipe } from 'src/app/shared/pipes/fecha.pipe';
 import { ActualizarService } from 'src/app/shared/services/common/actualizar.service';
 import { SnapshotGenericService } from 'src/app/shared/services/common/snapshot-generic.service';
@@ -29,7 +29,7 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
   private snapshotGenericService = inject(SnapshotGenericService);
 
   formularioFiltro: FormGroup;
-  capitulos: Capitulo[] = [];
+  capitulos: CapituloDTO[] = [];
   cargando = false;
   mostrarSoloSeleccion = false;
 
@@ -165,7 +165,7 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
     this.buscar();
   }
 
-  obtenerAccionesCapitulo(capitulo: Capitulo): AccionBoton[] {
+  obtenerAccionesCapitulo(capitulo: CapituloDTO): AccionBoton[] {
     const acciones: AccionBoton[] = [];
 
     acciones.push({
@@ -206,14 +206,14 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
     return acciones;
   }
 
-  obtenerAccionesClausula(clausula: ClausulaCapitulo): AccionBoton[] {
+  obtenerAccionesClausula(clausula: CapituloClausulaDTO): AccionBoton[] {
       const acciones: AccionBoton[] = [];
   
       acciones.push({
         nombre: 'Ver',
         clase: 'btn btn-sm',
         icono: 'fa fa-eye',
-        ariaLabel: `Ver redacciones de cláusula ${clausula.denominacion}`,
+        ariaLabel: `Ver redacciones de cláusula ${clausula.clausula?.denominacion}`,
         //accion: () => this.eliminarClausula(clausula)
       });
   
@@ -228,14 +228,14 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/administracion/capitulos/agregar']);
   }
 
-  modificarCapitulo(capitulo: Capitulo): void {
+  modificarCapitulo(capitulo: CapituloDTO): void {
     if (!capitulo.id) {
       return;
     }
     this.router.navigate(['/administracion/capitulos/modificar', capitulo.id]);
   }
 
-  eliminarCapitulo(capitulo: Capitulo): void {
+  eliminarCapitulo(capitulo: CapituloDTO): void {
     if (!capitulo.id) {
       return;
     }
@@ -262,22 +262,22 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
       });
   }
 
-  verHistorial(capitulo: Capitulo): void {
+  verHistorial(capitulo: CapituloDTO): void {
     if (!capitulo.id) {
       return;
     }
     this.router.navigate(['/administracion/capitulos/historial', capitulo.id]);
   }
 
-  verModelos(capitulo: Capitulo): void {
+  verModelos(capitulo: CapituloDTO): void {
     console.log('Ver modelos del capítulo:', capitulo);
   }
 
-  seleccionarCapitulo(capitulo: Capitulo): void {
+  seleccionarCapitulo(capitulo: CapituloDTO): void {
     console.log('Capítulo seleccionado:', capitulo);
   }
 
-  obtenerTextoVigencia(capitulo: Capitulo): string {
+  obtenerTextoVigencia(capitulo: CapituloDTO): string {
     const desde = capitulo.fechaVigenciaDesde
       ? this.fechaPipe.transform(capitulo.fechaVigenciaDesde)
       : ' ';
@@ -287,15 +287,15 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
     return `${desde} - ${hasta}`;
   }
 
-  esBorrador(capitulo: Capitulo): boolean {
+  esBorrador(capitulo: CapituloDTO): boolean {
     return capitulo.estado === 'BORRADOR';
   }
 
-  esVigente(capitulo: Capitulo): boolean {
+  esVigente(capitulo: CapituloDTO): boolean {
     return capitulo.estado === 'VIGENTE';
   }
 
-  obtenerEstadoVigencia(capitulo: Capitulo): string {
+  obtenerEstadoVigencia(capitulo: CapituloDTO): string {
     if (capitulo.estado === 'BORRADOR') {
       const hoy = new Date();
       const desde = capitulo.fechaVigenciaDesde ? new Date(capitulo.fechaVigenciaDesde) : null;
@@ -312,7 +312,7 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
     return capitulo.estado;
   }
 
-  obtenerTextoEstadoVigencia(capitulo: Capitulo): string {
+  obtenerTextoEstadoVigencia(capitulo: CapituloDTO): string {
     const estado = this.obtenerEstadoVigencia(capitulo);
     if (estado === 'VIGENTE') {
       return 'Vigente';
@@ -320,3 +320,5 @@ export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
     return 'No vigente';
   }
 }
+
+

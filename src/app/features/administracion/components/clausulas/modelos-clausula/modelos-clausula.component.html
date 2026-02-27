@@ -54,25 +54,25 @@
                             <div class="row g-0 mb-2">
                               <div class="col-md-9">
                                 <span class="font-weight-bold">
-                                  <em class="fa fa-caret-right m-2"></em> {{ seccion.denominacion }}
+                                  <em class="fa fa-caret-right m-2"></em> {{ seccion.seccion.denominacion }}
                                 </span>
                               </div>
                               <div class="col-md-3 text-right">
-                                <span>Versión: {{ seccion.version }}</span>
+                                <span>Versión: {{ seccion.seccion.version }}</span>
                               </div>
                             </div>
 
-                            <div *ngIf="seccion.capitulos && seccion.capitulos.length > 0" class="pl-3">
-                              <div *ngFor="let capitulo of seccion.capitulos" class="card mb-2">
+                            <div *ngIf="seccion.seccion.capitulos && (seccion.seccion.capitulos.length || 0) > 0" class="pl-3">
+                              <div *ngFor="let capitulo of seccion.seccion.capitulos" class="card mb-2">
                                 <div class="card-body py-2">
                                   <div class="row g-0">
                                     <div class="col-md-9">
                                       <span class="font-weight-bold">
-                                        <em class="fa fa-angle-right m-2"></em> {{ capitulo.denominacion }}
+                                        <em class="fa fa-angle-right m-2"></em> {{ capitulo.capitulo.denominacion }}
                                       </span>
                                     </div>
                                     <div class="col-md-3 text-right">
-                                      <span>Versión: {{ capitulo.version }}</span>
+                                      <span>Versión: {{ capitulo.capitulo.version }}</span>
                                     </div>
                                   </div>
                                 </div>
@@ -102,3 +102,5 @@
     </button>
   </div>
 </div>
+
+

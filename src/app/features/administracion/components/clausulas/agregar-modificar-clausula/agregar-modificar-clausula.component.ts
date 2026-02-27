@@ -16,8 +16,10 @@ import { AccionBoton } from '../../../../../shared/models/common/accion-boton.mo
 import { SiNoValor } from '../../../../../shared/enum/si-no-valor.enum';
 import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
 import { SiNoAmbasValor } from 'src/app/shared/enum/si-no-ambas-valor.enum';
-import { TipoCompraClausula, ObjetoCompraClausula, Clausula } from 'src/app/shared/models/pliego/clausula.model';
-import { RedaccionClausula } from '../../../../../shared/models/pliego/redaccion-clausula.model';
+import { ClausulaDTO } from 'src/app/shared/models/pliego/clausula/clausula.model';
+import { ObjetoCompraDTO } from 'src/app/shared/models/pliego/clausula/objeto-compra.model';
+import { TipoCompraClausulaModeloDTO } from 'src/app/shared/models/pliego/comun/tipo-compra-clausula-modelo.model';
+import { RedaccionDTO } from '../../../../../shared/models/pliego/clausula/redaccion.model';
 import { EstadoElemento } from 'src/app/shared/enum/estado-elemento.enum';
 import { ClausulaService } from '../../../services/clausula.service';
 
@@ -127,9 +129,9 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
     new ArticuloServObraDTO(3, 'Escritorio ejecutivo')
   ];
 
-  tiposCompraAgregados: TipoCompraClausula[] = [];
-  objetosCompraAgregados: ObjetoCompraClausula[] = [];
-  redacciones: RedaccionClausula[] = [];
+  tiposCompraAgregados: TipoCompraClausulaModeloDTO[] = [];
+  objetosCompraAgregados: ObjetoCompraDTO[] = [];
+  redacciones: RedaccionDTO[] = [];
 
   siguienteIdRedaccion = 1;
 
@@ -256,7 +258,7 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
     }
 
     this.clausulaService.obtenerClausulaPorId(this.idClausula).subscribe({
-      next: (clausula: Clausula | undefined) => {
+      next: (clausula: ClausulaDTO | undefined) => {
         if (!clausula) {
           this.actualizarService.mensajeError('Cláusula no encontrada');
           this.volver();
@@ -275,7 +277,7 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
           fechaVigenciaHasta: convertirFecha(clausula.fechaVigenciaHasta),
           incisoId: null,
           unidadEjecutoraId: null,
-          esObligatoria: clausula.esObligatoria ? SiNoValor.SI : SiNoValor.NO,
+          esObligatoria: clausula.obligatoria ? SiNoValor.SI : SiNoValor.NO,
           aperturaElectronica: clausula.aperturaElectronica ? SiNoValor.SI : SiNoValor.NO
         });
 
@@ -306,7 +308,7 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
     const subtipoCompraId = this.formTipoCompra.value.subtipoCompraId;
 
     if (!tipoCompraId) {
-       this.formTipoCompra.markAllAsTouched();
+      this.formTipoCompra.markAllAsTouched();
       return;
     }
 
@@ -315,9 +317,15 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
       return;
     }
 
+    const subtipoCompra = subtipoCompraId
+      ? this.subtiposCompra.find(st => st.idSubtipoCompra === subtipoCompraId)
+      : undefined;
+
     const yaExiste = this.tiposCompraAgregados.some(tc =>
-      tc.tipoCompraId === tipoCompraId &&
-      (subtipoCompraId ? tc.subtipos.some(st => st.subtipoCompraId === subtipoCompraId) : !subtipoCompraId)
+      tc.tipoCompra?.id === tipoCompraId &&
+      (subtipoCompraId
+        ? tc.subtipoCompra?.idSubtipoCompra === subtipoCompraId
+        : !tc.subtipoCompra)
     );
 
     if (yaExiste) {
@@ -325,54 +333,22 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
       return;
     }
 
-    if (!tipoCompra.descTipoCompra) {
-      this.actualizarService.mensajeError('Error al obtener la descripción del tipo de compra');
-      return;
-    }
-
-    let tipoCompraExistente = this.tiposCompraAgregados.find(tc => tc.tipoCompraId === tipoCompraId);
-
-    if (!tipoCompraExistente) {
-      tipoCompraExistente = {
-        tipoCompraId: tipoCompraId,
-        tipoCompraDescripcion: tipoCompra.descTipoCompra,
-        subtipos: []
-      };
-      this.tiposCompraAgregados.push(tipoCompraExistente);
-    }
-
-    if (subtipoCompraId && tipoCompraExistente) {
-      const subtipo = this.subtiposCompra.find(st => st.idSubtipoCompra === subtipoCompraId);
-      if (subtipo && subtipo.descSubtipoCompra) {
-        tipoCompraExistente.subtipos.push({
-          subtipoCompraId: subtipoCompraId,
-          subtipoCompraDescripcion: subtipo.descSubtipoCompra
-        });
-      }
-    }
+    this.tiposCompraAgregados.push({
+      tipoCompra: tipoCompra,
+      subtipoCompra: subtipoCompra
+    });
 
     this.formTipoCompra.reset();
     this.marcarFormularioTocado();
   }
 
-  eliminarTipoCompra(tipoCompra: TipoCompraClausula, subtipo?: any): void {
-    if (subtipo) {
-      const index = tipoCompra.subtipos.findIndex(st => st.subtipoCompraId === subtipo.subtipoCompraId);
-      if (index > -1) {
-        tipoCompra.subtipos.splice(index, 1);
-      }
-
-      if (tipoCompra.subtipos.length === 0) {
-        const indexTipo = this.tiposCompraAgregados.findIndex(tc => tc.tipoCompraId === tipoCompra.tipoCompraId);
-        if (indexTipo > -1) {
-          this.tiposCompraAgregados.splice(indexTipo, 1);
-        }
-      }
-    } else {
-      const index = this.tiposCompraAgregados.findIndex(tc => tc.tipoCompraId === tipoCompra.tipoCompraId);
-      if (index > -1) {
-        this.tiposCompraAgregados.splice(index, 1);
-      }
+  eliminarTipoCompra(tipoCompra: TipoCompraClausulaModeloDTO): void {
+    const index = this.tiposCompraAgregados.findIndex(tc =>
+      tc.tipoCompra?.id === tipoCompra.tipoCompra?.id &&
+      tc.subtipoCompra?.idSubtipoCompra === tipoCompra.subtipoCompra?.idSubtipoCompra
+    );
+    if (index > -1) {
+      this.tiposCompraAgregados.splice(index, 1);
     }
     this.marcarFormularioTocado();
   }
@@ -381,22 +357,27 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
     const valores = this.formObjetoCompra.value;
 
     if (!valores.familiaId) {
-       this.formObjetoCompra.markAllAsTouched();
+      this.formObjetoCompra.markAllAsTouched();
       return;
     }
 
     const familia = this.familias.find(f => f.id === valores.familiaId);
-    const subfamilia = valores.subfamiliaId ? this.subfamilias.find(sf => sf.id === valores.subfamiliaId) : null;
-    const clase = valores.claseId ? this.clases.find(c => c.id === valores.claseId) : null;
-    const subclase = valores.subclaseId ? this.subclases.find(sc => sc.id === valores.subclaseId) : null;
-    const articulo = valores.articuloId ? this.articulos.find(a => a.id === valores.articuloId) : null;
+    const subfamilia = valores.subfamiliaId ? this.subfamilias.find(sf => sf.id === valores.subfamiliaId) : undefined;
+    const clase = valores.claseId ? this.clases.find(c => c.id === valores.claseId) : undefined;
+    const subclase = valores.subclaseId ? this.subclases.find(sc => sc.id === valores.subclaseId) : undefined;
+    const articulo = valores.articuloId ? this.articulos.find(a => a.id === valores.articuloId) : undefined;
+
+    if (!familia) {
+      this.actualizarService.mensajeError('Debe seleccionar una familia válida');
+      return;
+    }
 
     const yaExiste = this.objetosCompraAgregados.some(oc =>
-      oc.familiaId === valores.familiaId &&
-      oc.subfamiliaId === valores.subfamiliaId &&
-      oc.claseId === valores.claseId &&
-      oc.subclaseId === valores.subclaseId &&
-      oc.articuloId === valores.articuloId
+      oc.familia?.id === valores.familiaId &&
+      oc.subfamilia?.id === valores.subfamiliaId &&
+      oc.clase?.id === valores.claseId &&
+      oc.subclase?.id === valores.subclaseId &&
+      oc.articulo?.id === valores.articuloId
     );
 
     if (yaExiste) {
@@ -405,32 +386,24 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
     }
 
     this.objetosCompraAgregados.push({
-      familiaId: valores.familiaId,
-      familiaDescripcion: familia?.descFamilia || '',
-      subfamiliaId: valores.subfamiliaId || null,
-      subfamiliaDescripcion: subfamilia?.descSubfamilia || null,
-      claseId: valores.claseId || null,
-      claseDescripcion: clase?.descClase || null,
-      subclaseId: valores.subclaseId || null,
-      subclaseDescripcion: subclase?.descSubclase || null,
-      articuloId: valores.articuloId || null,
-      articulo: articulo ? {
-        articuloCodigo: articulo.id?.toString() || '',
-        articuloDescripcion: articulo.descArticuloServObra || ''
-      } : null
+      familia: familia,
+      subfamilia: subfamilia,
+      clase: clase,
+      subclase: subclase,
+      articulo: articulo
     });
 
     this.formObjetoCompra.reset();
     this.marcarFormularioTocado();
   }
 
-  eliminarObjetoCompra(objeto: ObjetoCompraClausula): void {
+  eliminarObjetoCompra(objeto: ObjetoCompraDTO): void {
     const index = this.objetosCompraAgregados.findIndex(oc =>
-      oc.familiaId === objeto.familiaId &&
-      oc.subfamiliaId === objeto.subfamiliaId &&
-      oc.claseId === objeto.claseId &&
-      oc.subclaseId === objeto.subclaseId &&
-      oc.articuloId === objeto.articuloId
+      oc.familia?.id === objeto.familia?.id &&
+      oc.subfamilia?.id === objeto.subfamilia?.id &&
+      oc.clase?.id === objeto.clase?.id &&
+      oc.subclase?.id === objeto.subclase?.id &&
+      oc.articulo?.id === objeto.articulo?.id
     );
 
     if (index > -1) {
@@ -449,7 +422,7 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
     this.router.navigate(ruta);
   }
 
-  abrirModificarRedaccion(redaccion: RedaccionClausula): void {
+  abrirModificarRedaccion(redaccion: RedaccionDTO): void {
     this.guardarDatosTemporales();
 
     const ruta = this.modoIngreso
@@ -468,7 +441,7 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
     this.snapshotService.save('clausula_temporal', datos);
   }
 
-  eliminarRedaccion(redaccion: RedaccionClausula): void {
+  eliminarRedaccion(redaccion: RedaccionDTO): void {
       const index = this.redacciones.findIndex(r => r.id === redaccion.id);
       if (index > -1) {
         this.redacciones.splice(index, 1);
@@ -476,7 +449,7 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
       }
   }
 
-  obtenerAccionesRedaccion(redaccion: RedaccionClausula): AccionBoton[] {
+  obtenerAccionesRedaccion(redaccion: RedaccionDTO): AccionBoton[] {
     return [
       {
         nombre: 'Modificar',
@@ -597,24 +570,36 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
 
     const valores = this.form.value;
 
-    const clausula: Partial<Clausula> = {
+    const inciso = this.incisos.find(i => i.id === valores.incisoId) || null;
+    const unidadEjecutora = valores.unidadEjecutoraId
+      ? this.unidadesEjecutorasMock.find(ue => ue.id === valores.unidadEjecutoraId) || null
+      : null;
+
+    const organismo = inciso
+      ? {
+          inciso: inciso,
+          unidadEjecutora: unidadEjecutora || undefined
+        }
+      : undefined;
+
+    const clausula: Partial<ClausulaDTO> = {
       id: this.modoIngreso ? undefined : this.idClausula,
       denominacion: valores.denominacion!,
       fechaVigenciaDesde: valores.fechaVigenciaDesde!,
       fechaVigenciaHasta: valores.fechaVigenciaHasta || null,
-      esObligatoria: valores.esObligatoria === SiNoValor.SI,
+      obligatoria: valores.esObligatoria === SiNoValor.SI,
       aperturaElectronica: valores.aperturaElectronica === SiNoValor.SI,
       tiposCompra: this.tiposCompraAgregados,
       objetosCompra: this.objetosCompraAgregados,
-      incisos: [],
+      organismo: organismo,
       redacciones: this.redacciones,
       estado: EstadoElemento.BORRADOR,
       version: this.modoIngreso ? 1 : undefined
     };
 
     const operacion = this.modoIngreso
-      ? this.clausulaService.crearClausula(clausula as Clausula)
-      : this.clausulaService.actualizarClausula(this.idClausula, clausula as Clausula);
+      ? this.clausulaService.crearClausula(clausula as ClausulaDTO)
+      : this.clausulaService.actualizarClausula(this.idClausula, clausula as ClausulaDTO);
 
     operacion.subscribe({
       next: () => {
@@ -658,3 +643,5 @@ export class AgregarModificarClausulaComponent extends FormularioBaseComponent i
     return !this.form.dirty && !this.formTipoCompra.dirty && !this.formObjetoCompra.dirty;
   }
 }
+
+

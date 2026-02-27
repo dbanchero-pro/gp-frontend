@@ -10,10 +10,10 @@
     <div class="col-12 ml-0 pl-0 mr-0 pr-0">
       <div class="Box Box--colorInfo p-3">
         <div class="mb-2 font-weight-bold subtitle">
-          {{ proceso.incisoDescripcion }} | {{ proceso.unidadEjecutoraDescripcion }}
+          {{ obtenerTextoOrganismo() }}
         </div>
         <div class="mb-2 font-weight-bold">
-          {{ proceso.tipoCompraDescripcion }} | {{ proceso.subtipoCompraDescripcion }} N° {{ proceso.numeroCompra }}/{{ proceso.anioCompra }}
+          {{ obtenerTextoTipoCompra() }}
         </div>
         <div class="mb-2">
             Modelo: <strong> Denominación Modelo 1</strong>
@@ -49,7 +49,7 @@
   </div>
 
   <app-cabezal-consulta
-    [totalItems]="proceso?.usuariosAsignados?.length || 0"
+    [totalItems]="usuariosAsignados.length || 0"
     [listaOrden]="listaOrden"
     [columnaOrden]="parametros.sort"
     [orden]="parametros.order"
@@ -58,7 +58,7 @@
   </app-cabezal-consulta>
 
   <!-- Cards de usuarios -->
-  <div *ngFor="let usuario of proceso?.usuariosAsignados; let i = index" [style.position]="'relative'" [style.z-index]="8000-i">
+  <div *ngFor="let usuario of usuariosAsignados; let i = index" [style.position]="'relative'" [style.z-index]="8000-i">
     <div class="card mb-2">
       <div class="row">
         <div class="col-12 py-2 px-4">
@@ -87,14 +87,14 @@
   </div>
 
   <!-- Mensaje cuando no hay usuarios -->
-  <div class="alert alert-info" *ngIf="!proceso?.usuariosAsignados || proceso?.usuariosAsignados?.length === 0">
+  <div class="alert alert-info" *ngIf="usuariosAsignados.length === 0">
       No hay usuarios asignados a este pliego
   </div>
 
   <!-- Paginado -->
   <app-paginado
-    *ngIf="(proceso?.usuariosAsignados?.length || 0) > 0"
-    [totalItems]="proceso?.usuariosAsignados?.length || 0"
+    *ngIf="usuariosAsignados.length > 0"
+    [totalItems]="usuariosAsignados.length || 0"
     [itemsPorPagina]="parametros.tamanoPagina"
     [paginaActual]="parametros.pagina + 1"
     (cambioPagina)="cambioPagina($event)"
@@ -128,3 +128,5 @@
     (guardarEvento)="guardarUsuarioModificado($event)">
   </app-modificar-usuario-popup>
 </ng-template>
+
+

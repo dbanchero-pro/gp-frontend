@@ -4,13 +4,13 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccionBoton } from 'src/app/shared/models/common/accion-boton.model';
 import { IColumnaOrden } from 'src/app/shared/models/common/columna-orden.model';
-import { Modelo, ClausulaModelo } from 'src/app/shared/models/pliego/modelo.model';
+import { ModeloDTO } from 'src/app/shared/models/pliego/modelo/modelo.model';
+import { ClausulaDTO } from 'src/app/shared/models/pliego/clausula/clausula.model';
 import { FechaPipe } from 'src/app/shared/pipes/fecha.pipe';
 import { ActualizarService } from 'src/app/shared/services/common/actualizar.service';
 import { SnapshotGenericService } from 'src/app/shared/services/common/snapshot-generic.service';
 import { EstadoProcesoPliego } from '../../enum/estado-proceso-pliego.enum';
-import { PliegoBase } from '../../models/pliego-base.model';
-import { ProcesoPliego } from '../../models/proceso-pliego.model';
+import { PliegoDTO } from '../../models/pliego.model';
 import { BandejaEntradaService } from '../../services/bandeja-entrada.service';
 import { FiltroModelo } from 'src/app/features/administracion/models/filtros/filtro-modelo.model';
 import { ModeloService } from 'src/app/features/administracion/services/modelo.service';
@@ -57,12 +57,12 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
   private bandejaEntradaService = inject(BandejaEntradaService);
 
   formularioFiltro: FormGroup;
-  modelos: Modelo[] = [];
-  pliegos: PliegoBase[] = [];
+  modelos: ModeloDTO[] = [];
+  pliegos: PliegoDTO[] = [];
   mostrandoPliegos = false;
   cargando = false;
   pliegoId: number | null = null;
-  proceso: ProcesoPliego | null = null;
+  proceso: PliegoDTO | null = null;
 
   colFiltro = 'col-lg-3';
   colTabla = 'col-lg-9';
@@ -323,8 +323,11 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     this.buscar();
   }
 
-  obtenerAccionesClausula(clausula: ClausulaModelo): AccionBoton[] {
+  obtenerAccionesClausula(clausula: ClausulaDTO | null | undefined): AccionBoton[] {
       const acciones: AccionBoton[] = [];
+      if (!clausula) {
+        return acciones;
+      }
 
       acciones.push({
         nombre: 'Ver',
@@ -340,7 +343,7 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/pliegos/bandeja-entrada']);
   }
 
-  seleccionarModelo(modelo: Modelo): void {
+  seleccionarModelo(modelo: ModeloDTO): void {
     if (!this.pliegoId) {
       this.actualizarService.mensajeError('No se pudo identificar el pliego');
       return;
@@ -359,7 +362,7 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     );
   }
 
-  obtenerTextoVigencia(modelo: Modelo): string {
+  obtenerTextoVigencia(modelo: ModeloDTO): string {
     const desde = modelo.fechaVigenciaDesde
       ? this.fechaPipe.transform(modelo.fechaVigenciaDesde)
       : ' ';
@@ -369,16 +372,16 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     return desde + ' - ' + hasta;
   }
 
-  esBorrador(modelo: Modelo): boolean {
+  esBorrador(modelo: ModeloDTO): boolean {
     return modelo.estado === 'BORRADOR';
   }
 
-  esVigente(modelo: Modelo): boolean {
+  esVigente(modelo: ModeloDTO): boolean {
     const hoy = new Date();
     const desde = modelo.fechaVigenciaDesde ? new Date(modelo.fechaVigenciaDesde) : null;
     const hasta = modelo.fechaVigenciaHasta ? new Date(modelo.fechaVigenciaHasta) : null;
 
-    if (modelo.estado === 'BORRADOR' || !modelo.versionada) {
+    if (modelo.estado === 'BORRADOR') {
       return false;
     }
 
@@ -391,11 +394,11 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     return true;
   }
 
-  obtenerEstadoVigencia(modelo: Modelo): string {
+  obtenerEstadoVigencia(modelo: ModeloDTO): string {
     return this.esVigente(modelo) ? 'VIGENTE' : 'NO_VIGENTE';
   }
 
-  obtenerTextoEstadoVigencia(modelo: Modelo): string {
+  obtenerTextoEstadoVigencia(modelo: ModeloDTO): string {
     return this.esVigente(modelo) ? 'Vigente' : 'No vigente';
   }
 
@@ -407,7 +410,7 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
 
   cargarProceso(id: number): void {
     this.bandejaEntradaService.obtenerProceso(id).subscribe({
-      next: (proceso: ProcesoPliego) => {
+      next: (proceso: PliegoDTO) => {
         this.proceso = proceso;
       },
       error: () => {
@@ -444,18 +447,18 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     return clases[estado];
   }
 
-  ordenarYPaginarPliegos(pliegos: PliegoBase[]): PliegoBase[] {
+  ordenarYPaginarPliegos(pliegos: PliegoDTO[]): PliegoDTO[] {
     // Ordenar
     const pliegosOrdenados = [...pliegos].sort((a, b) => {
       let valorA: any;
       let valorB: any;
 
       if (this.parametros.sort === 'denominacion') {
-        valorA = a.denominacionModelo || '';
-        valorB = b.denominacionModelo || '';
+        valorA = a.modelo?.denominacion || '';
+        valorB = b.modelo?.denominacion || '';
       } else if (this.parametros.sort === 'Inciso') {
-        valorA = a.incisoDescripcion || '';
-        valorB = b.incisoDescripcion || '';
+        valorA = a.unidadEjecutora?.inciso?.descInciso || '';
+        valorB = b.unidadEjecutora?.inciso?.descInciso || '';
       } else {
         return 0;
       }
@@ -470,7 +473,7 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     return pliegosOrdenados.slice(inicio, fin);
   }
 
-  obtenerAccionesPliego(pliego: PliegoBase): AccionBoton[] {
+  obtenerAccionesPliego(pliego: PliegoDTO): AccionBoton[] {
     return [
       {
         nombre: 'Seleccionar',
@@ -489,7 +492,7 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     ];
   }
 
-  seleccionarPliego(pliego: PliegoBase): void {
+  seleccionarPliego(pliego: PliegoDTO): void {
     if (!this.pliegoId) {
       this.actualizarService.mensajeError('No se pudo identificar el pliego');
       return;
@@ -508,7 +511,7 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     );
   }
 
-  verPliego(pliego: PliegoBase): void {
+  verPliego(pliego: PliegoDTO): void {
     console.log('Ver pliego:', pliego);
     this.actualizarService.mensajeInformacion('Funcionalidad de ver pliego en desarrollo');
     // TODO: Implementar navegación a vista de pliego
@@ -523,16 +526,16 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     return textos[apertura] || apertura;
   }
 
-  esBorradorPliego(pliego: PliegoBase): boolean {
-    return pliego.estadoModelo === 'BORRADOR';
+  esBorradorPliego(pliego: PliegoDTO): boolean {
+    return pliego.modelo?.estado === 'BORRADOR';
   }
 
-  esVigentePliego(pliego: PliegoBase): boolean {
+  esVigentePliego(pliego: PliegoDTO): boolean {
     const hoy = new Date();
-    const desde = pliego.fechaVigenciaDesdeModelo ? new Date(pliego.fechaVigenciaDesdeModelo) : null;
-    const hasta = pliego.fechaVigenciaHastaModelo ? new Date(pliego.fechaVigenciaHastaModelo) : null;
+    const desde = pliego.modelo?.fechaVigenciaDesde ? new Date(pliego.modelo.fechaVigenciaDesde) : null;
+    const hasta = pliego.modelo?.fechaVigenciaHasta ? new Date(pliego.modelo.fechaVigenciaHasta) : null;
 
-    if (pliego.estadoModelo === 'BORRADOR' || !pliego.versionadaModelo) {
+    if (pliego.modelo?.estado === 'BORRADOR') {
       return false;
     }
 
@@ -545,11 +548,27 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     return true;
   }
 
-  obtenerEstadoVigenciaPliego(pliego: PliegoBase): string {
+  obtenerEstadoVigenciaPliego(pliego: PliegoDTO): string {
     return this.esVigentePliego(pliego) ? 'VIGENTE' : 'NO_VIGENTE';
   }
 
-  obtenerTextoEstadoVigenciaPliego(pliego: PliegoBase): string {
+  obtenerTextoEstadoVigenciaPliego(pliego: PliegoDTO): string {
     return this.esVigentePliego(pliego) ? 'Vigente' : 'No vigente';
+  }
+
+  obtenerTextoOrganismoProceso(): string {
+    if (!this.proceso) {
+      return '';
+    }
+    return `${this.proceso.unidadEjecutora?.inciso?.descInciso ?? ''} | ${this.proceso.unidadEjecutora?.descUnidadEjecutora ?? ''}`;
+  }
+
+  obtenerTextoTipoCompraProceso(): string {
+    if (!this.proceso) {
+      return '';
+    }
+    const tipo = this.proceso.subtipoCompra?.descTipoCompra ?? '';
+    const subtipo = this.proceso.subtipoCompra?.descSubtipoCompra ?? '';
+    return `${tipo} | ${subtipo} N° ${this.proceso.numeroCompra}/${this.proceso.anioCompra}`;
   }
 }

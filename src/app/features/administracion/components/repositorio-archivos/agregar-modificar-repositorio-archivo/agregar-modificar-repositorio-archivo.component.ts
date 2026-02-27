@@ -6,7 +6,7 @@ import { TipoArchivoRepositorio } from 'src/app/shared/enum/tipo-archivo-reposit
 import { TipoMensajeEnum } from 'src/app/shared/enum/tipo-mensaje.enum';
 import { ArchivoDTO } from 'src/app/shared/models/common/archivo.model';
 import { IFiltroOrganismoDTO } from 'src/app/shared/models/filtros/filtro-organismo.model';
-import { TipoCompraClausula } from 'src/app/shared/models/pliego/clausula.model';
+import { TipoCompraClausulaModeloDTO } from 'src/app/shared/models/pliego/comun/tipo-compra-clausula-modelo.model';
 import { DocumentoRepositorioDTO } from 'src/app/shared/models/pliego/documento-repositorio.model';
 import { SubtipoCompraDTO } from 'src/app/shared/models/sice/subtipo-compra.model';
 import { TipoCompraDTO } from 'src/app/shared/models/sice/tipo-compra.model';
@@ -65,7 +65,7 @@ export class AgregarModificarRepositorioArchivoComponent extends FormularioBaseC
       new SubtipoCompraDTO('2', '3', 'Por excepción', 'Contratación Directa')
     ];
 
-    tiposCompraAgregados: TipoCompraClausula[] = [];
+    tiposCompraAgregados: TipoCompraClausulaModeloDTO[] = [];
 
   archivoSeleccionado: File | null = null;
   nombreArchivoMostrar: string = '';
@@ -227,8 +227,14 @@ export class AgregarModificarRepositorioArchivoComponent extends FormularioBaseC
   }
 
   private procesarGuardado(organismo: IFiltroOrganismoDTO, archivo?: ArchivoDTO): void {
+    const archivoFinal = archivo ?? this.documentoExistente?.archivo;
+    if (!archivoFinal) {
+      this.actualizarService.mensajeError('Debe seleccionar un archivo');
+      return;
+    }
+
     const documento = new DocumentoRepositorioDTO(
-      this.documentoExistente?.id,
+      this.documentoExistente?.id ?? null,
       organismo.idInciso!,
       this.documentoExistente?.nombreInciso || '',
       organismo.idUnidadEjecutora!,
@@ -236,7 +242,7 @@ export class AgregarModificarRepositorioArchivoComponent extends FormularioBaseC
       this.form.value.nombreDocumento || '',
       this.form.value.descripcionDocumento || '',
       this.form.value.tipoArchivo as TipoArchivoRepositorio,
-      archivo || this.documentoExistente?.archivo,
+      archivoFinal,
       this.documentoExistente?.fechaCreacion || new Date(),
       new Date()
     );
@@ -278,3 +284,4 @@ export class AgregarModificarRepositorioArchivoComponent extends FormularioBaseC
     this.router.navigate(['../../'], { relativeTo: this.route });
   }
 }
+

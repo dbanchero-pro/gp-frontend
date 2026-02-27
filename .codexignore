@@ -1,0 +1,60 @@
+# =====================
+# DEPENDENCIES
+# =====================
+node_modules/
+
+# =====================
+# BUILD OUTPUT
+# =====================
+dist/
+out-tsc/
+.tmp/
+.cache/
+.angular/
+
+# =====================
+# TESTS / COVERAGE
+# =====================
+coverage/
+test-results/
+playwright-report/
+
+# =====================
+# IDE / EDITOR
+# =====================
+.idea/
+.vscode/
+*.iml
+
+# =====================
+# LOGS
+# =====================
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# =====================
+# SYSTEM FILES
+# =====================
+.DS_Store
+Thumbs.db
+
+# =====================
+# ENV / SECRET CONFIG
+# =====================
+.env
+.env.*
+*.local
+*.secret
+
+# =====================
+# GENERATED FILES
+# =====================
+src/environments/environment*.ts
+
+# =====================
+# OPTIONAL (si tenés assets pesados)
+# =====================
+src/assets/videos/
+src/assets/tmp/

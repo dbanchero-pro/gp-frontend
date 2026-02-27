@@ -23,7 +23,7 @@ import { NuevoUsuarioUcPopupComponent } from '../../usuario-organismo/nuevo-usua
 import { UnidadesCompraSicePopupComponent } from '../../usuario-organismo/unidades-compra-sice-popup/unidades-compra-sice-popup.component';
 import { ModificarRolPopupComponent } from '../modificar-rol-popup/modificar-rol-popup.component';
 import { IConsultaUsuarioOrganismoPerfilFiltroDTO } from 'src/app/features/administracion/models/filtros/consulta-usuario-organismo-perfil-filtro.model';
-import { UsuarioPermisoAgrupado } from 'src/app/features/administracion/models/usuario-permiso-agrupado.model';
+import { UsuarioPermisoAgrupadoDTO } from 'src/app/features/administracion/models/usuario-permiso-agrupado.model';
 
 @Component({
     selector: 'app-consulta-usuarios-roles',
@@ -48,7 +48,7 @@ export class ConsultaUsuariosRolesComponent
     ordenInicial: 'asc' | 'desc' = 'asc';
     permisos: any = {};
     nroCompra!: number;
-    usuariosAgrupados: UsuarioPermisoAgrupado[] = [];
+    usuariosAgrupados: UsuarioPermisoAgrupadoDTO[] = [];
 
     tiposCompra: TipoCompraDTO[] = [];
     nroCompraValido = true;
@@ -189,7 +189,7 @@ export class ConsultaUsuariosRolesComponent
 
         this.usuarioRolesService.obtenerTodos(filtro, pagina, tamanoPagina, sortParam)
             .pipe(map((response) => {
-                const mapa = new Map<string, UsuarioPermisoAgrupado>();
+                const mapa = new Map<string, UsuarioPermisoAgrupadoDTO>();
 
                 this.agruparPorUsuario(response, mapa);
 
@@ -265,7 +265,7 @@ export class ConsultaUsuariosRolesComponent
         this.usuarioRolesService.exportarUsuariosRol(filtro);
     }
 
-    obtenerAcciones(usuario: UsuarioPermisoAgrupado, modoBusqueda: string): AccionBoton[] {
+    obtenerAcciones(usuario: UsuarioPermisoAgrupadoDTO, modoBusqueda: string): AccionBoton[] {
         let acciones: AccionBoton[] = [];
 
         if (usuario.tienePermisoTodas) {
@@ -353,7 +353,7 @@ export class ConsultaUsuariosRolesComponent
         );
     }
 
-    abrirAgregarPermisoTodasUcPopupParaUsuario(usuario: UsuarioPermisoAgrupado) {
+    abrirAgregarPermisoTodasUcPopupParaUsuario(usuario: UsuarioPermisoAgrupadoDTO) {
         const comp = this.abrirPopup(NuevoUsuarioPopupComponent, 'Guardar', {
             initialState: {
                 titulo: "Asignar roles a todas las unidades de compra habilitadas en SICE para el usuario",
@@ -384,7 +384,7 @@ export class ConsultaUsuariosRolesComponent
         );
     }
 
-    abrirOrganismoPopup(usuario: UsuarioPermisoAgrupado) {
+    abrirOrganismoPopup(usuario: UsuarioPermisoAgrupadoDTO) {
         const comp = this.abrirPopup(OrganismoPopupComponent, undefined, {
             initialState: {
                 usuario: usuario,
@@ -441,7 +441,7 @@ export class ConsultaUsuariosRolesComponent
         }, 100);
     }
 
-    guardarRolUsuarioPorUc(data: any, usuario: UsuarioPermisoAgrupado): void {
+    guardarRolUsuarioPorUc(data: any, usuario: UsuarioPermisoAgrupadoDTO): void {
         const filtros = {
             idInciso: data.idInciso,
             idUnidadEjecutora: data.idUnidadEjecutora,
@@ -455,7 +455,7 @@ export class ConsultaUsuariosRolesComponent
             });
     }
 
-    guardarRolUsuarioParaTodasUc(usuario: UsuarioPermisoAgrupado): void {
+    guardarRolUsuarioParaTodasUc(usuario: UsuarioPermisoAgrupadoDTO): void {
         this.actualizarServ.confirmar('¿Está seguro que desea agregar el rol a nivel de todas las UC que tiene el usuario en SICE?',
             () => {
                 this.usuarioRolesService.agregarRolTodasUc(usuario.id).subscribe(() => {
@@ -604,7 +604,7 @@ export class ConsultaUsuariosRolesComponent
         return acciones;
     }
 
-    abrirAsignarPorTipoCompra(usuario: UsuarioPermisoAgrupado): void {
+    abrirAsignarPorTipoCompra(usuario: UsuarioPermisoAgrupadoDTO): void {
         const comp = this.abrirPopup(NuevoUsuarioTipoCompraPopupComponent, 'Guardar', {
             initialState: {
                 titulo: 'Asignar rol por tipo de compra',
@@ -691,7 +691,7 @@ export class ConsultaUsuariosRolesComponent
         }, 100);
     }
 
-    private agruparPorUsuario(response: PageModel<UsuarioOrganismoPerfilDTO>, mapa: Map<string, UsuarioPermisoAgrupado>) {
+    private agruparPorUsuario(response: PageModel<UsuarioOrganismoPerfilDTO>, mapa: Map<string, UsuarioPermisoAgrupadoDTO>) {
         const usuariosConPermisoGlobal = new Set<string>();
         response.content.forEach((p: UsuarioOrganismoPerfilDTO) => {
             const key = p.idUsuario ?? '';

@@ -241,12 +241,12 @@
 
              <div class="row g-0 py-1 px-3">
               <div class="col-md-3 col-lg-2 etiqueta">Obligatoria</div>
-              <div class="col font-weight-bold">{{ clausula.esObligatoria ? 'Sí' : 'No' }}</div>
+              <div class="col font-weight-bold">{{ clausula.obligatoria ? 'Sí' : 'No' }}</div>
             </div>
 
             <div class="row g-0 py-1 px-3">
               <div class="col-md-3 col-lg-2 etiqueta">Editable</div>
-              <div class="col font-weight-bold">{{ clausula.esObligatoria ? 'Sí' : 'No' }}</div>
+              <div class="col font-weight-bold">{{ clausula.obligatoria ? 'Sí' : 'No' }}</div>
             </div>
 
             <div *ngIf="clausula.redacciones.length > 0" class="row g-0 py-2">
@@ -300,3 +300,4 @@
     </div>
   </div>
 </div>
+

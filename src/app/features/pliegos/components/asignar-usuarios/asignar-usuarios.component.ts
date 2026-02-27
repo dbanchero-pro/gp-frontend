@@ -8,9 +8,9 @@ import { IColumnaOrden } from 'src/app/shared/models/common/columna-orden.model'
 import { ActualizarService } from 'src/app/shared/services/common/actualizar.service';
 import { CanComponentDeactivate } from 'src/app/shared/utils/can-component-deactivate';
 import { EstadoProcesoPliego } from '../../enum/estado-proceso-pliego.enum';
-import { ProcesoPliego } from '../../models/proceso-pliego.model';
+import { PliegoDTO } from '../../models/pliego.model';
 import { BandejaEntradaService } from '../../services/bandeja-entrada.service';
-import { UsuarioAsignado } from './models/usuario-asignado.model';
+import { UsuarioAsignadoDTO } from '../../models/usuario-asignado.model';
 
 @Component({
   selector: 'app-asignar-usuarios',
@@ -28,9 +28,10 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
   @ViewChild('agregarUsuarioTemplate', { static: false }) agregarUsuarioTemplate: any;
   @ViewChild('modificarUsuarioTemplate', { static: false }) modificarUsuarioTemplate: any;
 
-  proceso: ProcesoPliego | null = null;
+  proceso: PliegoDTO | null = null;
+  usuariosAsignados: UsuarioAsignadoDTO[] = [];
   guardando = false;
-  usuarioAModificar: UsuarioAsignado | null = null;
+  usuarioAModificar: UsuarioAsignadoDTO | null = null;
 
   get columnaOrdenInicial(): string {
     return 'nombre';
@@ -48,7 +49,7 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
   }
 
   // Datos mock para pruebas
-  private usuariosMock: UsuarioAsignado[] = [
+  private usuariosMock: UsuarioAsignadoDTO[] = [
     {
       id: 1,
       numeroDocumento: '1.234.567-8',
@@ -135,12 +136,9 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
 
   cargarProceso(id: number): void {
     this.bandejaEntradaService.obtenerProceso(id).subscribe({
-      next: (proceso: ProcesoPliego) => {
+      next: (proceso: PliegoDTO) => {
         this.proceso = proceso;
-        // Si no tiene usuarios asignados, usamos datos mock
-        if (!this.proceso.usuariosAsignados || this.proceso.usuariosAsignados.length === 0) {
-          this.proceso.usuariosAsignados = [...this.usuariosMock];
-        }
+        this.usuariosAsignados = [...this.usuariosMock];
       },
       error: () => {
         this.actualizarServ.mensajeError('Error al cargar el proceso');
@@ -185,7 +183,7 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     // No se realiza búsqueda ya que se muestran todos los usuarios del proceso
   }
 
-  obtenerAcciones(usuario: UsuarioAsignado): AccionBoton[] {
+  obtenerAcciones(usuario: UsuarioAsignadoDTO): AccionBoton[] {
     return [
       {
         nombre: 'Modificar',
@@ -214,43 +212,35 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     this.abrirPopup(this.agregarUsuarioTemplate, 'Guardar');
   }
 
-  guardarNuevoUsuario(usuario: UsuarioAsignado): void {
+  guardarNuevoUsuario(usuario: UsuarioAsignadoDTO): void {
     if (!this.proceso) {
       return;
     }
 
     // Verificar si el usuario ya está asignado
-    const yaAsignado = this.proceso.usuariosAsignados?.some(u => u.id === usuario.id);
+    const yaAsignado = this.usuariosAsignados.some((u: UsuarioAsignadoDTO) => u.id === usuario.id);
     if (yaAsignado) {
       this.actualizarServ.mensajeInformacion('El usuario ya está asignado al proceso');
       return;
     }
 
     // Agregar el usuario a la lista
-    if (!this.proceso.usuariosAsignados) {
-      this.proceso.usuariosAsignados = [];
-    }
-
-    this.proceso.usuariosAsignados.push(usuario);
+    this.usuariosAsignados.push(usuario);
 
     this.actualizarServ.mensajeCorrecto('Usuario agregado correctamente');
     this.cerrarPopup();
   }
 
-  modificarUsuario(usuario: UsuarioAsignado): void {
+  modificarUsuario(usuario: UsuarioAsignadoDTO): void {
     this.usuarioAModificar = usuario;
     this.abrirPopup(this.modificarUsuarioTemplate, 'Guardar');
   }
 
-  guardarUsuarioModificado(usuarioModificado: UsuarioAsignado): void {
-    if (!this.proceso?.usuariosAsignados) {
-      return;
-    }
-
+  guardarUsuarioModificado(usuarioModificado: UsuarioAsignadoDTO): void {
     // Encontrar y actualizar el usuario en la lista
-    const index = this.proceso.usuariosAsignados.findIndex(u => u.id === usuarioModificado.id);
+    const index = this.usuariosAsignados.findIndex((u: UsuarioAsignadoDTO) => u.id === usuarioModificado.id);
     if (index !== -1) {
-      this.proceso.usuariosAsignados[index] = usuarioModificado;
+      this.usuariosAsignados[index] = usuarioModificado;
       this.actualizarServ.mensajeCorrecto('Roles del usuario modificados correctamente');
     }
 
@@ -258,22 +248,20 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     this.cerrarPopup();
   }
 
-  eliminarUsuario(usuario: UsuarioAsignado): void {
+  eliminarUsuario(usuario: UsuarioAsignadoDTO): void {
     console.log('Eliminar usuario:', usuario);
     // TODO: Implementar lógica de eliminar usuario
-    if (this.proceso?.usuariosAsignados) {
-      const index = this.proceso.usuariosAsignados.findIndex(u => u.id === usuario.id);
-      if (index !== -1) {
-        this.proceso.usuariosAsignados.splice(index, 1);
-      }
+    const index = this.usuariosAsignados.findIndex((u: UsuarioAsignadoDTO) => u.id === usuario.id);
+    if (index !== -1) {
+      this.usuariosAsignados.splice(index, 1);
     }
   }
 
-  obtenerNombreCompleto(usuario: UsuarioAsignado): string {
+  obtenerNombreCompleto(usuario: UsuarioAsignadoDTO): string {
     return `${usuario.nombre} ${usuario.apellido}`;
   }
 
-  obtenerRoles(usuario: UsuarioAsignado): string {
+  obtenerRoles(usuario: UsuarioAsignadoDTO): string {
     return usuario.roles.join(', ');
   }
 
@@ -283,14 +271,14 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
       return;
     }
 
-    const usuariosAsignados = this.proceso.usuariosAsignados || [];
+    const usuariosAsignados = this.usuariosAsignados || [];
 
     if (usuariosAsignados.length === 0) {
       this.actualizarServ.mensajeInformacion('Debe asignar al menos un usuario');
       return;
     }
 
-    const tieneEditorPrincipal = usuariosAsignados.some(u =>
+    const tieneEditorPrincipal = usuariosAsignados.some((u: UsuarioAsignadoDTO) =>
       u.roles.includes('Editor Principal')
     );
 
@@ -355,5 +343,21 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
 
   canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
     return true; // Por ahora siempre permite salir
+  }
+
+  obtenerTextoOrganismo(): string {
+    if (!this.proceso) {
+      return '';
+    }
+    return `${this.proceso.unidadEjecutora?.inciso?.descInciso ?? ''} | ${this.proceso.unidadEjecutora?.descUnidadEjecutora ?? ''}`;
+  }
+
+  obtenerTextoTipoCompra(): string {
+    if (!this.proceso) {
+      return '';
+    }
+    const tipoCompra = this.proceso.subtipoCompra?.descTipoCompra ?? '';
+    const subtipoCompra = this.proceso.subtipoCompra?.descSubtipoCompra ?? '';
+    return `${tipoCompra} | ${subtipoCompra} N° ${this.proceso.numeroCompra}/${this.proceso.anioCompra}`;
   }
 }

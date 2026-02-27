@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { FormularioBaseComponent } from '../../../../../shared/components/base/formulario-base.component';
 import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
 import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
-import { RedaccionClausula } from 'src/app/shared/models/pliego/redaccion-clausula.model';
+import { RedaccionDTO } from 'src/app/shared/models/pliego/clausula/redaccion.model';
 
 @Component({
   selector: 'app-agregar-modificar-redaccion',
@@ -22,8 +22,8 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
   private readonly snapshotService = inject(SnapshotGenericService);
 
   clausulaInfo: any;
-  redaccion?: RedaccionClausula;
-  redaccionesExistentes: RedaccionClausula[] = [];
+  redaccion?: RedaccionDTO;
+  redaccionesExistentes: RedaccionDTO[] = [];
   modoIngreso = true;
   colapsado = true;
   idClausula?: number;
@@ -116,7 +116,7 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
       return;
     }
 
-    const redaccionNueva: RedaccionClausula = {
+    const redaccionNueva: RedaccionDTO = {
       id: this.idRedaccion,
       prioridad: prioridad!,
       redaccion: this.form.value.redaccion!
@@ -129,7 +129,7 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
         redaccionNueva.id = this.obtenerNuevoId(datos.redacciones);
         datos.redacciones.push(redaccionNueva);
       } else {
-        const index = datos.redacciones.findIndex((r: RedaccionClausula) => Number(r.id) === Number(this.idRedaccion));
+        const index = datos.redacciones.findIndex((r: RedaccionDTO) => Number(r.id) === Number(this.idRedaccion));
         if (index > -1) {
           datos.redacciones[index] = redaccionNueva;
         } else {
@@ -144,7 +144,7 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
     this.volver();
   }
 
-  private obtenerNuevoId(redacciones: RedaccionClausula[]): number {
+  private obtenerNuevoId(redacciones: RedaccionDTO[]): number {
     if (!redacciones || redacciones.length === 0) {
       return 1;
     }
@@ -179,9 +179,11 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
 
     return this.clausulaInfo.tiposCompra
       .map((tc: any) => {
-        const subtipos = tc.subtipos.map((st: any) => st.subtipoCompraDescripcion).join(', ');
-        return subtipos ? `${tc.tipoCompraDescripcion} | ${subtipos}` : tc.tipoCompraDescripcion;
+        const tipo = tc.tipoCompra?.descTipoCompra || '';
+        const subtipo = tc.subtipoCompra?.descSubtipoCompra || 'Todos los subtipos';
+        return tipo ? `${tipo} | ${subtipo}` : '';
       })
+      .filter((texto: string) => texto.length > 0)
       .join(' • ');
   }
 
@@ -192,19 +194,21 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
 
     return this.clausulaInfo.objetosCompra
       .map((oc: any) => {
-        const partes = [oc.familiaDescripcion];
-        if (oc.subfamiliaDescripcion) partes.push(oc.subfamiliaDescripcion);
-        if (oc.claseDescripcion) partes.push(oc.claseDescripcion);
-        if (oc.subclaseDescripcion) partes.push(oc.subclaseDescripcion);
+        const partes: string[] = [];
+        if (oc.familia?.descFamilia) partes.push(oc.familia.descFamilia);
+        if (oc.subfamilia?.descSubfamilia) partes.push(oc.subfamilia.descSubfamilia);
+        if (oc.clase?.descClase) partes.push(oc.clase.descClase);
+        if (oc.subclase?.descSubclase) partes.push(oc.subclase.descSubclase);
 
         let resultado = partes.join(' | ');
 
-        if (oc.articulo) {
-          resultado += ` | ${oc.articulo.articuloDescripcion} (${oc.articulo.articuloCodigo})`;
+        if (oc.articulo?.descArticuloServObra) {
+          resultado += ` | ${oc.articulo.descArticuloServObra}`;
         }
 
         return resultado;
       })
+      .filter((texto: string) => texto.length > 0)
       .join(' • ');
   }
 
@@ -237,3 +241,4 @@ export class AgregarModificarRedaccionComponent extends FormularioBaseComponent 
     }
   }
 }
+
