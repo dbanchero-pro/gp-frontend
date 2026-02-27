@@ -17,8 +17,11 @@ describe('BandejaEntradaComponent', () => {
   };
   const bsModalServiceStub = jasmine.createSpyObj('BsModalService', ['show']);
   bsModalServiceStub.show.and.returnValue({ content: {}, hide: jasmine.createSpy('hide'), onHide: of({}) });
-  const bandejaEntradaServiceStub = jasmine.createSpyObj('BandejaEntradaService', ['buscarProcesos']);
+  const bandejaEntradaServiceStub = jasmine.createSpyObj('BandejaEntradaService', ['buscarProcesos', 'obtenerFiltrosBandeja']);
   bandejaEntradaServiceStub.buscarProcesos.and.returnValue(of({ content: [], totalElements: 0 }));
+  bandejaEntradaServiceStub.obtenerFiltrosBandeja.and.returnValue(
+    of({ incisos: [], unidadesEjecutoras: [], unidadesCompra: [], tiposCompra: [] })
+  );
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

@@ -36,10 +36,13 @@ describe('IniciarPliegoComponent', () => {
   };
   const modeloServiceStub = jasmine.createSpyObj('ModeloService', ['buscarModelos']);
   modeloServiceStub.buscarModelos.and.returnValue(of([]));
-  const bandejaEntradaServiceStub = jasmine.createSpyObj('BandejaEntradaService', ['buscarPliegos', 'obtenerProceso', 'asignarUsuariosYFinalizar']);
+  const bandejaEntradaServiceStub = jasmine.createSpyObj('BandejaEntradaService', ['buscarPliegos', 'obtenerProceso', 'asignarUsuariosYFinalizar', 'obtenerFiltrosIniciarPliego']);
   bandejaEntradaServiceStub.buscarPliegos.and.returnValue(of([]));
   bandejaEntradaServiceStub.obtenerProceso.and.returnValue(of({}));
   bandejaEntradaServiceStub.asignarUsuariosYFinalizar.and.returnValue(of({}));
+  bandejaEntradaServiceStub.obtenerFiltrosIniciarPliego.and.returnValue(
+    of({ incisos: [], unidadesEjecutoras: [], tiposCompra: [] })
+  );
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

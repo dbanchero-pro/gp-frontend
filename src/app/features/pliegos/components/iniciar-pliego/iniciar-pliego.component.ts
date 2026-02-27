@@ -11,33 +11,15 @@ import { ActualizarService } from 'src/app/shared/services/common/actualizar.ser
 import { SnapshotGenericService } from 'src/app/shared/services/common/snapshot-generic.service';
 import { EstadoPliego } from '../../enum/estado-pliego.enum';
 import { PliegoDTO } from '../../models/pliego.model';
-import { BandejaEntradaService } from '../../services/bandeja-entrada.service';
+import {
+  BandejaEntradaService,
+  IncisoFiltroIniciarPliego,
+  SubtipoCompraFiltroIniciarPliego,
+  TipoCompraFiltroIniciarPliego,
+  UnidadEjecutoraFiltroIniciarPliego
+} from '../../services/bandeja-entrada.service';
 import { FiltroModelo } from 'src/app/features/administracion/models/filtros/filtro-modelo.model';
 import { ModeloService } from 'src/app/features/administracion/services/modelo.service';
-
-interface Inciso {
-  id: number;
-  codigo: string;
-  descripcion: string;
-}
-
-interface UnidadEjecutora {
-  id: number;
-  codigo: string;
-  descripcion: string;
-  incisoId: number;
-}
-
-interface TipoCompra {
-  id: number;
-  descripcion: string;
-  subtipos: SubtipoCompra[];
-}
-
-interface SubtipoCompra {
-  id: number;
-  descripcion: string;
-}
 
 @Component({
   selector: 'app-iniciar-pliego',
@@ -79,22 +61,12 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     { id: 'Inciso', nombre: 'Inciso' },
   ];
 
-  incisos: Inciso[] = [
-    { id: 1, codigo: '02', descripcion: 'Presidencia de la República' },
-    { id: 2, codigo: '04', descripcion: 'Ministerio de Economía y Finanzas' },
-    { id: 3, codigo: '10', descripcion: 'Ministerio de Obras Públicas' }
-  ];
+  incisos: IncisoFiltroIniciarPliego[] = [];
+  unidadesEjecutoras: UnidadEjecutoraFiltroIniciarPliego[] = [];
+  unidadesEjecutorasCompletas: UnidadEjecutoraFiltroIniciarPliego[] = [];
 
-  unidadesEjecutoras: UnidadEjecutora[] = [];
-  unidadesEjecutorasCompletas: UnidadEjecutora[] = [
-    { id: 1, codigo: '001', descripcion: 'Unidad Central', incisoId: 1 },
-    { id: 2, codigo: '005', descripcion: 'Unidad de Proyectos', incisoId: 1 },
-    { id: 5, codigo: '002', descripcion: 'Dirección General', incisoId: 2 },
-    { id: 10, codigo: '001', descripcion: 'Dirección de Obras', incisoId: 3 }
-  ];
-
-  tiposCompra: TipoCompra[] = [];
-  subtiposCompra: SubtipoCompra[] = [];
+  tiposCompra: TipoCompraFiltroIniciarPliego[] = [];
+  subtiposCompra: SubtipoCompraFiltroIniciarPliego[] = [];
 
   public static readonly SNAPSHOT_KEY = 'INICIAR_PLIEGO';
 
@@ -117,7 +89,7 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
       this.cargarProceso(this.pliegoId);
     }
 
-    this.cargarTiposCompraMock();
+    this.cargarFiltrosIniciales();
     this.configurarCambioTipoBusqueda();
     this.configurarCambioInciso();
     this.configurarCambioTipoCompra();
@@ -137,17 +109,12 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private cargarTiposCompraMock(): void {
-    this.tiposCompra = [
-      { id: 1, descripcion: 'Licitación Pública', subtipos: [
-        { id: 1, descripcion: 'Nacional' },
-        { id: 2, descripcion: 'Internacional' }
-      ]},
-      { id: 2, descripcion: 'Contratación Directa', subtipos: [
-        { id: 3, descripcion: 'Por monto' }
-      ]},
-      { id: 3, descripcion: 'Licitación Abreviada', subtipos: [] }
-    ];
+  private cargarFiltrosIniciales(): void {
+    this.bandejaEntradaService.obtenerFiltrosIniciarPliego().subscribe((filtros) => {
+      this.incisos = filtros.incisos;
+      this.unidadesEjecutorasCompletas = filtros.unidadesEjecutoras;
+      this.tiposCompra = filtros.tiposCompra;
+    });
   }
 
   private configurarCambioTipoBusqueda(): void {
@@ -571,5 +538,6 @@ export class IniciarPliegoComponent implements OnInit, AfterViewInit {
     return `${tipo} | ${subtipo} N° ${this.proceso.numeroCompra}/${this.proceso.anioCompra}`;
   }
 }
+
 
 

@@ -96,4 +96,32 @@ describe('BandejaEntradaService', () => {
     expect(primerPliego?.modelo?.secciones?.length).toBeGreaterThan(0);
     expect(primerPliego?.modelo?.tiposCompra?.length).toBeGreaterThan(0);
   }));
+
+  it('obtiene filtros de bandeja con datos de inciso, ue, uc y tipo de compra', fakeAsync(() => {
+    let filtros: any;
+
+    service.obtenerFiltrosBandeja().subscribe((resp) => {
+      filtros = resp;
+    });
+    tick(0);
+
+    expect(filtros.incisos.length).toBeGreaterThan(0);
+    expect(filtros.unidadesEjecutoras.length).toBeGreaterThan(0);
+    expect(filtros.unidadesCompra.length).toBeGreaterThan(0);
+    expect(filtros.tiposCompra.length).toBeGreaterThan(0);
+  }));
+
+  it('obtiene filtros de iniciar pliego con subtipos por tipo de compra', fakeAsync(() => {
+    let filtros: any;
+
+    service.obtenerFiltrosIniciarPliego().subscribe((resp) => {
+      filtros = resp;
+    });
+    tick(0);
+
+    expect(filtros.incisos.length).toBeGreaterThan(0);
+    expect(filtros.unidadesEjecutoras.length).toBeGreaterThan(0);
+    expect(filtros.tiposCompra.length).toBeGreaterThan(0);
+    expect(Array.isArray(filtros.tiposCompra[0].subtipos)).toBeTrue();
+  }));
 });

@@ -39,33 +39,15 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
     { id: 'tipoCompraDescripcion', nombre: 'Tipo de compra' }
   ];
 
-  incisos: IncisoDTO[] = [
-    new IncisoDTO(1, 'Poder Ejecutivo'),
-    new IncisoDTO(2, 'Poder Legislativo'),
-    new IncisoDTO(3, 'Poder Judicial')
-  ];
+  incisos: IncisoDTO[] = [];
 
   unidadesEjecutoras: UnidadEjecutoraDTO[] = [];
-  unidadesEjecutorasMock: UnidadEjecutoraDTO[] = [
-    new UnidadEjecutoraDTO(1, new IncisoDTO(1, 'Poder Ejecutivo'), 1, 'Ministerio de Economía'),
-    new UnidadEjecutoraDTO(2, new IncisoDTO(1, 'Poder Ejecutivo'), 3, 'Ministerio de Salud'),
-    new UnidadEjecutoraDTO(3, new IncisoDTO(2, 'Poder Legislativo'), 2, 'Cámara de Diputados'),
-    new UnidadEjecutoraDTO(4, new IncisoDTO(3, 'Poder Judicial'), 4, 'Suprema Corte de Justicia')
-  ];
+  unidadesEjecutorasBase: UnidadEjecutoraDTO[] = [];
 
   unidadesCompra: UnidadCompraDTO[] = [];
-  unidadesCompraMock: UnidadCompraDTO[] = [
-    new UnidadCompraDTO(1, this.unidadesEjecutorasMock[0], 'Dirección de Compras'),
-    new UnidadCompraDTO(2, this.unidadesEjecutorasMock[1], 'Unidad de Compras Médicas'),
-    new UnidadCompraDTO(3, this.unidadesEjecutorasMock[2], 'Departamento de Adquisiciones'),
-    new UnidadCompraDTO(4, this.unidadesEjecutorasMock[3], 'Oficina de Compras')
-  ];
+  unidadesCompraBase: UnidadCompraDTO[] = [];
 
-  tiposCompra: TipoCompraDTO[] = [
-    new TipoCompraDTO('1', 'Licitación Pública'),
-    new TipoCompraDTO('2', 'Contratación Directa'),
-    new TipoCompraDTO('3', 'Licitación Abreviada')
-  ];
+  tiposCompra: TipoCompraDTO[] = [];
 
   estados = [
     { valor: EstadoPliego.PENDIENTE, nombre: 'Pendiente' },
@@ -93,7 +75,17 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
 
   override ngOnInit(): void {
     super.ngOnInit();
+    this.cargarFiltros();
     this.configurarCambiosFiltros();
+  }
+
+  private cargarFiltros(): void {
+    this.bandejaEntradaService.obtenerFiltrosBandeja().subscribe((filtros) => {
+      this.incisos = filtros.incisos;
+      this.unidadesEjecutorasBase = filtros.unidadesEjecutoras;
+      this.unidadesCompraBase = filtros.unidadesCompra;
+      this.tiposCompra = filtros.tiposCompra;
+    });
   }
 
   ngAfterViewInit(): void {
@@ -105,7 +97,7 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
   configurarCambiosFiltros(): void {
     this.form.get('incisoId')?.valueChanges.subscribe(incisoId => {
       this.unidadesEjecutoras = incisoId
-        ? this.unidadesEjecutorasMock.filter(ue => (ue.inciso as any)?.id === incisoId)
+        ? this.unidadesEjecutorasBase.filter(ue => (ue.inciso as any)?.id === incisoId)
         : [];
       this.form.patchValue({
         unidadEjecutoraId: null,
@@ -116,7 +108,7 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
 
     this.form.get('unidadEjecutoraId')?.valueChanges.subscribe(unidadEjecutoraId => {
       this.unidadesCompra = unidadEjecutoraId
-        ? this.unidadesCompraMock.filter(uc => uc.idUnidadEjecutora === unidadEjecutoraId)
+        ? this.unidadesCompraBase.filter(uc => uc.idUnidadEjecutora === unidadEjecutoraId)
         : [];
       this.form.patchValue({ unidadCompraId: null });
     });
@@ -384,5 +376,6 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
     return new Date(proceso.fechaTopeRecepcionOfertas) >= new Date();
   }
 }
+
 
 
