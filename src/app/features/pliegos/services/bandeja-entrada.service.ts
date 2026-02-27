@@ -16,6 +16,8 @@ import { IncisoDTO } from 'src/app/shared/models/sice/inciso.model';
 import { UnidadCompraDTO } from 'src/app/shared/models/sice/unidad-compra.model';
 import { UsuarioAsignadoDTO } from '../models/usuario-asignado.model';
 import { UsuarioBusquedaDTO } from '../models/usuario-busqueda.model';
+import { ModeloSeccionDTO } from 'src/app/shared/models/pliego/modelo/modelo-seccion.model';
+import { TipoCompraClausulaModeloDTO } from 'src/app/shared/models/pliego/comun/tipo-compra-clausula-modelo.model';
 
 const CAMPO_PLIEGO_VACIO: CampoPliegoDTO = {
   id: 0,
@@ -54,6 +56,27 @@ const USUARIOS_BUSQUEDA_MOCK: UsuarioBusquedaDTO[] = [
   { id: 25, numeroDocumento: '7.890.123-4', nombre: 'Valentina', apellido: 'Rojas' }
 ];
 
+const crearSeccionesModeloMock = (idModelo: number): ModeloSeccionDTO[] => ([
+  {
+    id: idModelo * 1000 + 1,
+    orden: 1,
+    seccion: {
+      id: idModelo * 10 + 1,
+      denominacion: `Seccion administrativa ${idModelo}`,
+      capitulos: [],
+      clausulas: [],
+      estado: EstadoElemento.VIGENTE
+    }
+  }
+]);
+
+const crearTiposCompraModeloMock = (): TipoCompraClausulaModeloDTO[] => ([
+  {
+    tipoCompra: new TipoCompraDTO('1', 'Licitacion Publica'),
+    subtipoCompra: new SubtipoCompraDTO('1', '1', 'Nacional', 'Licitacion Publica')
+  }
+]);
+
 const crearModeloMock = (
   id: number,
   denominacion: string,
@@ -66,8 +89,8 @@ const crearModeloMock = (
   fechaVigenciaHasta: '2025-12-31',
   estado,
   version,
-  secciones: [],
-  tiposCompra: [],
+  secciones: crearSeccionesModeloMock(id),
+  tiposCompra: crearTiposCompraModeloMock(),
   organismo: undefined,
   fechaCreacion: null,
   usuarioCreacion: null,
@@ -106,9 +129,18 @@ const crearPliegoMock = (
   fechaPublicacion,
   fechaTopeRecepcionOfertas,
   version: 1,
-  notas: [],
+  notas: [{
+    id: id * 100 + 1,
+    contenido: `Nota inicial del proceso ${id}`,
+    fechaCreación: '2024-01-15',
+    usuarioCreacion: 'analista'
+  } as any],
   campos: CAMPO_PLIEGO_VACIO,
-  historial: []
+  historial: [{
+    fecha: new Date('2024-01-20'),
+    tarea: 'Creacion del proceso',
+    usuario: 'sistema'
+  }]
 });
 
 @Injectable({

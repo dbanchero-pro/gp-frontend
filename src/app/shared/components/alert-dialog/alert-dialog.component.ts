@@ -6,8 +6,6 @@ import { ActualizarService } from "src/app/shared/services/common/actualizar.ser
     selector: "app-alert-dialog",
     templateUrl: "./alert-dialog.component.html",
     styleUrls: ["./alert-dialog.component.scss"],
-
-    standalone: false
 })
 export class AlertDialogComponent {
     modalRef!: BsModalRef;

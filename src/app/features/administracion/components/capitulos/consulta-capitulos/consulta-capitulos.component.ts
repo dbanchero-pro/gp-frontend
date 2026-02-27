@@ -16,8 +16,6 @@ import { CapituloService } from '../../../services/capitulo.service';
   selector: 'app-consulta-capitulos',
   templateUrl: './consulta-capitulos.component.html',
   styleUrls: ['./consulta-capitulos.component.scss'],
-
-    standalone: false
 })
 export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
   private fb = inject(FormBuilder);

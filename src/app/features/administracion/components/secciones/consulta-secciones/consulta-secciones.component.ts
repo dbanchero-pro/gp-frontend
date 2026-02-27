@@ -17,8 +17,6 @@ import { SeccionService } from '../../../services/seccion.service';
   selector: 'app-consulta-secciones',
   templateUrl: './consulta-secciones.component.html',
   styleUrls: ['./consulta-secciones.component.scss'],
-
-    standalone: false
 })
 export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
   private fb = inject(FormBuilder);

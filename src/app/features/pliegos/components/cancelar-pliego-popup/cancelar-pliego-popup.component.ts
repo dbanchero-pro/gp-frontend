@@ -8,8 +8,6 @@ import { PliegoDTO } from '../../models/pliego.model';
   selector: 'app-cancelar-pliego-popup',
   templateUrl: './cancelar-pliego-popup.component.html',
   styleUrl: './cancelar-pliego-popup.component.scss',
-
-    standalone: false
 })
 export class CancelarPliegoPopupComponent implements OnInit {
   private readonly fb = inject(FormBuilder);

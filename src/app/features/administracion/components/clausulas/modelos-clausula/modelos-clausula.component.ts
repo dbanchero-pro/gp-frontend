@@ -10,8 +10,6 @@ import { ClausulaService } from '../../../services/clausula.service';
   selector: 'app-modelos-clausula',
   templateUrl: './modelos-clausula.component.html',
   styleUrls: ['./modelos-clausula.component.scss'],
-
-    standalone: false
 })
 export class ModelosClausulaComponent implements OnInit {
   private route = inject(ActivatedRoute);

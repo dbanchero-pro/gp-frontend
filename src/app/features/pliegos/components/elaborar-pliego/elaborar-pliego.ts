@@ -1,4 +1,4 @@
-﻿import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EstadoProcesoPliego } from '../../enum/estado-proceso-pliego.enum';
 import { CanComponentDeactivate } from '../../../../shared/utils/can-component-deactivate';
@@ -17,14 +17,13 @@ import { SiNoAmbasValor } from 'src/app/shared/enum/si-no-ambas-valor.enum';
   selector: 'app-elaborar-pliego',
   templateUrl: './elaborar-pliego.html',
   styleUrls: ['./elaborar-pliego.scss'],
-  standalone: false
 })
 export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanComponentDeactivate {
   pliego: PliegoDTO = this.crearPliegoDemo(0);
   EstadoProcesoPliego = EstadoProcesoPliego;
   
   aperturaElectronica: SiNoAmbasValor = SiNoAmbasValor.SI;
-  modeloUsado: string = 'Modelo EstÃ¡ndar LicitaciÃ³n PÃºblica Nacional';
+  modeloUsado: string = 'Modelo Estándar Licitación Pública Nacional';
 
   colNavegacion = 'col-lg-3 ml-0 pl-0 mr-0 pr-0';
   colEdicion = 'col-lg-9 ml-0 pl-0 mr-0 pr-0';
@@ -35,109 +34,109 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
   clausulaActiva: number | null = null;
   clausulaSeleccionada: ClausulaPliego | null = null;
 
-  tituloEdicion: string = 'EdiciÃ³n';
+  tituloEdicion: string = 'Edición';
 
   modeloCambio: boolean = false;
   esValidador: boolean = false;
   cambiosSinGuardar: boolean = false;
 
   usuariosAsignados: UsuarioAsignadoPliegoDTO[] = [
-    { rol: 'Editor Principal', nombre: 'Juan PÃ©rez' },
-    { rol: 'Editor', nombre: 'MarÃ­a GonzÃ¡lez' },
-    { rol: 'Validador', nombre: 'Carlos RodrÃ­guez' }
+    { rol: 'Editor Principal', nombre: 'Juan Pérez' },
+    { rol: 'Editor', nombre: 'María González' },
+    { rol: 'Validador', nombre: 'Carlos Rodríguez' }
   ];
 
   historialTareas: TareaHistorialDTO[] = [
-    { fecha: new Date('2024-01-15 10:30'), tarea: 'CreaciÃ³n', usuario: 'Juan PÃ©rez' },
-    { fecha: new Date('2024-02-16 14:20'), tarea: 'AsignaciÃ³n', usuario: 'MarÃ­a GonzÃ¡lez' },
-    { fecha: new Date('2024-03-16 14:20'), tarea: 'IniciaciÃ³n', usuario: 'MarÃ­a GonzÃ¡lez' },
-    { fecha: new Date('2024-03-16 14:20'), tarea: 'En ediciÃ³n', usuario: 'MarÃ­a GonzÃ¡lez' }
+    { fecha: new Date('2024-01-15 10:30'), tarea: 'Creación', usuario: 'Juan Pérez' },
+    { fecha: new Date('2024-02-16 14:20'), tarea: 'Asignación', usuario: 'María González' },
+    { fecha: new Date('2024-03-16 14:20'), tarea: 'Iniciación', usuario: 'María González' },
+    { fecha: new Date('2024-03-16 14:20'), tarea: 'En edición', usuario: 'María González' }
   ];
 
   secciones: SeccionPliegoDTO[] = [
     {
-      nombre: 'SecciÃ³n I - InformaciÃ³n General',
+      nombre: 'Sección I - Información General',
       expandida: true,
       capitulos: [
         {
-          nombre: 'CapÃ­tulo I - Objeto de la Compra',
+          nombre: 'Capítulo I - Objeto de la Compra',
           expandido: true,
           clausulas: [
-            { id: 1, nombre: 'DescripciÃ³n del objeto', bloqueada: false, obligatoria: true, editable:true, clausula: { id: 1, denominacion: "", objetosCompra: [], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]}  },
-            { id: 2, nombre: 'Especificaciones tÃ©cnicas', bloqueada: true, obligatoria: false, editable:false , clausula: {id: 1, denominacion: "", objetosCompra: [], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]} },
+            { id: 1, nombre: 'Descripción del objeto', bloqueada: false, obligatoria: true, editable:true, clausula: { id: 1, denominacion: "", objetosCompra: [], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]}  },
+            { id: 2, nombre: 'Especificaciones técnicas', bloqueada: true, obligatoria: false, editable:false , clausula: {id: 1, denominacion: "", objetosCompra: [], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]} },
             { id: 3, nombre: 'Cantidad y unidades', bloqueada: false, obligatoria: true, editable:false, clausula: {id: 1, denominacion: "", objetosCompra: [], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]}  }
           ],
           capitulo: {id: 1, denominacion: "", clausulas:[], estado: EstadoElemento.VIGENTE}
         },
         {
-          nombre: 'CapÃ­tulo II - Condiciones Generales',
+          nombre: 'Capítulo II - Condiciones Generales',
           expandido: false,
           clausulas: [
             { id: 4, nombre: 'Plazo de entrega', bloqueada: false, obligatoria: true, editable:false , clausula: {id: 1, denominacion: "", objetosCompra: [], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]} },
             { id: 5, nombre: 'Lugar de entrega', bloqueada: false, obligatoria: true, editable:false  , clausula: {id: 1, denominacion: "", objetosCompra: [], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]}},
-            { id: 6, nombre: 'GarantÃ­as', bloqueada: false, obligatoria: false, editable:false  , clausula: {id: 1, denominacion: "", objetosCompra: [], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]}}
+            { id: 6, nombre: 'Garantías', bloqueada: false, obligatoria: false, editable:false  , clausula: {id: 1, denominacion: "", objetosCompra: [], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]}}
           ],
           capitulo: {id: 1, denominacion: "", clausulas:[], estado: EstadoElemento.VIGENTE}
         }
       ],
-      seccion: {id: 1, denominacion: "secciÃ³n 1", estado: EstadoElemento.VIGENTE, capitulos:[], clausulas: []},
+      seccion: {id: 1, denominacion: "sección 1", estado: EstadoElemento.VIGENTE, capitulos:[], clausulas: []},
       clausulas: [],
       soloClausulas: false,
     },
     {
-      nombre: 'SecciÃ³n II - Requisitos de ParticipaciÃ³n',
+      nombre: 'Sección II - Requisitos de Participación',
       expandida: false,
       capitulos: [
         {
-          nombre: 'CapÃ­tulo I - Requisitos Legales',
+          nombre: 'Capítulo I - Requisitos Legales',
           expandido: false,
           clausulas: [
-            { id: 7, nombre: 'DocumentaciÃ³n legal', bloqueada: false, obligatoria: true, editable:false, clausula: {id: 1, denominacion: "", objetosCompra:[], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]} },
+            { id: 7, nombre: 'Documentación legal', bloqueada: false, obligatoria: true, editable:false, clausula: {id: 1, denominacion: "", objetosCompra:[], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]} },
             { id: 8, nombre: 'Certificados requeridos', bloqueada: false, obligatoria: true, editable:false, clausula: {id: 1, denominacion: "", objetosCompra:[], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]} }
           ],
           capitulo: {id: 1, denominacion: "", clausulas:[], estado: EstadoElemento.VIGENTE}
         },
         {
-          nombre: 'CapÃ­tulo II - Requisitos TÃ©cnicos',
+          nombre: 'Capítulo II - Requisitos Técnicos',
           expandido: false,
           clausulas: [
-            { id: 9, nombre: 'Experiencia tÃ©cnica', bloqueada: false, obligatoria: true, editable:false  , clausula: {id: 1, denominacion: "", objetosCompra:[], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]}},
+            { id: 9, nombre: 'Experiencia técnica', bloqueada: false, obligatoria: true, editable:false  , clausula: {id: 1, denominacion: "", objetosCompra:[], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]}},
             { id: 10, nombre: 'Capacidad operativa', bloqueada: false, obligatoria: false, editable:false , clausula: {id: 1, denominacion: "", objetosCompra:[], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]} }
           ],
           capitulo: {id: 1, denominacion:"", clausulas:[], estado: EstadoElemento.VIGENTE}
         }
       ],
-      seccion: {id: 1, denominacion: "secciÃ³n 1", estado: EstadoElemento.VIGENTE, capitulos:[], clausulas: []},
+      seccion: {id: 1, denominacion: "sección 1", estado: EstadoElemento.VIGENTE, capitulos:[], clausulas: []},
       clausulas: [],
       soloClausulas: false
     },
     {
-      nombre: 'SecciÃ³n III - EvaluaciÃ³n y AdjudicaciÃ³n',
+      nombre: 'Sección III - Evaluación y Adjudicación',
       expandida: false,
       capitulos: [
         {
-          nombre: 'CapÃ­tulo I - Criterios de EvaluaciÃ³n',
+          nombre: 'Capítulo I - Criterios de Evaluación',
           expandido: false,
           clausulas: [
             { id: 11, nombre: 'Criterio precio', bloqueada: false, obligatoria: true, editable:false, clausula: { id: 1, denominacion: "", objetosCompra: [], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]}  },
-            { id: 12, nombre: 'Criterios tÃ©cnicos', bloqueada: false, obligatoria: true , editable:false, clausula: { id: 2, denominacion: "", objetosCompra: [], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]}  },
+            { id: 12, nombre: 'Criterios técnicos', bloqueada: false, obligatoria: true , editable:false, clausula: { id: 2, denominacion: "", objetosCompra: [], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]}  },
             { id: 13, nombre: 'Puntajes', bloqueada: false, obligatoria: true, editable:false , clausula: { id: 3, denominacion: "", objetosCompra: [], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]}  }
           ],
           capitulo: {id: 1, denominacion: "", clausulas:[], estado: EstadoElemento.VIGENTE}
         }
       ],
-      seccion: {id: 1, denominacion: "secciÃ³n 1", estado: EstadoElemento.VIGENTE, capitulos:[], clausulas: []},
+      seccion: {id: 1, denominacion: "sección 1", estado: EstadoElemento.VIGENTE, capitulos:[], clausulas: []},
       clausulas: [],
       soloClausulas: false
     },
     {
-      nombre: 'SecciÃ³n IV - Con clÃ¡usulas',
+      nombre: 'Sección IV - Con cláusulas',
       expandida: false,
       capitulos: [],
       clausulas: [
-          { id: 11, nombre: 'ClÃ¡usula vacÃ­a', bloqueada: false, obligatoria: true, editable:false, clausula: {id: 1, denominacion: "denominaciÃ³n 1", objetosCompra: [], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]}  },
+          { id: 11, nombre: 'Cláusula vacía', bloqueada: false, obligatoria: true, editable:false, clausula: {id: 1, denominacion: "denominación 1", objetosCompra: [], estado: EstadoElemento.VIGENTE, organismo: undefined, tiposCompra: [], redacciones:[]}  },
       ],
-      seccion: {id: 1, denominacion: "secciÃ³n 1", estado: EstadoElemento.VIGENTE, capitulos:[], clausulas: []},
+      seccion: {id: 1, denominacion: "sección 1", estado: EstadoElemento.VIGENTE, capitulos:[], clausulas: []},
       soloClausulas: true
         
     }
@@ -249,8 +248,8 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
       'Pendiente': 'Pendiente',
       'Asignado': 'Asignado',
       'En proceso': 'En Proceso',
-      'Pendiente validaciÃ³n': 'Pendiente ValidaciÃ³n',
-      'Pendiente aprobaciÃ³n': 'Pendiente AprobaciÃ³n',
+      'Pendiente validación': 'Pendiente Validación',
+      'Pendiente aprobación': 'Pendiente Aprobación',
       'Aprobado': 'Aprobado',
       'Cancelado': 'Cancelado',
       'Publicado': 'Publicado'
@@ -301,14 +300,14 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
     this.clausulaSeleccionada = null;
 
     const titulos: { [key: string]: string } = {
-      'encabezado': 'Encabezado y pie de pÃ¡gina',
-      'caratula': 'CarÃ¡tula',
+      'encabezado': 'Encabezado y pie de página',
+      'caratula': 'Carátula',
       'notas': 'Notas',
       'anexos': 'Anexos',
       'campos': 'Campos variables',
-      'resolucion': 'ResoluciÃ³n'
+      'resolucion': 'Resolución'
     };
-    this.tituloEdicion = titulos[seccion] || 'EdiciÃ³n';
+    this.tituloEdicion = titulos[seccion] || 'Edición';
   }
 
   seleccionarClausula(clausula: ClausulaPliego): void {
@@ -316,7 +315,7 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
     this.seccionActiva = null;
     this.clausulaActiva = clausula.id;
     this.clausulaSeleccionada = clausula;
-    this.tituloEdicion = "    ClÃ¡usula: " + (clausula.nombre || clausula.clausula?.denominacion || '');
+    this.tituloEdicion = "    Cláusula: " + (clausula.nombre || clausula.clausula?.denominacion || '');
   }
 
   canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
@@ -324,7 +323,7 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
       return true;
     }
 
-    return confirm('Tiene cambios sin guardar. Â¿Desea salir sin guardar?');
+    return confirm('Tiene cambios sin guardar. ¿Desea salir sin guardar?');
   }
 
   volver() {
@@ -339,7 +338,7 @@ export class ElaborarPliegoComponent implements OnInit, AfterViewInit, CanCompon
   }
 
   obtenerTextoTipoCompraPliego(): string {
-    return `${this.pliego.subtipoCompra?.descTipoCompra ?? ''} | ${this.pliego.subtipoCompra?.descSubtipoCompra ?? ''} N° ${this.pliego.numeroCompra}/${this.pliego.anioCompra}`;
+    return `${this.pliego.subtipoCompra?.descTipoCompra ?? ''} | ${this.pliego.subtipoCompra?.descSubtipoCompra ?? ''} N� ${this.pliego.numeroCompra}/${this.pliego.anioCompra}`;
   }
 
   private crearPliegoDemo(

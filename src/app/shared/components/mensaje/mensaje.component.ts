@@ -7,8 +7,6 @@ import { TipoMensajeEnum } from "../../enum/tipo-mensaje.enum";
     selector: "app-mensaje",
     templateUrl: "./mensaje.component.html",
     styleUrls: ["./mensaje.component.scss"],
-
-    standalone: false
 })
 
 export class MensajeComponent implements OnInit {

@@ -4,8 +4,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     selector: 'app-filtro',
     templateUrl: './filtro.component.html',
     styleUrls: ['./filtro.component.scss'],
-
-    standalone: false
 })
 export class FiltroComponent {
     @Output() evFilter = new EventEmitter<any>();

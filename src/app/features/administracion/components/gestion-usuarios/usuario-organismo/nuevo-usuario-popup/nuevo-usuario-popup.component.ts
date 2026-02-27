@@ -14,8 +14,6 @@ import { Logger } from 'src/app/shared/utils/logger';
     selector: 'app-nuevo-usuario-popup',
     templateUrl: './nuevo-usuario-popup.component.html',
     styleUrls: ['./nuevo-usuario-popup.component.scss'],
-
-    standalone: false
 })
 export class NuevoUsuarioPopupComponent
     extends PopupBaseComponent

@@ -18,8 +18,6 @@ enum TipoBusquedaUsuario {
   selector: 'app-agregar-usuario-popup',
   templateUrl: './agregar-usuario-popup.component.html',
   styleUrls: ['./agregar-usuario-popup.component.scss'],
-
-    standalone: false
 })
 export class AgregarUsuarioPopupComponent extends PopupBaseComponent implements OnInit, OnDestroy {
   @Output() guardarEvento = new EventEmitter<UsuarioAsignadoDTO>();

@@ -10,8 +10,6 @@ import { uuidv4 } from '../../utils/functions';
         { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => InputDocumentoComponent), multi: true },
         { provide: NG_VALIDATORS, useExisting: forwardRef(() => InputDocumentoComponent), multi: true }
     ],
-
-    standalone: false
 })
 export class InputDocumentoComponent implements ControlValueAccessor, Validator, OnChanges {
 

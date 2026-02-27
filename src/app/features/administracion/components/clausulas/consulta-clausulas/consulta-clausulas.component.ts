@@ -27,8 +27,6 @@ import { ClausulaService } from '../../../services/clausula.service';
   selector: 'app-consulta-clausulas',
   templateUrl: './consulta-clausulas.component.html',
   styleUrls: ['./consulta-clausulas.component.scss'],
-
-    standalone: false
 })
 export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
   private fb = inject(FormBuilder);

@@ -93,7 +93,17 @@ export class ClausulaService {
       fechaVigenciaHasta: '2023-12-31',
       estado: EstadoElemento.NO_VIGENTE,
       version: 1,
-      redacciones: [],
+      redacciones: [
+        {
+          id: 1001,
+          prioridad: 1,
+          redaccion: '<p>RedacciÃ³n inicial de referencia para validar render de listas.</p>',
+          fechaCreacion: '2023-01-01',
+          usuarioCreacion: 'admin',
+          fechaModificacion: null,
+          usuarioModificacion: null
+        }
+      ],
       fechaCreacion: '2023-01-01',
       usuarioCreacion: 'admin',
       fechaModificacion: null,
@@ -553,7 +563,17 @@ export class ClausulaService {
         fechaVigenciaHasta: '2025-12-31',
         estado: EstadoElemento.VIGENTE,
         version: 3,
-        redacciones: [],
+        redacciones: [
+          {
+            id: 2101,
+            prioridad: 1,
+            redaccion: '<p>VersiÃ³n aprobada sin cambios sustantivos.</p>',
+            fechaCreacion: '2024-10-15',
+            usuarioCreacion: 'admin',
+            fechaModificacion: null,
+            usuarioModificacion: null
+          }
+        ],
         fechaCreacion: '2024-10-15',
         usuarioCreacion: 'admin',
         fechaModificacion: '2024-10-15',
@@ -648,8 +668,18 @@ export class ClausulaService {
         fechaVigenciaHasta: '2025-12-31',
         estado: EstadoElemento.VIGENTE,
         version: 1,
-        secciones: [],
-        tiposCompra: [],
+        secciones: [{
+          id: 11,
+          orden: 1,
+          seccion: {
+            id: 101,
+            denominacion: 'Seccion general',
+            capitulos: [],
+            clausulas: [],
+            estado: EstadoElemento.VIGENTE
+          }
+        } as any],
+        tiposCompra: [crearTipoCompraMock('1', 'LicitaciÃ³n PÃºblica', '1', 'Nacional')],
         organismo: undefined,
         fechaCreacion: '2024-01-01',
         usuarioCreacion: 'admin',
@@ -663,8 +693,18 @@ export class ClausulaService {
         fechaVigenciaHasta: null,
         estado: EstadoElemento.VIGENTE,
         version: 2,
-        secciones: [],
-        tiposCompra: [],
+        secciones: [{
+          id: 21,
+          orden: 1,
+          seccion: {
+            id: 201,
+            denominacion: 'Seccion tecnica',
+            capitulos: [],
+            clausulas: [],
+            estado: EstadoElemento.VIGENTE
+          }
+        } as any],
+        tiposCompra: [crearTipoCompraMock('2', 'ContrataciÃ³n Directa', '3', 'Por excepciÃ³n')],
         organismo: undefined,
         fechaCreacion: '2024-06-01',
         usuarioCreacion: 'admin',
@@ -678,8 +718,18 @@ export class ClausulaService {
         fechaVigenciaHasta: '2025-12-31',
         estado: EstadoElemento.BORRADOR,
         version: 1,
-        secciones: [],
-        tiposCompra: [],
+        secciones: [{
+          id: 31,
+          orden: 1,
+          seccion: {
+            id: 301,
+            denominacion: 'Seccion borrador',
+            capitulos: [],
+            clausulas: [],
+            estado: EstadoElemento.BORRADOR
+          }
+        } as any],
+        tiposCompra: [crearTipoCompraMock('3', 'LicitaciÃ³n Abreviada')],
         organismo: undefined,
         fechaCreacion: '2025-01-01',
         usuarioCreacion: 'admin',

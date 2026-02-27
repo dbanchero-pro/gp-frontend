@@ -18,8 +18,6 @@ import { Subscription } from 'rxjs';
             multi: true
         }
     ],
-
-    standalone: false
 })
 
 export class RangoFechasComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy, AfterViewInit {

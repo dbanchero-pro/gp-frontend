@@ -7,8 +7,6 @@ import { PopupBaseComponent } from '../popup-base/popup-base.component';
     selector: 'app-organismo-popup',
     templateUrl: './organismo-popup.component.html',
     styleUrls: ['./organismo-popup.component.scss'],
-
-    standalone: false
 })
 export class OrganismoPopupComponent extends PopupBaseComponent implements OnInit {
     @Input() idUsuarioSeleccionado: string | undefined;

@@ -22,8 +22,6 @@ import { OperadorHelperService } from '../../../services/operador-helper.service
   selector: 'app-consulta-campos-reglas',
   templateUrl: './consulta-campos-reglas.component.html',
   styleUrls: ['./consulta-campos-reglas.component.scss'],
-
-    standalone: false
 })
 export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<FiltroCampoDTO> implements OnInit, AfterViewInit {
 

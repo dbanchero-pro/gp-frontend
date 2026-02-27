@@ -32,6 +32,7 @@
     "skipLibCheck": true,        
   },
   "angularCompilerOptions": {
+    "_angularCoreVersion": "18.0.0",
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,

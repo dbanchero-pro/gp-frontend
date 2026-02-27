@@ -4,8 +4,6 @@ import { Component, Input } from "@angular/core";
 @Component({
     selector: "app-registro-usuario",
     templateUrl: "./registro-usuario.component.html",
-
-    standalone: false
 })
 
 export class RegistroUsuario {

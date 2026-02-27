@@ -11,8 +11,6 @@ import { ordenarMultipleYPaginar } from 'src/app/shared/utils/paginador';
     selector: 'app-unidades-compra-sice-popup',
     templateUrl: './unidades-compra-sice-popup.component.html',
     styleUrls: ['./unidades-compra-sice-popup.component.scss'],
-
-    standalone: false
 })
 export class UnidadesCompraSicePopupComponent extends PopupBaseComponent implements OnInit {
     @Output() guardarEvento = new EventEmitter<{ idUsuario: string }>();

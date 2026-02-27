@@ -8,7 +8,6 @@ import { PaginaBusquedaComponent } from "../pagina-busqueda/pagina-busqueda.comp
 @Directive({
     selector: '[appPopupBase]',
 
-  standalone: false
 })
 export abstract class PopupBaseComponent extends PaginaBusquedaComponent<any> implements AfterViewInit, OnDestroy {
     @ViewChild('modalRoot', { static: false }) modalRoot!: ElementRef<HTMLElement>;

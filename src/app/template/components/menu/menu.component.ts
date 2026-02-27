@@ -17,8 +17,6 @@ import { MenuService } from '../../../shared/services/common/menu.service';
     selector: 'app-menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.scss'],
-
-    standalone: false
 })
 export class MenuComponent implements OnInit {
     menuItems$?: Observable<Array<IMenuItem>>;

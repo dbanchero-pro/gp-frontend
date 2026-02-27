@@ -34,8 +34,6 @@ import { IConsultaUsuarioOrganismoPerfilFiltroDTO } from 'src/app/features/admin
     selector: 'app-consulta-usuarios-conformidad-compra',
     templateUrl: './consulta-usuarios-conformidad-compra.component.html',
     styleUrls: ['./consulta-usuarios-conformidad-compra.component.scss'],
-
-    standalone: false
 })
 export class ConsultaUsuariosConformidadCompraComponent
     extends PaginaBusquedaComponent<IConsultaUsuarioOrganismoPerfilFiltroDTO>

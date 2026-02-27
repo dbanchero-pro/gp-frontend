@@ -24,8 +24,6 @@ import { NumeroNulo } from '../../types/numero-nulo.type';
             multi: true,
         },
     ],
-
-    standalone: false
 })
 
 

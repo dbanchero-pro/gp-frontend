@@ -2,7 +2,6 @@ import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component
 
 
 @Directive({ selector: '[appTab]' ,
-  standalone: false
 })
 export class AppTabDirective {
   @Input('appTab') titulo!: string;
@@ -14,8 +13,6 @@ export class AppTabDirective {
   templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-
-    standalone: false
 })
 export class TabsComponent implements AfterContentInit {
   @ContentChildren(AppTabDirective) tabs!: QueryList<AppTabDirective>;

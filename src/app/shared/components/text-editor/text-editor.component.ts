@@ -22,8 +22,6 @@ import { Editor, Toolbar, Validators, schema } from 'ngx-editor';
             multi: true
         }
     ],
-
-    standalone: false
 })
 export class TextEditorComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
     editor!: Editor;

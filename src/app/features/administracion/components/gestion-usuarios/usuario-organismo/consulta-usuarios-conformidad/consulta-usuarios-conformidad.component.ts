@@ -31,8 +31,6 @@ import { UsuarioPermisoAgrupadoDTO } from 'src/app/features/administracion/model
     selector: 'app-consulta-usuarios-conformidad',
     templateUrl: './consulta-usuarios-conformidad.component.html',
     styleUrls: ['./consulta-usuarios-conformidad.component.scss'],
-
-    standalone: false
 })
 export class ConsultaUsuariosConformidadComponent
     extends PaginaBusquedaComponent<IConsultaUsuarioOrganismoPerfilFiltroDTO>

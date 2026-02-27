@@ -7,8 +7,6 @@ import { LoggerService } from '../../services/common/logger.service';
     selector: 'app-confirm-dialog',
     templateUrl: './confirm-dialog.component.html',
     styleUrls: ['./confirm-dialog.component.scss'],
-
-    standalone: false
 })
 export class ConfirmDialogComponent {
     modalRefs: BsModalRef[] = [];

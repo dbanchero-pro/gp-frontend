@@ -16,8 +16,6 @@ import { UsuarioAsignadoDTO } from '../../models/usuario-asignado.model';
   selector: 'app-asignar-usuarios',
   templateUrl: './asignar-usuarios.component.html',
   styleUrls: ['./asignar-usuarios.component.scss'],
-
-    standalone: false
 })
 export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);

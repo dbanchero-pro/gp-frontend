@@ -27,8 +27,6 @@ import { ClausulaService } from '../../../services/clausula.service';
   selector: 'app-agregar-modificar-clausula',
   templateUrl: './agregar-modificar-clausula.component.html',
   styleUrls: ['./agregar-modificar-clausula.component.scss'],
-
-    standalone: false
 })
 export class AgregarModificarClausulaComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);

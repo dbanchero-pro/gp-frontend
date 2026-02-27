@@ -20,8 +20,6 @@ import { ISubtipoCompraDTO } from 'src/app/shared/models/sice/subtipo-compra.mod
   selector: 'app-consulta-modelos',
   templateUrl: './consulta-modelos.component.html',
   styleUrls: ['./consulta-modelos.component.scss'],
-
-    standalone: false
 })
 export class ConsultaModelosComponent implements OnInit, AfterViewInit {
   private fb = inject(FormBuilder);

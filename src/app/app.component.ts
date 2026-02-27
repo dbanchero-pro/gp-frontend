@@ -6,8 +6,6 @@ import { AuthRawService } from "./shared/services/common/auth-raw-service";
     selector: "app-root",
     templateUrl: "./app.component.html",
     styleUrls: ["./app.component.scss"],
-
-    standalone: false
 })
 export class AppComponent implements OnInit {
     title = "gp-frontend";

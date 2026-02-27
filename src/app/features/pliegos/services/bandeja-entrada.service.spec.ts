@@ -26,6 +26,7 @@ describe('BandejaEntradaService', () => {
     resultado.forEach(pliego => {
       expect(pliego.notas).toBeDefined();
       expect(Array.isArray(pliego.notas)).toBeTrue();
+      expect(pliego.notas.length).toBeGreaterThan(0);
     });
   }));
 
@@ -44,6 +45,7 @@ describe('BandejaEntradaService', () => {
     expect(primerProceso?.campos).toBeDefined();
     expect(primerProceso?.historial).toBeDefined();
     expect(Array.isArray(primerProceso?.historial)).toBeTrue();
+    expect(primerProceso?.historial.length).toBeGreaterThan(0);
   }));
 
   it('filtra procesos por estado', fakeAsync(() => {
@@ -81,5 +83,17 @@ describe('BandejaEntradaService', () => {
     tick(300);
 
     expect(usuarios.length).toBeGreaterThan(0);
+  }));
+
+  it('incluye secciones y tipos de compra en los modelos mock de pliegos', fakeAsync(() => {
+    let primerPliego: any;
+
+    service.buscarPliegos('P', null, null, null, null, null).subscribe(pliegos => {
+      primerPliego = pliegos[0];
+    });
+    tick(500);
+
+    expect(primerPliego?.modelo?.secciones?.length).toBeGreaterThan(0);
+    expect(primerPliego?.modelo?.tiposCompra?.length).toBeGreaterThan(0);
   }));
 });

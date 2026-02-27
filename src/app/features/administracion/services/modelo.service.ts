@@ -11,6 +11,7 @@ import { UnidadEjecutoraDTO } from 'src/app/shared/models/sice/unidad-ejecutora.
 import { EstadoElemento } from 'src/app/shared/enum/estado-elemento.enum';
 import { FiltroModelo } from '../models/filtros/filtro-modelo.model';
 import { EliminarElementoResponseDTO } from '../models/eliminar-elemento-response.model';
+import { ModeloSeccionDTO } from 'src/app/shared/models/pliego/modelo/modelo-seccion.model';
 
 const crearTipoCompraMock = (
   id: string,
@@ -34,6 +35,20 @@ const crearOrganismoMock = (
     : undefined
 });
 
+const crearSeccionesModeloMock = (idModelo: number): ModeloSeccionDTO[] => ([
+  {
+    id: idModelo * 1000 + 1,
+    orden: 1,
+    seccion: {
+      id: idModelo * 100 + 1,
+      denominacion: `Seccion base ${idModelo}`,
+      capitulos: [],
+      clausulas: [],
+      estado: EstadoElemento.VIGENTE
+    }
+  }
+]);
+
 @Injectable({
   providedIn: 'root'
 })
@@ -47,7 +62,7 @@ export class ModeloService {
       fechaVigenciaHasta: '2025-12-31',
       estado: EstadoElemento.VIGENTE,
       version: 1,
-      secciones: [],
+      secciones: crearSeccionesModeloMock(1),
       tiposCompra: [
         crearTipoCompraMock('LP', 'Licitación Pública', 'NAC', 'Nacional')
       ],
@@ -64,7 +79,7 @@ export class ModeloService {
       fechaVigenciaHasta: null,
       estado: EstadoElemento.VIGENTE,
       version: 2,
-      secciones: [],
+      secciones: crearSeccionesModeloMock(2),
       tiposCompra: [
         crearTipoCompraMock('CD', 'Contratación Directa', 'MON', 'Por monto')
       ],
@@ -81,8 +96,10 @@ export class ModeloService {
       fechaVigenciaHasta: '2025-12-31',
       estado: EstadoElemento.BORRADOR,
       version: 1,
-      secciones: [],
-      tiposCompra: [],
+      secciones: crearSeccionesModeloMock(3),
+      tiposCompra: [
+        crearTipoCompraMock('LA', 'LicitaciÃ³n Abreviada')
+      ],
       organismo: undefined,
       fechaCreacion: '2024-12-01',
       usuarioCreacion: 'user1',
