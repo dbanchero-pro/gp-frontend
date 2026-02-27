@@ -21,7 +21,6 @@ export const mockHttp = {
 @Component({
   selector: 'app-input-documento',
   template: '',
-  standalone: false,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -50,7 +49,6 @@ export class MockInputDocumentoComponent implements ControlValueAccessor, Valida
 @Component({
   selector: 'app-filtro-organismo',
   template: '',
-  standalone: false,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

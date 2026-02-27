@@ -15,7 +15,6 @@ import { ConsultaUsuariosRolesCompraComponent } from './consulta-usuarios-roles-
 @Component({
     selector: 'app-filtro-organismo',
     template: '',
-    standalone: false,
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,

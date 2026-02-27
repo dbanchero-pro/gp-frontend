@@ -12,7 +12,7 @@ class ModalServiceStub {
   });
 }
 
-@Component({ selector: 'app-dummy', template: '', standalone: true })
+@Component({ selector: 'app-dummy', template: '' })
 class DummyComponent extends FormularioBaseComponent {
   override form = new FormGroup({ campo: new FormControl('valor', Validators.required) });
  

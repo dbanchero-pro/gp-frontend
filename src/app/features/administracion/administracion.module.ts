@@ -218,7 +218,6 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
         SharedModule,
         RouterModule.forChild(routes),
         NgxMaskDirective,
-        NumeroCompraPipe,
     ],
 })
 export class AdministracionModule {}

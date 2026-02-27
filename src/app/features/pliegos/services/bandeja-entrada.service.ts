@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { EstadoProcesoPliego } from '../enum/estado-proceso-pliego.enum';
+import { EstadoPliego } from '../enum/estado-pliego.enum';
 import { PageModel } from '../../../shared/models/common/page/page.model';
 import { PliegoDTO } from '../models/pliego.model';
 import { TipoCompraDTO } from 'src/app/shared/models/sice/tipo-compra.model';
@@ -18,6 +18,30 @@ import { UsuarioAsignadoDTO } from '../models/usuario-asignado.model';
 import { UsuarioBusquedaDTO } from '../models/usuario-busqueda.model';
 import { ModeloSeccionDTO } from 'src/app/shared/models/pliego/modelo/modelo-seccion.model';
 import { TipoCompraClausulaModeloDTO } from 'src/app/shared/models/pliego/comun/tipo-compra-clausula-modelo.model';
+
+export interface IncisoFiltroIniciarPliego {
+  id: number;
+  codigo: string;
+  descripcion: string;
+}
+
+export interface UnidadEjecutoraFiltroIniciarPliego {
+  id: number;
+  codigo: string;
+  descripcion: string;
+  incisoId: number;
+}
+
+export interface SubtipoCompraFiltroIniciarPliego {
+  id: number;
+  descripcion: string;
+}
+
+export interface TipoCompraFiltroIniciarPliego {
+  id: number;
+  descripcion: string;
+  subtipos: SubtipoCompraFiltroIniciarPliego[];
+}
 
 const CAMPO_PLIEGO_VACIO: CampoPliegoDTO = {
   id: 0,
@@ -54,6 +78,42 @@ const USUARIOS_BUSQUEDA_MOCK: UsuarioBusquedaDTO[] = [
   { id: 23, numeroDocumento: '5.678.901-2', nombre: 'Gabriela', apellido: 'Diaz' },
   { id: 24, numeroDocumento: '6.789.012-3', nombre: 'Andres', apellido: 'Morales' },
   { id: 25, numeroDocumento: '7.890.123-4', nombre: 'Valentina', apellido: 'Rojas' }
+];
+
+const INCISOS_INICIAR_PLIEGO_MOCK: IncisoFiltroIniciarPliego[] = [
+  { id: 1, codigo: '02', descripcion: 'Presidencia de la Republica' },
+  { id: 2, codigo: '04', descripcion: 'Ministerio de Economia y Finanzas' },
+  { id: 3, codigo: '10', descripcion: 'Ministerio de Obras Publicas' }
+];
+
+const UNIDADES_EJECUTORAS_INICIAR_PLIEGO_MOCK: UnidadEjecutoraFiltroIniciarPliego[] = [
+  { id: 1, codigo: '001', descripcion: 'Unidad Central', incisoId: 1 },
+  { id: 2, codigo: '005', descripcion: 'Unidad de Proyectos', incisoId: 1 },
+  { id: 5, codigo: '002', descripcion: 'Direccion General', incisoId: 2 },
+  { id: 10, codigo: '001', descripcion: 'Direccion de Obras', incisoId: 3 }
+];
+
+const TIPOS_COMPRA_INICIAR_PLIEGO_MOCK: TipoCompraFiltroIniciarPliego[] = [
+  {
+    id: 1,
+    descripcion: 'Licitacion Publica',
+    subtipos: [
+      { id: 1, descripcion: 'Nacional' },
+      { id: 2, descripcion: 'Internacional' }
+    ]
+  },
+  {
+    id: 2,
+    descripcion: 'Contratacion Directa',
+    subtipos: [
+      { id: 3, descripcion: 'Por monto' }
+    ]
+  },
+  {
+    id: 3,
+    descripcion: 'Licitacion Abreviada',
+    subtipos: []
+  }
 ];
 
 const crearSeccionesModeloMock = (idModelo: number): ModeloSeccionDTO[] => ([
@@ -108,7 +168,7 @@ const crearUnidadEjecutoraMock = (
 
 const crearPliegoMock = (
   id: number,
-  estado: EstadoProcesoPliego,
+  estado: EstadoPliego,
   modelo: ModeloDTO,
   unidadEjecutora: UnidadEjecutoraDTO,
   subtipoCompra: SubtipoCompraDTO,
@@ -150,7 +210,7 @@ export class BandejaEntradaService {
   private procesosMock: PliegoDTO[] = [
     crearPliegoMock(
       1,
-      EstadoProcesoPliego.PENDIENTE,
+      EstadoPliego.PENDIENTE,
       crearModeloMock(101, 'Proceso pendiente', EstadoElemento.VIGENTE, 1),
       crearUnidadEjecutoraMock(1, 'Poder Ejecutivo', 1, 'Ministerio de Economia'),
       new SubtipoCompraDTO('1', '1', 'Nacional', 'Licitacion Publica'),
@@ -162,7 +222,7 @@ export class BandejaEntradaService {
     ),
     crearPliegoMock(
       2,
-      EstadoProcesoPliego.ASIGNADO,
+      EstadoPliego.ASIGNADO,
       crearModeloMock(102, 'Proceso asignado', EstadoElemento.VIGENTE, 1),
       crearUnidadEjecutoraMock(1, 'Poder Ejecutivo', 2, 'Ministerio de Salud'),
       new SubtipoCompraDTO('2', '3', 'Por excepcion', 'Contratacion Directa'),
@@ -174,7 +234,7 @@ export class BandejaEntradaService {
     ),
     crearPliegoMock(
       3,
-      EstadoProcesoPliego.EN_PROCESO,
+      EstadoPliego.EN_PROCESO,
       crearModeloMock(103, 'Proceso en elaboracion', EstadoElemento.VIGENTE, 1),
       crearUnidadEjecutoraMock(2, 'Poder Legislativo', 3, 'Camara de Diputados'),
       new SubtipoCompraDTO('3', '1', 'Menor cuantia', 'Licitacion Abreviada'),
@@ -186,7 +246,7 @@ export class BandejaEntradaService {
     ),
     crearPliegoMock(
       4,
-      EstadoProcesoPliego.PENDIENTE_VALIDACION,
+      EstadoPliego.PENDIENTE_VALIDACION,
       crearModeloMock(104, 'Proceso en validacion', EstadoElemento.VIGENTE, 1),
       crearUnidadEjecutoraMock(1, 'Poder Ejecutivo', 4, 'Ministerio de Educacion'),
       new SubtipoCompraDTO('1', '2', 'Internacional', 'Licitacion Publica'),
@@ -198,7 +258,7 @@ export class BandejaEntradaService {
     ),
     crearPliegoMock(
       5,
-      EstadoProcesoPliego.PENDIENTE_APROBACION,
+      EstadoPliego.PENDIENTE_APROBACION,
       crearModeloMock(105, 'Proceso pendiente aprobacion', EstadoElemento.VIGENTE, 1),
       crearUnidadEjecutoraMock(3, 'Poder Judicial', 5, 'Suprema Corte de Justicia'),
       new SubtipoCompraDTO('1', '1', 'Nacional', 'Licitacion Publica'),
@@ -210,7 +270,7 @@ export class BandejaEntradaService {
     ),
     crearPliegoMock(
       6,
-      EstadoProcesoPliego.APROBADO,
+      EstadoPliego.APROBADO,
       crearModeloMock(106, 'Proceso aprobado', EstadoElemento.VIGENTE, 1),
       crearUnidadEjecutoraMock(1, 'Poder Ejecutivo', 6, 'Ministerio de Obras Publicas'),
       new SubtipoCompraDTO('1', '1', 'Nacional', 'Licitacion Publica'),
@@ -222,7 +282,7 @@ export class BandejaEntradaService {
     ),
     crearPliegoMock(
       7,
-      EstadoProcesoPliego.PUBLICADO,
+      EstadoPliego.PUBLICADO,
       crearModeloMock(107, 'Proceso publicado', EstadoElemento.VIGENTE, 1),
       crearUnidadEjecutoraMock(1, 'Poder Ejecutivo', 7, 'Ministerio de Transporte'),
       new SubtipoCompraDTO('3', '1', 'Menor cuantia', 'Licitacion Abreviada'),
@@ -237,7 +297,7 @@ export class BandejaEntradaService {
   private pliegosBaseMock: PliegoDTO[] = [
     crearPliegoMock(
       101,
-      EstadoProcesoPliego.EN_PROCESO,
+      EstadoPliego.EN_PROCESO,
       crearModeloMock(1, 'Modelo de Licitacion Publica Nacional', EstadoElemento.BORRADOR, 1),
       crearUnidadEjecutoraMock(1, 'Poder Ejecutivo', 1, 'Ministerio de Economia'),
       new SubtipoCompraDTO('1', '1', 'Nacional', 'Licitacion Publica'),
@@ -249,7 +309,7 @@ export class BandejaEntradaService {
     ),
     crearPliegoMock(
       102,
-      EstadoProcesoPliego.EN_PROCESO,
+      EstadoPliego.EN_PROCESO,
       crearModeloMock(2, 'Modelo de Contratacion Directa', EstadoElemento.BORRADOR, 1),
       crearUnidadEjecutoraMock(1, 'Poder Ejecutivo', 2, 'Ministerio de Salud'),
       new SubtipoCompraDTO('2', '3', 'Por excepcion', 'Contratacion Directa'),
@@ -261,7 +321,7 @@ export class BandejaEntradaService {
     ),
     crearPliegoMock(
       103,
-      EstadoProcesoPliego.EN_PROCESO,
+      EstadoPliego.EN_PROCESO,
       crearModeloMock(3, 'Modelo Borrador - Obras Publicas', EstadoElemento.BORRADOR, 1),
       crearUnidadEjecutoraMock(2, 'Poder Legislativo', 3, 'Camara de Diputados'),
       new SubtipoCompraDTO('3', '1', 'Menor cuantia', 'Licitacion Abreviada'),
@@ -273,7 +333,7 @@ export class BandejaEntradaService {
     ),
     crearPliegoMock(
       104,
-      EstadoProcesoPliego.PENDIENTE,
+      EstadoPliego.PENDIENTE,
       crearModeloMock(4, 'Modelo de Licitacion Publica Internacional', EstadoElemento.BORRADOR, 1),
       crearUnidadEjecutoraMock(1, 'Poder Ejecutivo', 4, 'Ministerio de Educacion'),
       new SubtipoCompraDTO('1', '2', 'Internacional', 'Licitacion Publica'),
@@ -285,7 +345,7 @@ export class BandejaEntradaService {
     ),
     crearPliegoMock(
       105,
-      EstadoProcesoPliego.PENDIENTE,
+      EstadoPliego.PENDIENTE,
       crearModeloMock(5, 'Modelo de Licitacion Publica Nacional', EstadoElemento.BORRADOR, 1),
       crearUnidadEjecutoraMock(3, 'Poder Judicial', 5, 'Suprema Corte de Justicia'),
       new SubtipoCompraDTO('1', '1', 'Nacional', 'Licitacion Publica'),
@@ -357,6 +417,21 @@ export class BandejaEntradaService {
     });
   }
 
+  obtenerFiltrosIniciarPliego(): Observable<{
+    incisos: IncisoFiltroIniciarPliego[];
+    unidadesEjecutoras: UnidadEjecutoraFiltroIniciarPliego[];
+    tiposCompra: TipoCompraFiltroIniciarPliego[];
+  }> {
+    return of({
+      incisos: INCISOS_INICIAR_PLIEGO_MOCK.map((inciso) => ({ ...inciso })),
+      unidadesEjecutoras: UNIDADES_EJECUTORAS_INICIAR_PLIEGO_MOCK.map((ue) => ({ ...ue })),
+      tiposCompra: TIPOS_COMPRA_INICIAR_PLIEGO_MOCK.map((tipo) => ({
+        ...tipo,
+        subtipos: tipo.subtipos.map((subtipo) => ({ ...subtipo }))
+      }))
+    });
+  }
+
   buscarProcesos(
     filtro: FiltroBandejaEntradaDTO,
     pagina: number,
@@ -396,15 +471,15 @@ export class BandejaEntradaService {
 
     resultados.sort((a, b) => {
       if (sort === 'estado') {
-        const ordenEstado: Record<EstadoProcesoPliego, number> = {
-          [EstadoProcesoPliego.PENDIENTE]: 1,
-          [EstadoProcesoPliego.ASIGNADO]: 2,
-          [EstadoProcesoPliego.EN_PROCESO]: 3,
-          [EstadoProcesoPliego.PENDIENTE_VALIDACION]: 4,
-          [EstadoProcesoPliego.PENDIENTE_APROBACION]: 5,
-          [EstadoProcesoPliego.APROBADO]: 6,
-          [EstadoProcesoPliego.PUBLICADO]: 7,
-          [EstadoProcesoPliego.CANCELADO]: 8
+        const ordenEstado: Record<EstadoPliego, number> = {
+          [EstadoPliego.PENDIENTE]: 1,
+          [EstadoPliego.ASIGNADO]: 2,
+          [EstadoPliego.EN_PROCESO]: 3,
+          [EstadoPliego.PENDIENTE_VALIDACION]: 4,
+          [EstadoPliego.PENDIENTE_APROBACION]: 5,
+          [EstadoPliego.APROBADO]: 6,
+          [EstadoPliego.PUBLICADO]: 7,
+          [EstadoPliego.CANCELADO]: 8
         };
 
         const valorA = ordenEstado[a.estado];
@@ -466,7 +541,7 @@ export class BandejaEntradaService {
     console.log('Finalizando asignacion para el proceso:', procesoId, usuariosConRoles);
     const proceso = this.procesosMock.find(p => p.id === procesoId);
     if (proceso) {
-      proceso.estado = EstadoProcesoPliego.ASIGNADO;
+      proceso.estado = EstadoPliego.ASIGNADO;
     }
     return of(void 0).pipe(delay(500));
   }
@@ -510,7 +585,7 @@ export class BandejaEntradaService {
   }
 
   private esPublicadoVigente(pliego: PliegoDTO): boolean {
-    if (pliego.estado !== EstadoProcesoPliego.PUBLICADO) {
+    if (pliego.estado !== EstadoPliego.PUBLICADO) {
       return false;
     }
     if (!pliego.fechaTopeRecepcionOfertas) {
@@ -528,5 +603,4 @@ export class BandejaEntradaService {
     return tipos.find(t => t.id === id);
   }
 }
-
 

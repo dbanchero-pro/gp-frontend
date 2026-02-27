@@ -10,8 +10,8 @@ import { ObjetoCompraDTO } from './objeto-compra.model';
 export interface ClausulaDTO {
   id: NumeroNulo;
   denominacion: string;
-  obligatoria?: boolean;
-  editable?: boolean;
+  obligatoria: boolean;
+  editable: boolean;
   aperturaElectronica?: boolean;
   tiposCompra: TipoCompraClausulaModeloDTO[];
   objetosCompra: ObjetoCompraDTO[];

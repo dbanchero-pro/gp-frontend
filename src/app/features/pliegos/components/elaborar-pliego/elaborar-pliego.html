@@ -2,7 +2,7 @@
 <div class="row">
   <div class="col-md-8 ml-0 pl-0 mr-0 pr-0">
     <h4><em class="fa fa-edit mr-2"></em>Elaborar pliego</h4>
-    <h6>Trabaje en la elaboraciÃ³n del pliego modificando o agregando clÃ¡usulas, anexos o notas</h6>
+    <h6>Trabaje en la elaboración del pliego modificando o agregando clÃ¡usulas, anexos o notas</h6>
   </div>
 </div>
 
@@ -24,7 +24,7 @@
             {{ obtenerTextoEstado(pliego.estado) }}
           </span>
           <span class="ml-2">
-                <small><strong>VersiÃ³n: 1</strong></small>
+                <small><strong>Versión: 1</strong></small>
           </span>
         </div>
       </div>
@@ -34,7 +34,7 @@
         {{ obtenerTextoTipoCompraPliego() }}
         </span>
       <span>
-         | Apertura electrÃ³nica: <strong>{{ aperturaElectronica }}</strong>
+         | Apertura electrónica: <strong>{{ aperturaElectronica }}</strong>
          | Cantidad de etapas: <strong>1</strong></span>
       </div>
       <div class="mb-2 pt-2"> Modelo usado:
@@ -45,11 +45,11 @@
         <div class="col-12 ml-0 pl-0 mr-0 pr-0 mb-2">
           <div class="text-right">
             <button type="button" class="btn btn-link-rojo mr-2"> Volver a iniciar pliego </button>
-            <button type="button" class="btn btn-success mr-2"> Solicitar validaciÃ³n </button>
-            <button type="button" class="btn btn-success mr-2" *ngIf="esValidador"> Solicitar aprobaciÃ³n </button>
+            <button type="button" class="btn btn-success mr-2"> Solicitar validación </button>
+            <button type="button" class="btn btn-success mr-2" *ngIf="esValidador"> Solicitar aprobación </button>
             <button type="button" class="btn btn-primary mr-2"> Pre validar </button>
             <button type="button" class="btn btn-primary mr-2"> Pre visualizar </button>
-            <button type="button" class="btn btn-primary mr-2"> Solicitar modificaciÃ³n modelo </button>
+            <button type="button" class="btn btn-primary mr-2"> Solicitar modificación modelo </button>
             <button type="button" class="btn btn-primary mr-2"> Usuarios </button>
             <button type="button" class="btn btn-primary mr-2"> Historial </button>
           </div>
@@ -63,8 +63,8 @@
   <div [ngClass]="colNavegacion">
     <div class="panel mr-2">
       <div class="panel-header" [class.contraido]="panelNavegacionContraido">
-        <em class="fa fa-list"></em><h5 class="panel-title" *ngIf="!panelNavegacionContraido">NavegaciÃ³n</h5>
-        <button type="button" class="btn-toggle-panel" (click)="togglePanelNavegacion()"
+        <em class="fa fa-list"></em><h5 class="panel-title" *ngIf="!panelNavegacionContraido">Navegación</h5>
+        <button title="Expandir/Colapsar panel" type="button" class="btn-toggle-panel" (click)="togglePanelNavegacion()"
                 [title]="panelNavegacionContraido ? 'Expandir panel' : 'Contraer panel'">
           <em [ngClass]="panelNavegacionContraido ? 'fa fa-expand' : 'fa fa-compress'"></em>
         </button>
@@ -74,7 +74,7 @@
            
            <li class="nav-item" onkeydown="" [class.active]="seccionActiva === 'resolucion'" (click)="seleccionarSeccion('resolucion')">
             <em class="fa fa-id-card-o m-2"></em>
-            <span>ResoluciÃ³n</span>
+            <span>Resolución</span>
           </li>
           <li class="nav-divider"></li>
           <li class="nav-item" onkeydown="" [class.active]="seccionActiva === 'caratula'" (click)="seleccionarSeccion('caratula')">
@@ -156,7 +156,7 @@
           <small><strong>No editable</strong></small>
         </span>
 
-        <button type="button" class="btn-toggle-panel" (click)="togglePanelEdicion()"
+        <button title="Expandir/Colapsar panel" type="button" class="btn-toggle-panel" (click)="togglePanelEdicion()"
                 [title]="panelEdicionContraido ? 'Expandir panel' : 'Contraer panel'">
            <em [ngClass]="panelEdicionContraido ? 'fa fa-expand' : 'fa fa-compress'"></em>
         </button>
@@ -165,60 +165,62 @@
       <div class="panel-body" [class.d-none]="panelEdicionContraido">
         <div *ngIf="seccionActiva === null && clausulaActiva === null" class="text-center text-muted py-5">
           <em class="fa fa-arrow-circle-left mdi-48px mb-3"></em>
-          <h6>Seleccione un elemento del panel de navegaciÃ³n para editar</h6>
+          <h6>Seleccione un elemento del panel de navegación para editar</h6>
         </div>
-
-          <div *ngIf="seccionActiva === 'encabezado'">
+        @if (seccionActiva === 'encabezado') {
+          <div >
             <div class="form-group">
-              <label class="etiqueta">Texto encabezado</label>
-              <input type="text" class="form-control">
+              <label for="textoEncabezado" class="etiqueta">Texto encabezado</label>
+              <input id="textoEncabezado" type="text" class="form-control">
             </div>
             <div class="form-group">
-              <label class="etiqueta">Texto pie de pÃ¡gina</label>
-              <input type="text" class="form-control">
+              <label for="textoPieDePagina"  class="etiqueta">Texto pie de página</label>
+              <input id="textoPieDePagina" type="text" class="form-control">
             </div>
           </div>
-
-            <div *ngIf="seccionActiva === 'resolucion'">
-              <div class="form-group">
-                <div class="mb-3 text-right">
-                  <button type="button" class="btn btn-primary mr-3 ">
-                    Adjuntar resolucion
-                  </button>
-                  <button type="button" class="btn btn-primary">
-                    Buscar modelo
-                  </button>
-                </div>
-              </div>                            
-            </div>
-
-          <div *ngIf="seccionActiva === 'caratula'">
+        }
+       @else if (seccionActiva === 'resolucion'){
+          <div>
+            <div class="form-group">
+              <div class="mb-3 text-right">
+                <button type="button" class="btn btn-primary mr-3 ">
+                  Adjuntar resolucion
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Buscar modelo
+                </button>
+              </div>
+            </div>                            
+          </div>
+        }
+        @else if (seccionActiva === 'caratula'){
+          <div >
             <div class="col-12">
               <div class="row">
                 <div class="col-md-12 ml-0 pl-0 mr-0 pr-0">
                   <div class="form-group">
-                    <label class="etiqueta">* RESUMEN_OBJETO_LLAMADO</label>
-                    <input type="text" class="form-control">
+                    <label for="resumenObjetoLlamado" class="etiqueta">* RESUMEN_OBJETO_LLAMADO</label>
+                    <input id="resumenObjetoLlamado" type="text" class="form-control">
                   </div>
                   <div class="form-group">
-                    <label class="etiqueta">* APERTURA_OFERTAS_LUGAR</label>
-                    <input type="text" class="form-control">
+                    <label for="aperturaOfertasLugar" class="etiqueta">* APERTURA_OFERTAS_LUGAR</label>
+                    <input id="aperturaOfertasLugar" type="text" class="form-control">
                   </div>
                   <div class="form-group">
-                    <label class="etiqueta">* TELEFONO_COMUNICACION</label>
-                    <input type="text" class="form-control">
+                    <label for="telefonoComunicacion" class="etiqueta">* TELEFONO_COMUNICACION</label>
+                    <input id="telefonoComunicacion" type="text" class="form-control">
                   </div>
                    <div class="form-group">
-                    <label class="etiqueta">* CORREO_COMUNICACION</label>
-                    <input type="text" class="form-control">
+                    <label for="correoComunicacion" class="etiqueta">* CORREO_COMUNICACION</label>
+                    <input id="correoComunicacion" type="text" class="form-control">
                   </div>
                   <div class="form-group">
-                    <label class="etiqueta">* PLAZO_TOPE_RECEPCION_OFERTA</label>
-                    <input type="text" class="form-control">
+                    <label for="plazoTopeRecepcionOferta" class="etiqueta">* PLAZO_TOPE_RECEPCION_OFERTA</label>
+                    <input id="plazoTopeRecepcionOferta" type="text" class="form-control">
                   </div>
                    <div class="form-group">
-                    <label class="etiqueta">* PLAZO_ACTO_APERTURA</label>
-                    <input type="text" class="form-control">
+                    <label for="plazoActoApertura" class="etiqueta">* PLAZO_ACTO_APERTURA</label>
+                    <input id="plazoActoApertura" type="text" class="form-control">
                   </div>
                 </div>
               </div>
@@ -231,14 +233,15 @@
                  Adjuntar logo
               </button>
             </div>
-          </div>
+            </div>
           
-          <div class="mt-3 border-top pt-3 text-right">
-             <button type="button" class="btn btn-primary mr-2"> Guardar </button>
+            <div class="mt-3 border-top pt-3 text-right">
+              <button type="button" class="btn btn-primary mr-2"> Guardar </button>
+            </div>
           </div>
-        </div>
-
-          <div *ngIf="seccionActiva === 'notas'">
+        }
+        @else if (seccionActiva === 'notas') {
+          <div>
             <div class="mb-3 text-right">
               <button type="button" class="btn btn-primary">
                 <em class="fa fa-plus"></em> Agregar nota
@@ -247,8 +250,9 @@
 
             <div class="alert alert-info"> No hay notas agregadas </div>
           </div>
-
-          <div *ngIf="seccionActiva === 'anexos'">
+        }
+        @else if (seccionActiva === 'anexos') {
+          <div>
             <div class="mb-3 text-right">
               <button type="button" class="btn btn-primary">
                 <em class="fa fa-plus"></em> Agregar anexo
@@ -256,13 +260,12 @@
             </div>
             <div class="alert alert-info"> No hay anexos agregados </div>
           </div>
-
-          <div class="pt-0" *ngIf="clausulaActiva !== null && clausulaSeleccionada">
+        }
+        @if (clausulaActiva !== null && clausulaSeleccionada) {
+          <div class="pt-0">
             <div class="row">
               <div class="col-12 ml-0 pl-0 mr-0 pr-0 pt-0">
-                <app-grupo-colapsable
-                  [colapsado]="true"
-                  class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
+                <app-grupo-colapsable [colapsado]="true" class="pl-0" classTitulo="pl-3" classContenido="ml-0 pl-0 mr-0">
                   <titulo>Redacciones</titulo>
                   <contenido>
                     <div class="col-md-12 p-0">
@@ -271,21 +274,21 @@
                           <td class="text-center" style="width: 100px;">
                             <input type="checkbox">
                             <button type="button" class="btn btn-sm"
-                              [attr.aria-label]="'Ver redacciÃ³n'">
+                              [attr.aria-label]="'Ver redacción'">
                               <em class="fa fa-eye"></em>
                             </button>
                           </td>
-                          <td>RedacciÃ³n 1...</td>
+                          <td>Redacción 1...</td>
                         </tr>
                             <tr>
                           <td class="text-center" style="width: 100px;">
                             <input type="checkbox">
                             <button type="button" class="btn btn-sm"
-                              [attr.aria-label]="'Ver redacciÃ³n'">
+                              [attr.aria-label]="'Ver redacción'">
                               <em class="fa fa-eye"></em>
                             </button>
                           </td>
-                          <td>RedacciÃ³n 2...</td>
+                          <td>Redacción 2...</td>
                         </tr>                       
                       </table>
                     </div>
@@ -296,20 +299,18 @@
 
             <div class="row">
               <div class="col-12 ml-0 pl-0 mr-0 pr-0 border-bottom">
-                <app-grupo-colapsable
-                  [colapsado]="true"
-                  class="pl-0" classTitulo="pl-3"  classContenido="ml-0 pl-0 mr-0">
+                <app-grupo-colapsable [colapsado]="true" class="pl-0" classTitulo="pl-3" classContenido="ml-0 pl-0 mr-0">
                   <titulo>Campos personalizados</titulo>
                   <contenido>
                     <div class="col-11 m-3">
                         <!-- Campos personalizados -->
                         <div class="form-group">
-                          <label class="etiqueta">Plazo de entrega</label>
-                          <input type="number" class="form-control" placeholder="Ingrese el plazo en dÃ­as">
+                          <label for="plazoDias" class="etiqueta">Plazo de entrega</label>
+                          <input id="plazoDias" type="number" class="form-control" placeholder="Ingrese el plazo en dí­as">
                         </div>
                         <div class="form-group">
-                          <label class="etiqueta">Monto estimado</label>
-                          <input type="number" class="form-control" placeholder="Ingrese el monto estimado">
+                          <label for="montoEstimado" class="etiqueta">Monto estimado</label>
+                          <input id="montoEstimado" type="number" class="form-control" placeholder="Ingrese el monto estimado">
                         </div>
                     </div>
                   </contenido>
@@ -318,22 +319,23 @@
             </div>
 
             <div class="form-group m-4">
-              <label for="redaccion">* RedacciÃ³n</label>
+              <label for="redaccion">* Redacción</label>
               <app-text-editor></app-text-editor>
               <small class="form-text text-muted">
-                Para incluir campos personalizados en la redacciÃ³n, use la sintaxis [[ETIQUETA_CAMPO]]
+                Para incluir campos personalizados en la redacción, use la sintaxis [[ETIQUETA_CAMPO]]
               </small>
             </div>
          
-          <div class="mt-3 border-top pt-3 text-right" *ngIf="!clausulaSeleccionada.bloqueada">
-             <button type="button" class="btn btn-primary mr-2"> Guardar </button>
-            <button type="button" class="btn btn-primary mr-2" [disabled]="clausulaSeleccionada.bloqueada"> Solicitar modificaciÃ³n</button>
-            <button type="button" class="btn btn-primary mr-2"> Visualizar </button>
-            <button type="button" class="btn btn-primary" [disabled]="clausulaSeleccionada.bloqueada"> Agregar notas </button>
-              <button type="button" class="btn link mr-2"
-                    *ngIf="!clausulaSeleccionada.obligatoria && !clausulaSeleccionada.bloqueada"> Eliminar </button>
+            <div class="mt-3 border-top pt-3 text-right" *ngIf="!clausulaSeleccionada.bloqueada">
+              <button type="button" class="btn btn-primary mr-2"> Guardar </button>
+              <button type="button" class="btn btn-primary mr-2" [disabled]="clausulaSeleccionada.bloqueada"> Solicitar modificación</button>
+              <button type="button" class="btn btn-primary mr-2"> Visualizar </button>
+              <button type="button" class="btn btn-primary" [disabled]="clausulaSeleccionada.bloqueada"> Agregar notas </button>
+                <button type="button" class="btn link mr-2"
+                      *ngIf="!clausulaSeleccionada.clausula?.obligatoria && !clausulaSeleccionada.bloqueada"> Eliminar </button>
+            </div>
           </div>
-        </div>
+        }
       </div>
     </div>
   </div>

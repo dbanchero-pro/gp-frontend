@@ -83,7 +83,6 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
         SharedModule,
         RouterModule.forChild(routes),
         NgxMaskDirective,
-        NumeroCompraPipe,
     ],
     providers: [provideNgxMask()],
     exports: [FormatoCiPipe, CompraResumenPipe],

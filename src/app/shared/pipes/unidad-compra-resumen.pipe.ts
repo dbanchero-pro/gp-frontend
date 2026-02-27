@@ -2,8 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { UnidadCompraDTO } from '../models/sice/unidad-compra.model';
 
 @Pipe({
-    name: 'unidadCompraResumen',
-    standalone: false
+    name: 'unidadCompraResumen'
 })
 export class UnidadCompraResumenPipe implements PipeTransform {
 

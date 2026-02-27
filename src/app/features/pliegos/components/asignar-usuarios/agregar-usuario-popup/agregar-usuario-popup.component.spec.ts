@@ -9,7 +9,6 @@ import { AgregarUsuarioPopupComponent } from './agregar-usuario-popup.component'
 @Component({
   selector: 'app-input-documento',
   template: '',
-  standalone: false,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

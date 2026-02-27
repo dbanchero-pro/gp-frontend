@@ -2,8 +2,7 @@ import { Pipe } from "@angular/core";
 import { FechaPipe } from "./fecha.pipe";
 
 @Pipe({
-  name: 'fechaHoraPipe', pure: false,
-  standalone: false
+  name: 'fechaHoraPipe', pure: false
 })
 export class FechaHoraPipe extends FechaPipe {
 

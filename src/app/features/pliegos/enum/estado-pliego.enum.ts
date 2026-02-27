@@ -1,4 +1,4 @@
-export enum EstadoProcesoPliego {
+export enum EstadoPliego {
   PENDIENTE = 'Pendiente',
   ASIGNADO = 'Asignado',
   EN_PROCESO = 'En proceso',

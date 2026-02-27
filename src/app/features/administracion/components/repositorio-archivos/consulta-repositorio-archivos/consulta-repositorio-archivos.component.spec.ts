@@ -13,7 +13,6 @@ import { DocumentoRepositorioService } from '../../../services/documento-reposit
 @Component({
   selector: 'app-filtro-organismo',
   template: '',
-  standalone: false,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

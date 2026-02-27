@@ -11,11 +11,15 @@ import { CapituloClausulaDTO } from 'src/app/shared/models/pliego/capitulo/capit
 const crearClausulaMock = (
   id: number,
   denominacion: string,
+  obligatoria: boolean,
+  editable: boolean,
   version: number,
   estado: EstadoElemento = EstadoElemento.VIGENTE
 ): ClausulaDTO => ({
   id,
   denominacion,
+  obligatoria,
+  editable,
   tiposCompra: [],
   objetosCompra: [],
   estado,
@@ -54,15 +58,15 @@ export class SeccionService {
           id: 1,
           orden: 1,
           capitulo: crearCapituloMock(1, 'Capítulo de Condiciones Generales', 1, [
-            { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento', 1) },
-            { Id: 2, orden: 2, clausula: crearClausulaMock(2, 'Cláusula de plazo de entrega', 1) }
+            { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento',true,true, 1) },
+            { Id: 2, orden: 2, clausula: crearClausulaMock(2, 'Cláusula de plazo de entrega',true,true, 1) }
           ])
         },
         {
           id: 2,
           orden: 2,
           capitulo: crearCapituloMock(2, 'Capítulo de Requisitos Técnicos', 2, [
-            { Id: 3, orden: 1, clausula: crearClausulaMock(3, 'Cláusula de calidad y especificaciones técnicas', 1) }
+            { Id: 3, orden: 1, clausula: crearClausulaMock(3, 'Cláusula de calidad y especificaciones técnicas',true,true, 1) }
           ])
         }
       ],
@@ -84,7 +88,7 @@ export class SeccionService {
           id: 3,
           orden: 1,
           capitulo: crearCapituloMock(3, 'Capítulo de Garantías', 1, [
-            { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento', 1) }
+            { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento',true,true, 1) }
           ])
         }
       ],
@@ -106,7 +110,7 @@ export class SeccionService {
         {
           id: 1,
           orden: 1,
-          clausula: crearClausulaMock(4, 'Cláusula de penalidades', 2, EstadoElemento.NO_VIGENTE)
+          clausula: crearClausulaMock(4, 'Cláusula de penalidades',true,true, 2, EstadoElemento.NO_VIGENTE)
         }
       ],
       fechaCreacion: '2023-01-01',
@@ -173,7 +177,8 @@ export class SeccionService {
       ...seccion,
       id: nuevoId,
       estado: EstadoElemento.BORRADOR,
-      version: 1,
+      version: 1,
+
       fechaCreacion: new Date().toISOString().split('T')[0],
       usuarioCreacion: 'usuario_actual',
       fechaModificacion: null,
@@ -205,7 +210,8 @@ export class SeccionService {
 
       const versionAprobada = {
         ...seccionActual,
-        estado: EstadoElemento.VIGENTE,
+        estado: EstadoElemento.VIGENTE,
+
         version: (seccionActual.version || 1),
         fechaModificacion: new Date().toISOString().split('T')[0],
         usuarioModificacion: 'usuario_actual'
@@ -217,7 +223,8 @@ export class SeccionService {
         ...versionAprobada,
         id: nuevoId,
         estado: EstadoElemento.BORRADOR,
-        version: (versionAprobada.version || 1) + 1,
+        version: (versionAprobada.version || 1) + 1,
+
         fechaVigenciaDesde: '',
         fechaVigenciaHasta: null,
         fechaCreacion: new Date().toISOString().split('T')[0],
@@ -303,7 +310,8 @@ export class SeccionService {
         denominacion: 'Sección de Condiciones Generales del Contrato',
         fechaVigenciaDesde: '2024-01-01',
         fechaVigenciaHasta: '2025-12-31',
-        estado: EstadoElemento.VIGENTE,
+        estado: EstadoElemento.VIGENTE,
+
         version: 3,
         capitulos: [],
         clausulas: [],
@@ -317,7 +325,8 @@ export class SeccionService {
         denominacion: 'Sección de Condiciones Generales del Contrato',
         fechaVigenciaDesde: '2023-06-01',
         fechaVigenciaHasta: '2024-12-31',
-        estado: EstadoElemento.NO_VIGENTE,
+        estado: EstadoElemento.NO_VIGENTE,
+
         version: 2,
         capitulos: [],
         clausulas: [],

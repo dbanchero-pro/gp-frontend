@@ -13,7 +13,6 @@ import { ConsultaUsuariosRolesComponent } from './consulta-usuarios-roles.compon
 @Component({
     selector: 'app-input-documento',
     template: '',
-    standalone: false,
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -40,7 +39,6 @@ class MockInputDocumentoComponent implements ControlValueAccessor, Validator {
 @Component({
     selector: 'app-filtro-organismo',
     template: '',
-    standalone: false,
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,

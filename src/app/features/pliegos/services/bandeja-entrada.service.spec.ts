@@ -1,7 +1,7 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { BandejaEntradaService } from './bandeja-entrada.service';
 import { FiltroBandejaEntradaDTO } from '../models/filtros/filtro-bandeja-entrada.model';
-import { EstadoProcesoPliego } from '../enum/estado-proceso-pliego.enum';
+import { EstadoPliego } from '../enum/estado-pliego.enum';
 
 describe('BandejaEntradaService', () => {
   let service: BandejaEntradaService;
@@ -50,8 +50,8 @@ describe('BandejaEntradaService', () => {
 
   it('filtra procesos por estado', fakeAsync(() => {
     const filtro = new FiltroBandejaEntradaDTO();
-    filtro.estado = EstadoProcesoPliego.PENDIENTE;
-    let estados: EstadoProcesoPliego[] = [];
+    filtro.estado = EstadoPliego.PENDIENTE;
+    let estados: EstadoPliego[] = [];
 
     service.buscarProcesos(filtro, 0, 20, 'estado', 'asc').subscribe(page => {
       estados = page.content.map(p => p.estado);
@@ -59,7 +59,7 @@ describe('BandejaEntradaService', () => {
     tick(500);
 
     expect(estados.length).toBeGreaterThan(0);
-    expect(estados.every(e => e === EstadoProcesoPliego.PENDIENTE)).toBeTrue();
+    expect(estados.every(e => e === EstadoPliego.PENDIENTE)).toBeTrue();
   }));
 
   it('obtiene usuarios asignados mock por proceso', fakeAsync(() => {

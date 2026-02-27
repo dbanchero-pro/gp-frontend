@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ProveedorDTO } from 'src/app/shared/models/proveedor/proveedor.model';
 
-@Pipe({ name: 'proveedor', standalone: false, pure: true })
+@Pipe({ name: 'proveedor', pure: true })
 export class ProveedorPipe implements PipeTransform {
 
   transform(proveedor: ProveedorDTO | undefined): string {

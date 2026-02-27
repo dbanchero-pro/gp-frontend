@@ -7,7 +7,7 @@ import { AccionBoton } from 'src/app/shared/models/common/accion-boton.model';
 import { IColumnaOrden } from 'src/app/shared/models/common/columna-orden.model';
 import { ActualizarService } from 'src/app/shared/services/common/actualizar.service';
 import { CanComponentDeactivate } from 'src/app/shared/utils/can-component-deactivate';
-import { EstadoProcesoPliego } from '../../enum/estado-proceso-pliego.enum';
+import { EstadoPliego } from '../../enum/estado-pliego.enum';
 import { PliegoDTO } from '../../models/pliego.model';
 import { BandejaEntradaService } from '../../services/bandeja-entrada.service';
 import { UsuarioAsignadoDTO } from '../../models/usuario-asignado.model';
@@ -263,30 +263,30 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     });
   }
 
-  obtenerNombreEstado(estado: EstadoProcesoPliego): string {
-    const estados: { [key in EstadoProcesoPliego]: string } = {
-      [EstadoProcesoPliego.PENDIENTE]: 'Pendiente',
-      [EstadoProcesoPliego.ASIGNADO]: 'Asignado',
-      [EstadoProcesoPliego.EN_PROCESO]: 'En proceso',
-      [EstadoProcesoPliego.PENDIENTE_VALIDACION]: 'Pendiente validación',
-      [EstadoProcesoPliego.PENDIENTE_APROBACION]: 'Pendiente aprobación',
-      [EstadoProcesoPliego.APROBADO]: 'Aprobado',
-      [EstadoProcesoPliego.PUBLICADO]: 'Publicado',
-      [EstadoProcesoPliego.CANCELADO]: 'Cancelado'
+  obtenerNombreEstado(estado: EstadoPliego): string {
+    const estados: { [key in EstadoPliego]: string } = {
+      [EstadoPliego.PENDIENTE]: 'Pendiente',
+      [EstadoPliego.ASIGNADO]: 'Asignado',
+      [EstadoPliego.EN_PROCESO]: 'En proceso',
+      [EstadoPliego.PENDIENTE_VALIDACION]: 'Pendiente validación',
+      [EstadoPliego.PENDIENTE_APROBACION]: 'Pendiente aprobación',
+      [EstadoPliego.APROBADO]: 'Aprobado',
+      [EstadoPliego.PUBLICADO]: 'Publicado',
+      [EstadoPliego.CANCELADO]: 'Cancelado'
     };
     return estados[estado] || '';
   }
 
-  obtenerClaseBadgeEstado(estado: EstadoProcesoPliego): string {
-    const clases: { [key in EstadoProcesoPliego]: string } = {
-      [EstadoProcesoPliego.PENDIENTE]: 'badge-info',
-      [EstadoProcesoPliego.ASIGNADO]: 'badge-info',
-      [EstadoProcesoPliego.EN_PROCESO]: 'badge-warning',
-      [EstadoProcesoPliego.PENDIENTE_VALIDACION]: 'badge-warning',
-      [EstadoProcesoPliego.PENDIENTE_APROBACION]: 'badge-warning',
-      [EstadoProcesoPliego.APROBADO]: 'badge-warning',
-      [EstadoProcesoPliego.PUBLICADO]: 'badge-success',
-      [EstadoProcesoPliego.CANCELADO]: 'badge-cancel'
+  obtenerClaseBadgeEstado(estado: EstadoPliego): string {
+    const clases: { [key in EstadoPliego]: string } = {
+      [EstadoPliego.PENDIENTE]: 'badge-info',
+      [EstadoPliego.ASIGNADO]: 'badge-info',
+      [EstadoPliego.EN_PROCESO]: 'badge-warning',
+      [EstadoPliego.PENDIENTE_VALIDACION]: 'badge-warning',
+      [EstadoPliego.PENDIENTE_APROBACION]: 'badge-warning',
+      [EstadoPliego.APROBADO]: 'badge-warning',
+      [EstadoPliego.PUBLICADO]: 'badge-success',
+      [EstadoPliego.CANCELADO]: 'badge-cancel'
     };
     return clases[estado];
   }

@@ -98,7 +98,7 @@ export class ModeloService {
       version: 1,
       secciones: crearSeccionesModeloMock(3),
       tiposCompra: [
-        crearTipoCompraMock('LA', 'LicitaciÃ³n Abreviada')
+        crearTipoCompraMock('LA', 'Licitación Abreviada')
       ],
       organismo: undefined,
       fechaCreacion: '2024-12-01',

@@ -1,4 +1,4 @@
-import { EstadoProcesoPliego } from '../../enum/estado-proceso-pliego.enum';
+import { EstadoPliego } from '../../enum/estado-pliego.enum';
 
 export class FiltroBandejaEntradaDTO {
   constructor(
@@ -8,7 +8,7 @@ export class FiltroBandejaEntradaDTO {
     public numeroCompra?: number,
     public anioCompra?: number,
     public tipoCompraId?: string,
-    public estado?: EstadoProcesoPliego,
+    public estado?: EstadoPliego,
     public soloPublicadosVigentes?: boolean
   ) {}
 }

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { PopupBaseComponent } from 'src/app/shared/components/popup-base/popup-base.component';
 import { TipoMensajeEnum } from 'src/app/shared/enum/tipo-mensaje.enum';
@@ -155,7 +155,7 @@ export class AgregarUsuarioPopupComponent extends PopupBaseComponent implements 
   }
 
   onSeleccionarUsuario(event: TypeaheadMatch): void {
-    if (event && event.item) {
+    if (event?.item) {
       this.usuarioSeleccionado = event.item;
     }
   }

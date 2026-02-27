@@ -10,11 +10,15 @@ import { CapituloClausulaDTO } from 'src/app/shared/models/pliego/capitulo/capit
 const crearClausulaMock = (
   id: number,
   denominacion: string,
+  obligatoria: boolean,
+  editable: boolean,
   version: number,
   estado: EstadoElemento = EstadoElemento.VIGENTE
 ): ClausulaDTO => ({
   id,
   denominacion,
+  obligatoria,
+  editable,
   tiposCompra: [],
   objetosCompra: [],
   estado,
@@ -35,9 +39,9 @@ export class CapituloService {
       estado: EstadoElemento.VIGENTE,
       version: 1,
       clausulas: [
-        { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento', 1) },
-        { Id: 2, orden: 2, clausula: crearClausulaMock(2, 'Cláusula de plazo de entrega', 1) },
-        { Id: 4, orden: 3, clausula: crearClausulaMock(4, 'Cláusula de penalidades', 2) }
+        { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento',true,true, 1) },
+        { Id: 2, orden: 2, clausula: crearClausulaMock(2, 'Cláusula de plazo de entrega',true,true, 1) },
+        { Id: 4, orden: 3, clausula: crearClausulaMock(4, 'Cláusula de penalidades',true,true, 2) }
       ],
       fechaCreacion: '2024-01-01',
       usuarioCreacion: 'admin',
@@ -52,7 +56,7 @@ export class CapituloService {
       estado: EstadoElemento.VIGENTE,
       version: 2,
       clausulas: [
-        { Id: 3, orden: 1, clausula: crearClausulaMock(3, 'Cláusula de calidad y especificaciones técnicas', 1) }
+        { Id: 3, orden: 1, clausula: crearClausulaMock(3, 'Cláusula de calidad y especificaciones técnicas',true,true, 1) }
       ],
       fechaCreacion: '2024-03-01',
       usuarioCreacion: 'admin',
@@ -67,7 +71,7 @@ export class CapituloService {
       estado: EstadoElemento.NO_VIGENTE,
       version: 1,
       clausulas: [
-        { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento', 1) }
+        { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento',true,true, 1) }
       ],
       fechaCreacion: '2023-01-01',
       usuarioCreacion: 'admin',
@@ -82,8 +86,8 @@ export class CapituloService {
       estado: EstadoElemento.VIGENTE,
       version: 1,
       clausulas: [
-        { Id: 2, orden: 1, clausula: crearClausulaMock(2, 'Cláusula de plazo de entrega', 1) },
-        { Id: 3, orden: 2, clausula: crearClausulaMock(3, 'Cláusula de calidad y especificaciones técnicas', 1) }
+        { Id: 2, orden: 1, clausula: crearClausulaMock(2, 'Cláusula de plazo de entrega',true,true, 1) },
+        { Id: 3, orden: 2, clausula: crearClausulaMock(3, 'Cláusula de calidad y especificaciones técnicas',true,true, 1) }
       ],
       fechaCreacion: '2024-06-01',
       usuarioCreacion: 'admin',
@@ -148,7 +152,8 @@ export class CapituloService {
       ...capitulo,
       id: nuevoId,
       estado: EstadoElemento.BORRADOR,
-      version: 1,
+      version: 1,
+
       fechaCreacion: new Date().toISOString().split('T')[0],
       usuarioCreacion: 'usuario_actual',
       fechaModificacion: null,
@@ -180,7 +185,8 @@ export class CapituloService {
 
       const versionAprobada = {
         ...capituloActual,
-        estado: EstadoElemento.VIGENTE,
+        estado: EstadoElemento.VIGENTE,
+
         version: (capituloActual.version || 1),
         fechaModificacion: new Date().toISOString().split('T')[0],
         usuarioModificacion: 'usuario_actual'
@@ -192,7 +198,8 @@ export class CapituloService {
         ...versionAprobada,
         id: nuevoId,
         estado: EstadoElemento.BORRADOR,
-        version: (versionAprobada.version || 1) + 1,
+        version: (versionAprobada.version || 1) + 1,
+
         fechaVigenciaDesde: '',
         fechaVigenciaHasta: null,
         fechaCreacion: new Date().toISOString().split('T')[0],
@@ -281,7 +288,7 @@ export class CapituloService {
         estado: EstadoElemento.VIGENTE,
         version: 3,
         clausulas: [
-          { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento', 1) }
+          { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento',true,true, 1) }
         ],
         fechaCreacion: '2024-10-15',
         usuarioCreacion: 'admin',
@@ -296,7 +303,7 @@ export class CapituloService {
         estado: EstadoElemento.NO_VIGENTE,
         version: 2,
         clausulas: [
-          { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento', 1) }
+          { Id: 1, orden: 1, clausula: crearClausulaMock(1, 'Cláusula de garantía de cumplimiento',true,true, 1) }
         ],
         fechaCreacion: '2023-06-01',
         usuarioCreacion: 'admin',

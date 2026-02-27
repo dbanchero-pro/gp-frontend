@@ -53,6 +53,7 @@ import { ProveedorPipe } from './pipes/proveedor.pipe';
 import { SiNoValorPipe } from './pipes/si-no-valor.pipe';
 import { UnidadCompraResumenPipe } from './pipes/unidad-compra-resumen.pipe';
 import { UtilService } from './services/common/util.service';
+import { NumeroCompraPipe } from './pipes/nro-compra-pipe';
 
 defineLocale('es', esLocale);
 const configEditor = {
@@ -117,6 +118,7 @@ const configEditor = {
         SoloNumerosDirective,
         UnidadCompraResumenPipe,
         IdUsuarioPipe,
+        NumeroCompraPipe,
         IdProveedorPipe,
         InputDocumentoComponent,
         DocumentoProveedorPipe,
@@ -159,6 +161,7 @@ const configEditor = {
         RangoFechasComponent,
         FechaHoraPipe,
         FechaPipe,
+        NumeroCompraPipe,
         HtmlSeguroPipe,
         CapitalizarPrimerLetraPipe,
         DoubleScrollComponent,

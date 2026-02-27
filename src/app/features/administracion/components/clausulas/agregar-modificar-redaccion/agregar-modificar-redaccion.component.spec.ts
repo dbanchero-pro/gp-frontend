@@ -12,7 +12,6 @@ import { AgregarModificarRedaccionComponent } from './agregar-modificar-redaccio
 @Component({
   selector: 'app-text-editor',
   template: '',
-  standalone: false,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

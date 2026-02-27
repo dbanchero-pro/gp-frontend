@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { EstadoProcesoPliego } from '../../enum/estado-proceso-pliego.enum';
+import { EstadoPliego } from '../../enum/estado-pliego.enum';
 import { BandejaEntradaService } from '../../services/bandeja-entrada.service';
 import { IncisoDTO } from '../../../../shared/models/sice/inciso.model';
 import { UnidadEjecutoraDTO } from '../../../../shared/models/sice/unidad-ejecutora.model';
@@ -68,13 +68,13 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
   ];
 
   estados = [
-    { valor: EstadoProcesoPliego.PENDIENTE, nombre: 'Pendiente' },
-    { valor: EstadoProcesoPliego.ASIGNADO, nombre: 'Asignado' },
-    { valor: EstadoProcesoPliego.EN_PROCESO, nombre: 'En proceso' },
-    { valor: EstadoProcesoPliego.PENDIENTE_VALIDACION, nombre: 'Pendiente validación' },
-    { valor: EstadoProcesoPliego.PENDIENTE_APROBACION, nombre: 'Pendiente aprobación' },
-    { valor: EstadoProcesoPliego.APROBADO, nombre: 'Aprobado' },
-    { valor: EstadoProcesoPliego.CANCELADO, nombre: 'Publicado (vigente)' }
+    { valor: EstadoPliego.PENDIENTE, nombre: 'Pendiente' },
+    { valor: EstadoPliego.ASIGNADO, nombre: 'Asignado' },
+    { valor: EstadoPliego.EN_PROCESO, nombre: 'En proceso' },
+    { valor: EstadoPliego.PENDIENTE_VALIDACION, nombre: 'Pendiente validación' },
+    { valor: EstadoPliego.PENDIENTE_APROBACION, nombre: 'Pendiente aprobación' },
+    { valor: EstadoPliego.APROBADO, nombre: 'Aprobado' },
+    { valor: EstadoPliego.CANCELADO, nombre: 'Publicado (vigente)' }
   ];
 
   constructor() {
@@ -180,7 +180,7 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
     const acciones: AccionBoton[] = [];
 
     switch (proceso.estado) {
-      case EstadoProcesoPliego.PENDIENTE:
+      case EstadoPliego.PENDIENTE:
         acciones.push({
           nombre: 'Asignar',
           clase: 'btn btn-success btn-ancho-fijo',
@@ -190,7 +190,7 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
         });
         break;
 
-      case EstadoProcesoPliego.ASIGNADO:
+      case EstadoPliego.ASIGNADO:
         acciones.push({
           nombre: 'Iniciar',
           clase: 'btn btn-success btn-ancho-fijo',
@@ -207,7 +207,7 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
         });
         break;
 
-      case EstadoProcesoPliego.EN_PROCESO:
+      case EstadoPliego.EN_PROCESO:
         acciones.push({
           nombre: 'Elaborar',
           clase: 'btn btn-success btn-ancho-fijo',
@@ -224,7 +224,7 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
         });
         break;
 
-      case EstadoProcesoPliego.PENDIENTE_VALIDACION:
+      case EstadoPliego.PENDIENTE_VALIDACION:
         acciones.push({
           nombre: 'Validar',
           clase: 'btn btn-success btn-ancho-fijo',
@@ -241,7 +241,7 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
         });
         break;
 
-      case EstadoProcesoPliego.PENDIENTE_APROBACION:
+      case EstadoPliego.PENDIENTE_APROBACION:
         acciones.push({
           nombre: 'Aprobar',
           clase: 'btn btn-success btn-ancho-fijo',
@@ -258,7 +258,7 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
         });
         break;
 
-      case EstadoProcesoPliego.APROBADO:
+      case EstadoPliego.APROBADO:
         acciones.push({
           nombre: 'Cancelar',
           clase: 'btn btn-success btn-ancho-fijo',
@@ -268,7 +268,7 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
         });
         break;
 
-      case EstadoProcesoPliego.PUBLICADO:
+      case EstadoPliego.PUBLICADO:
         if (this.esPublicadoVigente(proceso)) {
           acciones.push({
             nombre: 'Modificar',
@@ -358,16 +358,16 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
     return `${proceso.numeroCompra}/${proceso.anioCompra}`;
   }
 
-  obtenerClaseBadgeEstado(estado: EstadoProcesoPliego): string {
-    const clases: { [key in EstadoProcesoPliego]: string } = {
-      [EstadoProcesoPliego.PENDIENTE]: 'badge-info',
-      [EstadoProcesoPliego.ASIGNADO]: 'badge-info',
-      [EstadoProcesoPliego.EN_PROCESO]: 'badge-warning',
-      [EstadoProcesoPliego.PENDIENTE_VALIDACION]: 'badge-warning',
-      [EstadoProcesoPliego.PENDIENTE_APROBACION]: 'badge-warning',
-      [EstadoProcesoPliego.APROBADO]: 'badge-warning',
-      [EstadoProcesoPliego.PUBLICADO]: 'badge-success',
-      [EstadoProcesoPliego.CANCELADO]: 'badge-cancel'
+  obtenerClaseBadgeEstado(estado: EstadoPliego): string {
+    const clases: { [key in EstadoPliego]: string } = {
+      [EstadoPliego.PENDIENTE]: 'badge-info',
+      [EstadoPliego.ASIGNADO]: 'badge-info',
+      [EstadoPliego.EN_PROCESO]: 'badge-warning',
+      [EstadoPliego.PENDIENTE_VALIDACION]: 'badge-warning',
+      [EstadoPliego.PENDIENTE_APROBACION]: 'badge-warning',
+      [EstadoPliego.APROBADO]: 'badge-warning',
+      [EstadoPliego.PUBLICADO]: 'badge-success',
+      [EstadoPliego.CANCELADO]: 'badge-cancel'
     };
     return clases[estado];
   }
@@ -378,7 +378,7 @@ export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBande
   }
 
   private esPublicadoVigente(proceso: PliegoDTO): boolean {
-    if (proceso.estado !== EstadoProcesoPliego.PUBLICADO || !proceso.fechaTopeRecepcionOfertas) {
+    if (proceso.estado !== EstadoPliego.PUBLICADO || !proceso.fechaTopeRecepcionOfertas) {
       return false;
     }
     return new Date(proceso.fechaTopeRecepcionOfertas) >= new Date();

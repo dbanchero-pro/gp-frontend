@@ -4,7 +4,6 @@ import { By } from '@angular/platform-browser';
 import { AppTabDirective, TabsComponent } from './tabs.component';
 
 @Component({
-  standalone: false,
   template: `
     <app-tabs [(selectedIndex)]="seleccionado">
       <ng-template appTab="Uno">Contenido 1</ng-template>

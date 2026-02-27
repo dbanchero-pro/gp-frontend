@@ -82,6 +82,8 @@ export class ClausulaService {
       id: 100,
       denominacion: 'Cláusula vacía',
       aperturaElectronica: false,
+      obligatoria: true,
+      editable: true,
       tiposCompra: [
         crearTipoCompraMock('1', 'Licitación Pública', '1', 'Común')
       ],
@@ -97,7 +99,7 @@ export class ClausulaService {
         {
           id: 1001,
           prioridad: 1,
-          redaccion: '<p>RedacciÃ³n inicial de referencia para validar render de listas.</p>',
+          redaccion: '<p>Redacción inicial de referencia para validar render de listas.</p>',
           fechaCreacion: '2023-01-01',
           usuarioCreacion: 'admin',
           fechaModificacion: null,
@@ -113,6 +115,8 @@ export class ClausulaService {
       id: 1,
       denominacion: 'Cláusula de garantía de cumplimiento',
       aperturaElectronica: true,
+      obligatoria: true,
+      editable: true,
       tiposCompra: [
         crearTipoCompraMock('1', 'Licitación Pública', '1', 'Nacional'),
         crearTipoCompraMock('1', 'Licitación Pública', '2', 'Internacional')
@@ -145,6 +149,8 @@ export class ClausulaService {
       id: 2,
       denominacion: 'Cláusula de plazo de entrega',
       aperturaElectronica: true,
+      obligatoria: true,
+      editable: true,
       tiposCompra: [
         crearTipoCompraMock('2', 'Contratación Directa', '3', 'Por excepción')
       ],
@@ -185,6 +191,8 @@ export class ClausulaService {
       id: 3,
       denominacion: 'Cláusula de calidad y especificaciones técnicas',
       aperturaElectronica: false,
+      obligatoria: true,
+      editable: true,
       tiposCompra: [
         crearTipoCompraMock('1', 'Licitación Pública', '1', 'Nacional')
       ],
@@ -216,6 +224,8 @@ export class ClausulaService {
       id: 4,
       denominacion: 'Cláusula de penalidades',
       aperturaElectronica: true,
+      obligatoria: true,
+      editable: true,
       tiposCompra: [
         crearTipoCompraMock('1', 'Licitación Pública', '1', 'Nacional'),
         crearTipoCompraMock('1', 'Licitación Pública', '2', 'Internacional'),
@@ -416,7 +426,8 @@ export class ClausulaService {
       ...clausula,
       id: nuevoId,
       estado: EstadoElemento.BORRADOR,
-      version: 1,
+      version: 1,
+
       fechaCreacion: new Date().toISOString().split('T')[0],
       usuarioCreacion: 'usuario_actual',
       fechaModificacion: null,
@@ -448,7 +459,8 @@ export class ClausulaService {
 
       const versionAprobada = {
         ...clausulaActual,
-        estado: EstadoElemento.VIGENTE,
+        estado: EstadoElemento.VIGENTE,
+
         version: (clausulaActual.version || 1),
         fechaModificacion: new Date().toISOString().split('T')[0],
         usuarioModificacion: 'usuario_actual'
@@ -460,7 +472,8 @@ export class ClausulaService {
         ...versionAprobada,
         id: nuevoId,
         estado: EstadoElemento.BORRADOR,
-        version: (versionAprobada.version || 1) + 1,
+        version: (versionAprobada.version || 1) + 1,
+
         fechaVigenciaDesde: '',
         fechaVigenciaHasta: null,
         fechaCreacion: new Date().toISOString().split('T')[0],
@@ -552,6 +565,8 @@ export class ClausulaService {
         id: 101,
         denominacion: 'Cláusula vacía',
         aperturaElectronica: true,
+        obligatoria: true,
+        editable: true,
         tiposCompra: [
           crearTipoCompraMock('1', 'Licitación Pública', '1', 'Nacional')
         ],
@@ -567,7 +582,7 @@ export class ClausulaService {
           {
             id: 2101,
             prioridad: 1,
-            redaccion: '<p>VersiÃ³n aprobada sin cambios sustantivos.</p>',
+            redaccion: '<p>Versión aprobada sin cambios sustantivos.</p>',
             fechaCreacion: '2024-10-15',
             usuarioCreacion: 'admin',
             fechaModificacion: null,
@@ -583,6 +598,8 @@ export class ClausulaService {
         id: 102,
         denominacion: 'Cláusula de garantía de cumplimiento',
         aperturaElectronica: true,
+        obligatoria: true,
+        editable: true,
         tiposCompra: [
           crearTipoCompraMock('1', 'Licitación Pública', '1', 'Nacional')
         ],
@@ -614,6 +631,8 @@ export class ClausulaService {
         id: 103,
         denominacion: 'Cláusula de garantía de cumplimiento',
         aperturaElectronica: false,
+        obligatoria: true,
+        editable: true,
         tiposCompra: [
           crearTipoCompraMock('1', 'Licitación Pública', '1', 'Nacional')
         ],
@@ -679,7 +698,7 @@ export class ClausulaService {
             estado: EstadoElemento.VIGENTE
           }
         } as any],
-        tiposCompra: [crearTipoCompraMock('1', 'LicitaciÃ³n PÃºblica', '1', 'Nacional')],
+        tiposCompra: [crearTipoCompraMock('1', 'Licitación PÃºblica', '1', 'Nacional')],
         organismo: undefined,
         fechaCreacion: '2024-01-01',
         usuarioCreacion: 'admin',
@@ -704,7 +723,7 @@ export class ClausulaService {
             estado: EstadoElemento.VIGENTE
           }
         } as any],
-        tiposCompra: [crearTipoCompraMock('2', 'ContrataciÃ³n Directa', '3', 'Por excepciÃ³n')],
+        tiposCompra: [crearTipoCompraMock('2', 'Contratación Directa', '3', 'Por excepción')],
         organismo: undefined,
         fechaCreacion: '2024-06-01',
         usuarioCreacion: 'admin',
@@ -729,7 +748,7 @@ export class ClausulaService {
             estado: EstadoElemento.BORRADOR
           }
         } as any],
-        tiposCompra: [crearTipoCompraMock('3', 'LicitaciÃ³n Abreviada')],
+        tiposCompra: [crearTipoCompraMock('3', 'Licitación Abreviada')],
         organismo: undefined,
         fechaCreacion: '2025-01-01',
         usuarioCreacion: 'admin',

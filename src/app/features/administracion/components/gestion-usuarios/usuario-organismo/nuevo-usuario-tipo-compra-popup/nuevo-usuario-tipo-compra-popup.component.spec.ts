@@ -12,7 +12,6 @@ import { NuevoUsuarioTipoCompraPopupComponent } from './nuevo-usuario-tipo-compr
 @Component({
     selector: 'app-input-documento',
     template: '',
-    standalone: false,
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,

@@ -63,7 +63,6 @@ describe('CustomDateValidators', () => {
 import { Component } from '@angular/core';
 
 @Component({
-    template: '',
-    standalone: false
+    template: ''
 })
 class DummyComponent {}
