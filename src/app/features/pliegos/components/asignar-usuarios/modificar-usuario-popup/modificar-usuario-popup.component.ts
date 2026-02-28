@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PopupBaseComponent } from 'src/app/shared/components/popup-base/popup-base.component';
-import { TipoMensajeEnum } from 'src/app/shared/enum/tipo-mensaje.enum';
 import { UsuarioAsignadoDTO } from '../../../models/usuario-asignado.model';
 
 @Component({

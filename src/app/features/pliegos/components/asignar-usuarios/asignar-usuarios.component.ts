@@ -91,7 +91,7 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
       return;
     }
 
-    this.bandejaEntradaService.obtenerUsuariosAsignadosPorProceso(this.proceso.id).subscribe({
+    this.bandejaEntradaService.obtenerUsuariosAsignadosPorPliego(this.proceso.id).subscribe({
       next: (usuarios: UsuarioAsignadoDTO[]) => {
         this.usuariosAsignados = usuarios;
       },

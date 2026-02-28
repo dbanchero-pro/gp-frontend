@@ -383,7 +383,7 @@ export class BandejaEntradaService {
     new TipoCompraDTO('3', 'Licitacion Abreviada')
   ];
 
-  obtenerUsuariosAsignadosPorProceso(_procesoId: number): Observable<UsuarioAsignadoDTO[]> {
+  obtenerUsuariosAsignadosPorPliego(_procesoId: number): Observable<UsuarioAsignadoDTO[]> {
     return of([...USUARIOS_ASIGNADOS_MOCK]).pipe(delay(300));
   }
 

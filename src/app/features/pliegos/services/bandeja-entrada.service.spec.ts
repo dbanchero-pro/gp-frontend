@@ -65,7 +65,7 @@ describe('BandejaEntradaService', () => {
   it('obtiene usuarios asignados mock por proceso', fakeAsync(() => {
     let usuarios: any[] = [];
 
-    service.obtenerUsuariosAsignadosPorProceso(1).subscribe(resp => {
+    service.obtenerUsuariosAsignadosPorPliego(1).subscribe(resp => {
       usuarios = resp;
     });
     tick(300);

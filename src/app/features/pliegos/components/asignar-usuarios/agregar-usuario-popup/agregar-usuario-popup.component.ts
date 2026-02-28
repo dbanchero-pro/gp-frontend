@@ -8,11 +8,9 @@ import { TipoMensajeEnum } from 'src/app/shared/enum/tipo-mensaje.enum';
 import { UsuarioAsignadoDTO } from '../../../models/usuario-asignado.model';
 import { UsuarioBusquedaDTO } from '../../../models/usuario-busqueda.model';
 import { BandejaEntradaService } from '../../../services/bandeja-entrada.service';
+import { TipoBusquedaUsuario } from '../../../enum/tipo-busqueda-usuario.enum';
 
-enum TipoBusquedaUsuario {
-  CI = 'CI',
-  NOMBRE = 'NOMBRE'
-}
+
 
 @Component({
   selector: 'app-agregar-usuario-popup',
