@@ -21,12 +21,17 @@ import { ClausulaDTO } from 'src/app/shared/models/pliego/clausula/clausula.mode
 import { RedaccionDTO } from '../../../../../shared/models/pliego/clausula/redaccion.model';
 import { CapituloClausulaDTO } from 'src/app/shared/models/pliego/capitulo/capitulo-clausula.model';
 import { FiltroClausula } from '../../../models/filtros/filtro-clausula.model';
-import { ClausulaService } from '../../../services/clausula.service';
+import { ClausulaService } from '../../../services/clausula.service';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-consulta-clausulas',
   templateUrl: './consulta-clausulas.component.html',
   styleUrls: ['./consulta-clausulas.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class ConsultaClausulasComponent implements OnInit, AfterViewInit {
   private fb = inject(FormBuilder);

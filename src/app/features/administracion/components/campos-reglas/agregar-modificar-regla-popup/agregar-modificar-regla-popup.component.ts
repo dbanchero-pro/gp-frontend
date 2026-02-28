@@ -8,12 +8,17 @@ import { TipoDatoCampo } from '../../../enums/tipo-dato-campo.enum';
 import { TipoRegla } from '../../../enums/tipo-regla.enum';
 import { IReglaDTO, ReglaDTO } from '../../../models/regla.model';
 import { OperadorHelperService } from '../../../services/operador-helper.service';
-import { CampoService } from '../../../services/campo.service';
+import { CampoService } from '../../../services/campo.service';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-agregar-modificar-regla-popup',
   templateUrl: './agregar-modificar-regla-popup.component.html',
   styleUrls: ['./agregar-modificar-regla-popup.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class AgregarModificarReglaPopupComponent extends PopupBaseComponent implements OnInit {
   private readonly fb = inject(FormBuilder);

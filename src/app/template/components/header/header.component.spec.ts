@@ -12,8 +12,10 @@ describe("HeaderComponent", () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             // componentes
-            declarations: [HeaderComponent],
-            imports: [],
+            declarations: [],
+            imports: [
+              HeaderComponent,
+            ],
             providers: [AuthRawService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
         })
             .compileComponents();

@@ -2,12 +2,17 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { EstadoPliego } from '../../enum/estado-pliego.enum';
-import { PliegoDTO } from '../../models/pliego.model';
+import { PliegoDTO } from '../../models/pliego.model';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-cancelar-pliego-popup',
   templateUrl: './cancelar-pliego-popup.component.html',
   styleUrl: './cancelar-pliego-popup.component.scss',
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class CancelarPliegoPopupComponent implements OnInit {
   private readonly fb = inject(FormBuilder);

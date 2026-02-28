@@ -93,8 +93,11 @@ describe('MenuComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [MenuComponent],
-            imports: [RouterTestingModule],
+            declarations: [],
+            imports: [
+              RouterTestingModule,
+              MenuComponent,
+            ],
             providers: [
                 MenuService,
                 { provide: AuthRawService, useClass: AuthRawServiceMock },

@@ -16,12 +16,17 @@ import { TipoRegla } from '../../../enums/tipo-regla.enum';
 import { FiltroCampoDTO } from '../../../models/filtros/filtro-campo.model';
 import { IReglaDTO } from '../../../models/regla.model';
 import { CampoService } from '../../../services/campo.service';
-import { OperadorHelperService } from '../../../services/operador-helper.service';
+import { OperadorHelperService } from '../../../services/operador-helper.service';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-consulta-campos-reglas',
   templateUrl: './consulta-campos-reglas.component.html',
   styleUrls: ['./consulta-campos-reglas.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class ConsultaCamposReglasComponent extends PaginaBusquedaComponent<FiltroCampoDTO> implements OnInit, AfterViewInit {
 

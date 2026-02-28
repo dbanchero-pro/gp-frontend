@@ -1,13 +1,44 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AccionBoton } from '../../models/common/accion-boton.model';
 import { SeguridadService } from '../../services/common/seguridad.service';
-import { uuidv4 } from '../../utils/functions';
+import { uuidv4 } from '../../utils/functions';import { CommonModule } from '@angular/common';import { FormsModule, ReactiveFormsModule } from '@angular/forms';import { AlertModule } from 'ngx-bootstrap/alert';import { BsDropdownModule } from 'ngx-bootstrap/dropdown';import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';import { ModalModule } from 'ngx-bootstrap/modal';import { PaginationModule } from 'ngx-bootstrap/pagination';import { TabsModule } from 'ngx-bootstrap/tabs';import { TooltipModule } from 'ngx-bootstrap/tooltip';import { TypeaheadModule } from 'ngx-bootstrap/typeahead';import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';import { NgxEditorModule } from 'ngx-editor';import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @Component({
     selector: 'app-boton-accion',
     templateUrl: './boton-accion.component.html',
     styleUrls: ['./boton-accion.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    AlertModule,
+    BsDropdownModule,
+    BsDatepickerModule,
+    ModalModule,
+    PaginationModule,
+    TabsModule,
+    TooltipModule,
+    TypeaheadModule,
+    NgxDaterangepickerBootstrapModule,
+    NgxEditorModule,
+    NgxDatatableModule
+  ],
 })
 
 export class BotonAccionComponent implements OnChanges, OnInit {

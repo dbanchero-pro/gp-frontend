@@ -1,12 +1,25 @@
 import { Component, EventEmitter, forwardRef, Injector, Input, OnChanges, OnInit, Output, SimpleChanges, } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR, NgControl, ValidationErrors, Validator, Validators, } from '@angular/forms';
+import { AbstractControl, ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR, NgControl, ValidationErrors, Validator, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { IFiltroOrganismoDTO } from '../../models/filtros/filtro-organismo.model';
 import { IIncisoDTO } from '../../models/sice/inciso.model';
 import { UnidadCompraDTO } from '../../models/sice/unidad-compra.model';
 import { UnidadEjecutoraDTO } from '../../models/sice/unidad-ejecutora.model';
 import { OrganismoService } from '../../services/organismo.service';
-import { NumeroNulo } from '../../types/numero-nulo.type';
+import { NumeroNulo } from '../../types/numero-nulo.type';import { CommonModule } from '@angular/common';import { RouterModule } from '@angular/router';import { AlertModule } from 'ngx-bootstrap/alert';import { BsDropdownModule } from 'ngx-bootstrap/dropdown';import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';import { ModalModule } from 'ngx-bootstrap/modal';import { PaginationModule } from 'ngx-bootstrap/pagination';import { TabsModule } from 'ngx-bootstrap/tabs';import { TooltipModule } from 'ngx-bootstrap/tooltip';import { TypeaheadModule } from 'ngx-bootstrap/typeahead';import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';import { NgxEditorModule } from 'ngx-editor';import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @Component({
     selector: 'app-filtro-organismo',
@@ -24,6 +37,24 @@ import { NumeroNulo } from '../../types/numero-nulo.type';
             multi: true,
         },
     ],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    AlertModule,
+    BsDropdownModule,
+    BsDatepickerModule,
+    ModalModule,
+    PaginationModule,
+    TabsModule,
+    TooltipModule,
+    TypeaheadModule,
+    NgxDaterangepickerBootstrapModule,
+    NgxEditorModule,
+    NgxDatatableModule
+  ],
 })
 
 

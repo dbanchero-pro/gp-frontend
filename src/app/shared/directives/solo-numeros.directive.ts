@@ -1,7 +1,9 @@
 import { Directive, HostListener } from '@angular/core';
 
 @Directive({
-    selector: '[soloNumeros]'
+    
+    standalone: true,
+selector: '[soloNumeros]'
 })
 export class SoloNumerosDirective {
     @HostListener('keypress', ['$event'])

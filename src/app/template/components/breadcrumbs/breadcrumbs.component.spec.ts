@@ -37,7 +37,7 @@ describe("BreadcrumbsComponent", () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [BreadcrumbsComponent],
+            declarations: [],
             providers: [
                 { provide: ActivatedRoute, useClass: ActivatedRouteStub },
                 { provide: MenuService, useClass: MenuServiceMock },
@@ -50,7 +50,10 @@ describe("BreadcrumbsComponent", () => {
                         navigate: jasmine.createSpy("navigate")
                     }
                 }
-            ]
+            ],
+          imports: [
+            BreadcrumbsComponent,
+          ],
         }).compileComponents();
     });
 

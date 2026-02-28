@@ -30,8 +30,11 @@ describe("AlertDialogComponent", () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [AlertDialogComponent],
-            imports: [AlertModule],
+            declarations: [],
+            imports: [
+              AlertModule,
+              AlertDialogComponent,
+            ],
             providers: [
                 { provide: BsModalService, useClass: StubbedModalService },
                 { provide: ActualizarService, useClass: StubbedActualizarService },

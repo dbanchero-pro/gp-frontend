@@ -41,8 +41,11 @@ describe('ConsultaModelosComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ConsultaModelosComponent],
-      imports: [ReactiveFormsModule],
+      declarations: [],
+      imports: [
+        ReactiveFormsModule,
+        ConsultaModelosComponent,
+      ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteStub },
         { provide: Router, useValue: routerStub },

@@ -3,11 +3,26 @@ import { TipoMensajeEnum } from "../../enum/tipo-mensaje.enum";
 import { ErrorInterceptor } from "../../interceptors/error.interceptor";
 import { IColumnaOrden } from "../../models/common/columna-orden.model";
 import { volverConConfirmacion } from "../../utils/functions";
-import { PaginaBusquedaComponent } from "../pagina-busqueda/pagina-busqueda.component";
+import { PaginaBusquedaComponent } from "../pagina-busqueda/pagina-busqueda.component";import { CommonModule } from '@angular/common';import { FormsModule, ReactiveFormsModule } from '@angular/forms';import { RouterModule } from '@angular/router';import { AlertModule } from 'ngx-bootstrap/alert';import { BsDropdownModule } from 'ngx-bootstrap/dropdown';import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';import { ModalModule } from 'ngx-bootstrap/modal';import { PaginationModule } from 'ngx-bootstrap/pagination';import { TabsModule } from 'ngx-bootstrap/tabs';import { TooltipModule } from 'ngx-bootstrap/tooltip';import { TypeaheadModule } from 'ngx-bootstrap/typeahead';import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';import { NgxEditorModule } from 'ngx-editor';import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @Directive({
     selector: '[appPopupBase]',
 
+    standalone: true,
 })
 export abstract class PopupBaseComponent extends PaginaBusquedaComponent<any> implements AfterViewInit, OnDestroy {
     @ViewChild('modalRoot', { static: false }) modalRoot!: ElementRef<HTMLElement>;

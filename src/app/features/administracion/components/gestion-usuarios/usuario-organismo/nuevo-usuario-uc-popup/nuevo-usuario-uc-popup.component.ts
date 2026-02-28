@@ -3,12 +3,17 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { PopupBaseComponent } from 'src/app/shared/components/popup-base/popup-base.component';
 import { TipoPerfil } from 'src/app/shared/enum/tipo-perfil.enum';
 import { UsuarioOrganismoDTO } from 'src/app/shared/models/usuario/usuario-organismo.model';
-import { UsuarioOrganismoService } from 'src/app/shared/services/usuario/usuario-organismo.service';
+import { UsuarioOrganismoService } from 'src/app/shared/services/usuario/usuario-organismo.service';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
     selector: 'app-nuevo-usuario-uc-popup',
     templateUrl: './nuevo-usuario-uc-popup.component.html',
     styleUrls: ['./nuevo-usuario-uc-popup.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class NuevoUsuarioUcPopupComponent
     extends PopupBaseComponent

@@ -25,12 +25,17 @@ import { NuevoUsuarioPopupComponent } from '../nuevo-usuario-popup/nuevo-usuario
 import { NuevoUsuarioUcPopupComponent } from '../nuevo-usuario-uc-popup/nuevo-usuario-uc-popup.component';
 import { UnidadesCompraSicePopupComponent } from '../unidades-compra-sice-popup/unidades-compra-sice-popup.component';
 import { IConsultaUsuarioOrganismoPerfilFiltroDTO } from 'src/app/features/administracion/models/filtros/consulta-usuario-organismo-perfil-filtro.model';
-import { UsuarioPermisoAgrupadoDTO } from 'src/app/features/administracion/models/usuario-permiso-agrupado.model';
+import { UsuarioPermisoAgrupadoDTO } from 'src/app/features/administracion/models/usuario-permiso-agrupado.model';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
     selector: 'app-consulta-usuarios-conformidad',
     templateUrl: './consulta-usuarios-conformidad.component.html',
     styleUrls: ['./consulta-usuarios-conformidad.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class ConsultaUsuariosConformidadComponent
     extends PaginaBusquedaComponent<IConsultaUsuarioOrganismoPerfilFiltroDTO>

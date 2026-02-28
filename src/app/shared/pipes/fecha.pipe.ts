@@ -2,7 +2,9 @@ import { DatePipe } from "@angular/common";
 import { Pipe } from "@angular/core";
 
 @Pipe({
-  name: 'fechaPipe', pure: false
+  
+    standalone: true,
+name: 'fechaPipe', pure: false
 })
 export class FechaPipe extends DatePipe {
   format: string | undefined;

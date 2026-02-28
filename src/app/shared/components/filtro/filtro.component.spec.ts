@@ -11,9 +11,11 @@ describe('FilterComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             // componentes
-            declarations: [FiltroComponent],
+            declarations: [],
             // modulos
-            imports: [],
+            imports: [
+              FiltroComponent,
+            ],
             // servicios
             providers: [
                 provideHttpClientTesting(),

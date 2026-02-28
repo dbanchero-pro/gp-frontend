@@ -66,8 +66,12 @@ describe('AgregarModificarRedaccionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AgregarModificarRedaccionComponent, MockTextEditorComponent],
-      imports: [ReactiveFormsModule],
+      declarations: [],
+      imports: [
+        ReactiveFormsModule,
+        AgregarModificarRedaccionComponent,
+        MockTextEditorComponent,
+      ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteStub },
         { provide: Router, useValue: routerStub },

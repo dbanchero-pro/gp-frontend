@@ -5,12 +5,17 @@ import { IColumnaOrden } from 'src/app/shared/models/common/columna-orden.model'
 import { UnidadCompraDTO } from 'src/app/shared/models/sice/unidad-compra.model';
 import { UsuarioOrganismoDTO } from 'src/app/shared/models/usuario/usuario-organismo.model';
 import { OrganismoService } from 'src/app/shared/services/organismo.service';
-import { ordenarMultipleYPaginar } from 'src/app/shared/utils/paginador';
+import { ordenarMultipleYPaginar } from 'src/app/shared/utils/paginador';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
     selector: 'app-unidades-compra-sice-popup',
     templateUrl: './unidades-compra-sice-popup.component.html',
     styleUrls: ['./unidades-compra-sice-popup.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class UnidadesCompraSicePopupComponent extends PopupBaseComponent implements OnInit {
     @Output() guardarEvento = new EventEmitter<{ idUsuario: string }>();

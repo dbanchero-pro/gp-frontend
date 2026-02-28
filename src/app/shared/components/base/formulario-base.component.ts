@@ -1,8 +1,20 @@
 import { Directive, inject } from "@angular/core";
-import { FormGroup } from "@angular/forms";
-import { BsModalService, ModalOptions } from "ngx-bootstrap/modal";
+import { FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { BsModalService, ModalOptions, ModalModule } from "ngx-bootstrap/modal";
 import { ActualizarService } from "../../services/common/actualizar.service";
-import { campoVacio as campoVacioFn } from "../../utils/functions";
+import { campoVacio as campoVacioFn } from "../../utils/functions";import { CommonModule } from '@angular/common';import { RouterModule } from '@angular/router';import { AlertModule } from 'ngx-bootstrap/alert';import { BsDropdownModule } from 'ngx-bootstrap/dropdown';import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';import { PaginationModule } from 'ngx-bootstrap/pagination';import { TabsModule } from 'ngx-bootstrap/tabs';import { TooltipModule } from 'ngx-bootstrap/tooltip';import { TypeaheadModule } from 'ngx-bootstrap/typeahead';import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';import { NgxEditorModule } from 'ngx-editor';import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
+
+
+
+
+
+
+
+
+
+
+
 
 @Directive()
 export abstract class FormularioBaseComponent {

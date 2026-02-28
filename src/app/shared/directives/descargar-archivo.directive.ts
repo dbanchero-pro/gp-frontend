@@ -4,7 +4,9 @@ import { firstValueFrom } from "rxjs";
 
 
 @Directive({
-    selector: "[descargarArchivo]"
+    
+    standalone: true,
+selector: "[descargarArchivo]"
 })
 export class DescargarArchivoDirective {
     constructor(private readonly httpClient: HttpClient) { }

@@ -57,21 +57,20 @@ function initializeKeycloak(
 }
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HeaderComponent,
-        FooterComponent,
-        MenuComponent,
-        BreadcrumbsComponent,
-        PageComponent,
-        HomeComponent,
-    ],
+    declarations: [],
     imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        SharedModule,
-        AppRoutingModule,
-        KeycloakAngularModule, //NOSONAR
+      BrowserModule,
+      BrowserAnimationsModule,
+      SharedModule,
+      AppRoutingModule,
+      KeycloakAngularModule,
+      AppComponent,
+      HeaderComponent,
+      FooterComponent,
+      MenuComponent,
+      BreadcrumbsComponent,
+      PageComponent,
+      HomeComponent,
     ],
 
     providers: [

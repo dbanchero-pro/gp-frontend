@@ -8,8 +8,20 @@ import {
     forwardRef,
     OnDestroy
 } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Editor, Toolbar, Validators, schema } from 'ngx-editor';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Editor, Toolbar, Validators, schema, NgxEditorModule } from 'ngx-editor';import { CommonModule } from '@angular/common';import { RouterModule } from '@angular/router';import { AlertModule } from 'ngx-bootstrap/alert';import { BsDropdownModule } from 'ngx-bootstrap/dropdown';import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';import { ModalModule } from 'ngx-bootstrap/modal';import { PaginationModule } from 'ngx-bootstrap/pagination';import { TabsModule } from 'ngx-bootstrap/tabs';import { TooltipModule } from 'ngx-bootstrap/tooltip';import { TypeaheadModule } from 'ngx-bootstrap/typeahead';import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
+
+
+
+
+
+
+
+
+
+
+
 
 @Component({
     selector: 'app-text-editor',
@@ -22,6 +34,24 @@ import { Editor, Toolbar, Validators, schema } from 'ngx-editor';
             multi: true
         }
     ],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    AlertModule,
+    BsDropdownModule,
+    BsDatepickerModule,
+    ModalModule,
+    PaginationModule,
+    TabsModule,
+    TooltipModule,
+    TypeaheadModule,
+    NgxDaterangepickerBootstrapModule,
+    NgxEditorModule,
+    NgxDatatableModule
+  ],
 })
 export class TextEditorComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
     editor!: Editor;

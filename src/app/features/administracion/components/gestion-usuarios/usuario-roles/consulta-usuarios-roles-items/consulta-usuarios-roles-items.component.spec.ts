@@ -32,8 +32,11 @@ describe('ConsultaUsuariosRolesItemsComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ConsultaUsuariosRolesItemsComponent],
-            imports: [ReactiveFormsModule],
+            declarations: [],
+            imports: [
+              ReactiveFormsModule,
+              ConsultaUsuariosRolesItemsComponent,
+            ],
             providers: [
                 { provide: ActivatedRoute, useValue: activatedRouteStub },
                 { provide: Router, useValue: routerStub },

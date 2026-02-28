@@ -16,10 +16,15 @@ import { ActualizarService } from 'src/app/shared/services/common/actualizar.ser
 import { CompraSiceService } from 'src/app/shared/services/compra-sice.service';
 import { UsuarioRolesService } from 'src/app/shared/services/usuario/usuario-roles.service';
 import { UsuarioService } from 'src/app/shared/services/usuario/usuario.service';
-import { ordenarYPaginar } from 'src/app/shared/utils/paginador';
+import { ordenarYPaginar } from 'src/app/shared/utils/paginador';import { SharedModule } from 'src/app/shared/shared.module';
+
 @Component({
     selector: 'app-consulta-usuarios-roles-items',
     templateUrl: './consulta-usuarios-roles-items.component.html',
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class ConsultaUsuariosRolesItemsComponent extends PaginaBusquedaComponent<IConsultaUsuarioOrganismoPerfilFiltroDTO>
     implements OnInit {

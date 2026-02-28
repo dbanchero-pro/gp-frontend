@@ -7,12 +7,17 @@ import { AccionBoton } from 'src/app/shared/models/common/accion-boton.model';
 import { CapituloDTO } from 'src/app/shared/models/pliego/capitulo/capitulo.model';
 import { CapituloClausulaDTO } from 'src/app/shared/models/pliego/capitulo/capitulo-clausula.model';
 import { EstadoElemento } from 'src/app/shared/enum/estado-elemento.enum';
-import { CapituloService } from '../../../services/capitulo.service';
+import { CapituloService } from '../../../services/capitulo.service';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-agregar-modificar-capitulo',
   templateUrl: './agregar-modificar-capitulo.component.html',
   styleUrls: ['./agregar-modificar-capitulo.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class AgregarModificarCapituloComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);

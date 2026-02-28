@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { of } from 'rxjs';
 import { FechaHoraPipe } from 'src/app/shared/pipes/fecha-hora.pipe';
@@ -25,10 +25,14 @@ describe('BandejaEntradaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BandejaEntradaComponent],
-      imports: [ReactiveFormsModule],
+      declarations: [],
+      imports: [
+        ReactiveFormsModule,
+        BandejaEntradaComponent,
+      ],
       providers: [
         { provide: Router, useValue: routerStub },
+        { provide: ActivatedRoute, useValue: { snapshot: { params: {} }, queryParams: of({}) } },
         { provide: BsModalService, useValue: bsModalServiceStub },
         { provide: BandejaEntradaService, useValue: bandejaEntradaServiceStub },
         FechaHoraPipe

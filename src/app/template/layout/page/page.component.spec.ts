@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-
-import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
-import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { Observable, Subject, of } from "rxjs";
 import { ActualizarService } from "src/app/shared/services/common/actualizar.service";
+import { LoggerService } from "src/app/shared/services/common/logger.service";
+import { MenuService } from "src/app/shared/services/common/menu.service";
 import { SeguridadService } from "src/app/shared/services/common/seguridad.service";
 import { PageComponent } from "./page.component";
 
@@ -35,15 +34,22 @@ describe("PageComponent", () => {
     let menuService = jasmine.createSpyObj('MenuService', ['obtenerItemMasAbajo']);
     let actualizarService: ActualizarService;
     beforeEach(async () => {
-        
+        TestBed.overrideComponent(PageComponent, {
+            set: { imports: [], schemas: [NO_ERRORS_SCHEMA] },
+        });
+
         await TestBed.configureTestingModule({
             // componentes
-            declarations: [PageComponent],
+            declarations: [],
             schemas: [NO_ERRORS_SCHEMA],
-            imports: [],
+            imports: [
+              PageComponent,
+            ],
             providers: [
                 ActualizarService,
                 { provide: SeguridadService, useValue: { usuarioLogueadoEsUsuarioOrganismo: () => false } },
+                { provide: MenuService, useValue: menuService },
+                { provide: LoggerService, useValue: { logDebug: () => {} } },
                 { provide: ActivatedRoute, useClass: ActivatedRouteStub },
                 {
                     provide: Router,
@@ -53,8 +59,6 @@ describe("PageComponent", () => {
                         navigate: jasmine.createSpy("navigate")
                     }
                 },
-                provideHttpClient(withInterceptorsFromDi()),
-                provideHttpClientTesting()
             ]
         }).compileComponents();
     });

@@ -21,12 +21,17 @@ import { ObjetoCompraDTO } from 'src/app/shared/models/pliego/clausula/objeto-co
 import { TipoCompraClausulaModeloDTO } from 'src/app/shared/models/pliego/comun/tipo-compra-clausula-modelo.model';
 import { RedaccionDTO } from '../../../../../shared/models/pliego/clausula/redaccion.model';
 import { EstadoElemento } from 'src/app/shared/enum/estado-elemento.enum';
-import { ClausulaService } from '../../../services/clausula.service';
+import { ClausulaService } from '../../../services/clausula.service';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-agregar-modificar-clausula',
   templateUrl: './agregar-modificar-clausula.component.html',
   styleUrls: ['./agregar-modificar-clausula.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class AgregarModificarClausulaComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);

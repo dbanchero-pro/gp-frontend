@@ -46,8 +46,11 @@ describe('IniciarPliegoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IniciarPliegoComponent],
-      imports: [ReactiveFormsModule],
+      declarations: [],
+      imports: [
+        ReactiveFormsModule,
+        IniciarPliegoComponent,
+      ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteStub },
         { provide: Router, useValue: routerStub },

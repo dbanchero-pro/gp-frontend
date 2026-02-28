@@ -2,7 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { ProveedorDTO } from '../models/proveedor/proveedor.model';
 
 @Pipe({
-    name: 'idProveedor'
+    
+    standalone: true,
+name: 'idProveedor'
 })
 export class IdProveedorPipe implements PipeTransform {
     transform(value: ProveedorDTO | undefined): string {

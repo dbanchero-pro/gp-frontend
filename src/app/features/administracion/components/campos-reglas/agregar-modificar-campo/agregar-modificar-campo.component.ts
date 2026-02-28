@@ -14,12 +14,17 @@ import { TipoRegla } from '../../../enums/tipo-regla.enum';
 import { IReglaDTO, ReglaDTO } from '../../../models/regla.model';
 import { CampoService } from '../../../services/campo.service';
 import { OperadorHelperService } from '../../../services/operador-helper.service';
-import { AgregarModificarReglaPopupComponent } from '../agregar-modificar-regla-popup/agregar-modificar-regla-popup.component';
+import { AgregarModificarReglaPopupComponent } from '../agregar-modificar-regla-popup/agregar-modificar-regla-popup.component';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-agregar-modificar-campo',
   templateUrl: './agregar-modificar-campo.component.html',
   styleUrls: ['./agregar-modificar-campo.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class AgregarModificarCampoComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);

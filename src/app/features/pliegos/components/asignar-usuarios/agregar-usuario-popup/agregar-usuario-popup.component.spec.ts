@@ -43,8 +43,12 @@ describe('AgregarUsuarioPopupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AgregarUsuarioPopupComponent, MockInputDocumentoComponent],
-      imports: [ReactiveFormsModule],
+      declarations: [],
+      imports: [
+        ReactiveFormsModule,
+        AgregarUsuarioPopupComponent,
+        MockInputDocumentoComponent,
+      ],
       providers: [
         { provide: BsModalService, useValue: bsModalServiceStub },
         { provide: BandejaEntradaService, useValue: bandejaEntradaServiceStub }

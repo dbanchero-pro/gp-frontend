@@ -1,6 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { ActualizarService } from '../../../../shared/services/common/actualizar.service';
 import { CanComponentDeactivate } from '../../../../shared/utils/can-component-deactivate';
 import { SiNoAmbasValor } from 'src/app/shared/enum/si-no-ambas-valor.enum';
@@ -16,6 +18,8 @@ import { ElaborarPliegoService } from '../../services/elaborar-pliego.service';
   selector: 'app-elaborar-pliego',
   templateUrl: './elaborar-pliego.html',
   styleUrls: ['./elaborar-pliego.scss'],
+  standalone: true,
+  imports: [CommonModule, SharedModule],
 })
 export class ElaborarPliegoComponent implements OnInit, CanComponentDeactivate {
   pliego: PliegoDTO;

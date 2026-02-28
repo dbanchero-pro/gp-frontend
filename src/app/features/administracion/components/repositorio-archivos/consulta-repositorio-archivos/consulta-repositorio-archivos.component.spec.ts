@@ -69,8 +69,12 @@ describe('ConsultaRepositorioArchivosComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ConsultaRepositorioArchivosComponent, MockFiltroOrganismoComponent],
-      imports: [ReactiveFormsModule],
+      declarations: [],
+      imports: [
+        ReactiveFormsModule,
+        ConsultaRepositorioArchivosComponent,
+        MockFiltroOrganismoComponent,
+      ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteStub },
         { provide: Router, useValue: routerStub },

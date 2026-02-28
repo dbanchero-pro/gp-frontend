@@ -19,10 +19,12 @@ describe("FooterComponent", () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             // componentes
-            declarations: [FooterComponent],
-            imports: [FormsModule,
-                ReactiveFormsModule,
-                ],
+            declarations: [],
+            imports: [
+              FormsModule,
+              ReactiveFormsModule,
+              FooterComponent,
+            ],
             providers: [
                 FormBuilder,
                 Router,

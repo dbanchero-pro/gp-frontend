@@ -8,8 +8,11 @@ describe('InputDocumentoComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [InputDocumentoComponent],
-      imports: [FormsModule]
+      declarations: [],
+      imports: [
+        FormsModule,
+        InputDocumentoComponent,
+      ]
     });
     fixture = TestBed.createComponent(InputDocumentoComponent);
     component = fixture.componentInstance;

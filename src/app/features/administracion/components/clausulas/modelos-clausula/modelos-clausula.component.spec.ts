@@ -30,7 +30,7 @@ describe('ModelosClausulaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModelosClausulaComponent],
+      declarations: [],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteStub },
         { provide: Router, useValue: routerStub },
@@ -38,7 +38,10 @@ describe('ModelosClausulaComponent', () => {
         { provide: ClausulaService, useValue: clausulaServiceStub },
         FechaPipe
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [
+        ModelosClausulaComponent,
+      ],
     })
     .compileComponents();
   });

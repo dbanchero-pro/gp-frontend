@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TypeaheadMatch, TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import {
     Observable,
     Subject,
@@ -16,12 +16,42 @@ import { FiltroBusquedaArticulosDTO } from '../../models/filtros/filtro-busqueda
 import { FiltroItemCompraDTO } from '../../models/filtros/filtro-item-compra.model';
 import { ItemCompraFiltroDTO } from '../../models/item-compra-filtro.model';
 import { ItemsCompraService } from '../../services/items-compra.service';
-import { UsuarioOrganismoPerfilService } from '../../services/usuario/usuario-perfil.service';
+import { UsuarioOrganismoPerfilService } from '../../services/usuario/usuario-perfil.service';import { CommonModule } from '@angular/common';import { RouterModule } from '@angular/router';import { AlertModule } from 'ngx-bootstrap/alert';import { BsDropdownModule } from 'ngx-bootstrap/dropdown';import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';import { ModalModule } from 'ngx-bootstrap/modal';import { PaginationModule } from 'ngx-bootstrap/pagination';import { TabsModule } from 'ngx-bootstrap/tabs';import { TooltipModule } from 'ngx-bootstrap/tooltip';import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';import { NgxEditorModule } from 'ngx-editor';import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
+
+
+
+
+
+
+
+
+
+
+
 
 @Component({
     selector: 'app-filtro-items-articulos',
     templateUrl: './filtro-items-articulos.component.html',
     styleUrls: ['./filtro-items-articulos.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    AlertModule,
+    BsDropdownModule,
+    BsDatepickerModule,
+    ModalModule,
+    PaginationModule,
+    TabsModule,
+    TooltipModule,
+    TypeaheadModule,
+    NgxDaterangepickerBootstrapModule,
+    NgxEditorModule,
+    NgxDatatableModule
+  ],
 })
 export class FiltroItemsArticulosComponent implements OnInit {
 

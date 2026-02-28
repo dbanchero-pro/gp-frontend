@@ -9,6 +9,11 @@ import { AppComponent } from './app.component';
 
 class MockActualizarService {
     cargando$ = new BehaviorSubject<boolean>(false);
+    titulo$ = new BehaviorSubject<string[]>([]);
+    subTitulo$ = new BehaviorSubject<string[]>([]);
+    estado$ = new BehaviorSubject<string>('');
+    alerta$ = new BehaviorSubject<any[]>([]);
+    confirmar$ = new BehaviorSubject<any[]>([]);
 }
 
 class MockAuthRawService {
@@ -19,16 +24,22 @@ class MockAuthRawService {
 
 describe('AppComponent', () => {
     beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            declarations: [AppComponent],
-            imports: [],
+        TestBed.configureTestingModule({
+            declarations: [],
+            imports: [
+              AppComponent,
+            ],
             providers: [
                 { provide: ActualizarService, useClass: MockActualizarService },
                 { provide: AuthRawService, useClass: MockAuthRawService },
             ],
             schemas: [NO_ERRORS_SCHEMA],
             teardown: { destroyAfterEach: false },
-        }).compileComponents();
+        });
+        TestBed.overrideComponent(AppComponent, {
+            set: { imports: [], schemas: [NO_ERRORS_SCHEMA] },
+        });
+        await TestBed.compileComponents();
     });
 
     it('debe crear la aplicación', () => {

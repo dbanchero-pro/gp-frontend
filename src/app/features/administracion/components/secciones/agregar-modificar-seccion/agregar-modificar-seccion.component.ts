@@ -8,12 +8,17 @@ import { SeccionClausulaDTO } from 'src/app/shared/models/pliego/seccion/seccion
 import { SeccionDTO } from 'src/app/shared/models/pliego/seccion/seccion.model';
 import { CanComponentDeactivate } from 'src/app/shared/utils/can-component-deactivate';
 import { EstadoElemento } from 'src/app/shared/enum/estado-elemento.enum';
-import { SeccionService } from '../../../services/seccion.service';
+import { SeccionService } from '../../../services/seccion.service';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-agregar-modificar-seccion',
   templateUrl: './agregar-modificar-seccion.component.html',
   styleUrls: ['./agregar-modificar-seccion.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class AgregarModificarSeccionComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);

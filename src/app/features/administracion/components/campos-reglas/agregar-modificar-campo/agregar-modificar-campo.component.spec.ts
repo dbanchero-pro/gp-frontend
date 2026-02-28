@@ -37,8 +37,11 @@ describe('AgregarModificarCampoComponent', () => {
     mockCampoService.obtenerTiposDato.and.returnValue([]);
 
     await TestBed.configureTestingModule({
-      declarations: [AgregarModificarCampoComponent],
-      imports: [ReactiveFormsModule],
+      declarations: [],
+      imports: [
+        ReactiveFormsModule,
+        AgregarModificarCampoComponent,
+      ],
       providers: [
         FormBuilder,
         { provide: Router, useValue: mockRouter },

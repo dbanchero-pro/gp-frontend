@@ -4,6 +4,8 @@ import { By } from '@angular/platform-browser';
 import { AppTabDirective, TabsComponent } from './tabs.component';
 
 @Component({
+  standalone: true,
+  imports: [TabsComponent, AppTabDirective],
   template: `
     <app-tabs [(selectedIndex)]="seleccionado">
       <ng-template appTab="Uno">Contenido 1</ng-template>
@@ -22,7 +24,10 @@ describe('TabsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TabsComponent, AppTabDirective, HostComponent]
+      declarations: [],
+      imports: [
+        HostComponent,
+      ],
     }).compileComponents();
   });
 

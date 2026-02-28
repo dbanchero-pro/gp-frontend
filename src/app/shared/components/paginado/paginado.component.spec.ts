@@ -12,11 +12,12 @@ describe('PaginationComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [PaginadoComponent],
+            declarations: [],
             imports: [
-                PaginationModule.forRoot(),
-                ReactiveFormsModule,
-                FormsModule,
+              PaginationModule.forRoot(),
+              ReactiveFormsModule,
+              FormsModule,
+              PaginadoComponent,
             ],
         });
         fixture = TestBed.createComponent(PaginadoComponent);

@@ -1,7 +1,21 @@
 import { Directive, OnInit } from "@angular/core";
 import { AppConfig } from "src/app/app.config";
 import { formatearBytes } from "../../utils/functions";
-import { PopupBaseComponent } from "../popup-base/popup-base.component";
+import { PopupBaseComponent } from "../popup-base/popup-base.component";import { CommonModule } from '@angular/common';import { FormsModule, ReactiveFormsModule } from '@angular/forms';import { RouterModule } from '@angular/router';import { AlertModule } from 'ngx-bootstrap/alert';import { BsDropdownModule } from 'ngx-bootstrap/dropdown';import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';import { ModalModule } from 'ngx-bootstrap/modal';import { PaginationModule } from 'ngx-bootstrap/pagination';import { TabsModule } from 'ngx-bootstrap/tabs';import { TooltipModule } from 'ngx-bootstrap/tooltip';import { TypeaheadModule } from 'ngx-bootstrap/typeahead';import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';import { NgxEditorModule } from 'ngx-editor';import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @Directive()
 export abstract class ArchivoPopupBaseComponent extends PopupBaseComponent implements OnInit {

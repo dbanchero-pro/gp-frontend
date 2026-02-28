@@ -198,26 +198,25 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
     RouterModule.forChild(routes);
 
 @NgModule({
-    declarations: [
-        ConsultaCamposReglasComponent,
-        AgregarModificarCampoComponent,
-        AgregarModificarReglaPopupComponent,
-        ConsultaUsuariosConformidadComponent,
-        ConsultaUsuariosConformidadCompraComponent,
-        NuevoUsuarioPopupComponent,
-        NuevoUsuarioTipoCompraPopupComponent,
-        NuevoUsuarioUcPopupComponent,
-        UnidadesCompraSicePopupComponent,
-        ConsultaUsuariosRolesComponent,
-        ConsultaUsuariosRolesCompraComponent,
-        ConsultaUsuariosRolesItemsComponent,
-        ModificarRolPopupComponent
-    ],
+    declarations: [],
     imports: [
-        CommonModule,
-        SharedModule,
-        RouterModule.forChild(routes),
-        NgxMaskDirective,
+      CommonModule,
+      SharedModule,
+      RouterModule.forChild(routes),
+      NgxMaskDirective,
+      ConsultaCamposReglasComponent,
+      AgregarModificarCampoComponent,
+      AgregarModificarReglaPopupComponent,
+      ConsultaUsuariosConformidadComponent,
+      ConsultaUsuariosConformidadCompraComponent,
+      NuevoUsuarioPopupComponent,
+      NuevoUsuarioTipoCompraPopupComponent,
+      NuevoUsuarioUcPopupComponent,
+      UnidadesCompraSicePopupComponent,
+      ConsultaUsuariosRolesComponent,
+      ConsultaUsuariosRolesCompraComponent,
+      ConsultaUsuariosRolesItemsComponent,
+      ModificarRolPopupComponent,
     ],
 })
 export class AdministracionModule {}

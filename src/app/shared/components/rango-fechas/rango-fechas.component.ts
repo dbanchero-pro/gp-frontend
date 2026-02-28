@@ -1,6 +1,19 @@
 import { AfterViewInit, Component, forwardRef, Injector, Input, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR, NgControl, ValidationErrors, Validator, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { AbstractControl, ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR, NgControl, ValidationErrors, Validator, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';import { CommonModule } from '@angular/common';import { RouterModule } from '@angular/router';import { AlertModule } from 'ngx-bootstrap/alert';import { BsDropdownModule } from 'ngx-bootstrap/dropdown';import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';import { ModalModule } from 'ngx-bootstrap/modal';import { PaginationModule } from 'ngx-bootstrap/pagination';import { TabsModule } from 'ngx-bootstrap/tabs';import { TooltipModule } from 'ngx-bootstrap/tooltip';import { TypeaheadModule } from 'ngx-bootstrap/typeahead';import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';import { NgxEditorModule } from 'ngx-editor';import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @Component({
     selector: 'app-rango-fechas',
@@ -18,6 +31,24 @@ import { Subscription } from 'rxjs';
             multi: true
         }
     ],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    AlertModule,
+    BsDropdownModule,
+    BsDatepickerModule,
+    ModalModule,
+    PaginationModule,
+    TabsModule,
+    TooltipModule,
+    TypeaheadModule,
+    NgxDaterangepickerBootstrapModule,
+    NgxEditorModule,
+    NgxDatatableModule
+  ],
 })
 
 export class RangoFechasComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy, AfterViewInit {

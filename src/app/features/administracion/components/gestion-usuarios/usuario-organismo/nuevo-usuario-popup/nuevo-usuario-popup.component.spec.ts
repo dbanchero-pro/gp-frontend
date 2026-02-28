@@ -64,8 +64,12 @@ describe('NuevoUsuarioPopup', () => {
         bsModalService = jasmine.createSpyObj('BsModalService', ['show']);
 
         await TestBed.configureTestingModule({
-            declarations: [NuevoUsuarioPopupComponent],
-            imports: [ReactiveFormsModule, MockInputDocumentoComponent],
+            declarations: [],
+            imports: [
+              ReactiveFormsModule,
+              MockInputDocumentoComponent,
+              NuevoUsuarioPopupComponent,
+            ],
             providers: [
                 { provide: BsModalRef, useValue: bsModalRef },
                 FormBuilder,

@@ -12,9 +12,12 @@ describe('MensajeComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             // componentes
-            declarations: [MensajeComponent],
+            declarations: [],
             // modulos
-            imports: [AlertModule],
+            imports: [
+              AlertModule,
+              MensajeComponent,
+            ],
             // servicios
             providers: [
                 { provide: ActivatedRoute, useClass: ActivatedRouteStub },

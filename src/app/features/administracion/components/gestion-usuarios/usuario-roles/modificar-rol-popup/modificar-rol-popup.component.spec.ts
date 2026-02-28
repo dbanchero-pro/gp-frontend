@@ -15,8 +15,12 @@ describe('ModificarRolPopupComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ModificarRolPopupComponent, FormatoCiPipe],
-            imports: [ReactiveFormsModule],
+            declarations: [],
+            imports: [
+              ReactiveFormsModule,
+              ModificarRolPopupComponent,
+              FormatoCiPipe,
+            ],
             providers: [
                 FormBuilder,
                 { provide: BsModalService, useValue: bsModalServiceStub }

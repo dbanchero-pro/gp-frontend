@@ -28,12 +28,17 @@ import { UsuarioService } from 'src/app/shared/services/usuario/usuario.service'
 import { Logger } from 'src/app/shared/utils/logger';
 import { mascaraNroAnioCompra } from 'src/app/shared/utils/masks';
 import { ConsultaUsuariosRolesComponent } from '../consulta-usuarios-roles/consulta-usuarios-roles.component';
-import { IConsultaUsuarioOrganismoPerfilFiltroDTO } from 'src/app/features/administracion/models/filtros/consulta-usuario-organismo-perfil-filtro.model';
+import { IConsultaUsuarioOrganismoPerfilFiltroDTO } from 'src/app/features/administracion/models/filtros/consulta-usuario-organismo-perfil-filtro.model';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
     selector: 'app-consulta-usuarios-roles-compra',
     templateUrl: './consulta-usuarios-roles-compra.component.html',
     styleUrls: ['./consulta-usuarios-roles-compra.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class ConsultaUsuariosRolesCompraComponent
     extends PaginaBusquedaComponent<IConsultaUsuarioOrganismoPerfilFiltroDTO>

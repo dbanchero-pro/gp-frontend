@@ -113,16 +113,17 @@ describe('ConsultaUsuariosConformidadComponent', () => {
         );
 
         await TestBed.configureTestingModule({
-            declarations: [
-                ConsultaUsuariosConformidadComponent,
-                FiltroComponent,
-                FiltroOrganismoComponent,
-                InputDocumentoComponent,
-                PaginadoComponent,
-                CabezalConsultaComponent,
-                FiltroItemsArticulosComponent,
+            declarations: [],
+            imports: [
+              ReactiveFormsModule,
+              ConsultaUsuariosConformidadComponent,
+              FiltroComponent,
+              FiltroOrganismoComponent,
+              InputDocumentoComponent,
+              PaginadoComponent,
+              CabezalConsultaComponent,
+              FiltroItemsArticulosComponent,
             ],
-            imports: [ReactiveFormsModule],
             providers: [
                 { provide: SeguridadService,  useClass: MockSeguridadService },
                 {

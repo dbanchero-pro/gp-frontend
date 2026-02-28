@@ -19,12 +19,17 @@ import {
   UnidadEjecutoraFiltroIniciarPliego
 } from '../../services/bandeja-entrada.service';
 import { FiltroModelo } from 'src/app/features/administracion/models/filtros/filtro-modelo.model';
-import { ModeloService } from 'src/app/features/administracion/services/modelo.service';
+import { ModeloService } from 'src/app/features/administracion/services/modelo.service';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-iniciar-pliego',
   templateUrl: './iniciar-pliego.component.html',
   styleUrls: ['./iniciar-pliego.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class IniciarPliegoComponent implements OnInit, AfterViewInit {
   private fb = inject(FormBuilder);

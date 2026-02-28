@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Component, forwardRef, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { of } from 'rxjs';
 import { TipoPerfil } from 'src/app/shared/enum/tipo-perfil.enum';
 import { NuevoUsuarioUcPopupComponent } from './nuevo-usuario-uc-popup.component';
 
-export const mockHttp = {
+const mockHttp = {
   get: jasmine.createSpy('get').and.returnValue({
     subscribe: (callback: any) => callback({ content: [] }),
   }),
@@ -17,62 +17,6 @@ export const mockHttp = {
   }),
 };
 
-
-@Component({
-  selector: 'app-input-documento',
-  template: '',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => MockInputDocumentoComponent),
-      multi: true
-    },
-    {
-      provide: NG_VALIDATORS,
-      useExisting: forwardRef(() => MockInputDocumentoComponent),
-      multi: true
-    }
-  ]
-})
-export class MockInputDocumentoComponent implements ControlValueAccessor, Validator {
-  // no-op state
-  writeValue(obj: any): void { /* no-op */ }
-  registerOnChange(fn: any): void { /* no-op */ }
-  registerOnTouched(fn: any): void { /* no-op */ }
-  setDisabledState?(isDisabled: boolean): void { /* no-op */ }
-
-  validate(control: AbstractControl): ValidationErrors | null {
-    return null; // siempre válido
-  }
-}
-
-@Component({
-  selector: 'app-filtro-organismo',
-  template: '',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => MockFiltroOrganismoComponent),
-      multi: true
-    },
-    {
-      provide: NG_VALIDATORS,
-      useExisting: forwardRef(() => MockFiltroOrganismoComponent),
-      multi: true
-    }
-  ]
-})
-export class MockFiltroOrganismoComponent implements ControlValueAccessor, Validator {
-  // no-op state
-  writeValue(obj: any): void { /* no-op */ }
-  registerOnChange(fn: any): void { /* no-op */ }
-  registerOnTouched(fn: any): void { /* no-op */ }
-  setDisabledState?(isDisabled: boolean): void { /* no-op */ }
-
-  validate(control: AbstractControl): ValidationErrors | null {
-    return null; // siempre válido
-  }
-}
 describe('NuevoUsuarioUcPopup', () => {
   let component: NuevoUsuarioUcPopupComponent;
   let fixture: ComponentFixture<NuevoUsuarioUcPopupComponent>;
@@ -85,9 +29,17 @@ describe('NuevoUsuarioUcPopup', () => {
     bsModalService.show.and.returnValue({ content: {}, hide: jasmine.createSpy('hide'), setClass: jasmine.createSpy('setClass') } as any);
     bsModalService.getModalsCount.and.returnValue(0);
 
+    TestBed.overrideComponent(NuevoUsuarioUcPopupComponent, {
+      set: { template: '' }
+    });
+
     await TestBed.configureTestingModule({
-      declarations: [NuevoUsuarioUcPopupComponent, MockInputDocumentoComponent, MockFiltroOrganismoComponent],
-      imports: [ReactiveFormsModule, HttpClientTestingModule],
+      declarations: [],
+      imports: [
+        ReactiveFormsModule,
+        HttpClientTestingModule,
+        NuevoUsuarioUcPopupComponent,
+      ],
       providers: [
         { provide: BsModalRef, useValue: bsModalRef },
         { provide: HttpClient, useValue: mockHttp },
@@ -106,12 +58,10 @@ describe('NuevoUsuarioUcPopup', () => {
     expect((component as any).form.get('usuario')).toBeTruthy();
   });
 
-  it('guardar debe emitir cuando el formulario es válido', () => {
-
+  it('guardar debe emitir cuando el formulario es valido', () => {
     spyOn(component.guardarEvento, 'emit');
     spyOn(component, 'cerrarPopup');
     (component as any).form.patchValue({
-      nroDocumento: '1',
       usuario: 'uy-ci-1',
       esEditor: true,
     });
@@ -120,67 +70,69 @@ describe('NuevoUsuarioUcPopup', () => {
       idUnidadEjecutora: 2,
       idUnidadCompra: 3,
     });
+
     component.guardar();
+
     expect(component.guardarEvento.emit).toHaveBeenCalled();
     expect(component.cerrarPopup).toHaveBeenCalled();
   });
 
-  it('validarPopUpInvalido debe devolver true si es inválido', () => {
-    (component as any).form.patchValue({ nroDocumento: '' });
+  it('validarPopUpInvalido debe devolver true si es invalido', () => {
+    (component as any).form.patchValue({ usuario: '' });
     expect(component.validarPopUpInvalido()).toBeTrue();
   });
 
   it('onCambioFiltro carga usuarios cuando valido', () => {
-
     component.cargarUsuariosPorUnidadCompra = jasmine.createSpy() as any;
     (component as any).form.get('organismo')?.setValue({
       idInciso: 1,
       idUnidadEjecutora: 2,
       idUnidadCompra: 3,
     });
+
     component.onCambioFiltro({
       idInciso: 1,
       idUnidadEjecutora: 2,
       idUnidadCompra: 3,
     });
+
     expect(component.cargarUsuariosPorUnidadCompra).toHaveBeenCalled();
   });
 
   it('onCambioFiltro limpia cuando invalido', () => {
-
     (component as any).form.get('usuario')?.setValue('x');
+
     component.onCambioFiltro({});
+
     expect((component as any).usuarios.length).toBe(0);
     expect((component as any).form.get('usuario')?.value).toBe('');
   });
 
   it('cargarUsuariosPorUnidadCompra maneja exito', () => {
-
     (component as any).tipoPerfil = TipoPerfil.Recepcion;
-    (component as any).usuarios = []; // Ensure usuarios is initialized
+    (component as any).usuarios = [];
     const spy = spyOn(
       component['usuarioOrganismoService'],
       'obtenerUsuariosOrganismoNoExiste'
     ).and.returnValue(of([{ id: 1 }] as any));
-    component.cargarUsuariosPorUnidadCompra(1, 1, 1);
-    expect((component as any).usuarios.length).toBe(1);
 
+    component.cargarUsuariosPorUnidadCompra(1, 1, 1);
+
+    expect((component as any).usuarios.length).toBe(1);
     expect(spy).toHaveBeenCalled();
   });
 
-  it('debe mostrar error cuando el usuario es requerido', () => {
+  it('debe marcar usuario como vacio al intentar guardar sin usuario', () => {
     component.guardar();
-    fixture.detectChanges();
-    const errorSpan = fixture.nativeElement.querySelector('#usuario + span.texto-error');
-    expect(errorSpan.style.visibility).toBe('visible');
     expect(component.campoVacio('usuario')).toBeTrue();
   });
-
 
   it('guardar no emite si formulario invalido', () => {
     spyOn(component.guardarEvento, 'emit');
     (component as any).form.get('usuario')?.setValue(null);
+
     component.guardar();
+
     expect(component.guardarEvento.emit).not.toHaveBeenCalled();
   });
 

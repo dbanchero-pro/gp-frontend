@@ -8,7 +8,8 @@ import { TipoMensajeEnum } from 'src/app/shared/enum/tipo-mensaje.enum';
 import { UsuarioAsignadoDTO } from '../../../models/usuario-asignado.model';
 import { UsuarioBusquedaDTO } from '../../../models/usuario-busqueda.model';
 import { BandejaEntradaService } from '../../../services/bandeja-entrada.service';
-import { TipoBusquedaUsuario } from '../../../enum/tipo-busqueda-usuario.enum';
+import { TipoBusquedaUsuario } from '../../../enum/tipo-busqueda-usuario.enum';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 
 
@@ -16,6 +17,10 @@ import { TipoBusquedaUsuario } from '../../../enum/tipo-busqueda-usuario.enum';
   selector: 'app-agregar-usuario-popup',
   templateUrl: './agregar-usuario-popup.component.html',
   styleUrls: ['./agregar-usuario-popup.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class AgregarUsuarioPopupComponent extends PopupBaseComponent implements OnInit, OnDestroy {
   @Output() guardarEvento = new EventEmitter<UsuarioAsignadoDTO>();

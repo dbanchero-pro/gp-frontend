@@ -48,8 +48,10 @@ describe("ConfirmDialogComponent", () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ConfirmDialogComponent],
-            imports: [],
+            declarations: [],
+            imports: [
+              ConfirmDialogComponent,
+            ],
             providers: [
                 { provide: ActualizarService, useClass: StubbedActualizarService },
                 { provide: BsModalService, useClass: StubbedModalService },

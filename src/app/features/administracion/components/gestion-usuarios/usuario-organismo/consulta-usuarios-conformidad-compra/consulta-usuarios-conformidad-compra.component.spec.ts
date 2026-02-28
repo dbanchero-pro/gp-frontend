@@ -68,15 +68,17 @@ describe('ConsultaUsuariosConformidadCompraComponent', () => {
         ]);
 
         await TestBed.configureTestingModule({
-            declarations: [
-                ConsultaUsuariosConformidadCompraComponent,
-                FiltroComponent,
-                FiltroOrganismoComponent,
-                FiltroItemsArticulosComponent,
-                PaginadoComponent,
-                CabezalConsultaComponent,
+            declarations: [],
+            imports: [
+              ReactiveFormsModule,
+              NgxEditorModule.forRoot(),
+              ConsultaUsuariosConformidadCompraComponent,
+              FiltroComponent,
+              FiltroOrganismoComponent,
+              FiltroItemsArticulosComponent,
+              PaginadoComponent,
+              CabezalConsultaComponent,
             ],
-            imports: [ReactiveFormsModule, NgxEditorModule.forRoot()],
             providers: [
                 provideHttpClientTesting(),
                 {

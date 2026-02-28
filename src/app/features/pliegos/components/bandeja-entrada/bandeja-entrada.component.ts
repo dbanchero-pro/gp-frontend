@@ -14,12 +14,17 @@ import { PaginaBusquedaComponent } from '../../../../shared/components/pagina-bu
 import { PageModel } from '../../../../shared/models/common/page/page.model';
 import { CancelarPliegoPopupComponent } from '../cancelar-pliego-popup/cancelar-pliego-popup.component';
 import { FiltroBandejaEntradaDTO } from '../../models/filtros/filtro-bandeja-entrada.model';
-import { PliegoDTO } from '../../models/pliego.model';
+import { PliegoDTO } from '../../models/pliego.model';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-bandeja-entrada',
   templateUrl: './bandeja-entrada.component.html',
   styleUrls: ['./bandeja-entrada.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBandejaEntradaDTO> implements OnInit, AfterViewInit {
   private readonly fb = inject(FormBuilder);

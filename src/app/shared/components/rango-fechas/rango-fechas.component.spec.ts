@@ -8,8 +8,11 @@ describe('RangoFechasComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [RangoFechasComponent],
-      imports: [ReactiveFormsModule]
+      declarations: [],
+      imports: [
+        ReactiveFormsModule,
+        RangoFechasComponent,
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(RangoFechasComponent);

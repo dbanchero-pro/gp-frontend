@@ -8,12 +8,17 @@ import { UsuarioOrganismoDTO } from 'src/app/shared/models/usuario/usuario-organ
 import { UsuarioOrganismoService } from 'src/app/shared/services/usuario/usuario-organismo.service';
 import { UsuarioOrganismoPerfilService } from 'src/app/shared/services/usuario/usuario-perfil.service';
 import { transformarNroDocumento } from 'src/app/shared/utils/functions';
-import { Logger } from 'src/app/shared/utils/logger';
+import { Logger } from 'src/app/shared/utils/logger';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
     selector: 'app-nuevo-usuario-popup',
     templateUrl: './nuevo-usuario-popup.component.html',
     styleUrls: ['./nuevo-usuario-popup.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class NuevoUsuarioPopupComponent
     extends PopupBaseComponent

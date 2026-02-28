@@ -14,12 +14,17 @@ import { TipoCompraDTO } from 'src/app/shared/models/sice/tipo-compra.model';
 import { UnidadEjecutoraDTO } from 'src/app/shared/models/sice/unidad-ejecutora.model';
 import { CanComponentDeactivate } from 'src/app/shared/utils/can-component-deactivate';
 import { EstadoElemento } from 'src/app/shared/enum/estado-elemento.enum';
-import { ModeloService } from '../../../services/modelo.service';
+import { ModeloService } from '../../../services/modelo.service';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-agregar-modificar-modelo',
   templateUrl: './agregar-modificar-modelo.component.html',
   styleUrls: ['./agregar-modificar-modelo.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class AgregarModificarModeloComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);

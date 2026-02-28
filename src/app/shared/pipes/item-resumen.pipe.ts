@@ -1,7 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ItemCompraDto } from '../models/item-compra.model';
 
-@Pipe({ name: 'itemResumen' })
+@Pipe({ 
+    standalone: true,
+name: 'itemResumen' })
 
 export class ItemResumenPipe implements PipeTransform {
   transform(item: ItemCompraDto | null | undefined): string {

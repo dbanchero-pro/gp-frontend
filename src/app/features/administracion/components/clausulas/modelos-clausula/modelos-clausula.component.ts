@@ -4,12 +4,17 @@ import { Location } from '@angular/common';
 import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
 import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden.model';
 import { ModeloDTO } from 'src/app/shared/models/pliego/modelo/modelo.model';
-import { ClausulaService } from '../../../services/clausula.service';
+import { ClausulaService } from '../../../services/clausula.service';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-modelos-clausula',
   templateUrl: './modelos-clausula.component.html',
   styleUrls: ['./modelos-clausula.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class ModelosClausulaComponent implements OnInit {
   private route = inject(ActivatedRoute);

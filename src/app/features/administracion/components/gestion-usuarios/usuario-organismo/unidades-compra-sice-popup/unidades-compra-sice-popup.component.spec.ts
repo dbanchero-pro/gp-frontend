@@ -43,8 +43,12 @@ describe('UnidadesCompraSicePopupComponent', () => {
     bsModalService.getModalsCount.and.returnValue(0);
 
     await TestBed.configureTestingModule({
-      declarations: [UnidadesCompraSicePopupComponent, FormatoCiPipe],
-      imports: [ReactiveFormsModule],
+      declarations: [],
+      imports: [
+        ReactiveFormsModule,
+        UnidadesCompraSicePopupComponent,
+        FormatoCiPipe,
+      ],
       providers: [
         { provide: BsModalRef, useValue: bsModalRef },
         { provide: BsModalService, useValue: bsModalService },

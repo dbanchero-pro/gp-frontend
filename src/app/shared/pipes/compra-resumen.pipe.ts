@@ -3,7 +3,9 @@ import { CompraDTO } from 'src/app/shared/models/compra.model';
 
 type SeccionResumen = 'unidad' | 'detalle' | 'detalleHtml' | 'full';
 
-@Pipe({ name: 'compraResumen' })
+@Pipe({ 
+    standalone: true,
+name: 'compraResumen' })
 export class CompraResumenPipe implements PipeTransform {
 
     transform(

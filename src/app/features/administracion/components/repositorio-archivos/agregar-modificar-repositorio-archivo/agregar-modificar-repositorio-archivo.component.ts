@@ -12,12 +12,17 @@ import { SubtipoCompraDTO } from 'src/app/shared/models/sice/subtipo-compra.mode
 import { TipoCompraDTO } from 'src/app/shared/models/sice/tipo-compra.model';
 import { ActualizarService } from 'src/app/shared/services/common/actualizar.service';
 import { CanComponentDeactivate } from 'src/app/shared/utils/can-component-deactivate';
-import { DocumentoRepositorioService } from '../../../services/documento-repositorio.service';
+import { DocumentoRepositorioService } from '../../../services/documento-repositorio.service';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-agregar-modificar-repositorio-archivo',
   templateUrl: './agregar-modificar-repositorio-archivo.component.html',
   styleUrls: ['./agregar-modificar-repositorio-archivo.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class AgregarModificarRepositorioArchivoComponent extends FormularioBaseComponent implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);

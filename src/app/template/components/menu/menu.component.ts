@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, from } from 'rxjs';
 import { AppConfig } from 'src/app/app.config';
@@ -12,11 +13,18 @@ import { ProveedorDTO } from 'src/app/shared/models/proveedor/proveedor.model';
 import { UnidadCompraDTO } from 'src/app/shared/models/sice/unidad-compra.model';
 import { AuthRawService } from 'src/app/shared/services/common/auth-raw-service';
 import { MenuService } from '../../../shared/services/common/menu.service';
+import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
     selector: 'app-menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+    RouterLink,
+  ],
 })
 export class MenuComponent implements OnInit {
     menuItems$?: Observable<Array<IMenuItem>>;
@@ -124,4 +132,3 @@ export class MenuComponent implements OnInit {
     }
 
 }
-

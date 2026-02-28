@@ -11,12 +11,17 @@ import { FechaPipe } from 'src/app/shared/pipes/fecha.pipe';
 import { ActualizarService } from 'src/app/shared/services/common/actualizar.service';
 import { SnapshotGenericService } from 'src/app/shared/services/common/snapshot-generic.service';
 import { FiltroSeccion } from '../../../models/filtros/filtro-seccion.model';
-import { SeccionService } from '../../../services/seccion.service';
+import { SeccionService } from '../../../services/seccion.service';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-consulta-secciones',
   templateUrl: './consulta-secciones.component.html',
   styleUrls: ['./consulta-secciones.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class ConsultaSeccionesComponent implements OnInit, AfterViewInit {
   private fb = inject(FormBuilder);

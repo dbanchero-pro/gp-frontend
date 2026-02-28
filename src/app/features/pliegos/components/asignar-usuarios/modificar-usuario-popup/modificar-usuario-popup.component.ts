@@ -1,12 +1,17 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PopupBaseComponent } from 'src/app/shared/components/popup-base/popup-base.component';
-import { UsuarioAsignadoDTO } from '../../../models/usuario-asignado.model';
+import { UsuarioAsignadoDTO } from '../../../models/usuario-asignado.model';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-modificar-usuario-popup',
   templateUrl: './modificar-usuario-popup.component.html',
   styleUrls: ['./modificar-usuario-popup.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class ModificarUsuarioPopupComponent extends PopupBaseComponent implements OnInit {
   @Input() usuario!: UsuarioAsignadoDTO;

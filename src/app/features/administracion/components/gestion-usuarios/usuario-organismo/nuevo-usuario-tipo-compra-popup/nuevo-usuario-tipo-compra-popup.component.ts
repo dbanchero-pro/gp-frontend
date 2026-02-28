@@ -10,12 +10,17 @@ import { TipoCompraService } from 'src/app/shared/services/sice/tipo-compra.serv
 import { UsuarioOrganismoService } from 'src/app/shared/services/usuario/usuario-organismo.service';
 import { UsuarioOrganismoPerfilService } from 'src/app/shared/services/usuario/usuario-perfil.service';
 import { transformarNroDocumento } from 'src/app/shared/utils/functions';
-import { Logger } from 'src/app/shared/utils/logger';
+import { Logger } from 'src/app/shared/utils/logger';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
     selector: 'app-nuevo-usuario-tipo-compra-popup',
     templateUrl: './nuevo-usuario-tipo-compra-popup.component.html',
     styleUrls: ['./nuevo-usuario-tipo-compra-popup.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class NuevoUsuarioTipoCompraPopupComponent
     extends PopupBaseComponent

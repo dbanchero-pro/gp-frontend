@@ -12,12 +12,17 @@ import { ArchivoService } from 'src/app/shared/services/common/archivo.service';
 import { SeguridadService } from 'src/app/shared/services/common/seguridad.service';
 import { SnapshotGenericService } from 'src/app/shared/services/common/snapshot-generic.service';
 import { FiltroDocumentoRepositorioDTO } from '../../../models/filtros/filtro-documento-repositorio.model';
-import { DocumentoRepositorioService } from '../../../services/documento-repositorio.service';
+import { DocumentoRepositorioService } from '../../../services/documento-repositorio.service';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-consulta-repositorio-archivos',
   templateUrl: './consulta-repositorio-archivos.component.html',
   styleUrls: ['./consulta-repositorio-archivos.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 }) 
 export class ConsultaRepositorioArchivosComponent
   extends PaginaBusquedaComponent<FiltroDocumentoRepositorioDTO>

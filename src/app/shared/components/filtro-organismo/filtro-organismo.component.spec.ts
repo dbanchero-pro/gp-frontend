@@ -18,8 +18,11 @@ describe('FiltroOrganismo', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
-      declarations: [FiltroOrganismoComponent],
+      imports: [
+        ReactiveFormsModule,
+        FiltroOrganismoComponent,
+      ],
+      declarations: [],
       providers: [
         { provide: OrganismoService, useValue: mockOrganismoService },
       ],

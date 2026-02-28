@@ -14,8 +14,11 @@ describe('ModificarUsuarioPopupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModificarUsuarioPopupComponent],
-      imports: [ReactiveFormsModule],
+      declarations: [],
+      imports: [
+        ReactiveFormsModule,
+        ModificarUsuarioPopupComponent,
+      ],
       providers: [{ provide: BsModalService, useValue: bsModalServiceStub }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })

@@ -5,12 +5,17 @@ import { Location } from '@angular/common';
 import { FormularioBaseComponent } from '../../../../../shared/components/base/formulario-base.component';
 import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
 import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
-import { RedaccionDTO } from 'src/app/shared/models/pliego/clausula/redaccion.model';
+import { RedaccionDTO } from 'src/app/shared/models/pliego/clausula/redaccion.model';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-agregar-modificar-redaccion',
   templateUrl: './agregar-modificar-redaccion.component.html',
   styleUrls: ['./agregar-modificar-redaccion.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class AgregarModificarRedaccionComponent extends FormularioBaseComponent implements OnInit {
   private readonly fb = inject(FormBuilder);

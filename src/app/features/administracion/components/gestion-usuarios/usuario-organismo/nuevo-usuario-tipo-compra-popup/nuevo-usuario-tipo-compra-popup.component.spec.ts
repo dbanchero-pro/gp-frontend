@@ -50,8 +50,13 @@ describe('NuevoUsuarioTipoCompraPopupComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [NuevoUsuarioTipoCompraPopupComponent, MockInputDocumentoComponent, FormatoCiPipe],
-            imports: [ReactiveFormsModule],
+            declarations: [],
+            imports: [
+              ReactiveFormsModule,
+              NuevoUsuarioTipoCompraPopupComponent,
+              MockInputDocumentoComponent,
+              FormatoCiPipe,
+            ],
             providers: [
                 { provide: BsModalService, useValue: bsModalServiceStub },
                 { provide: UsuarioOrganismoService, useValue: usuarioOrganismoServiceStub },

@@ -23,12 +23,17 @@ import { NuevoUsuarioUcPopupComponent } from '../../usuario-organismo/nuevo-usua
 import { UnidadesCompraSicePopupComponent } from '../../usuario-organismo/unidades-compra-sice-popup/unidades-compra-sice-popup.component';
 import { ModificarRolPopupComponent } from '../modificar-rol-popup/modificar-rol-popup.component';
 import { IConsultaUsuarioOrganismoPerfilFiltroDTO } from 'src/app/features/administracion/models/filtros/consulta-usuario-organismo-perfil-filtro.model';
-import { UsuarioPermisoAgrupadoDTO } from 'src/app/features/administracion/models/usuario-permiso-agrupado.model';
+import { UsuarioPermisoAgrupadoDTO } from 'src/app/features/administracion/models/usuario-permiso-agrupado.model';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
     selector: 'app-consulta-usuarios-roles',
     templateUrl: './consulta-usuarios-roles.component.html',
     styleUrls: ['./consulta-usuarios-roles.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class ConsultaUsuariosRolesComponent
     extends PaginaBusquedaComponent<IConsultaUsuarioOrganismoPerfilFiltroDTO>

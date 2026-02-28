@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { SeguridadService } from '../../services/common/seguridad.service';
 import { AccionBoton, BotonAccionComponent } from './boton-accion.component';
 
@@ -14,11 +15,15 @@ describe('BotonAccionComponent', () => {
     routerMock = jasmine.createSpyObj<Router>('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      declarations: [BotonAccionComponent],
+      declarations: [],
       providers: [
         { provide: SeguridadService, useValue: seguridadMock },
-        { provide: Router, useValue: routerMock }
-      ]
+        { provide: Router, useValue: routerMock },
+        provideNoopAnimations(),
+      ],
+      imports: [
+        BotonAccionComponent,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BotonAccionComponent);

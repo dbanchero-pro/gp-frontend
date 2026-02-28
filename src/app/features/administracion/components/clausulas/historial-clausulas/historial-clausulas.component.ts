@@ -3,12 +3,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IColumnaOrden } from '../../../../../shared/models/common/columna-orden.model';
 import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
 import { ClausulaDTO } from 'src/app/shared/models/pliego/clausula/clausula.model';
-import { ClausulaService } from '../../../services/clausula.service';
+import { ClausulaService } from '../../../services/clausula.service';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-historial-clausulas',
   templateUrl: './historial-clausulas.component.html',
   styleUrls: ['./historial-clausulas.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class HistorialClausulasComponent implements OnInit {
   private route = inject(ActivatedRoute);

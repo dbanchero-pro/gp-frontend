@@ -11,11 +11,21 @@ import { EstadoPliego } from '../../enum/estado-pliego.enum';
 import { PliegoDTO } from '../../models/pliego.model';
 import { BandejaEntradaService } from '../../services/bandeja-entrada.service';
 import { UsuarioAsignadoDTO } from '../../models/usuario-asignado.model';
+import { AgregarUsuarioPopupComponent } from './agregar-usuario-popup/agregar-usuario-popup.component';
+import { ModificarUsuarioPopupComponent } from './modificar-usuario-popup/modificar-usuario-popup.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-asignar-usuarios',
   templateUrl: './asignar-usuarios.component.html',
   styleUrls: ['./asignar-usuarios.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+    AgregarUsuarioPopupComponent,
+    ModificarUsuarioPopupComponent,
+  ],
 })
 export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> implements OnInit, CanComponentDeactivate {
   private readonly fb = inject(FormBuilder);
@@ -311,6 +321,5 @@ export class AsignarUsuariosComponent extends PaginaBusquedaComponent<any> imple
     return `${tipoCompra} | ${subtipoCompra} N° ${this.proceso.numeroCompra}/${this.proceso.anioCompra}`;
   }
 }
-
 
 

@@ -16,8 +16,12 @@ describe('OrganismoPopupComponent', () => {
     bsModalRef = jasmine.createSpyObj('BsModalRef', ['hide']);
 
     await TestBed.configureTestingModule({
-      declarations: [OrganismoPopupComponent, ],
-      imports: [ReactiveFormsModule, SharedModule],
+      declarations: [],
+      imports: [
+        ReactiveFormsModule,
+        SharedModule,
+        OrganismoPopupComponent,
+      ],
       providers: [
         { provide: BsModalRef, useValue: bsModalRef },
         FormBuilder,

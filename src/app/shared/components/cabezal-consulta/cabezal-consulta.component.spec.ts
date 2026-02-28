@@ -12,8 +12,10 @@ describe('HeaderOrderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CabezalConsultaComponent],
-      imports: [],
+      declarations: [],
+      imports: [
+        CabezalConsultaComponent,
+      ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         provideRouter([]),

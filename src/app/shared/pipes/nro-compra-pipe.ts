@@ -1,7 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { CompraDTO } from 'src/app/shared/models/compra.model';
 
-@Pipe({ name: 'nroCompra', pure: false })
+@Pipe({ 
+    standalone: true,
+name: 'nroCompra', pure: false })
 export class NumeroCompraPipe implements PipeTransform {
     transform(compra: Partial<CompraDTO> | null | undefined): string {
         if (!compra) return '';

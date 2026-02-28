@@ -3,7 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
 import { forkJoin } from 'rxjs';
 import { ClausulaDTO } from 'src/app/shared/models/pliego/clausula/clausula.model';
-import { ClausulaService } from '../../../services/clausula.service';
+import { ClausulaService } from '../../../services/clausula.service';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 interface DiferenciaAtributo {
   nombre: string;
@@ -25,6 +26,10 @@ interface DiferenciaRedaccion {
   selector: 'app-diferencias-clausulas',
   templateUrl: './diferencias-clausulas.component.html',
   styleUrls: ['./diferencias-clausulas.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class DiferenciasClausulasComponent implements OnInit {
   private route = inject(ActivatedRoute);

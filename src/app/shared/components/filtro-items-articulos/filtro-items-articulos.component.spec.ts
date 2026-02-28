@@ -34,10 +34,11 @@ describe('FiltroItemsArticulos', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [FiltroItemsArticulosComponent],
+            declarations: [],
             imports: [
-                FormsModule,
-                ReactiveFormsModule,
+              FormsModule,
+              ReactiveFormsModule,
+              FiltroItemsArticulosComponent,
             ],
             providers: [
                 provideHttpClientTesting(),

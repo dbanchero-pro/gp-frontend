@@ -1,11 +1,16 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { PopupBaseComponent } from 'src/app/shared/components/popup-base/popup-base.component';
+import { PopupBaseComponent } from 'src/app/shared/components/popup-base/popup-base.component';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
     selector: 'app-modificar-rol-popup',
     templateUrl: './modificar-rol-popup.component.html',
     styleUrls: ['./modificar-rol-popup.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class ModificarRolPopupComponent extends PopupBaseComponent implements OnInit {
     @Output() guardarEvento = new EventEmitter<any>();

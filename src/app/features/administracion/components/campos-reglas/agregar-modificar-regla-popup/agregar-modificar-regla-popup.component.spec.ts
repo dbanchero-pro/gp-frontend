@@ -14,8 +14,11 @@ describe('AgregarModificarReglaPopupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AgregarModificarReglaPopupComponent],
-      imports: [ReactiveFormsModule],
+      declarations: [],
+      imports: [
+        ReactiveFormsModule,
+        AgregarModificarReglaPopupComponent,
+      ],
       providers: [{ provide: BsModalService, useValue: bsModalServiceStub }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })

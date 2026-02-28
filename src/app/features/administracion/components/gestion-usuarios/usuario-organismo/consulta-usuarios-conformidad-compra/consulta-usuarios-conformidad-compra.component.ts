@@ -28,12 +28,17 @@ import { UsuarioService } from 'src/app/shared/services/usuario/usuario.service'
 import { Logger } from 'src/app/shared/utils/logger';
 import { mascaraNroAnioCompra } from 'src/app/shared/utils/masks';
 import { ConsultaUsuariosConformidadComponent } from '../consulta-usuarios-conformidad/consulta-usuarios-conformidad.component';
-import { IConsultaUsuarioOrganismoPerfilFiltroDTO } from 'src/app/features/administracion/models/filtros/consulta-usuario-organismo-perfil-filtro.model';
+import { IConsultaUsuarioOrganismoPerfilFiltroDTO } from 'src/app/features/administracion/models/filtros/consulta-usuario-organismo-perfil-filtro.model';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
     selector: 'app-consulta-usuarios-conformidad-compra',
     templateUrl: './consulta-usuarios-conformidad-compra.component.html',
     styleUrls: ['./consulta-usuarios-conformidad-compra.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class ConsultaUsuariosConformidadCompraComponent
     extends PaginaBusquedaComponent<IConsultaUsuarioOrganismoPerfilFiltroDTO>

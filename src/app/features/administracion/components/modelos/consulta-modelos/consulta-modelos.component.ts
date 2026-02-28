@@ -14,12 +14,17 @@ import { ModeloService } from '../../../services/modelo.service';
 import { IIncisoDTO, IncisoDTO } from 'src/app/shared/models/sice/inciso.model';
 import { IUnidadEjecutoraDTO } from 'src/app/shared/models/sice/unidad-ejecutora.model';
 import { ITipoCompraDTO } from 'src/app/shared/models/sice/tipo-compra.model';
-import { ISubtipoCompraDTO } from 'src/app/shared/models/sice/subtipo-compra.model';
+import { ISubtipoCompraDTO } from 'src/app/shared/models/sice/subtipo-compra.model';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-consulta-modelos',
   templateUrl: './consulta-modelos.component.html',
   styleUrls: ['./consulta-modelos.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class ConsultaModelosComponent implements OnInit, AfterViewInit {
   private fb = inject(FormBuilder);

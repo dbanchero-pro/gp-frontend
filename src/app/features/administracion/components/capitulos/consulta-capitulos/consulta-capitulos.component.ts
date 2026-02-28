@@ -10,12 +10,17 @@ import { FechaPipe } from 'src/app/shared/pipes/fecha.pipe';
 import { ActualizarService } from 'src/app/shared/services/common/actualizar.service';
 import { SnapshotGenericService } from 'src/app/shared/services/common/snapshot-generic.service';
 import { FiltroCapitulo } from '../../../models/filtros/filtro-capitulo.model';
-import { CapituloService } from '../../../services/capitulo.service';
+import { CapituloService } from '../../../services/capitulo.service';import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @Component({
   selector: 'app-consulta-capitulos',
   templateUrl: './consulta-capitulos.component.html',
   styleUrls: ['./consulta-capitulos.component.scss'],
+  standalone: true,
+  imports: [
+    SharedModule,
+  ],
 })
 export class ConsultaCapitulosComponent implements OnInit, AfterViewInit {
   private fb = inject(FormBuilder);

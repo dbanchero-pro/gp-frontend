@@ -1,12 +1,60 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UsuarioDTO } from '../../models/usuario/usuario.model';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';
+import { NgxEditorModule } from 'ngx-editor';
+import { FormatoCiPipe } from '../../pipes/formato-ci.pipe';
+import { FiltroOrganismoComponent } from '../filtro-organismo/filtro-organismo.component';
 import { PopupBaseComponent } from '../popup-base/popup-base.component';
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @Component({
     selector: 'app-organismo-popup',
     templateUrl: './organismo-popup.component.html',
     styleUrls: ['./organismo-popup.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    AlertModule,
+    BsDropdownModule,
+    BsDatepickerModule,
+    ModalModule,
+    PaginationModule,
+    TabsModule,
+    TooltipModule,
+    TypeaheadModule,
+    NgxDaterangepickerBootstrapModule,
+    NgxEditorModule,
+    NgxDatatableModule,
+    FormatoCiPipe,
+    FiltroOrganismoComponent,
+  ],
 })
 export class OrganismoPopupComponent extends PopupBaseComponent implements OnInit {
     @Input() idUsuarioSeleccionado: string | undefined;
@@ -60,5 +108,4 @@ export class OrganismoPopupComponent extends PopupBaseComponent implements OnIni
     }
 
 }
-
 
