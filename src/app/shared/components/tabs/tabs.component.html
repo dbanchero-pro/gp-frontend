@@ -1,14 +1,24 @@
 <!-- Pestañas -->
 <div class="tabs-wrapper">
     <ul class="nav nav-tabs" role="tablist" aria-label="Pestañas">
-        <li class="nav-item" role="tab" 
+        <li
+            class="nav-item"
+            role="tab"
             [attr.aria-selected]="selectedIndex == i"
             [attr.aria-controls]="panelId(i)"
-            *ngFor="let tab of tabs?.toArray(); let i = index; trackBy: tabId" [attr.aria-label]="tab.titulo">
-            <a [id]="tabId(i)" #primerTab class="nav-link cursor-pointer" [class.active]="selectedIndex == i"
-               
-                [attr.tabindex]="selectedIndex == i ? 0 : -1" (click)="cambiarTab(i)" (keydown.enter)="cambiarTab(i)"
-                (keydown.space)="cambiarTab(i)">
+            *ngFor="let tab of tabs?.toArray(); let i = index; trackBy: tabId"
+            [attr.aria-label]="tab.titulo"
+        >
+            <a
+                [id]="tabId(i)"
+                #primerTab
+                class="nav-link cursor-pointer"
+                [class.active]="selectedIndex == i"
+                [attr.tabindex]="selectedIndex == i ? 0 : -1"
+                (click)="cambiarTab(i)"
+                (keydown.enter)="cambiarTab(i)"
+                (keydown.space)="cambiarTab(i)"
+            >
                 {{ tab.titulo }}
             </a>
         </li>
@@ -17,9 +27,15 @@
 
 <!-- Panels -->
 <div class="tab-container">
-    <div *ngFor="let tab of tabs?.toArray(); let i = index; trackBy: tabId"
-        class="w-100 nav-item border border-top-0 p-2 tab-internal pt-4" role="tabpanel" [id]="panelId(i)"
-        [attr.aria-labelledby]="tabId(i)" [hidden]="selectedIndex !== i" [ngClass]="classTab">
+    <div
+        *ngFor="let tab of tabs?.toArray(); let i = index; trackBy: tabId"
+        class="w-100 nav-item border border-top-0 p-2 tab-internal pt-4"
+        role="tabpanel"
+        [id]="panelId(i)"
+        [attr.aria-labelledby]="tabId(i)"
+        [hidden]="selectedIndex !== i"
+        [ngClass]="classTab"
+    >
         <!-- Lazy mount: solo renderiza cuando el tab se activó al menos una vez -->
         <ng-container *ngIf="estaCargado(i)">
             <ng-container *ngTemplateOutlet="tab.tpl"></ng-container>

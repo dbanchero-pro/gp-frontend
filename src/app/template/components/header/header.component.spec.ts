@@ -1,11 +1,14 @@
-import { provideHttpClientTesting } from "@angular/common/http/testing";
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
-import { AuthRawService } from "src/app/shared/services/common/auth-raw-service";
-import { HeaderComponent } from "./header.component";
+import {
+    provideHttpClient,
+    withInterceptorsFromDi,
+} from '@angular/common/http';
+import { AuthRawService } from 'src/app/shared/services/common/auth-raw-service';
+import { HeaderComponent } from './header.component';
 
-describe("HeaderComponent", () => {
+describe('HeaderComponent', () => {
     let component: HeaderComponent;
     let fixture: ComponentFixture<HeaderComponent>;
 
@@ -13,22 +16,22 @@ describe("HeaderComponent", () => {
         await TestBed.configureTestingModule({
             // componentes
             declarations: [],
-            imports: [
-              HeaderComponent,
+            imports: [HeaderComponent],
+            providers: [
+                AuthRawService,
+                provideHttpClient(withInterceptorsFromDi()),
+                provideHttpClientTesting(),
             ],
-            providers: [AuthRawService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-        })
-            .compileComponents();
+        }).compileComponents();
     });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(HeaderComponent);
-       component = fixture.componentInstance;
+        component = fixture.componentInstance;
         fixture.detectChanges();
     });
 
     it('debería crearse', () => {
         expect(component).toBeTruthy();
     });
-
 });

@@ -1,3 +1,3 @@
 export enum Pais {
-    URUGUAY = 'UY'
+    URUGUAY = 'UY',
 }

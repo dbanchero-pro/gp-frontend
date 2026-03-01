@@ -1,315 +1,772 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-md-8 ml-0 pl-0 mr-0 pr-0">
-      <h4><em class="fa fa-play mr-2"></em>Iniciar pliego</h4>
-      <h6>Seleccione el modelo o el pliego base que va a tener el pliego que está elaborando</h6>
+    <div class="row">
+        <div class="col-md-8 ml-0 pl-0 mr-0 pr-0">
+            <h4><em class="fa fa-play mr-2"></em>Iniciar pliego</h4>
+            <h6>
+                Seleccione el modelo o el pliego base que va a tener el pliego
+                que está elaborando
+            </h6>
+        </div>
     </div>
-  </div>
 
-  <!-- Información del proceso -->
-  <div class="row" *ngIf="proceso">
-    <div class="col-12 ml-0 pl-0 mr-0 pr-0">
-      <div class="Box Box--colorInfo">
-        <div class="mb-2 font-weight-bold subtitle">
-          {{ obtenerTextoOrganismoProceso() }}
+    <!-- Información del proceso -->
+    <div class="row" *ngIf="proceso">
+        <div class="col-12 ml-0 pl-0 mr-0 pr-0">
+            <div class="Box Box--colorInfo">
+                <div class="mb-2 font-weight-bold subtitle">
+                    {{ obtenerTextoOrganismoProceso() }}
+                </div>
+                <div class="mb-2 font-weight-bold">
+                    {{ obtenerTextoTipoCompraProceso() }}
+                </div>
+                <div class="m-0">
+                    <span
+                        class="badge"
+                        [ngClass]="obtenerClaseBadgeEstado(proceso.estado)"
+                    >
+                        {{ obtenerNombreEstado(proceso.estado) }}
+                    </span>
+                </div>
+            </div>
         </div>
-        <div class="mb-2 font-weight-bold">
-          {{ obtenerTextoTipoCompraProceso() }}
-        </div>
-        <div class="m-0">
-          <span class="badge" [ngClass]="obtenerClaseBadgeEstado(proceso.estado)">
-            {{ obtenerNombreEstado(proceso.estado) }}
-          </span>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div [ngClass]="colFiltro" class="sidebar">
-    <app-filtro title="Búsqueda" titleBtn="Buscar" iconTitle="fa fa-search"
-      (evFilter)="actualizarFiltrosYBuscar()">
-      <div [formGroup]="formularioFiltro" class="col-12 ml-0 pl-0 mr-0 pr-0">
-
-        <div class="row">
-          <div class="form-group form-row col-12 m-0 pb-0">
-            <label for="tipoBusqueda" class="col-form-label col-12">Tipo búsqueda</label>
-            <select class="form-control col-12" id="tipoBusqueda" formControlName="tipoBusqueda">
-              <option value="null">Todas </option>
-              <option value="M"> Modelos</option>
-              <option value="P"> Pliegos de mi organismo</option>
-              <option value="PO"> Pliegos de otros organismos</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="form-group form-row col-12 m-0 pb-0">
-            <label for="incisoId" class="col-form-label col-12">Inciso</label>
-            <select class="form-control col-12" id="incisoId" formControlName="incisoId">
-              <option [ngValue]="null">Todos los incisos</option>
-              <option *ngFor="let inciso of incisos" [ngValue]="inciso.id">
-                {{ inciso.codigo }} - {{ inciso.descripcion }}
-              </option>
-            </select>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="form-group form-row col-12 m-0 pb-0">
-            <label for="unidadEjecutoraId" class="col-form-label col-12">Unidad Ejecutora</label>
-            <select class="form-control col-12" id="unidadEjecutoraId" formControlName="unidadEjecutoraId">
-              <option [ngValue]="null">Todas las unidades ejecutoras</option>
-              <option *ngFor="let ue of unidadesEjecutoras" [ngValue]="ue.id">
-                {{ ue.codigo }} - {{ ue.descripcion }}
-              </option>
-            </select>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="form-group form-row col-12 m-0 pb-0">
-            <label for="denominacion" class="col-form-label col-12">Denominación modelo</label>
-            <input type="text" class="form-control col-12" id="denominacion"
-              formControlName="denominacion" placeholder="Ingrese denominación">
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="clean-filter col-12">
-            <button type="button" class="btn btn-link" (click)="nuevaConsulta()">
-              Nueva consulta
-            </button>
-          </div>
-        </div>
-      </div>
-    </app-filtro>
-  </div>
-
-  <div [ngClass]="colTabla">
-
-    <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden"
-      [columnaOrden]="parametros.sort" [orden]="parametros.order"
-      (orderChange)="cambioOrden($event)" (sortChange)="cambioColumnaOrden($event)">
-    </app-cabezal-consulta>
-
-    <!-- Mostrar pliegos -->
-    <ng-container *ngIf="mostrandoPliegos">
-      <div *ngFor="let pliego of pliegos; let i = index" class="row" [style.position]="'relative'" [style.z-index]="8000-i">
-        <div class="col-12 my-1">
-          <div class="card">
-            <div class="px-3 py-2">
-              <div class="row g-0 py-1 px-3">
-                <div class="col-md-2 col-lg-2 etiqueta">Modelo base</div>
-                <div class="col-md-7 col-lg-7 font-weight-bold">
-                  {{ pliego.modelo.denominacion }}
-                  <span class="badge ml-2" *ngIf="!esBorradorPliego(pliego)" [ngClass]="{
-                    'badge-success': obtenerEstadoVigenciaPliego(pliego) === 'VIGENTE',
-                    'badge-cancel': obtenerEstadoVigenciaPliego(pliego) === 'NO_VIGENTE'
-                  }">
-                    {{ obtenerTextoEstadoVigenciaPliego(pliego) }}
-                  </span>
-                  <span *ngIf="esBorradorPliego(pliego)" class="badge badge-info ml-2">
-                    Borrador
-                  </span>
-                </div>
-                <div class="col-md-2 col-lg-3 d-flex justify-content-end">
-                  <app-boton-accion
-                    [acciones]="obtenerAccionesPliego(pliego)"
-                    [ariaLabelMasOpciones]="'Más opciones del pliego ' + pliego.numeroCompra + '/' + pliego.anioCompra"
-                    (accionEjecutada)="$event.accion && $event.accion()">
-                  </app-boton-accion>
-                </div>
-              </div>
-
-              <div class="row g-0 py-1 px-3">
-                <div class="col-md-2 col-lg-2 etiqueta">Organismo</div>
-                <div class="col-md-10 col-lg-10 font-weight-bold">{{ pliego.unidadEjecutora.inciso?.descInciso }} | {{ pliego.unidadEjecutora.descUnidadEjecutora }}</div>
-              </div>
-
-              <div class="row g-0 py-1 px-3">
-                <div class="col-md-2 col-lg-2 etiqueta">Tipo compra</div>
-                <div class="col-md-10 col-lg-10 font-weight-bold">
-                  {{ pliego.subtipoCompra.descTipoCompra }} | {{ pliego.subtipoCompra.descSubtipoCompra }} N° {{ pliego.numeroCompra }}/{{ pliego.anioCompra }}
-                </div>
-              </div>
-
-              <div class="row g-0 py-1 px-3">
-                <div class="col-md-2 col-lg-2 etiqueta">Apertura electrónica</div>
-                <div class="col-md-1 col-lg-1 font-weight-bold">{{ obtenerTextoAperturaElectronica(pliego.aperturaElectronica) }}</div>
-                <div class="col-md-2 col-lg-2 etiqueta">Cantidad etapas</div>
-                <div class="col-md-2 col-lg-2 font-weight-bold">1</div>
-              </div>
-
-              <div class="row g-0 py-1 px-3">
-                <div class="col-md-2 col-lg-2 fw-semibold etiqueta">Fecha publicación</div>
-                <div class="col-md-10 col-lg-10 font-weight-bold">{{ pliego.fechaPublicacion | date:'dd/MM/yyyy' }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </ng-container>
-
-    <!-- Mostrar modelos -->
-    <ng-container *ngIf="!mostrandoPliegos">
-      <div *ngFor="let modelo of modelos" class="row">
-      <div class="col-12 my-1">
-        <div class="card">
-          <div class="d-flex justify-content-between align-items-center border-bottom px-3 py-2">
-            <div>
-              <span class="font-weight-bold">{{ modelo.denominacion }}</span>
-              <span class="badge ml-2" *ngIf="!esBorrador(modelo)" [ngClass]="{
-                'badge-success': obtenerEstadoVigencia(modelo) === 'VIGENTE',
-                'badge-cancel': obtenerEstadoVigencia(modelo) === 'NO_VIGENTE'
-              }">
-                {{ obtenerTextoEstadoVigencia(modelo) }}
-              </span>
-              <span *ngIf="esBorrador(modelo)" class="badge badge-info ml-1">
-                Borrador
-              </span>
-            </div>
-            <div>
-              <button type="button" class="btn btn-success" (click)="seleccionarModelo(modelo)">
-                <em class="fa fa-check mr-1"></em> Seleccionar
-              </button>
-            </div>
-          </div>
-
-          <div class="px-3 py-2">
-            <div class="row g-0 py-1 px-3">
-              <div class="col-md-2 col-lg-2 etiqueta">Vigencia</div>
-              <div class="col-md-8 col-lg-8 font-weight-bold">{{ obtenerTextoVigencia(modelo) }}</div>
-              <div class="col-md-2 col-lg-2 font-weight-bold text-right" *ngIf="!esBorrador(modelo)">Versión: {{ modelo.version }}</div>
-            </div>
-
-            <div class="row g-0 py-1 px-3">
-              <div class="col-md-2 col-lg-2 etiqueta">Tipos de compra</div>
-              <div class="col-md-10 col-lg-10">
-                <div *ngIf="modelo.tiposCompra && modelo.tiposCompra.length > 0">
-                  <div *ngFor="let tc of modelo.tiposCompra" class="mb-1">
-                    <span class="font-weight-bold">{{ tc.tipoCompra.descTipoCompra }}</span>
-                    <span class="font-weight-bold"> | {{ tc.subtipoCompra?.descSubtipoCompra || 'Todos los subtipos' }}</span>
-                  </div>
-                </div>
-                <span *ngIf="!modelo.tiposCompra || modelo.tiposCompra.length === 0" class="font-weight-bold"> Todas</span>
-              </div>
-            </div>
-
-            <div class="row g-0 py-1 px-3">
-              <div class="col-md-2 col-lg-2 etiqueta">Organismos</div>
-              <div class="col-md-10 col-lg-10">
-                <div *ngIf="modelo.organismo" class="mb-1 font-weight-bold">
-                  {{ modelo.organismo.inciso.descInciso }}<span *ngIf="modelo.organismo.unidadEjecutora"> | {{ modelo.organismo.unidadEjecutora.descUnidadEjecutora }}</span>
-                </div>
-                <span *ngIf="!modelo.organismo" class="font-weight-bold"> Todos</span>
-              </div>
-            </div>
-
-            <div *ngIf="modelo.secciones && modelo.secciones.length > 0" class="row g-0 py-2">
-              <div class="col-12">
-                <app-grupo-colapsable
-                  [colapsado]="true"
-                  class="w-100"
-                  classContenido="p-0"
-                  [ariaLabel]="'Mostrar u ocultar secciones del modelo ' + modelo.denominacion">
-                  <titulo>Secciones ({{ modelo.secciones.length }})</titulo>
-                  <contenido>
-                    <div class="px-3 py-2">
-                      <div *ngFor="let seccion of modelo.secciones" class="card mb-2">
-                        <div class="card-body py-2">
-                          <div class="row g-0 mb-2">
-                            <div class="col-md-9">
-                              <span class="font-weight-bold"><em class="fa fa-caret-right m-2"></em> {{ seccion.seccion.denominacion }}</span>
-                            </div>
-                            <div class="col-md-3 text-right">
-                              <span>Versión: {{ seccion.seccion.version }}</span>
-                            </div>
-                          </div>
-
-                          <div *ngIf="seccion.seccion.capitulos && (seccion.seccion.capitulos.length || 0) > 0" class="pl-3">
-                            <div *ngFor="let capitulo of seccion.seccion.capitulos" class="card mb-2">
-                              <div class="card-body py-2">
-                                <div class="row g-0 mb-2">
-                                  <div class="col-md-9">
-                                    <span class="font-weight-bold"><em class="fa fa-angle-right m-2"></em> {{ capitulo.capitulo.denominacion }}</span>
-                                  </div>
-                                  <div class="col-md-3 text-right">
-                                    <span>Versión: {{ capitulo.capitulo.version }}</span>
-                                  </div>
-                                </div>
-                                <div *ngIf="capitulo.capitulo.clausulas && (capitulo.capitulo.clausulas.length || 0) > 0" class="pl-3">
-                                  <div *ngFor="let clausula of capitulo.capitulo.clausulas" class="card mb-1">
-                                    <div class="card-body py-1 px-2">
-                                      <div class="row g-0">
-                                        <div class="col-md-1 text-center">
-                                            <button title="Menú de acciones" *ngFor="let accion of obtenerAccionesClausula(clausula.clausula)"
-                                            type="button"
-                                            [class]="accion.clase"
-                                            [attr.aria-label]="accion.ariaLabel"
-                                            (click)="accion.accion && accion.accion()">
-                                            <em [class]="accion.icono"></em>
-                                          </button>
-                                        </div>
-                                        <div class="col-md-7">{{ clausula.clausula.denominacion }}</div>
-                                        <div class="col-md-4 text-right">Versión: {{ clausula.clausula.version }}</div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div *ngIf="seccion.seccion.clausulas && (seccion.seccion.clausulas.length || 0) > 0" class="pl-3">
-                            <div *ngFor="let clausula of seccion.seccion.clausulas" class="card mb-1">
-                              <div class="card-body py-1 px-2">
-                                <div class="row g-0">
-                                  <div class="col-md-1 text-center">
-                                      <button title="Menú de acciones"
-                                      *ngFor="let accion of obtenerAccionesClausula(clausula.clausula)"
-                                      type="button"
-                                      [class]="accion.clase"
-                                      [attr.aria-label]="accion.ariaLabel"
-                                      (click)="accion.accion && accion.accion()">
-                                      <em [class]="accion.icono"></em>
-                                    </button>
-                                  </div>
-                                  <div class="col-md-7">{{ clausula.clausula.denominacion }}</div>
-                                  <div class="col-md-4 text-right">Versión: {{ clausula.clausula.version }}</div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+    <div class="row">
+        <div [ngClass]="colFiltro" class="sidebar">
+            <app-filtro
+                title="Búsqueda"
+                titleBtn="Buscar"
+                iconTitle="fa fa-search"
+                (evFilter)="actualizarFiltrosYBuscar()"
+            >
+                <div
+                    [formGroup]="formularioFiltro"
+                    class="col-12 ml-0 pl-0 mr-0 pr-0"
+                >
+                    <div class="row">
+                        <div class="form-group form-row col-12 m-0 pb-0">
+                            <label
+                                for="tipoBusqueda"
+                                class="col-form-label col-12"
+                                >Tipo búsqueda</label
+                            >
+                            <select
+                                class="form-control col-12"
+                                id="tipoBusqueda"
+                                formControlName="tipoBusqueda"
+                            >
+                                <option value="null">Todas</option>
+                                <option value="M">Modelos</option>
+                                <option value="P">
+                                    Pliegos de mi organismo
+                                </option>
+                                <option value="PO">
+                                    Pliegos de otros organismos
+                                </option>
+                            </select>
                         </div>
-                      </div>
                     </div>
-                  </contenido>
-                </app-grupo-colapsable>
-              </div>
-            </div>
-          </div>
+
+                    <div class="row">
+                        <div class="form-group form-row col-12 m-0 pb-0">
+                            <label for="incisoId" class="col-form-label col-12"
+                                >Inciso</label
+                            >
+                            <select
+                                class="form-control col-12"
+                                id="incisoId"
+                                formControlName="incisoId"
+                            >
+                                <option [ngValue]="null">
+                                    Todos los incisos
+                                </option>
+                                <option
+                                    *ngFor="let inciso of incisos"
+                                    [ngValue]="inciso.id"
+                                >
+                                    {{ inciso.codigo }} -
+                                    {{ inciso.descripcion }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group form-row col-12 m-0 pb-0">
+                            <label
+                                for="unidadEjecutoraId"
+                                class="col-form-label col-12"
+                                >Unidad Ejecutora</label
+                            >
+                            <select
+                                class="form-control col-12"
+                                id="unidadEjecutoraId"
+                                formControlName="unidadEjecutoraId"
+                            >
+                                <option [ngValue]="null">
+                                    Todas las unidades ejecutoras
+                                </option>
+                                <option
+                                    *ngFor="let ue of unidadesEjecutoras"
+                                    [ngValue]="ue.id"
+                                >
+                                    {{ ue.codigo }} - {{ ue.descripcion }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group form-row col-12 m-0 pb-0">
+                            <label
+                                for="denominacion"
+                                class="col-form-label col-12"
+                                >Denominación modelo</label
+                            >
+                            <input
+                                type="text"
+                                class="form-control col-12"
+                                id="denominacion"
+                                formControlName="denominacion"
+                                placeholder="Ingrese denominación"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="clean-filter col-12">
+                            <button
+                                type="button"
+                                class="btn btn-link"
+                                (click)="nuevaConsulta()"
+                            >
+                                Nueva consulta
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </app-filtro>
         </div>
-      </div>
-      </div>
-    </ng-container>
 
-    <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina"
-      [paginaActual]="parametros.pagina + 1" (cambioPagina)="cambioPagina($event)"
-      (cambioItemsPorPagina)="cambioPorPagina($event)">
-    </app-paginado>
+        <div [ngClass]="colTabla">
+            <app-cabezal-consulta
+                [totalItems]="total"
+                [listaOrden]="listaOrden"
+                [columnaOrden]="parametros.sort"
+                [orden]="parametros.order"
+                (orderChange)="cambioOrden($event)"
+                (sortChange)="cambioColumnaOrden($event)"
+            >
+            </app-cabezal-consulta>
 
-    <div class="btn-back d-flex justify-content-end mt-4">
-      <button class="btn btn-link" type="button" (click)="volver()"><em class="fa fa-arrow-left mr-1"></em>
-        Volver
-      </button>
+            <!-- Mostrar pliegos -->
+            <ng-container *ngIf="mostrandoPliegos">
+                <div
+                    *ngFor="let pliego of pliegos; let i = index"
+                    class="row"
+                    [style.position]="'relative'"
+                    [style.z-index]="8000 - i"
+                >
+                    <div class="col-12 my-1">
+                        <div class="card">
+                            <div class="px-3 py-2">
+                                <div class="row g-0 py-1 px-3">
+                                    <div class="col-md-2 col-lg-2 etiqueta">
+                                        Modelo base
+                                    </div>
+                                    <div
+                                        class="col-md-7 col-lg-7 font-weight-bold"
+                                    >
+                                        {{ pliego.modelo.denominacion }}
+                                        <span
+                                            class="badge ml-2"
+                                            *ngIf="!esBorradorPliego(pliego)"
+                                            [ngClass]="{
+                                                'badge-success':
+                                                    obtenerEstadoVigenciaPliego(
+                                                        pliego
+                                                    ) === 'VIGENTE',
+                                                'badge-cancel':
+                                                    obtenerEstadoVigenciaPliego(
+                                                        pliego
+                                                    ) === 'NO_VIGENTE',
+                                            }"
+                                        >
+                                            {{
+                                                obtenerTextoEstadoVigenciaPliego(
+                                                    pliego
+                                                )
+                                            }}
+                                        </span>
+                                        <span
+                                            *ngIf="esBorradorPliego(pliego)"
+                                            class="badge badge-info ml-2"
+                                        >
+                                            Borrador
+                                        </span>
+                                    </div>
+                                    <div
+                                        class="col-md-2 col-lg-3 d-flex justify-content-end"
+                                    >
+                                        <app-boton-accion
+                                            [acciones]="
+                                                obtenerAccionesPliego(pliego)
+                                            "
+                                            [ariaLabelMasOpciones]="
+                                                'Más opciones del pliego ' +
+                                                pliego.numeroCompra +
+                                                '/' +
+                                                pliego.anioCompra
+                                            "
+                                            (accionEjecutada)="
+                                                $event.accion && $event.accion()
+                                            "
+                                        >
+                                        </app-boton-accion>
+                                    </div>
+                                </div>
+
+                                <div class="row g-0 py-1 px-3">
+                                    <div class="col-md-2 col-lg-2 etiqueta">
+                                        Organismo
+                                    </div>
+                                    <div
+                                        class="col-md-10 col-lg-10 font-weight-bold"
+                                    >
+                                        {{
+                                            pliego.unidadEjecutora.inciso
+                                                ?.descInciso
+                                        }}
+                                        |
+                                        {{
+                                            pliego.unidadEjecutora
+                                                .descUnidadEjecutora
+                                        }}
+                                    </div>
+                                </div>
+
+                                <div class="row g-0 py-1 px-3">
+                                    <div class="col-md-2 col-lg-2 etiqueta">
+                                        Tipo compra
+                                    </div>
+                                    <div
+                                        class="col-md-10 col-lg-10 font-weight-bold"
+                                    >
+                                        {{
+                                            pliego.subtipoCompra.descTipoCompra
+                                        }}
+                                        |
+                                        {{
+                                            pliego.subtipoCompra
+                                                .descSubtipoCompra
+                                        }}
+                                        N° {{ pliego.numeroCompra }}/{{
+                                            pliego.anioCompra
+                                        }}
+                                    </div>
+                                </div>
+
+                                <div class="row g-0 py-1 px-3">
+                                    <div class="col-md-2 col-lg-2 etiqueta">
+                                        Apertura electrónica
+                                    </div>
+                                    <div
+                                        class="col-md-1 col-lg-1 font-weight-bold"
+                                    >
+                                        {{
+                                            obtenerTextoAperturaElectronica(
+                                                pliego.aperturaElectronica
+                                            )
+                                        }}
+                                    </div>
+                                    <div class="col-md-2 col-lg-2 etiqueta">
+                                        Cantidad etapas
+                                    </div>
+                                    <div
+                                        class="col-md-2 col-lg-2 font-weight-bold"
+                                    >
+                                        1
+                                    </div>
+                                </div>
+
+                                <div class="row g-0 py-1 px-3">
+                                    <div
+                                        class="col-md-2 col-lg-2 fw-semibold etiqueta"
+                                    >
+                                        Fecha publicación
+                                    </div>
+                                    <div
+                                        class="col-md-10 col-lg-10 font-weight-bold"
+                                    >
+                                        {{
+                                            pliego.fechaPublicacion
+                                                | date: "dd/MM/yyyy"
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- Mostrar modelos -->
+            <ng-container *ngIf="!mostrandoPliegos">
+                <div *ngFor="let modelo of modelos" class="row">
+                    <div class="col-12 my-1">
+                        <div class="card">
+                            <div
+                                class="d-flex justify-content-between align-items-center border-bottom px-3 py-2"
+                            >
+                                <div>
+                                    <span class="font-weight-bold">{{
+                                        modelo.denominacion
+                                    }}</span>
+                                    <span
+                                        class="badge ml-2"
+                                        *ngIf="!esBorrador(modelo)"
+                                        [ngClass]="{
+                                            'badge-success':
+                                                obtenerEstadoVigencia(
+                                                    modelo
+                                                ) === 'VIGENTE',
+                                            'badge-cancel':
+                                                obtenerEstadoVigencia(
+                                                    modelo
+                                                ) === 'NO_VIGENTE',
+                                        }"
+                                    >
+                                        {{ obtenerTextoEstadoVigencia(modelo) }}
+                                    </span>
+                                    <span
+                                        *ngIf="esBorrador(modelo)"
+                                        class="badge badge-info ml-1"
+                                    >
+                                        Borrador
+                                    </span>
+                                </div>
+                                <div>
+                                    <button
+                                        type="button"
+                                        class="btn btn-success"
+                                        (click)="seleccionarModelo(modelo)"
+                                    >
+                                        <em class="fa fa-check mr-1"></em>
+                                        Seleccionar
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="px-3 py-2">
+                                <div class="row g-0 py-1 px-3">
+                                    <div class="col-md-2 col-lg-2 etiqueta">
+                                        Vigencia
+                                    </div>
+                                    <div
+                                        class="col-md-8 col-lg-8 font-weight-bold"
+                                    >
+                                        {{ obtenerTextoVigencia(modelo) }}
+                                    </div>
+                                    <div
+                                        class="col-md-2 col-lg-2 font-weight-bold text-right"
+                                        *ngIf="!esBorrador(modelo)"
+                                    >
+                                        Versión: {{ modelo.version }}
+                                    </div>
+                                </div>
+
+                                <div class="row g-0 py-1 px-3">
+                                    <div class="col-md-2 col-lg-2 etiqueta">
+                                        Tipos de compra
+                                    </div>
+                                    <div class="col-md-10 col-lg-10">
+                                        <div
+                                            *ngIf="
+                                                modelo.tiposCompra &&
+                                                modelo.tiposCompra.length > 0
+                                            "
+                                        >
+                                            <div
+                                                *ngFor="
+                                                    let tc of modelo.tiposCompra
+                                                "
+                                                class="mb-1"
+                                            >
+                                                <span
+                                                    class="font-weight-bold"
+                                                    >{{
+                                                        tc.tipoCompra
+                                                            .descTipoCompra
+                                                    }}</span
+                                                >
+                                                <span class="font-weight-bold">
+                                                    |
+                                                    {{
+                                                        tc.subtipoCompra
+                                                            ?.descSubtipoCompra ||
+                                                            "Todos los subtipos"
+                                                    }}</span
+                                                >
+                                            </div>
+                                        </div>
+                                        <span
+                                            *ngIf="
+                                                !modelo.tiposCompra ||
+                                                modelo.tiposCompra.length === 0
+                                            "
+                                            class="font-weight-bold"
+                                        >
+                                            Todas</span
+                                        >
+                                    </div>
+                                </div>
+
+                                <div class="row g-0 py-1 px-3">
+                                    <div class="col-md-2 col-lg-2 etiqueta">
+                                        Organismos
+                                    </div>
+                                    <div class="col-md-10 col-lg-10">
+                                        <div
+                                            *ngIf="modelo.organismo"
+                                            class="mb-1 font-weight-bold"
+                                        >
+                                            {{
+                                                modelo.organismo.inciso
+                                                    .descInciso
+                                            }}<span
+                                                *ngIf="
+                                                    modelo.organismo
+                                                        .unidadEjecutora
+                                                "
+                                            >
+                                                |
+                                                {{
+                                                    modelo.organismo
+                                                        .unidadEjecutora
+                                                        .descUnidadEjecutora
+                                                }}</span
+                                            >
+                                        </div>
+                                        <span
+                                            *ngIf="!modelo.organismo"
+                                            class="font-weight-bold"
+                                        >
+                                            Todos</span
+                                        >
+                                    </div>
+                                </div>
+
+                                <div
+                                    *ngIf="
+                                        modelo.secciones &&
+                                        modelo.secciones.length > 0
+                                    "
+                                    class="row g-0 py-2"
+                                >
+                                    <div class="col-12">
+                                        <app-grupo-colapsable
+                                            [colapsado]="true"
+                                            class="w-100"
+                                            classContenido="p-0"
+                                            [ariaLabel]="
+                                                'Mostrar u ocultar secciones del modelo ' +
+                                                modelo.denominacion
+                                            "
+                                        >
+                                            <titulo
+                                                >Secciones ({{
+                                                    modelo.secciones.length
+                                                }})</titulo
+                                            >
+                                            <contenido>
+                                                <div class="px-3 py-2">
+                                                    <div
+                                                        *ngFor="
+                                                            let seccion of modelo.secciones
+                                                        "
+                                                        class="card mb-2"
+                                                    >
+                                                        <div
+                                                            class="card-body py-2"
+                                                        >
+                                                            <div
+                                                                class="row g-0 mb-2"
+                                                            >
+                                                                <div
+                                                                    class="col-md-9"
+                                                                >
+                                                                    <span
+                                                                        class="font-weight-bold"
+                                                                        ><em
+                                                                            class="fa fa-caret-right m-2"
+                                                                        ></em>
+                                                                        {{
+                                                                            seccion
+                                                                                .seccion
+                                                                                .denominacion
+                                                                        }}</span
+                                                                    >
+                                                                </div>
+                                                                <div
+                                                                    class="col-md-3 text-right"
+                                                                >
+                                                                    <span
+                                                                        >Versión:
+                                                                        {{
+                                                                            seccion
+                                                                                .seccion
+                                                                                .version
+                                                                        }}</span
+                                                                    >
+                                                                </div>
+                                                            </div>
+
+                                                            <div
+                                                                *ngIf="
+                                                                    seccion
+                                                                        .seccion
+                                                                        .capitulos &&
+                                                                    (seccion
+                                                                        .seccion
+                                                                        .capitulos
+                                                                        .length ||
+                                                                        0) > 0
+                                                                "
+                                                                class="pl-3"
+                                                            >
+                                                                <div
+                                                                    *ngFor="
+                                                                        let capitulo of seccion
+                                                                            .seccion
+                                                                            .capitulos
+                                                                    "
+                                                                    class="card mb-2"
+                                                                >
+                                                                    <div
+                                                                        class="card-body py-2"
+                                                                    >
+                                                                        <div
+                                                                            class="row g-0 mb-2"
+                                                                        >
+                                                                            <div
+                                                                                class="col-md-9"
+                                                                            >
+                                                                                <span
+                                                                                    class="font-weight-bold"
+                                                                                    ><em
+                                                                                        class="fa fa-angle-right m-2"
+                                                                                    ></em>
+                                                                                    {{
+                                                                                        capitulo
+                                                                                            .capitulo
+                                                                                            .denominacion
+                                                                                    }}</span
+                                                                                >
+                                                                            </div>
+                                                                            <div
+                                                                                class="col-md-3 text-right"
+                                                                            >
+                                                                                <span
+                                                                                    >Versión:
+                                                                                    {{
+                                                                                        capitulo
+                                                                                            .capitulo
+                                                                                            .version
+                                                                                    }}</span
+                                                                                >
+                                                                            </div>
+                                                                        </div>
+                                                                        <div
+                                                                            *ngIf="
+                                                                                capitulo
+                                                                                    .capitulo
+                                                                                    .clausulas &&
+                                                                                (capitulo
+                                                                                    .capitulo
+                                                                                    .clausulas
+                                                                                    .length ||
+                                                                                    0) >
+                                                                                    0
+                                                                            "
+                                                                            class="pl-3"
+                                                                        >
+                                                                            <div
+                                                                                *ngFor="
+                                                                                    let clausula of capitulo
+                                                                                        .capitulo
+                                                                                        .clausulas
+                                                                                "
+                                                                                class="card mb-1"
+                                                                            >
+                                                                                <div
+                                                                                    class="card-body py-1 px-2"
+                                                                                >
+                                                                                    <div
+                                                                                        class="row g-0"
+                                                                                    >
+                                                                                        <div
+                                                                                            class="col-md-1 text-center"
+                                                                                        >
+                                                                                            <button
+                                                                                                title="Menú de acciones"
+                                                                                                *ngFor="
+                                                                                                    let accion of obtenerAccionesClausula(
+                                                                                                        clausula.clausula
+                                                                                                    )
+                                                                                                "
+                                                                                                type="button"
+                                                                                                [class]="
+                                                                                                    accion.clase
+                                                                                                "
+                                                                                                [attr.aria-label]="
+                                                                                                    accion.ariaLabel
+                                                                                                "
+                                                                                                (click)="
+                                                                                                    accion.accion &&
+                                                                                                        accion.accion()
+                                                                                                "
+                                                                                            >
+                                                                                                <em
+                                                                                                    [class]="
+                                                                                                        accion.icono
+                                                                                                    "
+                                                                                                ></em>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        <div
+                                                                                            class="col-md-7"
+                                                                                        >
+                                                                                            {{
+                                                                                                clausula
+                                                                                                    .clausula
+                                                                                                    .denominacion
+                                                                                            }}
+                                                                                        </div>
+                                                                                        <div
+                                                                                            class="col-md-4 text-right"
+                                                                                        >
+                                                                                            Versión:
+                                                                                            {{
+                                                                                                clausula
+                                                                                                    .clausula
+                                                                                                    .version
+                                                                                            }}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div
+                                                                *ngIf="
+                                                                    seccion
+                                                                        .seccion
+                                                                        .clausulas &&
+                                                                    (seccion
+                                                                        .seccion
+                                                                        .clausulas
+                                                                        .length ||
+                                                                        0) > 0
+                                                                "
+                                                                class="pl-3"
+                                                            >
+                                                                <div
+                                                                    *ngFor="
+                                                                        let clausula of seccion
+                                                                            .seccion
+                                                                            .clausulas
+                                                                    "
+                                                                    class="card mb-1"
+                                                                >
+                                                                    <div
+                                                                        class="card-body py-1 px-2"
+                                                                    >
+                                                                        <div
+                                                                            class="row g-0"
+                                                                        >
+                                                                            <div
+                                                                                class="col-md-1 text-center"
+                                                                            >
+                                                                                <button
+                                                                                    title="Menú de acciones"
+                                                                                    *ngFor="
+                                                                                        let accion of obtenerAccionesClausula(
+                                                                                            clausula.clausula
+                                                                                        )
+                                                                                    "
+                                                                                    type="button"
+                                                                                    [class]="
+                                                                                        accion.clase
+                                                                                    "
+                                                                                    [attr.aria-label]="
+                                                                                        accion.ariaLabel
+                                                                                    "
+                                                                                    (click)="
+                                                                                        accion.accion &&
+                                                                                            accion.accion()
+                                                                                    "
+                                                                                >
+                                                                                    <em
+                                                                                        [class]="
+                                                                                            accion.icono
+                                                                                        "
+                                                                                    ></em>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div
+                                                                                class="col-md-7"
+                                                                            >
+                                                                                {{
+                                                                                    clausula
+                                                                                        .clausula
+                                                                                        .denominacion
+                                                                                }}
+                                                                            </div>
+                                                                            <div
+                                                                                class="col-md-4 text-right"
+                                                                            >
+                                                                                Versión:
+                                                                                {{
+                                                                                    clausula
+                                                                                        .clausula
+                                                                                        .version
+                                                                                }}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </contenido>
+                                        </app-grupo-colapsable>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <app-paginado
+                [totalItems]="total"
+                [itemsPorPagina]="parametros.tamanoPagina"
+                [paginaActual]="parametros.pagina + 1"
+                (cambioPagina)="cambioPagina($event)"
+                (cambioItemsPorPagina)="cambioPorPagina($event)"
+            >
+            </app-paginado>
+
+            <div class="btn-back d-flex justify-content-end mt-4">
+                <button class="btn btn-link" type="button" (click)="volver()">
+                    <em class="fa fa-arrow-left mr-1"></em>
+                    Volver
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
-
-  </div>
 </div>
-
-
-
-
-

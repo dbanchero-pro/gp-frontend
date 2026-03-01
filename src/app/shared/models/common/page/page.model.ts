@@ -1,7 +1,7 @@
 import { SortModel } from './sort.model';
 
 export interface PageModel<T> {
-    page: any,
+    page: any;
     content: T[];
     totalPages: number;
     totalElements: number;

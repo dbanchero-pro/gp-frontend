@@ -1,351 +1,642 @@
 ﻿<div class="container-fluid">
-<div class="row">
-  <div class="col-md-8 ml-0 pl-0 mr-0 pr-0">
-    <h4><em class="fa fa-edit mr-2"></em>Elaborar pliego</h4>
-    <h6>Trabaje en la elaboración del pliego modificando o agregando clÃ¡usulas, anexos o notas</h6>
-  </div>
-</div>
-
-
-<div class="row" *ngIf="pliego">
-  <div class="col-12 ml-0 pl-0 mr-0 pr-0">
-    <div class="Box Box--colorInfo">
-      <div class="row">
-        <div class="col-9 ml-3 pl-0 mr-0 pr-0 mb-2 font-weight-bold subtitle">
-          {{ obtenerTextoOrganismoPliego() }}
+    <div class="row">
+        <div class="col-md-8 ml-0 pl-0 mr-0 pr-0">
+            <h4><em class="fa fa-edit mr-2"></em>Elaborar pliego</h4>
+            <h6>
+                Trabaje en la elaboración del pliego modificando o agregando
+                clÃ¡usulas, anexos o notas
+            </h6>
         </div>
-        <div class="col-2 ml-0 pl-0 mr-0 pr-0 mb-2 text-right">
-          <span class="badge" [ngClass]="{
+    </div>
+
+    <div class="row" *ngIf="pliego">
+        <div class="col-12 ml-0 pl-0 mr-0 pr-0">
+            <div class="Box Box--colorInfo">
+                <div class="row">
+                    <div
+                        class="col-9 ml-3 pl-0 mr-0 pr-0 mb-2 font-weight-bold subtitle"
+                    >
+                        {{ obtenerTextoOrganismoPliego() }}
+                    </div>
+                    <div class="col-2 ml-0 pl-0 mr-0 pr-0 mb-2 text-right">
+                        <span
+                            class="badge"
+                            [ngClass]="{
             'badge-info': pliego.estado === 'Pendiente' || pliego.estado === 'Asignado',
             'badge-success': pliego.estado === EstadoProcesoPliego.EN_PROCESO,
             'badge-warning': pliego.estado === EstadoProcesoPliego.PENDIENTE_VALIDACION,
             'badge-primary': pliego.estado === EstadoProcesoPliego.APROBADO
-          }">
-            {{ obtenerTextoEstado(pliego.estado) }}
-          </span>
-          <span class="ml-2">
-                <small><strong>Versión: 1</strong></small>
-          </span>
-        </div>
-      </div>
-        
-      <div class="mb-2">
-        <span class="mb-2 font-weight-bold">
-        {{ obtenerTextoTipoCompraPliego() }}
-        </span>
-      <span>
-         | Apertura electrónica: <strong>{{ aperturaElectronica }}</strong>
-         | Cantidad de etapas: <strong>1</strong></span>
-      </div>
-      <div class="mb-2 pt-2"> Modelo usado:
-        <strong>{{ modeloUsado }}</strong>
-      </div>
-
-      <div class="row">
-        <div class="col-12 ml-0 pl-0 mr-0 pr-0 mb-2">
-          <div class="text-right">
-            <button type="button" class="btn btn-link-rojo mr-2"> Volver a iniciar pliego </button>
-            <button type="button" class="btn btn-success mr-2"> Solicitar validación </button>
-            <button type="button" class="btn btn-success mr-2" *ngIf="esValidador"> Solicitar aprobación </button>
-            <button type="button" class="btn btn-primary mr-2"> Pre validar </button>
-            <button type="button" class="btn btn-primary mr-2"> Pre visualizar </button>
-            <button type="button" class="btn btn-primary mr-2"> Solicitar modificación modelo </button>
-            <button type="button" class="btn btn-primary mr-2"> Usuarios </button>
-            <button type="button" class="btn btn-primary mr-2"> Historial </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div [ngClass]="colNavegacion">
-    <div class="panel mr-2">
-      <div class="panel-header" [class.contraido]="panelNavegacionContraido">
-        <em class="fa fa-list"></em><h5 class="panel-title" *ngIf="!panelNavegacionContraido">Navegación</h5>
-        <button title="Expandir/Colapsar panel" type="button" class="btn-toggle-panel" (click)="togglePanelNavegacion()"
-                [title]="panelNavegacionContraido ? 'Expandir panel' : 'Contraer panel'">
-          <em [ngClass]="panelNavegacionContraido ? 'fa fa-expand' : 'fa fa-compress'"></em>
-        </button>
-      </div>
-      <div class="panel-body" [class.d-none]="panelNavegacionContraido">
-        <ul class="nav-list">
-           
-           <li class="nav-item" onkeydown="" [class.active]="seccionActiva === 'resolucion'" (click)="seleccionarSeccion('resolucion')">
-            <em class="fa fa-id-card-o m-2"></em>
-            <span>Resolución</span>
-          </li>
-          <li class="nav-divider"></li>
-          <li class="nav-item" onkeydown="" [class.active]="seccionActiva === 'caratula'" (click)="seleccionarSeccion('caratula')">
-            <em class="fa fa-bookmark m-2"></em>
-            <span>CarÃ¡tula</span>
-          </li>
-          <li class="nav-divider"></li>
-          <li class="nav-item" onkeydown="" [class.active]="seccionActiva === 'encabezado'" (click)="seleccionarSeccion('encabezado')">
-            <em class="fa fa-book m-2"></em>
-            <span>Encabezado y pie pÃ¡gina</span>
-          </li>
-          <li class="nav-divider"></li>
-          <li class="nav-item" [class.active]="seccionActiva === 'notas'" onkeydown="" (click)="seleccionarSeccion('notas')">
-            <em class="fa fa-sticky-note m-2"></em>
-            <span>Notas</span>
-          </li>
-          <li class="nav-divider"></li>
-          <li class="nav-item" [class.active]="seccionActiva === 'anexos'" onkeydown="" (click)="seleccionarSeccion('anexos')">
-            <em class="fa fa-file m-2"></em>
-            <span>Anexos</span>
-          </li>
-          <li class="nav-divider"></li>
-          <!-- Secciones -->
-          <li class="nav-section" *ngFor="let seccion of secciones; let i = index">
-            <div class="nav-section-header" onkeydown="" (click)="toggleSeccion(i)">
-              <em class="m-2" [ngClass]="seccion.expandida ? 'fa fa-caret-down' : 'fa fa-caret-right'"></em>
-              <span>{{ seccion.nombre }}</span>
-            </div>
-            <ul class="nav-subsection" *ngIf="seccion.expandida">
-              <li class="nav-divider"></li>
-              <!-- CapÃ­tulos -->
-              <li class="nav-subitem" *ngFor="let capitulo of seccion.capitulos; let j = index">
-                <div class="nav-capitulo-header" onkeydown="" (click)="toggleCapitulo(i, j)">
-                  <em class="m-2" [ngClass]="capitulo.expandido ? 'fa fa-angle-down' : 'fa fa-angle-right'"></em>
-                  <span>{{ capitulo.nombre }}</span>
-                </div>
-                <ul class="nav-clausulas" *ngIf="capitulo.expandido">
-                  <!-- ClÃ¡usulas -->
-                  <li class="nav-clausula" onkeydown=""
-                      *ngFor="let clausula of capitulo.clausulas"
-                      [class.active]="clausulaActiva === clausula.id"
-                      [class.bloqueada]="clausula.bloqueada"
-                      (click)="seleccionarClausula(clausula)">
-                    <em class="fa fa-pencil m-2" *ngIf="!clausula.bloqueada && clausula.editable"></em>
-                    <em class="fa fa-lock m-2" *ngIf="clausula.bloqueada"></em>
-                    <em class="fa fa-ban m-2" *ngIf="!clausula.bloqueada && !clausula.editable"></em>
-                    <span>{{ clausula.nombre }}</span>
-                  </li>
-                  <li class="nav-divider"></li>
-                  <li class="nav-clausula" onkeydown="">
-                    <button type="button" class="btn btn-link">
-                      <em class="fa fa-plus mr-2"></em>Agregar clÃ¡usula
-                    </button>
-                  </li>
-                   <li class="nav-divider"></li>
-                </ul>
-              </li>
-               <li class="nav-clausula" onkeydown="" *ngIf="seccion.soloClausulas">
-                    <button type="button" class="btn btn-link">
-                      <em class="fa fa-plus mr-2"></em>Agregar clÃ¡usula
-                    </button>
-                  </li>
-              <li class="nav-divider"></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div [ngClass]="colEdicion">
-    <div class="panel">
-      <div class="panel-header" [class.contraido]="panelEdicionContraido">
-        <em class="fa fa-edit mr-2"></em><h5 class="panel-title" *ngIf="!panelEdicionContraido">{{ tituloEdicion }}</h5>
-        <span *ngIf="!panelEdicionContraido && clausulaActiva !== null && clausulaSeleccionada" class="etiqueta text-right">
-          <small><strong>Obligatoria</strong></small>
-        </span>
-        <span *ngIf="!panelEdicionContraido && clausulaActiva !== null && clausulaSeleccionada" class="etiqueta  text-right">
-          <small><strong>No editable</strong></small>
-        </span>
-
-        <button title="Expandir/Colapsar panel" type="button" class="btn-toggle-panel" (click)="togglePanelEdicion()"
-                [title]="panelEdicionContraido ? 'Expandir panel' : 'Contraer panel'">
-           <em [ngClass]="panelEdicionContraido ? 'fa fa-expand' : 'fa fa-compress'"></em>
-        </button>
-        
-      </div>
-      <div class="panel-body" [class.d-none]="panelEdicionContraido">
-        <div *ngIf="seccionActiva === null && clausulaActiva === null" class="text-center text-muted py-5">
-          <em class="fa fa-arrow-circle-left mdi-48px mb-3"></em>
-          <h6>Seleccione un elemento del panel de navegación para editar</h6>
-        </div>
-        @if (seccionActiva === 'encabezado') {
-          <div >
-            <div class="form-group">
-              <label for="textoEncabezado" class="etiqueta">Texto encabezado</label>
-              <input id="textoEncabezado" type="text" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="textoPieDePagina"  class="etiqueta">Texto pie de página</label>
-              <input id="textoPieDePagina" type="text" class="form-control">
-            </div>
-          </div>
-        }
-       @else if (seccionActiva === 'resolucion'){
-          <div>
-            <div class="form-group">
-              <div class="mb-3 text-right">
-                <button type="button" class="btn btn-primary mr-3 ">
-                  Adjuntar resolucion
-                </button>
-                <button type="button" class="btn btn-primary">
-                  Buscar modelo
-                </button>
-              </div>
-            </div>                            
-          </div>
-        }
-        @else if (seccionActiva === 'caratula'){
-          <div >
-            <div class="col-12">
-              <div class="row">
-                <div class="col-md-12 ml-0 pl-0 mr-0 pr-0">
-                  <div class="form-group">
-                    <label for="resumenObjetoLlamado" class="etiqueta">* RESUMEN_OBJETO_LLAMADO</label>
-                    <input id="resumenObjetoLlamado" type="text" class="form-control">
-                  </div>
-                  <div class="form-group">
-                    <label for="aperturaOfertasLugar" class="etiqueta">* APERTURA_OFERTAS_LUGAR</label>
-                    <input id="aperturaOfertasLugar" type="text" class="form-control">
-                  </div>
-                  <div class="form-group">
-                    <label for="telefonoComunicacion" class="etiqueta">* TELEFONO_COMUNICACION</label>
-                    <input id="telefonoComunicacion" type="text" class="form-control">
-                  </div>
-                   <div class="form-group">
-                    <label for="correoComunicacion" class="etiqueta">* CORREO_COMUNICACION</label>
-                    <input id="correoComunicacion" type="text" class="form-control">
-                  </div>
-                  <div class="form-group">
-                    <label for="plazoTopeRecepcionOferta" class="etiqueta">* PLAZO_TOPE_RECEPCION_OFERTA</label>
-                    <input id="plazoTopeRecepcionOferta" type="text" class="form-control">
-                  </div>
-                   <div class="form-group">
-                    <label for="plazoActoApertura" class="etiqueta">* PLAZO_ACTO_APERTURA</label>
-                    <input id="plazoActoApertura" type="text" class="form-control">
-                  </div>
-                </div>
-              </div>
-             
-            <div class="m-3 text-right">
-              <button type="button" class="btn btn-primary mr-3">
-                Buscar logo
-              </button>
-              <button type="button" class="btn btn-primary">
-                 Adjuntar logo
-              </button>
-            </div>
-            </div>
-          
-            <div class="mt-3 border-top pt-3 text-right">
-              <button type="button" class="btn btn-primary mr-2"> Guardar </button>
-            </div>
-          </div>
-        }
-        @else if (seccionActiva === 'notas') {
-          <div>
-            <div class="mb-3 text-right">
-              <button type="button" class="btn btn-primary">
-                <em class="fa fa-plus"></em> Agregar nota
-              </button>
-            </div>
-
-            <div class="alert alert-info"> No hay notas agregadas </div>
-          </div>
-        }
-        @else if (seccionActiva === 'anexos') {
-          <div>
-            <div class="mb-3 text-right">
-              <button type="button" class="btn btn-primary">
-                <em class="fa fa-plus"></em> Agregar anexo
-              </button>
-            </div>
-            <div class="alert alert-info"> No hay anexos agregados </div>
-          </div>
-        }
-        @if (clausulaActiva !== null && clausulaSeleccionada) {
-          <div class="pt-0">
-            <div class="row">
-              <div class="col-12 ml-0 pl-0 mr-0 pr-0 pt-0">
-                <app-grupo-colapsable [colapsado]="true" class="pl-0" classTitulo="pl-3" classContenido="ml-0 pl-0 mr-0">
-                  <titulo>Redacciones</titulo>
-                  <contenido>
-                    <div class="col-md-12 p-0">
-                      <table class="table table-hover m-0 align-middle">
-                        <tr>
-                          <td class="text-center" style="width: 100px;">
-                            <input type="checkbox">
-                            <button type="button" class="btn btn-sm"
-                              [attr.aria-label]="'Ver redacción'">
-                              <em class="fa fa-eye"></em>
-                            </button>
-                          </td>
-                          <td>Redacción 1...</td>
-                        </tr>
-                            <tr>
-                          <td class="text-center" style="width: 100px;">
-                            <input type="checkbox">
-                            <button type="button" class="btn btn-sm"
-                              [attr.aria-label]="'Ver redacción'">
-                              <em class="fa fa-eye"></em>
-                            </button>
-                          </td>
-                          <td>Redacción 2...</td>
-                        </tr>                       
-                      </table>
+          }"
+                        >
+                            {{ obtenerTextoEstado(pliego.estado) }}
+                        </span>
+                        <span class="ml-2">
+                            <small><strong>Versión: 1</strong></small>
+                        </span>
                     </div>
-                  </contenido>
-                </app-grupo-colapsable>
-              </div>
-            </div>
+                </div>
 
-            <div class="row">
-              <div class="col-12 ml-0 pl-0 mr-0 pr-0 border-bottom">
-                <app-grupo-colapsable [colapsado]="true" class="pl-0" classTitulo="pl-3" classContenido="ml-0 pl-0 mr-0">
-                  <titulo>Campos personalizados</titulo>
-                  <contenido>
-                    <div class="col-11 m-3">
-                        <!-- Campos personalizados -->
-                        <div class="form-group">
-                          <label for="plazoDias" class="etiqueta">Plazo de entrega</label>
-                          <input id="plazoDias" type="number" class="form-control" placeholder="Ingrese el plazo en dí­as">
-                        </div>
-                        <div class="form-group">
-                          <label for="montoEstimado" class="etiqueta">Monto estimado</label>
-                          <input id="montoEstimado" type="number" class="form-control" placeholder="Ingrese el monto estimado">
+                <div class="mb-2">
+                    <span class="mb-2 font-weight-bold">
+                        {{ obtenerTextoTipoCompraPliego() }}
+                    </span>
+                    <span>
+                        | Apertura electrónica:
+                        <strong>{{ aperturaElectronica }}</strong> | Cantidad de
+                        etapas: <strong>1</strong></span
+                    >
+                </div>
+                <div class="mb-2 pt-2">
+                    Modelo usado:
+                    <strong>{{ modeloUsado }}</strong>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 ml-0 pl-0 mr-0 pr-0 mb-2">
+                        <div class="text-right">
+                            <button
+                                type="button"
+                                class="btn btn-link-rojo mr-2"
+                            >
+                                Volver a iniciar pliego
+                            </button>
+                            <button type="button" class="btn btn-success mr-2">
+                                Solicitar validación
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-success mr-2"
+                                *ngIf="esValidador"
+                            >
+                                Solicitar aprobación
+                            </button>
+                            <button type="button" class="btn btn-primary mr-2">
+                                Pre validar
+                            </button>
+                            <button type="button" class="btn btn-primary mr-2">
+                                Pre visualizar
+                            </button>
+                            <button type="button" class="btn btn-primary mr-2">
+                                Solicitar modificación modelo
+                            </button>
+                            <button type="button" class="btn btn-primary mr-2">
+                                Usuarios
+                            </button>
+                            <button type="button" class="btn btn-primary mr-2">
+                                Historial
+                            </button>
                         </div>
                     </div>
-                  </contenido>
-                </app-grupo-colapsable>
-              </div>
+                </div>
             </div>
-
-            <div class="form-group m-4">
-              <label for="redaccion">* Redacción</label>
-              <app-text-editor></app-text-editor>
-              <small class="form-text text-muted">
-                Para incluir campos personalizados en la redacción, use la sintaxis [[ETIQUETA_CAMPO]]
-              </small>
-            </div>
-         
-            <div class="mt-3 border-top pt-3 text-right" *ngIf="!clausulaSeleccionada.bloqueada">
-              <button type="button" class="btn btn-primary mr-2"> Guardar </button>
-              <button type="button" class="btn btn-primary mr-2" [disabled]="clausulaSeleccionada.bloqueada"> Solicitar modificación</button>
-              <button type="button" class="btn btn-primary mr-2"> Visualizar </button>
-              <button type="button" class="btn btn-primary" [disabled]="clausulaSeleccionada.bloqueada"> Agregar notas </button>
-                <button type="button" class="btn link mr-2"
-                      *ngIf="!clausulaSeleccionada.clausula?.obligatoria && !clausulaSeleccionada.bloqueada"> Eliminar </button>
-            </div>
-          </div>
-        }
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row mt-3 mb-3">
-  <div class="col-12 text-right">
-      <div class="btn-back d-flex justify-content-end">
-            <button class="btn btn-link" type="button" (click)="volver()"><em class="fa fa-arrow-left mr-1"></em>Volver</button>
         </div>
     </div>
-</div>
+
+    <div class="row">
+        <div [ngClass]="colNavegacion">
+            <div class="panel mr-2">
+                <div
+                    class="panel-header"
+                    [class.contraido]="panelNavegacionContraido"
+                >
+                    <em class="fa fa-list"></em>
+                    <h5 class="panel-title" *ngIf="!panelNavegacionContraido">
+                        Navegación
+                    </h5>
+                    <button
+                        title="Expandir/Colapsar panel"
+                        type="button"
+                        class="btn-toggle-panel"
+                        (click)="togglePanelNavegacion()"
+                        [title]="panelNavegacionContraido ? 'Expandir panel' : 'Contraer panel'"
+                    >
+                        <em
+                            [ngClass]="panelNavegacionContraido ? 'fa fa-expand' : 'fa fa-compress'"
+                        ></em>
+                    </button>
+                </div>
+                <div
+                    class="panel-body"
+                    [class.d-none]="panelNavegacionContraido"
+                >
+                    <ul class="nav-list">
+                        <li
+                            class="nav-item"
+                            onkeydown=""
+                            [class.active]="seccionActiva === 'resolucion'"
+                            (click)="seleccionarSeccion('resolucion')"
+                        >
+                            <em class="fa fa-id-card-o m-2"></em>
+                            <span>Resolución</span>
+                        </li>
+                        <li class="nav-divider"></li>
+                        <li
+                            class="nav-item"
+                            onkeydown=""
+                            [class.active]="seccionActiva === 'caratula'"
+                            (click)="seleccionarSeccion('caratula')"
+                        >
+                            <em class="fa fa-bookmark m-2"></em>
+                            <span>CarÃ¡tula</span>
+                        </li>
+                        <li class="nav-divider"></li>
+                        <li
+                            class="nav-item"
+                            onkeydown=""
+                            [class.active]="seccionActiva === 'encabezado'"
+                            (click)="seleccionarSeccion('encabezado')"
+                        >
+                            <em class="fa fa-book m-2"></em>
+                            <span>Encabezado y pie pÃ¡gina</span>
+                        </li>
+                        <li class="nav-divider"></li>
+                        <li
+                            class="nav-item"
+                            [class.active]="seccionActiva === 'notas'"
+                            onkeydown=""
+                            (click)="seleccionarSeccion('notas')"
+                        >
+                            <em class="fa fa-sticky-note m-2"></em>
+                            <span>Notas</span>
+                        </li>
+                        <li class="nav-divider"></li>
+                        <li
+                            class="nav-item"
+                            [class.active]="seccionActiva === 'anexos'"
+                            onkeydown=""
+                            (click)="seleccionarSeccion('anexos')"
+                        >
+                            <em class="fa fa-file m-2"></em>
+                            <span>Anexos</span>
+                        </li>
+                        <li class="nav-divider"></li>
+                        <!-- Secciones -->
+                        <li
+                            class="nav-section"
+                            *ngFor="let seccion of secciones; let i = index"
+                        >
+                            <div
+                                class="nav-section-header"
+                                onkeydown=""
+                                (click)="toggleSeccion(i)"
+                            >
+                                <em
+                                    class="m-2"
+                                    [ngClass]="seccion.expandida ? 'fa fa-caret-down' : 'fa fa-caret-right'"
+                                ></em>
+                                <span>{{ seccion.nombre }}</span>
+                            </div>
+                            <ul
+                                class="nav-subsection"
+                                *ngIf="seccion.expandida"
+                            >
+                                <li class="nav-divider"></li>
+                                <!-- CapÃ­tulos -->
+                                <li
+                                    class="nav-subitem"
+                                    *ngFor="let capitulo of seccion.capitulos; let j = index"
+                                >
+                                    <div
+                                        class="nav-capitulo-header"
+                                        onkeydown=""
+                                        (click)="toggleCapitulo(i, j)"
+                                    >
+                                        <em
+                                            class="m-2"
+                                            [ngClass]="capitulo.expandido ? 'fa fa-angle-down' : 'fa fa-angle-right'"
+                                        ></em>
+                                        <span>{{ capitulo.nombre }}</span>
+                                    </div>
+                                    <ul
+                                        class="nav-clausulas"
+                                        *ngIf="capitulo.expandido"
+                                    >
+                                        <!-- ClÃ¡usulas -->
+                                        <li
+                                            class="nav-clausula"
+                                            onkeydown=""
+                                            *ngFor="let clausula of capitulo.clausulas"
+                                            [class.active]="clausulaActiva === clausula.id"
+                                            [class.bloqueada]="clausula.bloqueada"
+                                            (click)="seleccionarClausula(clausula)"
+                                        >
+                                            <em
+                                                class="fa fa-pencil m-2"
+                                                *ngIf="!clausula.bloqueada && clausula.editable"
+                                            ></em>
+                                            <em
+                                                class="fa fa-lock m-2"
+                                                *ngIf="clausula.bloqueada"
+                                            ></em>
+                                            <em
+                                                class="fa fa-ban m-2"
+                                                *ngIf="!clausula.bloqueada && !clausula.editable"
+                                            ></em>
+                                            <span>{{ clausula.nombre }}</span>
+                                        </li>
+                                        <li class="nav-divider"></li>
+                                        <li class="nav-clausula" onkeydown="">
+                                            <button
+                                                type="button"
+                                                class="btn btn-link"
+                                            >
+                                                <em class="fa fa-plus mr-2"></em
+                                                >Agregar clÃ¡usula
+                                            </button>
+                                        </li>
+                                        <li class="nav-divider"></li>
+                                    </ul>
+                                </li>
+                                <li
+                                    class="nav-clausula"
+                                    onkeydown=""
+                                    *ngIf="seccion.soloClausulas"
+                                >
+                                    <button type="button" class="btn btn-link">
+                                        <em class="fa fa-plus mr-2"></em>Agregar
+                                        clÃ¡usula
+                                    </button>
+                                </li>
+                                <li class="nav-divider"></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div [ngClass]="colEdicion">
+            <div class="panel">
+                <div
+                    class="panel-header"
+                    [class.contraido]="panelEdicionContraido"
+                >
+                    <em class="fa fa-edit mr-2"></em>
+                    <h5 class="panel-title" *ngIf="!panelEdicionContraido">
+                        {{ tituloEdicion }}
+                    </h5>
+                    <span
+                        *ngIf="!panelEdicionContraido && clausulaActiva !== null && clausulaSeleccionada"
+                        class="etiqueta text-right"
+                    >
+                        <small><strong>Obligatoria</strong></small>
+                    </span>
+                    <span
+                        *ngIf="!panelEdicionContraido && clausulaActiva !== null && clausulaSeleccionada"
+                        class="etiqueta text-right"
+                    >
+                        <small><strong>No editable</strong></small>
+                    </span>
+
+                    <button
+                        title="Expandir/Colapsar panel"
+                        type="button"
+                        class="btn-toggle-panel"
+                        (click)="togglePanelEdicion()"
+                        [title]="panelEdicionContraido ? 'Expandir panel' : 'Contraer panel'"
+                    >
+                        <em
+                            [ngClass]="panelEdicionContraido ? 'fa fa-expand' : 'fa fa-compress'"
+                        ></em>
+                    </button>
+                </div>
+                <div class="panel-body" [class.d-none]="panelEdicionContraido">
+                    <div
+                        *ngIf="seccionActiva === null && clausulaActiva === null"
+                        class="text-center text-muted py-5"
+                    >
+                        <em class="fa fa-arrow-circle-left mdi-48px mb-3"></em>
+                        <h6>
+                            Seleccione un elemento del panel de navegación para
+                            editar
+                        </h6>
+                    </div>
+                    @if (seccionActiva === 'encabezado') {
+                    <div>
+                        <div class="form-group">
+                            <label for="textoEncabezado" class="etiqueta"
+                                >Texto encabezado</label
+                            >
+                            <input
+                                id="textoEncabezado"
+                                type="text"
+                                class="form-control"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="textoPieDePagina" class="etiqueta"
+                                >Texto pie de página</label
+                            >
+                            <input
+                                id="textoPieDePagina"
+                                type="text"
+                                class="form-control"
+                            />
+                        </div>
+                    </div>
+                    } @else if (seccionActiva === 'resolucion'){
+                    <div>
+                        <div class="form-group">
+                            <div class="mb-3 text-right">
+                                <button
+                                    type="button"
+                                    class="btn btn-primary mr-3"
+                                >
+                                    Adjuntar resolucion
+                                </button>
+                                <button type="button" class="btn btn-primary">
+                                    Buscar modelo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    } @else if (seccionActiva === 'caratula'){
+                    <div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-md-12 ml-0 pl-0 mr-0 pr-0">
+                                    <div class="form-group">
+                                        <label
+                                            for="resumenObjetoLlamado"
+                                            class="etiqueta"
+                                            >* RESUMEN_OBJETO_LLAMADO</label
+                                        >
+                                        <input
+                                            id="resumenObjetoLlamado"
+                                            type="text"
+                                            class="form-control"
+                                        />
+                                    </div>
+                                    <div class="form-group">
+                                        <label
+                                            for="aperturaOfertasLugar"
+                                            class="etiqueta"
+                                            >* APERTURA_OFERTAS_LUGAR</label
+                                        >
+                                        <input
+                                            id="aperturaOfertasLugar"
+                                            type="text"
+                                            class="form-control"
+                                        />
+                                    </div>
+                                    <div class="form-group">
+                                        <label
+                                            for="telefonoComunicacion"
+                                            class="etiqueta"
+                                            >* TELEFONO_COMUNICACION</label
+                                        >
+                                        <input
+                                            id="telefonoComunicacion"
+                                            type="text"
+                                            class="form-control"
+                                        />
+                                    </div>
+                                    <div class="form-group">
+                                        <label
+                                            for="correoComunicacion"
+                                            class="etiqueta"
+                                            >* CORREO_COMUNICACION</label
+                                        >
+                                        <input
+                                            id="correoComunicacion"
+                                            type="text"
+                                            class="form-control"
+                                        />
+                                    </div>
+                                    <div class="form-group">
+                                        <label
+                                            for="plazoTopeRecepcionOferta"
+                                            class="etiqueta"
+                                            >*
+                                            PLAZO_TOPE_RECEPCION_OFERTA</label
+                                        >
+                                        <input
+                                            id="plazoTopeRecepcionOferta"
+                                            type="text"
+                                            class="form-control"
+                                        />
+                                    </div>
+                                    <div class="form-group">
+                                        <label
+                                            for="plazoActoApertura"
+                                            class="etiqueta"
+                                            >* PLAZO_ACTO_APERTURA</label
+                                        >
+                                        <input
+                                            id="plazoActoApertura"
+                                            type="text"
+                                            class="form-control"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="m-3 text-right">
+                                <button
+                                    type="button"
+                                    class="btn btn-primary mr-3"
+                                >
+                                    Buscar logo
+                                </button>
+                                <button type="button" class="btn btn-primary">
+                                    Adjuntar logo
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mt-3 border-top pt-3 text-right">
+                            <button type="button" class="btn btn-primary mr-2">
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                    } @else if (seccionActiva === 'notas') {
+                    <div>
+                        <div class="mb-3 text-right">
+                            <button type="button" class="btn btn-primary">
+                                <em class="fa fa-plus"></em> Agregar nota
+                            </button>
+                        </div>
+
+                        <div class="alert alert-info">
+                            No hay notas agregadas
+                        </div>
+                    </div>
+                    } @else if (seccionActiva === 'anexos') {
+                    <div>
+                        <div class="mb-3 text-right">
+                            <button type="button" class="btn btn-primary">
+                                <em class="fa fa-plus"></em> Agregar anexo
+                            </button>
+                        </div>
+                        <div class="alert alert-info">
+                            No hay anexos agregados
+                        </div>
+                    </div>
+                    } @if (clausulaActiva !== null && clausulaSeleccionada) {
+                    <div class="pt-0">
+                        <div class="row">
+                            <div class="col-12 ml-0 pl-0 mr-0 pr-0 pt-0">
+                                <app-grupo-colapsable
+                                    [colapsado]="true"
+                                    class="pl-0"
+                                    classTitulo="pl-3"
+                                    classContenido="ml-0 pl-0 mr-0"
+                                >
+                                    <titulo>Redacciones</titulo>
+                                    <contenido>
+                                        <div class="col-md-12 p-0">
+                                            <table
+                                                class="table table-hover m-0 align-middle"
+                                            >
+                                                <tr>
+                                                    <td
+                                                        class="text-center"
+                                                        style="width: 100px"
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                        />
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-sm"
+                                                            [attr.aria-label]="'Ver redacción'"
+                                                        >
+                                                            <em
+                                                                class="fa fa-eye"
+                                                            ></em>
+                                                        </button>
+                                                    </td>
+                                                    <td>Redacción 1...</td>
+                                                </tr>
+                                                <tr>
+                                                    <td
+                                                        class="text-center"
+                                                        style="width: 100px"
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                        />
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-sm"
+                                                            [attr.aria-label]="'Ver redacción'"
+                                                        >
+                                                            <em
+                                                                class="fa fa-eye"
+                                                            ></em>
+                                                        </button>
+                                                    </td>
+                                                    <td>Redacción 2...</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </contenido>
+                                </app-grupo-colapsable>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div
+                                class="col-12 ml-0 pl-0 mr-0 pr-0 border-bottom"
+                            >
+                                <app-grupo-colapsable
+                                    [colapsado]="true"
+                                    class="pl-0"
+                                    classTitulo="pl-3"
+                                    classContenido="ml-0 pl-0 mr-0"
+                                >
+                                    <titulo>Campos personalizados</titulo>
+                                    <contenido>
+                                        <div class="col-11 m-3">
+                                            <!-- Campos personalizados -->
+                                            <div class="form-group">
+                                                <label
+                                                    for="plazoDias"
+                                                    class="etiqueta"
+                                                    >Plazo de entrega</label
+                                                >
+                                                <input
+                                                    id="plazoDias"
+                                                    type="number"
+                                                    class="form-control"
+                                                    placeholder="Ingrese el plazo en dí­as"
+                                                />
+                                            </div>
+                                            <div class="form-group">
+                                                <label
+                                                    for="montoEstimado"
+                                                    class="etiqueta"
+                                                    >Monto estimado</label
+                                                >
+                                                <input
+                                                    id="montoEstimado"
+                                                    type="number"
+                                                    class="form-control"
+                                                    placeholder="Ingrese el monto estimado"
+                                                />
+                                            </div>
+                                        </div>
+                                    </contenido>
+                                </app-grupo-colapsable>
+                            </div>
+                        </div>
+
+                        <div class="form-group m-4">
+                            <label for="redaccion">* Redacción</label>
+                            <app-text-editor></app-text-editor>
+                            <small class="form-text text-muted">
+                                Para incluir campos personalizados en la
+                                redacción, use la sintaxis [[ETIQUETA_CAMPO]]
+                            </small>
+                        </div>
+
+                        <div
+                            class="mt-3 border-top pt-3 text-right"
+                            *ngIf="!clausulaSeleccionada.bloqueada"
+                        >
+                            <button type="button" class="btn btn-primary mr-2">
+                                Guardar
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-primary mr-2"
+                                [disabled]="clausulaSeleccionada.bloqueada"
+                            >
+                                Solicitar modificación
+                            </button>
+                            <button type="button" class="btn btn-primary mr-2">
+                                Visualizar
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                [disabled]="clausulaSeleccionada.bloqueada"
+                            >
+                                Agregar notas
+                            </button>
+                            <button
+                                type="button"
+                                class="btn link mr-2"
+                                *ngIf="!clausulaSeleccionada.clausula?.obligatoria && !clausulaSeleccionada.bloqueada"
+                            >
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3 mb-3">
+        <div class="col-12 text-right">
+            <div class="btn-back d-flex justify-content-end">
+                <button class="btn btn-link" type="button" (click)="volver()">
+                    <em class="fa fa-arrow-left mr-1"></em>Volver
+                </button>
+            </div>
+        </div>
+    </div>
 </div>

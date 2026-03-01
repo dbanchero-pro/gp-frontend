@@ -1,6 +1,6 @@
 export interface UsuarioBusquedaDTO {
-  id: number;
-  numeroDocumento: string;
-  nombre: string;
-  apellido: string;
+    id: number;
+    numeroDocumento: string;
+    nombre: string;
+    apellido: string;
 }

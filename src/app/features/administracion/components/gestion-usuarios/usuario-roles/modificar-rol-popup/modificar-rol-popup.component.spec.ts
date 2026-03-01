@@ -10,22 +10,24 @@ describe('ModificarRolPopupComponent', () => {
     let fixture: ComponentFixture<ModificarRolPopupComponent>;
 
     const bsModalServiceStub = {
-        show: jasmine.createSpy('show').and.returnValue({ content: {}, hide: jasmine.createSpy('hide') })
+        show: jasmine
+            .createSpy('show')
+            .and.returnValue({ content: {}, hide: jasmine.createSpy('hide') }),
     };
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             declarations: [],
             imports: [
-              ReactiveFormsModule,
-              ModificarRolPopupComponent,
-              FormatoCiPipe,
+                ReactiveFormsModule,
+                ModificarRolPopupComponent,
+                FormatoCiPipe,
             ],
             providers: [
                 FormBuilder,
-                { provide: BsModalService, useValue: bsModalServiceStub }
+                { provide: BsModalService, useValue: bsModalServiceStub },
             ],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA]
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
         }).compileComponents();
 
         fixture = TestBed.createComponent(ModificarRolPopupComponent);

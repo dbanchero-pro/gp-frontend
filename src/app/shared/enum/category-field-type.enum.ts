@@ -3,5 +3,5 @@ export enum CategoryFieldTypeEnum {
     numeric = 1,
     codi = 2,
     text = 3,
-    file = 4
+    file = 4,
 }

@@ -1,18 +1,27 @@
-import { provideHttpClientTesting } from "@angular/common/http/testing";
-import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { FormBuilder, FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { NavigationEnd, Router } from "@angular/router";
-import { of } from "rxjs";
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NavigationEnd, Router } from '@angular/router';
+import { of } from 'rxjs';
 
-import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
-import { AuthRawService } from "src/app/shared/services/common/auth-raw-service";
-import { FooterComponent } from "./footer.component";
+import {
+    provideHttpClient,
+    withInterceptorsFromDi,
+} from '@angular/common/http';
+import { AuthRawService } from 'src/app/shared/services/common/auth-raw-service';
+import { FooterComponent } from './footer.component';
 
 class MockServices {
     // router
-    public events = of(new NavigationEnd(0, "http://localhost:4200/prueba", "http://localhost:4200/prueba"));
+    public events = of(
+        new NavigationEnd(
+            0,
+            'http://localhost:4200/prueba',
+            'http://localhost:4200/prueba',
+        ),
+    );
 }
-describe("FooterComponent", () => {
+describe('FooterComponent', () => {
     let component: FooterComponent;
     let fixture: ComponentFixture<FooterComponent>;
 
@@ -20,11 +29,7 @@ describe("FooterComponent", () => {
         await TestBed.configureTestingModule({
             // componentes
             declarations: [],
-            imports: [
-              FormsModule,
-              ReactiveFormsModule,
-              FooterComponent,
-            ],
+            imports: [FormsModule, ReactiveFormsModule, FooterComponent],
             providers: [
                 FormBuilder,
                 Router,
@@ -32,9 +37,8 @@ describe("FooterComponent", () => {
                 { provide: Router, useClass: MockServices },
                 provideHttpClient(withInterceptorsFromDi()),
                 provideHttpClientTesting(),
-            ]
-        })
-            .compileComponents();
+            ],
+        }).compileComponents();
     });
 
     beforeEach(() => {
@@ -48,7 +52,8 @@ describe("FooterComponent", () => {
     });
 
     it('debería contener un elemento footer con rol contentinfo', () => {
-        const footerEl: HTMLElement = fixture.nativeElement.querySelector('footer');
+        const footerEl: HTMLElement =
+            fixture.nativeElement.querySelector('footer');
         expect(footerEl.getAttribute('role')).toBe('contentinfo');
     });
 });

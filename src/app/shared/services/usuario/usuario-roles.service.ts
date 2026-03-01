@@ -5,7 +5,7 @@ import { PageModel } from '../../models/common/page/page.model';
 import { UsuarioOrganismoPerfilDTO } from '../../models/usuario/usuario-organismo-perfil.model';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class UsuarioRolesService {
     private readonly mockUsuarios: UsuarioOrganismoPerfilDTO[] = [
@@ -22,7 +22,7 @@ export class UsuarioRolesService {
                 idUnidadCompra: 1,
                 descInciso: 'Inciso 01 - Presidencia',
                 descUnidadEjecutora: 'UE 001 - Dirección General',
-                descUnidadCompra: 'UC 001 - Compras Generales'
+                descUnidadCompra: 'UC 001 - Compras Generales',
             },
             compra: {
                 idCompra: 1,
@@ -32,10 +32,10 @@ export class UsuarioRolesService {
                     idTipoCompra: 'LC',
                     idSubtipoCompra: 'LP',
                     descTipoCompra: 'Licitación Abreviada',
-                    descSubtipoCompra: 'Común'
-                }
+                    descSubtipoCompra: 'Común',
+                },
             },
-            itemCompra: undefined
+            itemCompra: undefined,
         },
         {
             id: 2,
@@ -50,7 +50,7 @@ export class UsuarioRolesService {
                 idUnidadCompra: 2,
                 descInciso: 'Inciso 02 - Ministerio de Economía',
                 descUnidadEjecutora: 'UE 002 - Secretaría Administrativa',
-                descUnidadCompra: 'UC 002 - Logística'
+                descUnidadCompra: 'UC 002 - Logística',
             },
             compra: {
                 idCompra: 2,
@@ -60,10 +60,10 @@ export class UsuarioRolesService {
                     idTipoCompra: 'CD',
                     idSubtipoCompra: 'CM',
                     descTipoCompra: 'Compra Directa',
-                    descSubtipoCompra: 'Común'
-                }
+                    descSubtipoCompra: 'Común',
+                },
             },
-          itemCompra: undefined
+            itemCompra: undefined,
         },
         {
             id: 3,
@@ -74,11 +74,11 @@ export class UsuarioRolesService {
             correo: 'carlos.rodriguez@example.com',
             unidadCompra: undefined,
             compra: undefined,
-            itemCompra: undefined
-        },      
+            itemCompra: undefined,
+        },
     ];
 
-    constructor() { }
+    constructor() {}
 
     obtenerTodos(
         filtros: {
@@ -97,20 +97,24 @@ export class UsuarioRolesService {
         } = {},
         page: number = 0,
         size: number = 10,
-        sort: string = 'usuarioOrganismo.usuario.nroDocumento,asc'
+        sort: string = 'usuarioOrganismo.usuario.nroDocumento,asc',
     ): Observable<PageModel<UsuarioOrganismoPerfilDTO>> {
         let resultados = [...this.mockUsuarios];
 
         if (filtros.nroDocumento) {
-            resultados = resultados.filter(u => u.idUsuario?.includes(filtros.nroDocumento!));
+            resultados = resultados.filter((u) =>
+                u.idUsuario?.includes(filtros.nroDocumento!),
+            );
         }
 
         if (filtros.idInciso) {
-            resultados = resultados.filter(u => u.unidadCompra?.idInciso === filtros.idInciso);
+            resultados = resultados.filter(
+                (u) => u.unidadCompra?.idInciso === filtros.idInciso,
+            );
         }
 
         if (filtros.permisoTodas) {
-            resultados = resultados.filter(u => !u.unidadCompra);
+            resultados = resultados.filter((u) => !u.unidadCompra);
         }
 
         const start = page * size;
@@ -131,9 +135,9 @@ export class UsuarioRolesService {
             sort: {
                 sorted: false,
                 unsorted: true,
-                empty: true
+                empty: true,
             },
-            empty: paginados.length === 0
+            empty: paginados.length === 0,
         });
     }
 
@@ -147,9 +151,15 @@ export class UsuarioRolesService {
             esEditor: boolean;
             esValidador: boolean;
             esAprobador: boolean;
-        }
+        },
     ): Observable<boolean> {
-        console.log('Mock: agregarRolUC', { idInciso, idUnidadEjecutora, idUnidadCompra, idUsuario, roles });
+        console.log('Mock: agregarRolUC', {
+            idInciso,
+            idUnidadEjecutora,
+            idUnidadCompra,
+            idUsuario,
+            roles,
+        });
         return of(true);
     }
 
@@ -166,18 +176,29 @@ export class UsuarioRolesService {
             esEditor: boolean;
             esValidador: boolean;
             esAprobador: boolean;
-        }
+        },
     ): Observable<boolean> {
-        console.log('Mock: agregarRolTipoCompra', { idTipoCompra, idUsuario, roles });
+        console.log('Mock: agregarRolTipoCompra', {
+            idTipoCompra,
+            idUsuario,
+            roles,
+        });
         return of(true);
     }
 
-    agregarRolPorCompra(idCompra: number, idUsuario: string): Observable<boolean> {
+    agregarRolPorCompra(
+        idCompra: number,
+        idUsuario: string,
+    ): Observable<boolean> {
         console.log('Mock: agregarRolPorCompra', { idCompra, idUsuario });
         return of(true);
     }
 
-    agregarRolPorItem(idCompra: number, idItem: number, idUsuario: string): Observable<boolean> {
+    agregarRolPorItem(
+        idCompra: number,
+        idItem: number,
+        idUsuario: string,
+    ): Observable<boolean> {
         console.log('Mock: agregarRolPorItem', { idCompra, idItem, idUsuario });
         return of(true);
     }
@@ -194,7 +215,7 @@ export class UsuarioRolesService {
             esEditor: boolean;
             esValidador: boolean;
             esAprobador: boolean;
-        }
+        },
     ): Observable<boolean> {
         console.log('Mock: modificarRol', { id, roles });
         return of(true);
@@ -202,6 +223,8 @@ export class UsuarioRolesService {
 
     exportarUsuariosRol(filtro: any): void {
         console.log('Mock: exportarUsuariosRol', filtro);
-        alert('Funcionalidad de exportación mock - Los datos se exportarían aquí');
+        alert(
+            'Funcionalidad de exportación mock - Los datos se exportarían aquí',
+        );
     }
 }

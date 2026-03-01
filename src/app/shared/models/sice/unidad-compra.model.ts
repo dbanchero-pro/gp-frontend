@@ -22,6 +22,6 @@ export class UnidadCompraDTO implements IUnidadCompraDTO {
         public idUnidadEjecutora?: number,
         public descUnidadEjecutora?: string,
         public idUnidadCompra?: number,
-        public indicadorInterrelacionSIIF?: boolean
-    ) { }
+        public indicadorInterrelacionSIIF?: boolean,
+    ) {}
 }

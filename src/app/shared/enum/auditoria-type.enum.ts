@@ -2,5 +2,5 @@ export enum AuditoriaTypeEnum {
     principal,
     plan,
     procesos,
-    ajustes
+    ajustes,
 }

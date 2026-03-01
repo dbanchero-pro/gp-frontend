@@ -1,4 +1,4 @@
-import { IUnidadMedidaDTO } from "./unidad-medida.model";
+import { IUnidadMedidaDTO } from './unidad-medida.model';
 
 export interface IPresentacionDTO {
     id?: number;
@@ -7,6 +7,9 @@ export interface IPresentacionDTO {
 }
 
 export class PresentacionDTO implements IPresentacionDTO {
-    constructor(public id?: number, public descPresentacion?: string, public unidadMedida?: IUnidadMedidaDTO) {
-    }
+    constructor(
+        public id?: number,
+        public descPresentacion?: string,
+        public unidadMedida?: IUnidadMedidaDTO,
+    ) {}
 }

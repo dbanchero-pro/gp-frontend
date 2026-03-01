@@ -3,21 +3,20 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { PopupBaseComponent } from 'src/app/shared/components/popup-base/popup-base.component';
 import { TipoPerfil } from 'src/app/shared/enum/tipo-perfil.enum';
 import { UsuarioOrganismoDTO } from 'src/app/shared/models/usuario/usuario-organismo.model';
-import { UsuarioOrganismoService } from 'src/app/shared/services/usuario/usuario-organismo.service';import { SharedModule } from 'src/app/shared/shared.module';
-
+import { UsuarioOrganismoService } from 'src/app/shared/services/usuario/usuario-organismo.service';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
     selector: 'app-nuevo-usuario-uc-popup',
     templateUrl: './nuevo-usuario-uc-popup.component.html',
     styleUrls: ['./nuevo-usuario-uc-popup.component.scss'],
-  standalone: true,
-  imports: [
-    SharedModule,
-  ],
+    standalone: true,
+    imports: [SharedModule],
 })
 export class NuevoUsuarioUcPopupComponent
     extends PopupBaseComponent
-    implements OnInit {
+    implements OnInit
+{
     @Output() guardarEvento = new EventEmitter<any>();
 
     @Input() titulo = 'Agregar persona';
@@ -32,7 +31,7 @@ export class NuevoUsuarioUcPopupComponent
 
     constructor(
         private readonly fb: FormBuilder,
-        private readonly usuarioOrganismoService: UsuarioOrganismoService
+        private readonly usuarioOrganismoService: UsuarioOrganismoService,
     ) {
         super();
     }
@@ -62,7 +61,7 @@ export class NuevoUsuarioUcPopupComponent
             this.cargarUsuariosPorUnidadCompra(
                 idInciso,
                 idUnidadEjecutora,
-                idUnidadCompra
+                idUnidadCompra,
             );
         } else {
             this.usuarios = [];
@@ -74,7 +73,7 @@ export class NuevoUsuarioUcPopupComponent
     cargarUsuariosPorUnidadCompra(
         idInciso: number,
         idUnidadEjecutora: number,
-        idUnidadCompra: number
+        idUnidadCompra: number,
     ): void {
         const filtros = {
             idInciso: idInciso,
@@ -111,7 +110,11 @@ export class NuevoUsuarioUcPopupComponent
         this.form.get('organismo')?.markAsTouched();
         this.form.get('usuario')?.markAsTouched();
 
-        if (!usuarioSeleccionado || this.form.get('organismo')?.invalid || !this.alMenosUnRolSeleccionado()) {
+        if (
+            !usuarioSeleccionado ||
+            this.form.get('organismo')?.invalid ||
+            !this.alMenosUnRolSeleccionado()
+        ) {
             return;
         }
 
@@ -119,11 +122,12 @@ export class NuevoUsuarioUcPopupComponent
             idUsuario: usuarioSeleccionado,
             unidadCompra: this.form.get('organismo')?.value,
             roles: {
-                esEditorPrincipal: this.form.get('esEditorPrincipal')?.value || false,
+                esEditorPrincipal:
+                    this.form.get('esEditorPrincipal')?.value || false,
                 esEditor: this.form.get('esEditor')?.value || false,
                 esValidador: this.form.get('esValidador')?.value || false,
                 esAprobador: this.form.get('esAprobador')?.value || false,
-            }
+            },
         };
 
         this.guardarEvento.emit(dataAGuardar);
@@ -149,7 +153,4 @@ export class NuevoUsuarioUcPopupComponent
     transformarNroDocumento(nroDocumento: string): string {
         return 'uy-ci-' + nroDocumento;
     }
-
 }
-
-

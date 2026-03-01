@@ -6,5 +6,5 @@ export enum OperadorRegla {
     MAYOR = 'MAYOR',
     MAYOR_IGUAL = 'MAYOR_IGUAL',
     RANGO = 'RANGO',
-    LISTA_VALORES = 'LISTA_VALORES'
+    LISTA_VALORES = 'LISTA_VALORES',
 }

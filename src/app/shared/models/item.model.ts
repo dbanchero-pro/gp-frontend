@@ -1,16 +1,16 @@
-import { IArticuloServObraDTO } from "./cbso/articulo-serv-obra.model";
-import { IColorDTO } from "./cbso/color.model";
-import { IDetalleVarianteDTO } from "./cbso/detalle-variante.model";
-import { IFamiliaDTO } from "./cbso/familia.model";
-import { IMedidaPresentacionDTO } from "./cbso/medida-presentacion.model";
-import { IMedidaVarianteDTO } from "./cbso/medida-variante.model";
-import { IPresentacionDTO } from "./cbso/presentacion.model";
-import { ISubclaseDTO } from "./cbso/subclase.model";
-import { ISubfamiliaDTO } from "./cbso/subfamilia.model";
-import { IUnidadMedidaDTO } from "./cbso/unidad-medida.model";
-import { IClassCbsoDTO } from "./class-cbso.model";
-import { IProcedimientoCompraDTO } from "./procedimiento-compra.model";
-import { IZonaEntregaDTO } from "./zona-entrega.model";
+import { IArticuloServObraDTO } from './cbso/articulo-serv-obra.model';
+import { IColorDTO } from './cbso/color.model';
+import { IDetalleVarianteDTO } from './cbso/detalle-variante.model';
+import { IFamiliaDTO } from './cbso/familia.model';
+import { IMedidaPresentacionDTO } from './cbso/medida-presentacion.model';
+import { IMedidaVarianteDTO } from './cbso/medida-variante.model';
+import { IPresentacionDTO } from './cbso/presentacion.model';
+import { ISubclaseDTO } from './cbso/subclase.model';
+import { ISubfamiliaDTO } from './cbso/subfamilia.model';
+import { IUnidadMedidaDTO } from './cbso/unidad-medida.model';
+import { IClassCbsoDTO } from './class-cbso.model';
+import { IProcedimientoCompraDTO } from './procedimiento-compra.model';
+import { IZonaEntregaDTO } from './zona-entrega.model';
 
 export interface IItemDTO {
     id?: number;
@@ -88,6 +88,6 @@ export class ItemDTO implements IItemDTO {
         public descColor?: string,
         public descUnidadMedida?: string,
         public descPropiedadVariante?: string,
-        public penalizableFechaIngreso?: boolean) {
-    }
+        public penalizableFechaIngreso?: boolean,
+    ) {}
 }

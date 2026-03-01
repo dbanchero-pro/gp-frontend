@@ -1,49 +1,79 @@
 <div class="row" *ngIf="usuario">
     <div class="border bg-transparent py-2 mb-2 col-12">
-        <div class="subtitle float-left">Usuario seleccionado: </div>
-        <div class="pl-3 font-weight-bold subtitle float-left">CI {{ usuario.id | formatoCi}}</div>
-        <div class="pl-3 font-weight-bold subtitle float-left">{{usuario.nombre}}</div>
+        <div class="subtitle float-left">Usuario seleccionado:</div>
+        <div class="pl-3 font-weight-bold subtitle float-left">
+            CI {{ usuario.id | formatoCi }}
+        </div>
+        <div class="pl-3 font-weight-bold subtitle float-left">
+            {{ usuario.nombre }}
+        </div>
     </div>
 </div>
 <div class="row">
     <div class="border d-flex bg-transparent mb-2 py-2 col-12" *ngIf="compra">
         <div class="subtitle">
-            <div> {{ compra | compraResumen:'unidad' }}</div>
-            <div [innerHTML]="compra | compraResumen:'detalleHtml'"></div>
+            <div>{{ compra | compraResumen: "unidad" }}</div>
+            <div [innerHTML]="compra | compraResumen: 'detalleHtml'"></div>
         </div>
     </div>
 </div>
 <div class="row">
     <div [ngClass]="colFiltro" class="sidebar">
-        <app-filtro titleBtn="Buscar" (evFilter)="actualizarFiltrosYBuscar()" (evCollapse)="aplicarColapso()"
-            class="filter">
+        <app-filtro
+            titleBtn="Buscar"
+            (evFilter)="actualizarFiltrosYBuscar()"
+            (evCollapse)="aplicarColapso()"
+            class="filter"
+        >
             <div [formGroup]="form">
-                <app-filtro-items-articulos #filtroItems [idCompra]="compra?.idCompra ?? 0"
-                    [items]="obtenerItemsFiltro(todos)" [modoCliente]="true"
-                    (cambioFiltro)="onFiltroItemsCambio($event)">
+                <app-filtro-items-articulos
+                    #filtroItems
+                    [idCompra]="compra?.idCompra ?? 0"
+                    [items]="obtenerItemsFiltro(todos)"
+                    [modoCliente]="true"
+                    (cambioFiltro)="onFiltroItemsCambio($event)"
+                >
                 </app-filtro-items-articulos>
                 <div class="clean-filter">
-                    <button type="button" class="btn btn-link" (click)="nuevaConsulta()">Nueva consulta</button>
+                    <button
+                        type="button"
+                        class="btn btn-link"
+                        (click)="nuevaConsulta()"
+                    >
+                        Nueva consulta
+                    </button>
                 </div>
             </div>
         </app-filtro>
     </div>
 
     <div [ngClass]="[colTabla, 'd-flex', 'flex-column', 'min-vh-100']">
-        <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total===-1">
-            <div class="card-body py-sm-2 mb-sm-2 col-12 text-center  pt-sm-4 pb-sm-4">
-                <em class=" fa fa-search  fa-2x  d-block mb-4"></em>
-                <h6>Ingresa las opciones de búsqueda y presiona buscar para agregar el rol por ítems al usuario</h6>
-
+        <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total === -1">
+            <div
+                class="card-body py-sm-2 mb-sm-2 col-12 text-center pt-sm-4 pb-sm-4"
+            >
+                <em class="fa fa-search fa-2x d-block mb-4"></em>
+                <h6>
+                    Ingresa las opciones de búsqueda y presiona buscar para
+                    agregar el rol por ítems al usuario
+                </h6>
             </div>
         </div>
         <br />
-        <app-cabezal-consulta [listaOrden]="listaOrden" [columnaOrden]="parametros.sort"
-        [orden]="parametros.order"  (orderChange)="cambioOrden($event)"
-            (sortChange)="cambioColumnaOrden($event)" [totalItems]="total"></app-cabezal-consulta>
+        <app-cabezal-consulta
+            [listaOrden]="listaOrden"
+            [columnaOrden]="parametros.sort"
+            [orden]="parametros.order"
+            (orderChange)="cambioOrden($event)"
+            (sortChange)="cambioColumnaOrden($event)"
+            [totalItems]="total"
+        ></app-cabezal-consulta>
 
-        <div class="card border rounded-0" [ngClass]="{'border-bottom-0': i < items.length - 1}"
-            *ngFor="let item of items; let i = index">
+        <div
+            class="card border rounded-0"
+            [ngClass]="{ 'border-bottom-0': i < items.length - 1 }"
+            *ngFor="let item of items; let i = index"
+        >
             <div class="card-body">
                 <div class="row align-items-center">
                     <div class="col-9 subtitle">
@@ -51,21 +81,34 @@
                             {{ item | itemResumen }}
                         </div>
                     </div>
-                    <div class="col-3 d-flex justify-content-end align-items-center">
-                        <app-boton-accion [acciones]="obtenerAccionesItem(item)"
-                        [ariaLabelMasOpciones]="'Mas opciones del item id '+ item.idItem">
+                    <div
+                        class="col-3 d-flex justify-content-end align-items-center"
+                    >
+                        <app-boton-accion
+                            [acciones]="obtenerAccionesItem(item)"
+                            [ariaLabelMasOpciones]="
+                                'Mas opciones del item id ' + item.idItem
+                            "
+                        >
                         </app-boton-accion>
                     </div>
                 </div>
             </div>
         </div>
 
-        <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina" class="mt-4"
-            [paginaActual]="parametros.pagina + 1" (cambioPagina)="cambioPagina($event)"
-            (cambioItemsPorPagina)="cambioPorPagina($event)"></app-paginado>
+        <app-paginado
+            [totalItems]="total"
+            [itemsPorPagina]="parametros.tamanoPagina"
+            class="mt-4"
+            [paginaActual]="parametros.pagina + 1"
+            (cambioPagina)="cambioPagina($event)"
+            (cambioItemsPorPagina)="cambioPorPagina($event)"
+        ></app-paginado>
 
         <div class="btn-back d-flex justify-content-end">
-            <button class="btn btn-link" type="button" (click)="volver()"><em class="fa fa-arrow-left mr-1"></em>Volver</button>
+            <button class="btn btn-link" type="button" (click)="volver()">
+                <em class="fa fa-arrow-left mr-1"></em>Volver
+            </button>
         </div>
     </div>
 </div>

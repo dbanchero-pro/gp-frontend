@@ -11,8 +11,6 @@ export class SnapshotService {
     load<T = any>(): T | null {
         const raw = sessionStorage.getItem(KEY);
         return raw ? (JSON.parse(raw) as T) : null;
-
-
     }
 
     clear(): void {

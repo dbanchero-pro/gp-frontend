@@ -1,1 +1,1 @@
-export type NumeroStringNulo = string | number | null
+export type NumeroStringNulo = string | number | null;

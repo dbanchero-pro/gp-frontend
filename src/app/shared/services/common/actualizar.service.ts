@@ -39,8 +39,12 @@ export class ActualizarService {
     public cargando(mostrar: boolean): void {
         this.cargando$.next(mostrar);
     }
-    
-    public confirmar(pregunta: string | string[], funcionAceptar: any, funcionCancelar: any = () => { }): void {
+
+    public confirmar(
+        pregunta: string | string[],
+        funcionAceptar: any,
+        funcionCancelar: any = () => {},
+    ): void {
         if (pregunta instanceof Array) {
             this.confirmar$.next([pregunta, funcionAceptar, funcionCancelar]);
         } else {
@@ -59,7 +63,7 @@ export class ActualizarService {
     public mensajeModalTextoAdicional(
         titulo: string,
         mensaje: string,
-        textoAdicional: string
+        textoAdicional: string,
     ): void {
         this.alerta$.next([titulo, mensaje, textoAdicional]);
     }
@@ -99,7 +103,7 @@ export class ActualizarService {
     public showMsgError(
         msg: string | string[],
         show: boolean,
-        onChangeValuesFunc: () => void
+        onChangeValuesFunc: () => void,
     ): void {
         if (show) {
             this.mensajeError(msg);
@@ -109,8 +113,10 @@ export class ActualizarService {
         onChangeValuesFunc();
     }
 
-
-    public guardarMensajeTemporal(mensajes: string | string[], tipo: TipoMensajeEnum = TipoMensajeEnum.success): void {
+    public guardarMensajeTemporal(
+        mensajes: string | string[],
+        tipo: TipoMensajeEnum = TipoMensajeEnum.success,
+    ): void {
         const arr = Array.isArray(mensajes) ? mensajes : [mensajes];
         this.mensajeTemporal = [arr, tipo];
     }
@@ -121,6 +127,4 @@ export class ActualizarService {
             this.mensajeTemporal = null;
         }
     }
-
-    
 }

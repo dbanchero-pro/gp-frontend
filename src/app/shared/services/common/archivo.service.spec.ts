@@ -14,8 +14,8 @@ describe('ArchivoService', () => {
         TestBed.configureTestingModule({
             providers: [
                 ArchivoService,
-                { provide: RestService, useValue: gcRestSpy }
-            ]
+                { provide: RestService, useValue: gcRestSpy },
+            ],
         });
 
         service = TestBed.inject(ArchivoService);
@@ -30,7 +30,7 @@ describe('ArchivoService', () => {
             id: 1,
             nombre: 'archivo.txt',
             contenido: 'Y29udGVuaWRv',
-            mimeType: 'text/plain'
+            mimeType: 'text/plain',
         };
 
         gcRestSpy.get.and.returnValue(of(mockArchivo));
@@ -47,16 +47,23 @@ describe('ArchivoService', () => {
             id: 1,
             nombre: 'test.txt',
             contenido: btoa('Hola mundo'),
-            mimeType: 'text/plain'
+            mimeType: 'text/plain',
         };
 
-        const createObjectURLSpy = spyOn(window.URL, 'createObjectURL').and.returnValue('blob:url');
+        const createObjectURLSpy = spyOn(
+            window.URL,
+            'createObjectURL',
+        ).and.returnValue('blob:url');
         const clickSpy = jasmine.createSpy('click');
         spyOn(document, 'createElement').and.callFake(() => {
             return {
-                set href(val: string) { this._href = val; },
-                set download(val: string) { this._download = val; },
-                click: clickSpy
+                set href(val: string) {
+                    this._href = val;
+                },
+                set download(val: string) {
+                    this._download = val;
+                },
+                click: clickSpy,
             } as any;
         });
 
@@ -71,7 +78,7 @@ describe('ArchivoService', () => {
             id: 1,
             nombre: 'sincontenido.txt',
             contenido: undefined,
-            mimeType: 'text/plain'
+            mimeType: 'text/plain',
         };
 
         const createSpy = spyOn(window.URL, 'createObjectURL');
@@ -79,6 +86,4 @@ describe('ArchivoService', () => {
 
         expect(createSpy).not.toHaveBeenCalled();
     });
-
-
 });

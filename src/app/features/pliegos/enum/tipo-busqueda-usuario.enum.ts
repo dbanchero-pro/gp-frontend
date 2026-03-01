@@ -1,4 +1,4 @@
 export enum TipoBusquedaUsuario {
-  CI = 'CI',
-  NOMBRE = 'NOMBRE'
+    CI = 'CI',
+    NOMBRE = 'NOMBRE',
 }

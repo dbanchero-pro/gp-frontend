@@ -1,216 +1,429 @@
 <div class="container-fluid">
-  <div class="row">
-      <div class="col-md-8">
-        <h4>{{ titulo }}</h4>
-      </div>
-      <div class="col-md-4">
-        <span class="float-right text-muted">Los campos con * son obligatorios</span>
-      </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12">
-      <form [formGroup]="form">
-        <div class="card mb-2">
-          <div class="card-body">
-            <h5 class="card-title mb-3">Datos generales</h5>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="denominacion">* Denominación</label>
-                  <input type="text" class="form-control" id="denominacion" formControlName="denominacion"
-                    placeholder="Ingrese denominación" maxlength="500">
-                  <div *ngIf="form.controls.denominacion.invalid && form.controls.denominacion.touched" class="text-danger">
-                    <small *ngIf="form.controls.denominacion.errors?.['required']">La denominación es obligatoria</small>
-                    <small *ngIf="form.controls.denominacion.errors?.['maxlength']">La denominación no puede exceder los 500 caracteres</small>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label for="fechaVigenciaDesde">* Fecha vigencia desde</label>
-                  <input type="date" class="form-control" id="fechaVigenciaDesde" formControlName="fechaVigenciaDesde">
-                   <div *ngIf="form.controls.denominacion.invalid && form.controls.fechaVigenciaDesde.touched" class="text-danger">
-                    <small *ngIf="form.controls.denominacion.errors?.['required']">La fecha de vigencia desde es obligatoria</small>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label for="fechaVigenciaHasta">Fecha vigencia hasta</label>
-                  <input type="date" class="form-control" id="fechaVigenciaHasta" formControlName="fechaVigenciaHasta">
-                </div>
-              </div>
-            </div>
-
-            <div *ngIf="form.errors?.['fechasInvalidas'] && (form.controls.fechaVigenciaDesde.touched || form.controls.fechaVigenciaHasta.touched)" class="row">
-              <div class="col-12">
-                <div class="alert alert-danger">
-                  La fecha vigencia desde debe ser anterior a la fecha vigencia hasta
-                </div>
-              </div>
-            </div>
-
-          
-
-          </div>
+    <div class="row">
+        <div class="col-md-8">
+            <h4>{{ titulo }}</h4>
         </div>
-
-        <div class="card mb-2">
-          <div class="card-body">
-            <h5 class="card-title mb-3">Organismos compradores</h5>
-               <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="incisoId">Inciso</label>
-                  <select class="form-control" id="incisoId" formControlName="incisoId">
-                    <option [ngValue]="null">Seleccionar inciso</option>
-                    <option *ngFor="let inciso of incisos" [ngValue]="inciso.id">
-                      {{ inciso.id }} - {{ inciso.descInciso }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="unidadEjecutoraId">Unidad ejecutora</label>
-                  <select class="form-control" id="unidadEjecutoraId" formControlName="unidadEjecutoraId"
-                    [disabled]="!form.value.incisoId">
-                    <option [ngValue]="null">Seleccionar unidad ejecutora</option>
-                    <option *ngFor="let ue of unidadesEjecutoras" [ngValue]="ue.id">
-                      {{ ue.idUnidadEjecutora }} - {{ ue.descUnidadEjecutora }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="col-md-4">
+            <span class="float-right text-muted"
+                >Los campos con * son obligatorios</span
+            >
         </div>
-
-         <div class="card mb-2">
-          <div class="card-body">
-            <h5 class="card-title mb-3">Tipos y subtipos de compra</h5>
-
-            <div [formGroup]="formTipoCompra" class="row align-items-end mb-3">
-              <div class="col-md-5">
-                <div class="form-group">
-                  <label for="tipoCompraId">* Tipo de compra</label>
-                  <select class="form-control" id="tipoCompraId" formControlName="tipoCompraId">
-                    <option [ngValue]="null">Seleccionar tipo de compra</option>
-                    <option *ngFor="let tipo of tiposCompra" [ngValue]="tipo.id">
-                      {{ tipo.descTipoCompra }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-5">
-                <div class="form-group">
-                  <label for="subtipoCompraId">* Subtipo de compra</label>
-                  <select class="form-control" id="subtipoCompraId" formControlName="subtipoCompraId"
-                    [disabled]="!formTipoCompra.value.tipoCompraId">
-                    <option [ngValue]="null">Seleccionar subtipo de compra</option>
-                    <option *ngFor="let subtipo of subtiposCompra" [ngValue]="subtipo.idSubtipoCompra">
-                      {{ subtipo.descSubtipoCompra }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-2">
-                <button type="button" class="btn btn-primary" (click)="agregarTipoCompra()">
-                  <em class="fa fa-plus mr-1"></em> Agregar
-                </button>
-              </div>
-            </div>
-            <div *ngIf="tiposCompraAgregados.length > 0" class="table-responsive">
-              <table class="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th class="text-center" style="width: 5%">Acciones</th>
-                    <th>Descripción tipo de compra</th>
-                    <th>Descripción subtipo de compra</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let tipoCompra of tiposCompraAgregados">
-                    <td class="text-center">
-                      <button type="button" class="btn btn-sm" (click)="eliminarTipoCompra(tipoCompra)"
-                        [attr.aria-label]="'Eliminar tipo de compra ' + (tipoCompra.tipoCompra.descTipoCompra || '')">
-                        <em class="fa fa-trash"></em>
-                      </button>
-                    </td>
-                    <td>{{ tipoCompra.tipoCompra.descTipoCompra }}</td>
-                    <td>{{ tipoCompra.subtipoCompra?.descSubtipoCompra || 'Todos los subtipos' }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div *ngIf="tiposCompraAgregados.length === 0" class="alert alert-info">
-              No hay tipos de compra agregados
-            </div>
-          </div>
-        </div>
-
-        <div class="card mb-2">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5 class="card-title mb-0">Secciones</h5>
-              <button type="button" class="btn btn-primary" (click)="agregarSeccion()">
-                <em class="fa fa-plus mr-1"></em> Agregar sección
-              </button>
-            </div>
-
-            <div *ngIf="seccionesAgregadas.length > 0" class="table-responsive">
-              <table class="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th class="text-center" style="width: 5%">Acciones</th>
-                    <th style="width: 5%">Orden</th>
-                    <th style="width: 70%">Denominación</th>
-                    <th style="width: 5%">Versión</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let seccion of seccionesAgregadas">
-                     <td class="text-center">
-                      <button
-                        *ngFor="let accion of obtenerAccionesSeccion(seccion)"
-                        type="button"
-                        [class]="accion.clase"
-                        [attr.aria-label]="accion.ariaLabel"
-                        (click)="accion.accion && accion.accion()">
-                        <em [class]="accion.icono"></em>
-                      </button>
-                    </td>
-                    <td>{{ seccion.orden }}</td>
-                    <td>{{ seccion.seccion.denominacion }}</td>
-                    <td>{{ seccion.seccion.version }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div *ngIf="seccionesAgregadas.length === 0" class="alert alert-info">
-              No hay secciones agregadas al modelo
-            </div>
-          </div>
-        </div>        
-
-        <div class="d-flex justify-content-end mb-4">
-          <button *ngIf="!modoIngreso" class="btn btn-primary mr-3" type="button" (click)="aprobar()">Aprobar</button>
-          <button class="btn btn-primary" type="button" (click)="guardar()">Guardar</button>
-          <div class="btn-back d-flex justify-content-end">
-            <button class="btn btn-link" type="button" (click)="volver()">Cancelar</button>
-          </div>
-        </div>
-      </form>
     </div>
-  </div>
+
+    <div class="row">
+        <div class="col-12">
+            <form [formGroup]="form">
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Datos generales</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="denominacion"
+                                        >* Denominación</label
+                                    >
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="denominacion"
+                                        formControlName="denominacion"
+                                        placeholder="Ingrese denominación"
+                                        maxlength="500"
+                                    />
+                                    <div
+                                        *ngIf="
+                                            form.controls.denominacion
+                                                .invalid &&
+                                            form.controls.denominacion.touched
+                                        "
+                                        class="text-danger"
+                                    >
+                                        <small
+                                            *ngIf="
+                                                form.controls.denominacion
+                                                    .errors?.['required']
+                                            "
+                                            >La denominación es
+                                            obligatoria</small
+                                        >
+                                        <small
+                                            *ngIf="
+                                                form.controls.denominacion
+                                                    .errors?.['maxlength']
+                                            "
+                                            >La denominación no puede exceder
+                                            los 500 caracteres</small
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="fechaVigenciaDesde"
+                                        >* Fecha vigencia desde</label
+                                    >
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        id="fechaVigenciaDesde"
+                                        formControlName="fechaVigenciaDesde"
+                                    />
+                                    <div
+                                        *ngIf="
+                                            form.controls.denominacion
+                                                .invalid &&
+                                            form.controls.fechaVigenciaDesde
+                                                .touched
+                                        "
+                                        class="text-danger"
+                                    >
+                                        <small
+                                            *ngIf="
+                                                form.controls.denominacion
+                                                    .errors?.['required']
+                                            "
+                                            >La fecha de vigencia desde es
+                                            obligatoria</small
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="fechaVigenciaHasta"
+                                        >Fecha vigencia hasta</label
+                                    >
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        id="fechaVigenciaHasta"
+                                        formControlName="fechaVigenciaHasta"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            *ngIf="
+                                form.errors?.['fechasInvalidas'] &&
+                                (form.controls.fechaVigenciaDesde.touched ||
+                                    form.controls.fechaVigenciaHasta.touched)
+                            "
+                            class="row"
+                        >
+                            <div class="col-12">
+                                <div class="alert alert-danger">
+                                    La fecha vigencia desde debe ser anterior a
+                                    la fecha vigencia hasta
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Organismos compradores</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="incisoId">Inciso</label>
+                                    <select
+                                        class="form-control"
+                                        id="incisoId"
+                                        formControlName="incisoId"
+                                    >
+                                        <option [ngValue]="null">
+                                            Seleccionar inciso
+                                        </option>
+                                        <option
+                                            *ngFor="let inciso of incisos"
+                                            [ngValue]="inciso.id"
+                                        >
+                                            {{ inciso.id }} -
+                                            {{ inciso.descInciso }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="unidadEjecutoraId"
+                                        >Unidad ejecutora</label
+                                    >
+                                    <select
+                                        class="form-control"
+                                        id="unidadEjecutoraId"
+                                        formControlName="unidadEjecutoraId"
+                                        [disabled]="!form.value.incisoId"
+                                    >
+                                        <option [ngValue]="null">
+                                            Seleccionar unidad ejecutora
+                                        </option>
+                                        <option
+                                            *ngFor="
+                                                let ue of unidadesEjecutoras
+                                            "
+                                            [ngValue]="ue.id"
+                                        >
+                                            {{ ue.idUnidadEjecutora }} -
+                                            {{ ue.descUnidadEjecutora }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">
+                            Tipos y subtipos de compra
+                        </h5>
+
+                        <div
+                            [formGroup]="formTipoCompra"
+                            class="row align-items-end mb-3"
+                        >
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="tipoCompraId"
+                                        >* Tipo de compra</label
+                                    >
+                                    <select
+                                        class="form-control"
+                                        id="tipoCompraId"
+                                        formControlName="tipoCompraId"
+                                    >
+                                        <option [ngValue]="null">
+                                            Seleccionar tipo de compra
+                                        </option>
+                                        <option
+                                            *ngFor="let tipo of tiposCompra"
+                                            [ngValue]="tipo.id"
+                                        >
+                                            {{ tipo.descTipoCompra }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="subtipoCompraId"
+                                        >* Subtipo de compra</label
+                                    >
+                                    <select
+                                        class="form-control"
+                                        id="subtipoCompraId"
+                                        formControlName="subtipoCompraId"
+                                        [disabled]="
+                                            !formTipoCompra.value.tipoCompraId
+                                        "
+                                    >
+                                        <option [ngValue]="null">
+                                            Seleccionar subtipo de compra
+                                        </option>
+                                        <option
+                                            *ngFor="
+                                                let subtipo of subtiposCompra
+                                            "
+                                            [ngValue]="subtipo.idSubtipoCompra"
+                                        >
+                                            {{ subtipo.descSubtipoCompra }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <button
+                                    type="button"
+                                    class="btn btn-primary"
+                                    (click)="agregarTipoCompra()"
+                                >
+                                    <em class="fa fa-plus mr-1"></em> Agregar
+                                </button>
+                            </div>
+                        </div>
+                        <div
+                            *ngIf="tiposCompraAgregados.length > 0"
+                            class="table-responsive"
+                        >
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th
+                                            class="text-center"
+                                            style="width: 5%"
+                                        >
+                                            Acciones
+                                        </th>
+                                        <th>Descripción tipo de compra</th>
+                                        <th>Descripción subtipo de compra</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="
+                                            let tipoCompra of tiposCompraAgregados
+                                        "
+                                    >
+                                        <td class="text-center">
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm"
+                                                (click)="
+                                                    eliminarTipoCompra(
+                                                        tipoCompra
+                                                    )
+                                                "
+                                                [attr.aria-label]="
+                                                    'Eliminar tipo de compra ' +
+                                                    (tipoCompra.tipoCompra
+                                                        .descTipoCompra || '')
+                                                "
+                                            >
+                                                <em class="fa fa-trash"></em>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            {{
+                                                tipoCompra.tipoCompra
+                                                    .descTipoCompra
+                                            }}
+                                        </td>
+                                        <td>
+                                            {{
+                                                tipoCompra.subtipoCompra
+                                                    ?.descSubtipoCompra ||
+                                                    "Todos los subtipos"
+                                            }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div
+                            *ngIf="tiposCompraAgregados.length === 0"
+                            class="alert alert-info"
+                        >
+                            No hay tipos de compra agregados
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <div
+                            class="d-flex justify-content-between align-items-center mb-3"
+                        >
+                            <h5 class="card-title mb-0">Secciones</h5>
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                (click)="agregarSeccion()"
+                            >
+                                <em class="fa fa-plus mr-1"></em> Agregar
+                                sección
+                            </button>
+                        </div>
+
+                        <div
+                            *ngIf="seccionesAgregadas.length > 0"
+                            class="table-responsive"
+                        >
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th
+                                            class="text-center"
+                                            style="width: 5%"
+                                        >
+                                            Acciones
+                                        </th>
+                                        <th style="width: 5%">Orden</th>
+                                        <th style="width: 70%">Denominación</th>
+                                        <th style="width: 5%">Versión</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="
+                                            let seccion of seccionesAgregadas
+                                        "
+                                    >
+                                        <td class="text-center">
+                                            <button
+                                                *ngFor="
+                                                    let accion of obtenerAccionesSeccion(
+                                                        seccion
+                                                    )
+                                                "
+                                                type="button"
+                                                [class]="accion.clase"
+                                                [attr.aria-label]="
+                                                    accion.ariaLabel
+                                                "
+                                                (click)="
+                                                    accion.accion &&
+                                                        accion.accion()
+                                                "
+                                            >
+                                                <em [class]="accion.icono"></em>
+                                            </button>
+                                        </td>
+                                        <td>{{ seccion.orden }}</td>
+                                        <td>
+                                            {{ seccion.seccion.denominacion }}
+                                        </td>
+                                        <td>{{ seccion.seccion.version }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div
+                            *ngIf="seccionesAgregadas.length === 0"
+                            class="alert alert-info"
+                        >
+                            No hay secciones agregadas al modelo
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end mb-4">
+                    <button
+                        *ngIf="!modoIngreso"
+                        class="btn btn-primary mr-3"
+                        type="button"
+                        (click)="aprobar()"
+                    >
+                        Aprobar
+                    </button>
+                    <button
+                        class="btn btn-primary"
+                        type="button"
+                        (click)="guardar()"
+                    >
+                        Guardar
+                    </button>
+                    <div class="btn-back d-flex justify-content-end">
+                        <button
+                            class="btn btn-link"
+                            type="button"
+                            (click)="volver()"
+                        >
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-
-

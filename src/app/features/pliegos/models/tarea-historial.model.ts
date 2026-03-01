@@ -1,5 +1,5 @@
 export interface TareaHistorialDTO {
-  fecha: Date;
-  tarea: string;
-  usuario: string;
+    fecha: Date;
+    tarea: string;
+    usuario: string;
 }

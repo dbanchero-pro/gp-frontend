@@ -1,37 +1,72 @@
 <div class="row">
     <div [ngClass]="colFiltro" class="sidebar">
-        <app-filtro titleBtn="Buscar" (evFilter)="actualizarFiltrosYBuscar()" (evCollapse)="aplicarColapso()" class="filter">
+        <app-filtro
+            titleBtn="Buscar"
+            (evFilter)="actualizarFiltrosYBuscar()"
+            (evCollapse)="aplicarColapso()"
+            class="filter"
+        >
             <div [formGroup]="form">
                 <div class="row">
                     <div class="form-group form-row col-12 m-0 pb-0 pt-0">
-                        <label for="etiqueta" class="col-form-label col-12 pl-0">Etiqueta</label>
-                        <input id="etiqueta" class="form-control col-12" type="text"
+                        <label for="etiqueta" class="col-form-label col-12 pl-0"
+                            >Etiqueta</label
+                        >
+                        <input
+                            id="etiqueta"
+                            class="form-control col-12"
+                            type="text"
                             formControlName="etiqueta"
-                            placeholder="Buscar por etiqueta" />
+                            placeholder="Buscar por etiqueta"
+                        />
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="form-group form-row col-12 m-0 pb-0 pt-0">
-                        <label for="descripcion" class="col-form-label col-12 pl-0">Descripción</label>
-                        <input id="descripcion" class="form-control col-12" type="text"
+                        <label
+                            for="descripcion"
+                            class="col-form-label col-12 pl-0"
+                            >Descripción</label
+                        >
+                        <input
+                            id="descripcion"
+                            class="form-control col-12"
+                            type="text"
                             formControlName="descripcion"
-                            placeholder="Buscar por descripción" />
+                            placeholder="Buscar por descripción"
+                        />
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="form-group form-row col-12 m-0 pt-0 pt-0">
-                        <label for="fuente" class="col-form-label col-12 pl-0">Fuente</label>
-                        <select id="fuente" class="form-control col-12" formControlName="fuente">
-                            <option *ngFor="let tipo of tiposFuente" [value]="tipo.id">{{ tipo.nombre }}</option>
+                        <label for="fuente" class="col-form-label col-12 pl-0"
+                            >Fuente</label
+                        >
+                        <select
+                            id="fuente"
+                            class="form-control col-12"
+                            formControlName="fuente"
+                        >
+                            <option
+                                *ngFor="let tipo of tiposFuente"
+                                [value]="tipo.id"
+                            >
+                                {{ tipo.nombre }}
+                            </option>
                         </select>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="clean-filter col-12">
-                        <button type="button" class="btn btn-link" id="cleanFilterBtn" (click)="nuevaConsulta()">
+                        <button
+                            type="button"
+                            class="btn btn-link"
+                            id="cleanFilterBtn"
+                            (click)="nuevaConsulta()"
+                        >
                             Nueva consulta
                         </button>
                     </div>
@@ -43,7 +78,8 @@
     <div [ngClass]="colTabla">
         <div class="alert alert-info mb-3" *ngIf="modoSeleccion">
             <em class="fa fa-info-circle mr-2"></em>
-            <strong>Modo selección:</strong> Busque el campo que desea copiar y haga clic en la acción "Copiar".
+            <strong>Modo selección:</strong> Busque el campo que desea copiar y
+            haga clic en la acción "Copiar".
         </div>
 
         <div class="row justify-content-end pr-2 mb-2" *ngIf="!modoSeleccion">
@@ -53,108 +89,214 @@
             </button>
         </div>
 
-         <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total===-1">
-            <div class="card-body py-sm-2 mb-sm-2 col-12 text-center  pt-sm-4 pb-sm-4" >
-            <em class=" fa fa-search  fa-2x  d-block mb-4"></em>
-                <h6>Ingresa las opciones de búsqueda y presiona buscar para filtrar los campos</h6>
+        <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total === -1">
+            <div
+                class="card-body py-sm-2 mb-sm-2 col-12 text-center pt-sm-4 pb-sm-4"
+            >
+                <em class="fa fa-search fa-2x d-block mb-4"></em>
+                <h6>
+                    Ingresa las opciones de búsqueda y presiona buscar para
+                    filtrar los campos
+                </h6>
             </div>
         </div>
 
-        <app-cabezal-consulta [totalItems]="total"
+        <app-cabezal-consulta
+            [totalItems]="total"
             [listaOrden]="listaOrden"
             [columnaOrden]="parametros.sort"
             [orden]="parametros.order"
             (orderChange)="cambioOrden($event)"
-            (sortChange)="cambioColumnaOrden($event)">
+            (sortChange)="cambioColumnaOrden($event)"
+        >
         </app-cabezal-consulta>
 
-        <div *ngFor="let campo of campos; let i = index" [style.position]="'relative'" [style.z-index]="8000-i">
+        <div
+            *ngFor="let campo of campos; let i = index"
+            [style.position]="'relative'"
+            [style.z-index]="8000 - i"
+        >
             <div class="card mb-2">
-                    <div class="row">
-                        <div class="col-12 py-2 px-4">
-                            <div class="row g-0 py-1 px-3">
-                                <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta">Etiqueta</div>
-                                <div class="col-9 col-sm-5 col-md-6 col-lg-7 font-weight-bold">{{ campo.etiqueta }}</div>
-                                <div class="col-3 col-sm-3 col-md-3 col-lg-3 d-flex justify-content-end align-items-start">
-                                    <app-boton-accion [acciones]="obtenerAcciones(campo)"
-                                        [ariaLabelMasOpciones]="'Mas opciones del campo ' + campo.etiqueta"
-                                        (accionEjecutada)="ejecutarAccion($event)">
-                                    </app-boton-accion>
-                                 </div>
+                <div class="row">
+                    <div class="col-12 py-2 px-4">
+                        <div class="row g-0 py-1 px-3">
+                            <div
+                                class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta"
+                            >
+                                Etiqueta
                             </div>
-                             <div class="row g-0 py-1 px-3">
-                                <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta">Descripción</div>
-                                <div class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold">{{ campo.descripcion }}</div>
+                            <div
+                                class="col-9 col-sm-5 col-md-6 col-lg-7 font-weight-bold"
+                            >
+                                {{ campo.etiqueta }}
                             </div>
-                             <div class="row g-0 py-1 px-3">
-                                <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta">Fuente</div>
-                                <div class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold">{{ obtenerEtiquetaFuente(campo.fuente) }}</div>
+                            <div
+                                class="col-3 col-sm-3 col-md-3 col-lg-3 d-flex justify-content-end align-items-start"
+                            >
+                                <app-boton-accion
+                                    [acciones]="obtenerAcciones(campo)"
+                                    [ariaLabelMasOpciones]="
+                                        'Mas opciones del campo ' +
+                                        campo.etiqueta
+                                    "
+                                    (accionEjecutada)="ejecutarAccion($event)"
+                                >
+                                </app-boton-accion>
                             </div>
-                            <div class="row g-0 py-1 px-3">
-                                <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta">Tipo de dato</div>
-                                <div class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold">{{ obtenerEtiquetaTipoDato(campo.tipoDato) }}</div>
+                        </div>
+                        <div class="row g-0 py-1 px-3">
+                            <div
+                                class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta"
+                            >
+                                Descripción
                             </div>
-
-                            <div *ngIf="tieneReglas(campo)" class="row g-0 py-2">
-                                <div class="col-12">
-                                    <app-grupo-colapsable
-                                        [colapsado]="true"
-                                        class="w-100"
-                                        classContenido="p-0"
-                                        [ariaLabel]="'Mostrar u ocultar reglas del campo ' + campo.etiqueta">
-                                        <titulo>Reglas ({{ campo.reglas?.length || 0 }})</titulo>
-                                        <contenido>
-                                            <div class="table-responsive w-100">
-                                                <table class="table table-sm table-bordered mb-0">
-                                                    <thead class="thead-light">
-                                                        <tr>
-                                                            <th>Código</th>
-                                                            <th>Nombre</th>
-                                                            <th>Tipo</th>
-                                                            <th>Operador</th>
-                                                            <th>Valor</th>
-                                                            <th>Campo</th>
-                                                            <th>Mensaje error</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngFor="let regla of campo.reglas">
-                                                            <td>{{ regla.codigo }}</td>
-                                                            <td>{{ regla.nombre }}</td>
-                                                            <td>{{ obtenerEtiquetaTipoRegla(regla.tipoRegla) }}</td>
-                                                            <td>{{ obtenerNombreOperador(regla) }}</td>
-                                                            <td>{{ regla.tipoRegla === 'VALOR' ? (regla.valor || '-') : '-' }}</td>
-                                                            <td>{{ regla.tipoRegla === 'CAMPO' ? (regla.etiquetaCampoComparar || '-') : '-' }}</td>
-                                                            <td>{{ regla.mensajeError }}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </contenido>
-                                    </app-grupo-colapsable>
-                                </div>
+                            <div
+                                class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold"
+                            >
+                                {{ campo.descripcion }}
+                            </div>
+                        </div>
+                        <div class="row g-0 py-1 px-3">
+                            <div
+                                class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta"
+                            >
+                                Fuente
+                            </div>
+                            <div
+                                class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold"
+                            >
+                                {{ obtenerEtiquetaFuente(campo.fuente) }}
+                            </div>
+                        </div>
+                        <div class="row g-0 py-1 px-3">
+                            <div
+                                class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta"
+                            >
+                                Tipo de dato
+                            </div>
+                            <div
+                                class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold"
+                            >
+                                {{ obtenerEtiquetaTipoDato(campo.tipoDato) }}
                             </div>
                         </div>
 
+                        <div *ngIf="tieneReglas(campo)" class="row g-0 py-2">
+                            <div class="col-12">
+                                <app-grupo-colapsable
+                                    [colapsado]="true"
+                                    class="w-100"
+                                    classContenido="p-0"
+                                    [ariaLabel]="
+                                        'Mostrar u ocultar reglas del campo ' +
+                                        campo.etiqueta
+                                    "
+                                >
+                                    <titulo
+                                        >Reglas ({{
+                                            campo.reglas?.length || 0
+                                        }})</titulo
+                                    >
+                                    <contenido>
+                                        <div class="table-responsive w-100">
+                                            <table
+                                                class="table table-sm table-bordered mb-0"
+                                            >
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>Código</th>
+                                                        <th>Nombre</th>
+                                                        <th>Tipo</th>
+                                                        <th>Operador</th>
+                                                        <th>Valor</th>
+                                                        <th>Campo</th>
+                                                        <th>Mensaje error</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="
+                                                            let regla of campo.reglas
+                                                        "
+                                                    >
+                                                        <td>
+                                                            {{ regla.codigo }}
+                                                        </td>
+                                                        <td>
+                                                            {{ regla.nombre }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                obtenerEtiquetaTipoRegla(
+                                                                    regla.tipoRegla
+                                                                )
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                obtenerNombreOperador(
+                                                                    regla
+                                                                )
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                regla.tipoRegla ===
+                                                                "VALOR"
+                                                                    ? regla.valor ||
+                                                                      "-"
+                                                                    : "-"
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                regla.tipoRegla ===
+                                                                "CAMPO"
+                                                                    ? regla.etiquetaCampoComparar ||
+                                                                      "-"
+                                                                    : "-"
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                regla.mensajeError
+                                                            }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </contenido>
+                                </app-grupo-colapsable>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <app-paginado [totalItems]="total"
-                [itemsPorPagina]="parametros.tamanoPagina"
-                [paginaActual]="parametros.pagina + 1"
-                (cambioPagina)="cambioPagina($event)"
-                (cambioItemsPorPagina)="cambioPorPagina($event)">
-            </app-paginado>
+        <app-paginado
+            [totalItems]="total"
+            [itemsPorPagina]="parametros.tamanoPagina"
+            [paginaActual]="parametros.pagina + 1"
+            (cambioPagina)="cambioPagina($event)"
+            (cambioItemsPorPagina)="cambioPorPagina($event)"
+        >
+        </app-paginado>
 
-            <div class="row mt-3 mb-3" *ngIf="modoSeleccion">
-                <div class="col-12 text-right">
-                    <div class="btn-back d-flex justify-content-end">
-                        <button class="btn btn-link" type="button" (click)="volverAAdministrarClausula()">
-                            <em class="fa fa-arrow-left mr-1"></em>Volver a la redacción
-                        </button>
-                    </div>
+        <div class="row mt-3 mb-3" *ngIf="modoSeleccion">
+            <div class="col-12 text-right">
+                <div class="btn-back d-flex justify-content-end">
+                    <button
+                        class="btn btn-link"
+                        type="button"
+                        (click)="volverAAdministrarClausula()"
+                    >
+                        <em class="fa fa-arrow-left mr-1"></em>Volver a la
+                        redacción
+                    </button>
                 </div>
             </div>
+        </div>
     </div>
 </div>

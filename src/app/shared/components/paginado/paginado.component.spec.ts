@@ -14,10 +14,10 @@ describe('PaginationComponent', () => {
         TestBed.configureTestingModule({
             declarations: [],
             imports: [
-              PaginationModule.forRoot(),
-              ReactiveFormsModule,
-              FormsModule,
-              PaginadoComponent,
+                PaginationModule.forRoot(),
+                ReactiveFormsModule,
+                FormsModule,
+                PaginadoComponent,
             ],
         });
         fixture = TestBed.createComponent(PaginadoComponent);

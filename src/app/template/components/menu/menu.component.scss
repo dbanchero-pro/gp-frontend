@@ -5,7 +5,7 @@
     .nav-link,
     .dropdown-item {
         font-weight: 600;
-        padding: .875rem 1.5rem !important;
+        padding: 0.875rem 1.5rem !important;
     }
 
     nav {
@@ -14,7 +14,6 @@
 }
 
 .navbar-dark .navbar-nav .nav-link.active {
-
     color: red;
 }
 
@@ -59,7 +58,6 @@
 }
 
 @media screen and (min-width: 992px) {
-
     /* Submenú oculto por defecto y posicionado a la derecha */
     .dropdown-submenu .dropdown-menu {
         display: none;
@@ -71,12 +69,11 @@
 }
 
 @media screen and (max-width: 992px) {
- 
-    .dropdown-submenu:hover>.dropdown-menu {
+    .dropdown-submenu:hover > .dropdown-menu {
         display: none;
     }
 
-    .dropdown-submenu.seleccionado>.dropdown-menu {
+    .dropdown-submenu.seleccionado > .dropdown-menu {
         display: block;
         position: relative;
         top: 0px;
@@ -99,13 +96,13 @@
     }
 
     /* Solo al tener .show se muestra */
-    .dropdown-submenu.show>.dropdown-menu {
+    .dropdown-submenu.show > .dropdown-menu {
         display: block;
     }
 }
 
 /* Sólo se muestra cuando el contenedor .dropdown-submenu tiene .show */
-.dropdown-submenu.show>.dropdown-menu {
+.dropdown-submenu.show > .dropdown-menu {
     display: block;
 }
 
@@ -116,7 +113,7 @@
     color: rgba(255, 255, 255, 1);
 }
 
-.dropdown-submenu>.dropdown-toggle::after {
+.dropdown-submenu > .dropdown-toggle::after {
     /* Gira el triángulo 90° hacia la derecha */
     transform: rotate(-90deg);
     /* Asegura que se aplique la transición suave si la usas */
@@ -125,11 +122,10 @@
 
 /* Opcional: si quieres ocultar el caret original de Bootstrap
    en el toggle principal puedes usar selector más específico */
-.navbar-nav .dropdown-submenu>.dropdown-toggle::after {
+.navbar-nav .dropdown-submenu > .dropdown-toggle::after {
     /* Ajusta márgenes si es necesario */
     margin-left: 0.4em;
 }
-
 
 .navbar-collapse .solo-movil {
     display: none;
@@ -151,13 +147,13 @@
 }
 
 .dropdown-submenu.seleccionado {
-    color: rgb(255, 255, 255, 0.60) !important;
+    color: rgb(255, 255, 255, 0.6) !important;
 }
 
 /* en el CSS/SCSS del componente */
 .span-menu:focus {
-  outline: 0 !important;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: 0 !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 .menu-container {
@@ -166,7 +162,7 @@
     display: contents;
 }
 
-.dropdown-submenu:focus-visible{
+.dropdown-submenu:focus-visible {
     outline: 0 !important;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
 }

@@ -28,21 +28,20 @@ import { UsuarioService } from 'src/app/shared/services/usuario/usuario.service'
 import { Logger } from 'src/app/shared/utils/logger';
 import { mascaraNroAnioCompra } from 'src/app/shared/utils/masks';
 import { ConsultaUsuariosConformidadComponent } from '../consulta-usuarios-conformidad/consulta-usuarios-conformidad.component';
-import { IConsultaUsuarioOrganismoPerfilFiltroDTO } from 'src/app/features/administracion/models/filtros/consulta-usuario-organismo-perfil-filtro.model';import { SharedModule } from 'src/app/shared/shared.module';
-
+import { IConsultaUsuarioOrganismoPerfilFiltroDTO } from 'src/app/features/administracion/models/filtros/consulta-usuario-organismo-perfil-filtro.model';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
     selector: 'app-consulta-usuarios-conformidad-compra',
     templateUrl: './consulta-usuarios-conformidad-compra.component.html',
     styleUrls: ['./consulta-usuarios-conformidad-compra.component.scss'],
-  standalone: true,
-  imports: [
-    SharedModule,
-  ],
+    standalone: true,
+    imports: [SharedModule],
 })
 export class ConsultaUsuariosConformidadCompraComponent
     extends PaginaBusquedaComponent<IConsultaUsuarioOrganismoPerfilFiltroDTO>
-    implements OnInit, AfterViewInit {
+    implements OnInit, AfterViewInit
+{
     public static readonly SNAPSHOT_KEY = 'CONSULTA_USUARIO_CONFORMIDAD_COMPRA';
     private readonly usuarioCargado$ = new Subject<boolean>();
 
@@ -72,15 +71,12 @@ export class ConsultaUsuariosConformidadCompraComponent
         private readonly compraSiceService: CompraSiceService,
         private readonly tipoCompraService: TipoCompraService,
         private readonly usuarioOrganismoPerfilService: UsuarioOrganismoPerfilService,
-        private readonly cdr: ChangeDetectorRef
+        private readonly cdr: ChangeDetectorRef,
     ) {
         super();
         this.form = this.fb.group({
             idTipoCompra: [''],
-            nroAnioCompra: [
-                '',
-                Validators.pattern(mascaraNroAnioCompra),
-            ],
+            nroAnioCompra: ['', Validators.pattern(mascaraNroAnioCompra)],
             organismo: [null],
         });
 
@@ -122,7 +118,7 @@ export class ConsultaUsuariosConformidadCompraComponent
 
     private buscarInicial() {
         const snap = this.snapshotService.load<any>(
-            ConsultaUsuariosConformidadComponent.SNAPSHOT_KEY
+            ConsultaUsuariosConformidadComponent.SNAPSHOT_KEY,
         );
         if (snap) {
             this.form.patchValue(snap.filtro);
@@ -140,7 +136,7 @@ export class ConsultaUsuariosConformidadCompraComponent
 
     private buscarVolver() {
         const snap = this.snapshotService.load<any>(
-            ConsultaUsuariosConformidadCompraComponent.SNAPSHOT_KEY
+            ConsultaUsuariosConformidadCompraComponent.SNAPSHOT_KEY,
         );
 
         if (snap) {
@@ -187,7 +183,6 @@ export class ConsultaUsuariosConformidadCompraComponent
     }
 
     private guardarFiltro(): void {
-
         this.parametros.pagina = this.parametros.pagina ?? 0;
         this.parametros.tamanoPagina = this.parametros.tamanoPagina ?? 10;
         this.parametros.sort = this.parametros.sort ?? this.columnaOrdenInicial;
@@ -195,7 +190,7 @@ export class ConsultaUsuariosConformidadCompraComponent
 
         this.snapshotService.save(
             ConsultaUsuariosConformidadCompraComponent.SNAPSHOT_KEY,
-            this.parametros
+            this.parametros,
         );
     }
 
@@ -205,10 +200,18 @@ export class ConsultaUsuariosConformidadCompraComponent
         this.form.get('idUnidadCompra')?.setValue(filtro?.idUnidadCompra);
     }
 
-    buscar(resetearPagina: boolean = false, snap?: any, esBusquedaInicial: boolean = false): void {
-        if ((esBusquedaInicial && snap?.filtro?.idInciso
-            && snap?.filtro?.idUnidadEjecutora && snap?.filtro?.idUnidadCompra)
-            || !esBusquedaInicial) {
+    buscar(
+        resetearPagina: boolean = false,
+        snap?: any,
+        esBusquedaInicial: boolean = false,
+    ): void {
+        if (
+            (esBusquedaInicial &&
+                snap?.filtro?.idInciso &&
+                snap?.filtro?.idUnidadEjecutora &&
+                snap?.filtro?.idUnidadCompra) ||
+            !esBusquedaInicial
+        ) {
             this.form.markAllAsTouched();
         }
 
@@ -223,13 +226,15 @@ export class ConsultaUsuariosConformidadCompraComponent
 
         const { pagina, tamanoPagina, sort, order, filtro } = this.parametros;
 
-        this.compraSiceService.obtenerCompras({
-            page: pagina,
-            size: tamanoPagina,
-            sort: sort,
-            order: order,
-            filtro: filtro,
-        }).subscribe((res) => {
+        this.compraSiceService
+            .obtenerCompras({
+                page: pagina,
+                size: tamanoPagina,
+                sort: sort,
+                order: order,
+                filtro: filtro,
+            })
+            .subscribe((res) => {
                 this.compras = res.content;
                 this.total = res.page?.totalElements;
             });
@@ -256,7 +261,7 @@ export class ConsultaUsuariosConformidadCompraComponent
     private actualizarFiltro(): void {
         const organismo = this.form.get('organismo')?.value;
         const { numCompra, anioCompra } = this.dividirNroAnioCompra(
-            this.form.get('nroAnioCompra')?.value
+            this.form.get('nroAnioCompra')?.value,
         );
 
         this.parametros.filtro = {
@@ -268,8 +273,6 @@ export class ConsultaUsuariosConformidadCompraComponent
             anioCompra: anioCompra,
             idUsuario: this.usuario?.id,
         };
-
-      
 
         const filtroCompleto = {
             idTipoCompra: this.form.get('idTipoCompra')?.value,
@@ -286,7 +289,6 @@ export class ConsultaUsuariosConformidadCompraComponent
         this.parametros.filtro = filtroCompleto;
 
         this.parametros.usuario = this.usuario;
-
     }
 
     override nuevaConsulta(): void {
@@ -301,7 +303,7 @@ export class ConsultaUsuariosConformidadCompraComponent
         this.total = -1;
 
         this.snapshotService.clear(
-            ConsultaUsuariosConformidadCompraComponent.SNAPSHOT_KEY
+            ConsultaUsuariosConformidadCompraComponent.SNAPSHOT_KEY,
         );
     }
 
@@ -309,7 +311,7 @@ export class ConsultaUsuariosConformidadCompraComponent
         this.guardarFiltro();
         this.router.navigate(
             ['/administracion/gestion-usuarios/consulta-usuario-conformidad'],
-            { queryParams: { volver: '1' } }
+            { queryParams: { volver: '1' } },
         );
     }
 
@@ -317,7 +319,9 @@ export class ConsultaUsuariosConformidadCompraComponent
         const acciones: AccionBoton[] = [
             {
                 nombre: 'Agregar a toda la compra',
-                ariaLabel: "Agregar a toda la compra compra usuario id " + this.usuario?.id,
+                ariaLabel:
+                    'Agregar a toda la compra compra usuario id ' +
+                    this.usuario?.id,
                 clase: 'btn btn-success ',
                 icono: 'fa fa-shopping-cart',
                 permisos: ['GC_GESTION_USU.ALTA'],
@@ -325,12 +329,13 @@ export class ConsultaUsuariosConformidadCompraComponent
             },
             {
                 nombre: 'Agregar por ítem',
-                ariaLabel: "Agregar por ítem usuario id " + this.usuario?.id,
+                ariaLabel: 'Agregar por ítem usuario id ' + this.usuario?.id,
                 clase: 'btn btn-primary ',
                 icono: 'fa fa-list-ul',
                 permisos: ['GC_GESTION_USU.ALTA'],
                 accion: () => {
-                    const idUsuario = this.route.snapshot.paramMap.get('idUsuario');
+                    const idUsuario =
+                        this.route.snapshot.paramMap.get('idUsuario');
                     if (idUsuario) {
                         // Guardar el estado actual antes de navegar
                         this.guardarFiltro();
@@ -366,36 +371,47 @@ export class ConsultaUsuariosConformidadCompraComponent
 
     cargarTiposCompra() {
         this.tipoCompraService.obtenerTiposCompraSinPaginado().subscribe({
-            next: (res) => { this.tiposCompra = res; },
-            error: (err) => { Logger.logError('Error cargando tipos de compra:', err); },
+            next: (res) => {
+                this.tiposCompra = res;
+            },
+            error: (err) => {
+                Logger.logError('Error cargando tipos de compra:', err);
+            },
         });
     }
 
     agregarPermisoPorCompra(compra: CompraDTO): void {
-        this.actualizarServ.confirmar('¿Está seguro que desea agregar el permiso?',
+        this.actualizarServ.confirmar(
+            '¿Está seguro que desea agregar el permiso?',
             () => {
                 const idCompra = compra?.idCompra;
                 const idUsuario = this.usuario?.id;
                 if (idCompra && idUsuario) {
-                    this.usuarioOrganismoPerfilService.agregarConformidadPorCompra(idCompra, idUsuario)
+                    this.usuarioOrganismoPerfilService
+                        .agregarConformidadPorCompra(idCompra, idUsuario)
                         .subscribe(() => {
-                            this.actualizarServ.mensajeCorrecto('El permiso ha sido agregado de forma exitosa.')
+                            this.actualizarServ.mensajeCorrecto(
+                                'El permiso ha sido agregado de forma exitosa.',
+                            );
                             this.buscar();
-                        }
-                        );
+                        });
                 }
-            }
+            },
         );
     }
 
-    validarFormularioCompleto(control: AbstractControl): ValidationErrors | null {
-        const idUnidadCompra = this.form.get('organismo')?.value?.idUnidadCompra ?? null;
-        if (idUnidadCompra == null || (idUnidadCompra && !/^\d+$/.test(idUnidadCompra))) {
+    validarFormularioCompleto(
+        control: AbstractControl,
+    ): ValidationErrors | null {
+        const idUnidadCompra =
+            this.form.get('organismo')?.value?.idUnidadCompra ?? null;
+        if (
+            idUnidadCompra == null ||
+            (idUnidadCompra && !/^\d+$/.test(idUnidadCompra))
+        ) {
             return { unidadCompraInvalido: true };
         }
 
         return null;
     }
 }
-
-

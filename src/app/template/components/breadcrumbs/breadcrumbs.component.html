@@ -1,25 +1,57 @@
 <nav class="container" aria-label="ruta de navegación">
     <ol>
-        <li [hidden]="!item"><a aria-label="Miga de pan a Inicio"  routerLink="/inicio">Inicio</a></li>
+        <li [hidden]="!item">
+            <a aria-label="Miga de pan a Inicio" routerLink="/inicio">Inicio</a>
+        </li>
         <li [hidden]="!superItem3">
-            <button [attr.aria-label]="'Miga de pan a ' + superItem3?.nombre" 
-                *ngIf="superItem3?.url && superItem3?.url !== ''" type="button" class="btn-link btn-link-miga"
-                (click)="ir(superItem3?.url)">{{superItem3?.nombre}}</button>
-            <span *ngIf="!superItem3?.url || superItem3?.url === ''">{{ superItem3?.nombre }}</span>
+            <button
+                [attr.aria-label]="'Miga de pan a ' + superItem3?.nombre"
+                *ngIf="superItem3?.url && superItem3?.url !== ''"
+                type="button"
+                class="btn-link btn-link-miga"
+                (click)="ir(superItem3?.url)"
+            >
+                {{ superItem3?.nombre }}
+            </button>
+            <span *ngIf="!superItem3?.url || superItem3?.url === ''">{{
+                superItem3?.nombre
+            }}</span>
         </li>
         <li [hidden]="!superItem2">
-            <button  [attr.aria-label]="'Miga de pan a ' + superItem2?.nombre" 
-             *ngIf="superItem2?.url && superItem2?.url !== ''" type="button" class="btn-link btn-link-miga"
-             (click)="ir(superItem2?.url)">{{superItem2?.nombre}}</button>
-            <span *ngIf="!superItem2?.url || superItem2?.url === ''">{{ superItem2?.nombre }}</span>
+            <button
+                [attr.aria-label]="'Miga de pan a ' + superItem2?.nombre"
+                *ngIf="superItem2?.url && superItem2?.url !== ''"
+                type="button"
+                class="btn-link btn-link-miga"
+                (click)="ir(superItem2?.url)"
+            >
+                {{ superItem2?.nombre }}
+            </button>
+            <span *ngIf="!superItem2?.url || superItem2?.url === ''">{{
+                superItem2?.nombre
+            }}</span>
         </li>
         <li [hidden]="!superItem">
-            <button  [attr.aria-label]="'Miga de pan a ' + superItem?.nombre" 
-            *ngIf="superItem?.url && superItem?.url !== ''" type="button" class="btn-link btn-link-miga" 
-            (click)="ir(superItem?.url)">{{superItem?.nombre}}</button>
-            <span *ngIf="!superItem?.url || superItem?.url === ''">{{ superItem?.nombre }}</span>
+            <button
+                [attr.aria-label]="'Miga de pan a ' + superItem?.nombre"
+                *ngIf="superItem?.url && superItem?.url !== ''"
+                type="button"
+                class="btn-link btn-link-miga"
+                (click)="ir(superItem?.url)"
+            >
+                {{ superItem?.nombre }}
+            </button>
+            <span *ngIf="!superItem?.url || superItem?.url === ''">{{
+                superItem?.nombre
+            }}</span>
         </li>
 
-        <li  [attr.aria-label]="'Miga de pan a ' + item?.nombre"  [hidden]="!item" aria-current="page">{{ item?.nombre }}</li>
+        <li
+            [attr.aria-label]="'Miga de pan a ' + item?.nombre"
+            [hidden]="!item"
+            aria-current="page"
+        >
+            {{ item?.nombre }}
+        </li>
     </ol>
 </nav>

@@ -4,7 +4,7 @@
 
 export const environment: any = {
     production: false,
-    nombre: "arce-beta",
+    nombre: 'arce-beta',
     pageSize: 10,
 };
 

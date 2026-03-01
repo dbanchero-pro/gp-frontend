@@ -63,8 +63,8 @@ figure {
 
 @media screen and (max-width: 800px) {
     .Container {
-        padding-left: .75rem;
-        padding-right: .75rem;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
     }
 }
 
@@ -118,7 +118,7 @@ figure {
 }
 
 .Footer-links {
-    font-size: .85rem;
+    font-size: 0.85rem;
     border-top: 1px solid #eee;
     border-bottom: 6px solid #0060a3;
     padding-top: 0rem;
@@ -153,7 +153,7 @@ figure {
 
 .Footer-links ul li a {
     display: block;
-    padding: .5rem;
+    padding: 0.5rem;
 }
 
 @media screen and (min-width: 800px) {
@@ -165,12 +165,12 @@ figure {
         float: right;
         width: 100%;
         position: relative;
-        right: -.5rem;
+        right: -0.5rem;
     }
 
     .Footer-links ul li {
         width: auto;
-        padding-left: .75rem;
+        padding-left: 0.75rem;
     }
 }
 
@@ -214,7 +214,7 @@ figure {
 
 .Footer-socialMedia a {
     display: block;
-    padding: .25em;
+    padding: 0.25em;
     height: 2em;
 }
 
@@ -240,11 +240,13 @@ figure {
     font: inherit;
     font-weight: 600;
     margin: 0;
-    padding: .5em 1.5em;
+    padding: 0.5em 1.5em;
     position: relative;
     text-align: center;
     text-decoration: none;
-    transition: box-shadow .35s, background-color .35s;
+    transition:
+        box-shadow 0.35s,
+        background-color 0.35s;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -279,13 +281,13 @@ figure {
 .Button:disabled,
 .Button.is-disabled {
     cursor: default;
-    opacity: .2;
+    opacity: 0.2;
     box-shadow: none;
 }
 
 .Button:disabled:hover,
 .Button.is-disabled:hover {
-    background-color: #C7C7C7;
+    background-color: #c7c7c7;
 }
 
 .Button:active {
@@ -332,16 +334,16 @@ figure {
     font-weight: 700;
     text-transform: uppercase;
     text-align: center;
-    font-size: .875em;
-    padding-top: .15em;
-    padding-bottom: .15em;
+    font-size: 0.875em;
+    padding-top: 0.15em;
+    padding-bottom: 0.15em;
 }
 
 .Date-day {
     background-color: #fff;
     text-align: center;
-    padding-top: .45em;
-    padding-bottom: .45em;
+    padding-top: 0.45em;
+    padding-bottom: 0.45em;
     font-size: 1.375em;
     font-weight: 700;
     color: #555;
@@ -353,13 +355,13 @@ figure {
 }
 
 .Date--small {
-    font-size: .75rem;
+    font-size: 0.75rem;
     width: 3.75em;
 }
 
 .Date--small .Date-day {
-    padding-top: .15em;
-    padding-bottom: .15em;
+    padding-top: 0.15em;
+    padding-bottom: 0.15em;
 }
 
 form fieldset,
@@ -370,7 +372,7 @@ form fieldset fieldset {
 form fieldset {
     margin-bottom: 30px;
     padding: 25px 45px 0;
-    border: 1px solid #DDD;
+    border: 1px solid #ddd;
 }
 
 fieldset {
@@ -409,7 +411,7 @@ ul.form-group-list {
 }
 
 .form-group,
-ul.form-group-list>li {
+ul.form-group-list > li {
     margin-bottom: 7px;
     position: relative;
     padding: 0px 15px;
@@ -479,7 +481,7 @@ select {
 }
 
 .centro_grilla {
-    text-align: -webkit-center
+    text-align: -webkit-center;
 }
 
 .ngx-datatable.bootstrap .datatable-footer {
@@ -498,7 +500,7 @@ select {
    ========================================================================== */
 .Box {
     background: #fff;
-    border-radius: 8px;   
+    border-radius: 8px;
     display: block;
     margin-bottom: 1rem;
     outline: 1px solid transparent;
@@ -509,17 +511,17 @@ select {
 }
 
 .Box--colorInfo {
-   border-top: 1px solid rgb(249,249,249) !important;
-   border-left: 3px solid #0060a3 !important;
-   border-radius: 0.5rem;
-   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border-top: 1px solid rgb(249, 249, 249) !important;
+    border-left: 3px solid #0060a3 !important;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 
 .Box--colorInfo {
-   border-top: 1px solid rgb(249,249,249) !important;
-   border-left: 3px solid #0060a3 !important;
-   border-radius: 0.5rem;
-   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border-top: 1px solid rgb(249, 249, 249) !important;
+    border-left: 3px solid #0060a3 !important;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 
 .Box:after,
@@ -543,7 +545,7 @@ select {
 /* Box Color Modifiers
    ========================================================================== */
 .Box--color4 {
-    background-color: #F9F9F9;
+    background-color: #f9f9f9;
     color: #000;
 }
 
@@ -554,7 +556,7 @@ select {
 
 .Box--color4 .Box-info {
     color: #000;
-    opacity: .65;
+    opacity: 0.65;
 }
 
 .Box-title {
@@ -562,19 +564,19 @@ select {
     font-size: 1.625em;
     font-weight: 600;
     line-height: 1.25;
-    margin-bottom: .75em;
+    margin-bottom: 0.75em;
     word-break: break-word;
 }
 
-.Box>.Box-title {
-    margin-top: .5rem;
+.Box > .Box-title {
+    margin-top: 0.5rem;
 }
 
 .Box-info {
     color: #555;
     display: block;
-    font-size: .875em;
-    margin-bottom: .5em;
+    font-size: 0.875em;
+    margin-bottom: 0.5em;
 }
 
 .Alert {
@@ -587,6 +589,6 @@ select {
 }
 
 .card-title {
-  color: #333;
-  font-weight: 600;
+    color: #333;
+    font-weight: 600;
 }

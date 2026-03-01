@@ -1,4 +1,4 @@
-import { PaisDTO } from "../common/pais.model";
+import { PaisDTO } from '../common/pais.model';
 
 export interface ProveedorDTO {
     id?: string;

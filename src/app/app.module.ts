@@ -1,6 +1,12 @@
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
-import { Injector, LOCALE_ID, NgModule, inject, provideAppInitializer } from '@angular/core';
+import {
+    Injector,
+    LOCALE_ID,
+    NgModule,
+    inject,
+    provideAppInitializer,
+} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular'; //NOSONAR
@@ -28,7 +34,8 @@ function initializeKeycloak(
     seguridad: SeguridadService,
 ): () => Promise<any> {
     return () =>
-        new Promise(async (resolve, reject) => { //NOSONAR
+        new Promise(async (resolve, reject) => {
+            //NOSONAR
             await appConfig.load();
             logger.init(AppConfig.settings.loggingLevel);
             keycloak
@@ -59,24 +66,29 @@ function initializeKeycloak(
 @NgModule({
     declarations: [],
     imports: [
-      BrowserModule,
-      BrowserAnimationsModule,
-      SharedModule,
-      AppRoutingModule,
-      KeycloakAngularModule,
-      AppComponent,
-      HeaderComponent,
-      FooterComponent,
-      MenuComponent,
-      BreadcrumbsComponent,
-      PageComponent,
-      HomeComponent,
+        BrowserModule,
+        BrowserAnimationsModule,
+        SharedModule,
+        AppRoutingModule,
+        KeycloakAngularModule,
+        AppComponent,
+        HeaderComponent,
+        FooterComponent,
+        MenuComponent,
+        BreadcrumbsComponent,
+        PageComponent,
+        HomeComponent,
     ],
 
     providers: [
         AppConfig,
         provideAppInitializer(() => {
-            const initializerFn = (initializeKeycloak)(inject(AppConfig), inject(KeycloakService), inject(LoggerService), inject(SeguridadService)); //NOSONAR
+            const initializerFn = initializeKeycloak(
+                inject(AppConfig),
+                inject(KeycloakService),
+                inject(LoggerService),
+                inject(SeguridadService),
+            ); //NOSONAR
             return initializerFn();
         }),
         { provide: LOCALE_ID, useValue: 'es' },

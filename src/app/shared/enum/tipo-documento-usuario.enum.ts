@@ -1,3 +1,3 @@
 export enum TipoDocumentoUsuario {
-    CEDULA_IDENTIDAD = 'CI'
+    CEDULA_IDENTIDAD = 'CI',
 }

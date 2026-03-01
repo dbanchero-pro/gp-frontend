@@ -1,31 +1,44 @@
-import { AfterViewInit, Directive, ElementRef, HostBinding, HostListener, inject, OnDestroy, ViewChild } from "@angular/core";
-import { TipoMensajeEnum } from "../../enum/tipo-mensaje.enum";
-import { ErrorInterceptor } from "../../interceptors/error.interceptor";
-import { IColumnaOrden } from "../../models/common/columna-orden.model";
-import { volverConConfirmacion } from "../../utils/functions";
-import { PaginaBusquedaComponent } from "../pagina-busqueda/pagina-busqueda.component";import { CommonModule } from '@angular/common';import { FormsModule, ReactiveFormsModule } from '@angular/forms';import { RouterModule } from '@angular/router';import { AlertModule } from 'ngx-bootstrap/alert';import { BsDropdownModule } from 'ngx-bootstrap/dropdown';import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';import { ModalModule } from 'ngx-bootstrap/modal';import { PaginationModule } from 'ngx-bootstrap/pagination';import { TabsModule } from 'ngx-bootstrap/tabs';import { TooltipModule } from 'ngx-bootstrap/tooltip';import { TypeaheadModule } from 'ngx-bootstrap/typeahead';import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';import { NgxEditorModule } from 'ngx-editor';import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import {
+    AfterViewInit,
+    Directive,
+    ElementRef,
+    HostBinding,
+    HostListener,
+    inject,
+    OnDestroy,
+    ViewChild,
+} from '@angular/core';
+import { TipoMensajeEnum } from '../../enum/tipo-mensaje.enum';
+import { ErrorInterceptor } from '../../interceptors/error.interceptor';
+import { IColumnaOrden } from '../../models/common/columna-orden.model';
+import { volverConConfirmacion } from '../../utils/functions';
+import { PaginaBusquedaComponent } from '../pagina-busqueda/pagina-busqueda.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';
+import { NgxEditorModule } from 'ngx-editor';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 @Directive({
     selector: '[appPopupBase]',
 
     standalone: true,
 })
-export abstract class PopupBaseComponent extends PaginaBusquedaComponent<any> implements AfterViewInit, OnDestroy {
-    @ViewChild('modalRoot', { static: false }) modalRoot!: ElementRef<HTMLElement>;
+export abstract class PopupBaseComponent
+    extends PaginaBusquedaComponent<any>
+    implements AfterViewInit, OnDestroy
+{
+    @ViewChild('modalRoot', { static: false })
+    modalRoot!: ElementRef<HTMLElement>;
     @HostBinding('attr.tabindex') hostTabindex = -1;
 
     resultMsg: string[] = [''];
@@ -55,7 +68,6 @@ export abstract class PopupBaseComponent extends PaginaBusquedaComponent<any> im
         this.focusFirstElement();
     }
 
-
     ngOnDestroy(): void {
         this.opened = false;
     }
@@ -74,15 +86,16 @@ export abstract class PopupBaseComponent extends PaginaBusquedaComponent<any> im
             return;
         }
 
-        const modalRef = this.actualizarService.popups?.at(this.actualizarService.popups.length - 1);
+        const modalRef = this.actualizarService.popups?.at(
+            this.actualizarService.popups.length - 1,
+        );
 
         if (!modalRef?.content?.elementRef?.nativeElement.contains(target)) {
-                this.focusFirstElement();
+            this.focusFirstElement();
         }
     }
 
     private focusFirstElement(): void {
-        
         const modalEl = this.getModalElement();
         if (!modalEl) return;
 
@@ -91,7 +104,6 @@ export abstract class PopupBaseComponent extends PaginaBusquedaComponent<any> im
         const first = focusables[0] ?? modalEl;
         first.focus();
     }
-
 
     @HostListener('keydown', ['$event'])
     public handleKeyboardEvent(event: KeyboardEvent): void {
@@ -107,7 +119,9 @@ export abstract class PopupBaseComponent extends PaginaBusquedaComponent<any> im
         }
 
         const firstElement = focusableElements[0] as HTMLElement;
-        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+        const lastElement = focusableElements[
+            focusableElements.length - 1
+        ] as HTMLElement;
 
         if (event.shiftKey) {
             if (document.activeElement === firstElement) {
@@ -123,9 +137,10 @@ export abstract class PopupBaseComponent extends PaginaBusquedaComponent<any> im
     }
 
     private getFocusableElements(): HTMLElement[] {
-        
-        const modalRef = this.actualizarService.popups?.at(this.actualizarService.popups.length - 1);
-        
+        const modalRef = this.actualizarService.popups?.at(
+            this.actualizarService.popups.length - 1,
+        );
+
         let modalEl = this.getModalElement();
         if (modalRef?.content?.elementRef?.nativeElement) {
             modalEl = modalRef?.content?.elementRef?.nativeElement;
@@ -136,30 +151,38 @@ export abstract class PopupBaseComponent extends PaginaBusquedaComponent<any> im
         }
 
         return Array.from(
-            modalEl.querySelectorAll<HTMLElement>(this.focusableSelectors)
+            modalEl.querySelectorAll<HTMLElement>(this.focusableSelectors),
         );
     }
 
     private getModalElement(): HTMLElement | null {
-        return this.modalRoot?.nativeElement ?? this.elementRef?.nativeElement ?? null;
+        return (
+            this.modalRoot?.nativeElement ??
+            this.elementRef?.nativeElement ??
+            null
+        );
     }
 
     public procesarError(error: any, mensajePorDefecto?: string): void {
-
         this.showMsg = false;
         setTimeout(() => {
             let errorMensaje: string[] | string;
 
             if (typeof error === 'string') {
                 errorMensaje = [error];
-            } else if (error.status === 409 && error.error?.mensajes &&
+            } else if (
+                error.status === 409 &&
+                error.error?.mensajes &&
                 error.error.mensajes.length > 0 &&
                 error.error.mensajes[0]?.descripcion
             ) {
-                errorMensaje = [error.error.mensajes[0].descripcion ?? mensajePorDefecto ?? 'Error desconocido'];
+                errorMensaje = [
+                    error.error.mensajes[0].descripcion ??
+                        mensajePorDefecto ??
+                        'Error desconocido',
+                ];
             } else {
                 errorMensaje = ErrorInterceptor.procesarErrorMessage(error);
-
             }
 
             this.actualizarService.capturarErrores = true;
@@ -169,10 +192,7 @@ export abstract class PopupBaseComponent extends PaginaBusquedaComponent<any> im
             this.resultMsg = errorMensaje;
             this.typeMsg = TipoMensajeEnum.error;
             this.showMsg = true;
-
         }, 500);
-
-
     }
 
     columnaOrdenInicial: string = '';
@@ -184,14 +204,15 @@ export abstract class PopupBaseComponent extends PaginaBusquedaComponent<any> im
     }
 
     cancelarConConfirmacion(): void {
-        volverConConfirmacion(this.actualizarService, () => this.cerrarPopup(), this.form);
+        volverConConfirmacion(
+            this.actualizarService,
+            () => this.cerrarPopup(),
+            this.form,
+        );
     }
-
 
     // Método público para mostrar errores desde el componente padre
     public mostrarError(error: any, mensaje?: string): void {
         this.procesarError(error, mensaje);
     }
 }
-
-

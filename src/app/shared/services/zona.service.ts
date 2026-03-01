@@ -4,15 +4,14 @@ import { RestService } from 'src/app/shared/services/common/rest.service';
 import { ZonaDto } from '../models/zona.model';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class ZonaService {
+    private readonly url = '/api/gestion-contratos/v1/zonas';
 
-  private readonly url = '/api/gestion-contratos/v1/zonas';
+    constructor(private readonly gcRestService: RestService) {}
 
-  constructor(private readonly gcRestService: RestService) { }
-
-  obtenerZonas(): Observable<ZonaDto[]> {
-    return this.gcRestService.get(this.url + '/all');
-  }
+    obtenerZonas(): Observable<ZonaDto[]> {
+        return this.gcRestService.get(this.url + '/all');
+    }
 }

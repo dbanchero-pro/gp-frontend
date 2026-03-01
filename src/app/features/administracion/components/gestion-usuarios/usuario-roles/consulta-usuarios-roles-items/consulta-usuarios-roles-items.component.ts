@@ -16,18 +16,19 @@ import { ActualizarService } from 'src/app/shared/services/common/actualizar.ser
 import { CompraSiceService } from 'src/app/shared/services/compra-sice.service';
 import { UsuarioRolesService } from 'src/app/shared/services/usuario/usuario-roles.service';
 import { UsuarioService } from 'src/app/shared/services/usuario/usuario.service';
-import { ordenarYPaginar } from 'src/app/shared/utils/paginador';import { SharedModule } from 'src/app/shared/shared.module';
+import { ordenarYPaginar } from 'src/app/shared/utils/paginador';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
     selector: 'app-consulta-usuarios-roles-items',
     templateUrl: './consulta-usuarios-roles-items.component.html',
-  standalone: true,
-  imports: [
-    SharedModule,
-  ],
+    standalone: true,
+    imports: [SharedModule],
 })
-export class ConsultaUsuariosRolesItemsComponent extends PaginaBusquedaComponent<IConsultaUsuarioOrganismoPerfilFiltroDTO>
-    implements OnInit {
+export class ConsultaUsuariosRolesItemsComponent
+    extends PaginaBusquedaComponent<IConsultaUsuarioOrganismoPerfilFiltroDTO>
+    implements OnInit
+{
     @ViewChild('filtroItems') filtroItemsComponent: any;
 
     tiposCompra: TipoCompraDTO[] = [];
@@ -55,7 +56,7 @@ export class ConsultaUsuariosRolesItemsComponent extends PaginaBusquedaComponent
         private readonly route: ActivatedRoute,
         private readonly usuarioService: UsuarioService,
         private readonly compraSiceService: CompraSiceService,
-        private readonly usuarioRolesService: UsuarioRolesService
+        private readonly usuarioRolesService: UsuarioRolesService,
     ) {
         super();
         this.form = this.fb.group({
@@ -85,7 +86,6 @@ export class ConsultaUsuariosRolesItemsComponent extends PaginaBusquedaComponent
         this.buscar(true);
     }
 
-
     onFiltroItemsCambio(filtroItem: FiltroItemCompraDTO): void {
         this.filtroItem = filtroItem;
     }
@@ -97,24 +97,38 @@ export class ConsultaUsuariosRolesItemsComponent extends PaginaBusquedaComponent
         }
 
         const { pagina, tamanoPagina, sort, order, _ } = this.parametros;
-        let todosFiltrados = this.todos.filter(item =>
-            (!this.parametros.filtro.descripcionArticulo && !this.parametros.filtro.nroItem && !this.parametros.filtro.codArticulo)
-            || item.nroItem === this.parametros.filtro.nroItem
-            || item.descArticulo === this.parametros.filtro.descripcionArticulo);
-        this.items = ordenarYPaginar(todosFiltrados, pagina, tamanoPagina, sort, order);
+        let todosFiltrados = this.todos.filter(
+            (item) =>
+                (!this.parametros.filtro.descripcionArticulo &&
+                    !this.parametros.filtro.nroItem &&
+                    !this.parametros.filtro.codArticulo) ||
+                item.nroItem === this.parametros.filtro.nroItem ||
+                item.descArticulo ===
+                    this.parametros.filtro.descripcionArticulo,
+        );
+        this.items = ordenarYPaginar(
+            todosFiltrados,
+            pagina,
+            tamanoPagina,
+            sort,
+            order,
+        );
         this.total = todosFiltrados.length;
-
     }
 
     buscarInicial(resetearPagina: boolean = false): void {
-
-        if (!this.parametros.filtro.idCompra || !this.parametros.filtro.idUsuario) {
+        if (
+            !this.parametros.filtro.idCompra ||
+            !this.parametros.filtro.idUsuario
+        ) {
             return;
         }
 
-        const { _pagina, _tamanoPagina, _sort, _order, filtro } = this.parametros;
+        const { _pagina, _tamanoPagina, _sort, _order, filtro } =
+            this.parametros;
 
-        this.compraSiceService.obtenerListaItemsCompra(filtro)
+        this.compraSiceService
+            .obtenerListaItemsCompra(filtro)
             .subscribe((res) => {
                 this.todos = res;
                 this.total = res.length;
@@ -129,14 +143,24 @@ export class ConsultaUsuariosRolesItemsComponent extends PaginaBusquedaComponent
     }
 
     volver() {
-        this.router.navigate(['/administracion/gestion-usuarios/consulta-usuario-roles', this.idUsuario],{queryParams: { volver: '1' },});
+        this.router.navigate(
+            [
+                '/administracion/gestion-usuarios/consulta-usuario-roles',
+                this.idUsuario,
+            ],
+            { queryParams: { volver: '1' } },
+        );
     }
 
     obtenerAccionesItem(item: ItemCompraDto): AccionBoton[] {
         const acciones: AccionBoton[] = [
             {
                 nombre: 'Agregar',
-                ariaLabel: "Agregar rol por item " + item.nroItem + " usuario id " + this.usuario.id,
+                ariaLabel:
+                    'Agregar rol por item ' +
+                    item.nroItem +
+                    ' usuario id ' +
+                    this.usuario.id,
                 clase: 'btn btn-success btn-ancho-fijo-wider',
                 icono: 'fa fa-plus',
                 permisos: ['GC_GESTION_USU.ALTA'],
@@ -147,7 +171,8 @@ export class ConsultaUsuariosRolesItemsComponent extends PaginaBusquedaComponent
     }
 
     obtenerUsuario(idCompuesto: string): void {
-        this.usuarioService.obtenerUsuarioPorId(idCompuesto)
+        this.usuarioService
+            .obtenerUsuarioPorId(idCompuesto)
             .subscribe((res: UsuarioDTO) => {
                 this.usuario = {
                     id: res.id,
@@ -163,18 +188,26 @@ export class ConsultaUsuariosRolesItemsComponent extends PaginaBusquedaComponent
         this.compraSiceService.obtenerCompraPorId(idCompra).subscribe({
             next: (res) => {
                 this.compra = res;
-
             },
         });
     }
 
     private actualizarFiltro(): void {
-        const esPorNumero = (this.filtroItem?.tipoBusqueda ?? TipoBusqueda.NROITEM) === TipoBusqueda.NROITEM;
+        const esPorNumero =
+            (this.filtroItem?.tipoBusqueda ?? TipoBusqueda.NROITEM) ===
+            TipoBusqueda.NROITEM;
 
-        this.parametros.filtro.nroItem = esPorNumero && this.filtroItem?.item ? Number(this.filtroItem.item) : undefined;
+        this.parametros.filtro.nroItem =
+            esPorNumero && this.filtroItem?.item
+                ? Number(this.filtroItem.item)
+                : undefined;
 
-        this.parametros.filtro.descripcionArticulo = !esPorNumero && this.filtroItem.item !== undefined &&
-            this.filtroItem.item !== null ? String(this.filtroItem.item) : undefined;
+        this.parametros.filtro.descripcionArticulo =
+            !esPorNumero &&
+            this.filtroItem.item !== undefined &&
+            this.filtroItem.item !== null
+                ? String(this.filtroItem.item)
+                : undefined;
 
         const nroItem = this.parametros.filtro.nroItem;
         const descArt = this.parametros.filtro.descripcionArticulo;
@@ -187,23 +220,26 @@ export class ConsultaUsuariosRolesItemsComponent extends PaginaBusquedaComponent
             codArticulo: codArt,
             descripcionArticulo: descArt,
         };
-
     }
 
     agregarPermisoPorItem(item: ItemCompraDto): void {
-        this.actualizarServ.confirmar('¿Está seguro que desea agregar el rol?',
+        this.actualizarServ.confirmar(
+            '¿Está seguro que desea agregar el rol?',
             () => {
                 const idCompra = this.compra?.idCompra;
                 const idUsuario = this.usuario?.id;
                 const idItem = item.idItem;
                 if (idCompra && idUsuario && idItem) {
-                    this.usuarioRolesService.agregarRolPorItem(idCompra, idItem, idUsuario)
+                    this.usuarioRolesService
+                        .agregarRolPorItem(idCompra, idItem, idUsuario)
                         .subscribe(() => {
-                            this.actualizarServ.mensajeCorrecto('El rol ha sido agregado de forma exitosa.')
+                            this.actualizarServ.mensajeCorrecto(
+                                'El rol ha sido agregado de forma exitosa.',
+                            );
                             this.buscarInicial(false);
                         });
                 }
-            }
+            },
         );
     }
 
@@ -215,12 +251,11 @@ export class ConsultaUsuariosRolesItemsComponent extends PaginaBusquedaComponent
     obtenerItemsFiltro(items: ItemCompraDto[]): ItemCompraFiltroDTO[] {
         return items.map((item) => {
             return {
-                nroItem: item.nroItem + "",
-                descripcionItem: item.descArticulo + " (" + item.codArticulo + ")",
+                nroItem: item.nroItem + '',
+                descripcionItem:
+                    item.descArticulo + ' (' + item.codArticulo + ')',
                 descArticulo: item.descArticulo,
             };
         });
     }
 }
-
-

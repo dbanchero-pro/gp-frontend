@@ -1,61 +1,105 @@
-<div class="modal-header d-flex justify-content-between align-items-center" #modalRoot>
+<div
+    class="modal-header d-flex justify-content-between align-items-center"
+    #modalRoot
+>
     <h1 class="modal-title mb-0" id="tituloPopup">Cancelación de pliego</h1>
     <div class="d-flex align-items-center">
         <small class="text-muted mr-3">Los campos con * son obligatorios</small>
-        <button type="button" aria-label="Cerrar" class="close" (click)="cancelar()">&times;</button>
+        <button
+            type="button"
+            aria-label="Cerrar"
+            class="close"
+            (click)="cancelar()"
+        >
+            &times;
+        </button>
     </div>
 </div>
 
 <div class="modal-body">
-  <div class="row">
-    <div class="col-12">
-      <div class="Box Box--colorInfo mr-3 ml-3 p-3">
-        <div class="mb-2 font-weight-bold subtitle">
-          {{ obtenerTextoOrganismo() }}
+    <div class="row">
+        <div class="col-12">
+            <div class="Box Box--colorInfo mr-3 ml-3 p-3">
+                <div class="mb-2 font-weight-bold subtitle">
+                    {{ obtenerTextoOrganismo() }}
+                </div>
+                <div class="mb-2 font-weight-bold">
+                    {{ obtenerTextoTipoCompra() }}
+                </div>
+                <div class="mb-2">
+                    Modelo: <strong> Denominación Modelo 1</strong>
+                </div>
+                <div class="m-0">
+                    <span
+                        class="badge"
+                        [ngClass]="obtenerClaseBadgeEstado(proceso.estado)"
+                    >
+                        {{ proceso.estado }}
+                    </span>
+                </div>
+            </div>
         </div>
-        <div class="mb-2 font-weight-bold">
-          {{ obtenerTextoTipoCompra() }}
-        </div>
-        <div class="mb-2">
-            Modelo: <strong> Denominación Modelo 1</strong>
-        </div>
-        <div class="m-0"> 
-          <span class="badge" [ngClass]="obtenerClaseBadgeEstado(proceso.estado)">
-                {{ proceso.estado }}
-          </span>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-12">
-        <form [formGroup]="form">
-          <div class="form-group" [class.field-error]="form.get('motivo')?.invalid && form.get('motivo')?.touched">
-            <label for="motivo">* Motivo de la cancelación</label>
-            <textarea id="motivo" class="form-control" formControlName="motivo" rows="10" maxlength="500">
-            </textarea>
-            <small class="form-text text-muted">
-              Máximo 500 caracteres
-            </small>
-            <span class="texto-error m-0" [style.visibility]="form.get('motivo')?.invalid && form.get('motivo')?.touched && form.get('motivo')?.touched ? 'visible' : 'hidden'">
-              El motivo es obligatorio
-            </span>
-          </div>
-        </form>
+    <div class="row">
+        <div class="col-md-12">
+            <form [formGroup]="form">
+                <div
+                    class="form-group"
+                    [class.field-error]="
+                        form.get('motivo')?.invalid &&
+                        form.get('motivo')?.touched
+                    "
+                >
+                    <label for="motivo">* Motivo de la cancelación</label>
+                    <textarea
+                        id="motivo"
+                        class="form-control"
+                        formControlName="motivo"
+                        rows="10"
+                        maxlength="500"
+                    >
+                    </textarea>
+                    <small class="form-text text-muted">
+                        Máximo 500 caracteres
+                    </small>
+                    <span
+                        class="texto-error m-0"
+                        [style.visibility]="
+                            form.get('motivo')?.invalid &&
+                            form.get('motivo')?.touched &&
+                            form.get('motivo')?.touched
+                                ? 'visible'
+                                : 'hidden'
+                        "
+                    >
+                        El motivo es obligatorio
+                    </span>
+                </div>
+            </form>
+        </div>
     </div>
-  </div>
 
- <div class="row">
-    <div class="col-12 border-top">
-      <div class="d-flex justify-content-end mt-3 pe-3">
-          <button class="btn btn-primary" type="submit" (click)="guardar()">Aceptar</button>
-          <div class="btn-back d-flex justify-content-end">   
-              <button class="btn btn-link" type="button" (click)="cancelar()">Cancelar</button>
-          </div>
-      </div>
+    <div class="row">
+        <div class="col-12 border-top">
+            <div class="d-flex justify-content-end mt-3 pe-3">
+                <button
+                    class="btn btn-primary"
+                    type="submit"
+                    (click)="guardar()"
+                >
+                    Aceptar
+                </button>
+                <div class="btn-back d-flex justify-content-end">
+                    <button
+                        class="btn btn-link"
+                        type="button"
+                        (click)="cancelar()"
+                    >
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-
-

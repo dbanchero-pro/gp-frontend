@@ -16,7 +16,7 @@ export class RestApiService {
     post<T, D>(
         url: string,
         data: D,
-        params: HttpParams = new HttpParams()
+        params: HttpParams = new HttpParams(),
     ): Observable<T> {
         return this.http.post<T>(`${url}`, JSON.stringify(data), {
             params,

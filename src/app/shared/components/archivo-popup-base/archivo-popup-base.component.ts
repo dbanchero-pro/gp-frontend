@@ -1,25 +1,27 @@
-import { Directive, OnInit } from "@angular/core";
-import { AppConfig } from "src/app/app.config";
-import { formatearBytes } from "../../utils/functions";
-import { PopupBaseComponent } from "../popup-base/popup-base.component";import { CommonModule } from '@angular/common';import { FormsModule, ReactiveFormsModule } from '@angular/forms';import { RouterModule } from '@angular/router';import { AlertModule } from 'ngx-bootstrap/alert';import { BsDropdownModule } from 'ngx-bootstrap/dropdown';import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';import { ModalModule } from 'ngx-bootstrap/modal';import { PaginationModule } from 'ngx-bootstrap/pagination';import { TabsModule } from 'ngx-bootstrap/tabs';import { TooltipModule } from 'ngx-bootstrap/tooltip';import { TypeaheadModule } from 'ngx-bootstrap/typeahead';import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';import { NgxEditorModule } from 'ngx-editor';import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import { Directive, OnInit } from '@angular/core';
+import { AppConfig } from 'src/app/app.config';
+import { formatearBytes } from '../../utils/functions';
+import { PopupBaseComponent } from '../popup-base/popup-base.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';
+import { NgxEditorModule } from 'ngx-editor';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 @Directive()
-export abstract class ArchivoPopupBaseComponent extends PopupBaseComponent implements OnInit {
- 
+export abstract class ArchivoPopupBaseComponent
+    extends PopupBaseComponent
+    implements OnInit
+{
     mimeType: string = '';
     base64: string = '';
 
@@ -27,32 +29,37 @@ export abstract class ArchivoPopupBaseComponent extends PopupBaseComponent imple
     errorMaxSize = '';
     mostrarErrorMaxSize = false;
     today = new Date().toISOString().split('T')[0];
-    constructor() { 
+    constructor() {
         super();
     }
 
     override ngOnInit(): void {
         super.ngOnInit();
         if (!this.extensionesPermitidas || this.extensionesPermitidas === '') {
-            this.extensionesPermitidas = AppConfig.settings.extensionesPermitidas;
+            this.extensionesPermitidas =
+                AppConfig.settings.extensionesPermitidas;
         }
-        
     }
 
-    
     actualizarTextoErrorSize(bytes: number) {
-        const maximo = formatearBytes(AppConfig.settings.archivosTamanoMaxBytes);
+        const maximo = formatearBytes(
+            AppConfig.settings.archivosTamanoMaxBytes,
+        );
         const actual = formatearBytes(bytes);
         this.errorMaxSize = `El tamaño del archivo es de ${actual} y el máximo permitido es de ${maximo}.`;
     }
 
-    onArchivoSeleccionadoInterno(event: any, accion: (nombre: string)=>void): void {
+    onArchivoSeleccionadoInterno(
+        event: any,
+        accion: (nombre: string) => void,
+    ): void {
         if (event?.target?.files && event?.target?.files.length > 0) {
             const file = event?.target?.files[0];
-            this.mostrarErrorMaxSize = file.size > AppConfig.settings.archivosTamanoMaxBytes;
+            this.mostrarErrorMaxSize =
+                file.size > AppConfig.settings.archivosTamanoMaxBytes;
             this.actualizarTextoErrorSize(file.size);
             accion(file.name);
-           
+
             this.mimeType = file.type;
             const reader = new FileReader();
             reader.onload = () => {
@@ -63,7 +70,6 @@ export abstract class ArchivoPopupBaseComponent extends PopupBaseComponent imple
         }
     }
 
-    
     cancelar(): void {
         this.cerrarPopup();
     }
@@ -71,5 +77,4 @@ export abstract class ArchivoPopupBaseComponent extends PopupBaseComponent imple
     cerrar(): void {
         this.cerrarPopup();
     }
-
 }

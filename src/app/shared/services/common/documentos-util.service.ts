@@ -4,24 +4,24 @@ import { Logger } from '../../utils/logger';
 import { ArchivoService } from './archivo.service';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class DocumentosUtilService {
-
-    constructor(
-        private readonly archivoService: ArchivoService,
-    ) { }
+    constructor(private readonly archivoService: ArchivoService) {}
 
     descargarDocumento(documento: ArchivoDTO, idPliego?: number): void {
         if (documento.modificado === true) {
             this.archivoService.descargar(documento);
-        } 
+        }
     }
 
-    eliminarDocumento(documentos: ArchivoDTO[], documento: ArchivoDTO): ArchivoDTO[] {
+    eliminarDocumento(
+        documentos: ArchivoDTO[],
+        documento: ArchivoDTO,
+    ): ArchivoDTO[] {
         if (documento) {
             if (documento.id && documento.id < 0) {
-                return documentos.filter(d => d.id !== documento.id);
+                return documentos.filter((d) => d.id !== documento.id);
             } else {
                 documento.modificado = true;
                 documento.eliminado = true;
@@ -32,7 +32,7 @@ export class DocumentosUtilService {
     }
 
     obtenerDocumentosAMostrar(documentos: ArchivoDTO[]): ArchivoDTO[] {
-        return documentos.filter(d => d.eliminado !== true);
+        return documentos.filter((d) => d.eliminado !== true);
     }
 
     getDocumentDate(documentos: ArchivoDTO[], index: number): Date {

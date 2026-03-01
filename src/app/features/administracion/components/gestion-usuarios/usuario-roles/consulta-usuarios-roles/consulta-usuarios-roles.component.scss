@@ -8,12 +8,12 @@ app-boton-accion {
     }
 }
 
-.btn-ancho-fijo-eliminar{
+.btn-ancho-fijo-eliminar {
     width: 250px !important;
     max-width: 250px !important;
 }
 
-td{
+td {
     text-align: left;
     vertical-align: middle;
 }
@@ -27,14 +27,38 @@ table {
     table-layout: fixed;
     width: 100%;
 
-    th:nth-child(1), td:nth-child(1) { width: 8%; }   // Inciso
-    th:nth-child(2), td:nth-child(2) { width: 12%; }  // Unidad ejecutora
-    th:nth-child(3), td:nth-child(3) { width: 12%; }  // Unidad de compra
-    th:nth-child(4), td:nth-child(4) { width: 12%; }  // Tipo de compra
-    th:nth-child(5), td:nth-child(5) { width: 12%; }  // Subtipo de compra
-    th:nth-child(6), td:nth-child(6) { width: 10%; }  // N°/año compra
-    th:nth-child(7), td:nth-child(7) { width: 18%; }  // Roles asignados
-    th:nth-child(8), td:nth-child(8) { width: 16%; }  // Acciones
+    th:nth-child(1),
+    td:nth-child(1) {
+        width: 8%;
+    } // Inciso
+    th:nth-child(2),
+    td:nth-child(2) {
+        width: 12%;
+    } // Unidad ejecutora
+    th:nth-child(3),
+    td:nth-child(3) {
+        width: 12%;
+    } // Unidad de compra
+    th:nth-child(4),
+    td:nth-child(4) {
+        width: 12%;
+    } // Tipo de compra
+    th:nth-child(5),
+    td:nth-child(5) {
+        width: 12%;
+    } // Subtipo de compra
+    th:nth-child(6),
+    td:nth-child(6) {
+        width: 10%;
+    } // N°/año compra
+    th:nth-child(7),
+    td:nth-child(7) {
+        width: 18%;
+    } // Roles asignados
+    th:nth-child(8),
+    td:nth-child(8) {
+        width: 16%;
+    } // Acciones
 
     td {
         overflow: hidden;

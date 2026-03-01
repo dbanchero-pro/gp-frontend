@@ -1,4 +1,4 @@
-import { TipoFuenteCampo } from "../../enums/tipo-fuente-campo.enum";
+import { TipoFuenteCampo } from '../../enums/tipo-fuente-campo.enum';
 
 export interface IFiltroCampoDTO {
     etiqueta?: string;
@@ -10,6 +10,6 @@ export class FiltroCampoDTO implements IFiltroCampoDTO {
     constructor(
         public etiqueta?: string,
         public descripcion?: string,
-        public fuente?: TipoFuenteCampo
+        public fuente?: TipoFuenteCampo,
     ) {}
 }

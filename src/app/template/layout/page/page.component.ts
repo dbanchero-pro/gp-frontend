@@ -4,29 +4,29 @@ import { LoggerService } from 'src/app/shared/services/common/logger.service';
 import { MenuService } from 'src/app/shared/services/common/menu.service';
 import { SeguridadService } from 'src/app/shared/services/common/seguridad.service';
 import { TipoMensajeEnum } from '../../../shared/enum/tipo-mensaje.enum';
-import { ActualizarService } from '../../../shared/services/common/actualizar.service';import { SharedModule } from 'src/app/shared/shared.module';import { CommonModule } from '@angular/common';import { HeaderComponent } from '../../components/header/header.component';import { MenuComponent } from '../../components/menu/menu.component';import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';import { FooterComponent } from '../../components/footer/footer.component';import { MensajeComponent } from '../../../shared/components/mensaje/mensaje.component';
-
-
-
-
-
-
-
+import { ActualizarService } from '../../../shared/services/common/actualizar.service';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { CommonModule } from '@angular/common';
+import { HeaderComponent } from '../../components/header/header.component';
+import { MenuComponent } from '../../components/menu/menu.component';
+import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
+import { FooterComponent } from '../../components/footer/footer.component';
+import { MensajeComponent } from '../../../shared/components/mensaje/mensaje.component';
 
 @Component({
     selector: 'app-page',
     templateUrl: './page.component.html',
     styleUrls: ['./page.component.scss'],
-  standalone: true,
-  imports: [
-    SharedModule,
-    CommonModule,
-    HeaderComponent,
-    MenuComponent,
-    BreadcrumbsComponent,
-    MensajeComponent,
-    FooterComponent,
-  ],
+    standalone: true,
+    imports: [
+        SharedModule,
+        CommonModule,
+        HeaderComponent,
+        MenuComponent,
+        BreadcrumbsComponent,
+        MensajeComponent,
+        FooterComponent,
+    ],
 })
 export class PageComponent implements OnInit {
     titulo = '';
@@ -41,7 +41,7 @@ export class PageComponent implements OnInit {
         private readonly menu: MenuService,
         private readonly actualizar: ActualizarService,
         private readonly seguridad: SeguridadService,
-        private readonly logger: LoggerService
+        private readonly logger: LoggerService,
     ) {
         this.actualizarTitulo();
         this.router.events.subscribe((event: any) => {
@@ -78,10 +78,10 @@ export class PageComponent implements OnInit {
 
     private actualizarDatos() {
         window.setTimeout(() => {
-            this.titulo = this.menu.obtenerItemMasAbajo(this.router.url)?.titulo ?? '';
-            this.subTitulo = this.menu.obtenerItemMasAbajo(this.router.url)?.subtitulo ?? '';
+            this.titulo =
+                this.menu.obtenerItemMasAbajo(this.router.url)?.titulo ?? '';
+            this.subTitulo =
+                this.menu.obtenerItemMasAbajo(this.router.url)?.subtitulo ?? '';
         }, 0);
     }
 }
-
-

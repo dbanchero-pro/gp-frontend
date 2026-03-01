@@ -13,14 +13,14 @@ Para aplicar este formato:
 1. **Usar el pipe FechaPipe**: Inyectar el `FechaPipe` en el componente y utilizarlo para transformar las fechas.
 
 ```typescript
-import { FechaPipe } from 'ruta/al/pipe/fecha.pipe';
+import { FechaPipe } from "ruta/al/pipe/fecha.pipe";
 
 export class MiComponente {
-  private fechaPipe = inject(FechaPipe);
+    private fechaPipe = inject(FechaPipe);
 
-  formatearFecha(fecha: any): string {
-    return this.fechaPipe.transform(fecha) || '';
-  }
+    formatearFecha(fecha: any): string {
+        return this.fechaPipe.transform(fecha) || "";
+    }
 }
 ```
 

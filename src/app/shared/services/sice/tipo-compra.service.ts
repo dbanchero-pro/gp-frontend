@@ -8,20 +8,17 @@ import { RestService } from '../common/rest.service';
     providedIn: 'root',
 })
 export class TipoCompraService {
-
-    constructor(private readonly gcRestService: RestService) { }
-
+    constructor(private readonly gcRestService: RestService) {}
 
     obtenerTiposCompraSinPaginado(): Observable<TipoCompraDTO[]> {
         return this.gcRestService.get<TipoCompraDTO[]>(
-            '/api/gestion-contratos/v1/tipos-compra/all'
+            '/api/gestion-contratos/v1/tipos-compra/all',
         );
     }
 
     obtenerTiposCompraPaginado(): Observable<PageModel<TipoCompraDTO>> {
         return this.gcRestService.get<PageModel<TipoCompraDTO>>(
-            '/api/gestion-contratos/v1/tipos-compra'
+            '/api/gestion-contratos/v1/tipos-compra',
         );
     }
-
 }

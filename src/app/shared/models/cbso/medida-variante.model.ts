@@ -4,6 +4,8 @@ export interface IMedidaVarianteDTO {
 }
 
 export class MedidaVarianteDTO implements IMedidaVarianteDTO {
-    constructor(public id?: number, public descMedida?: string) {
-    }
+    constructor(
+        public id?: number,
+        public descMedida?: string,
+    ) {}
 }

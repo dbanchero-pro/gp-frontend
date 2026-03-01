@@ -15,83 +15,83 @@ export class GeneralService {
         new BehaviorSubject<SubtipoCompraDTO[]>([]);
     constructor(
         private readonly gcRestService: RestService,
-        private readonly location: Location
-    ) { }
+        private readonly location: Location,
+    ) {}
 
     volver() {
         this.location.back();
     }
     getTiposCompra(): Observable<TipoCompraDTO[]> {
         return this.gcRestService.get<TipoCompraDTO[]>(
-            '/api/restricciones/v1/tipos-compras/todos'
+            '/api/restricciones/v1/tipos-compras/todos',
         );
     }
 
     getCompra(): Observable<CompraDTO> {
         return this.gcRestService.get<CompraDTO>(
-            '/api/gestion-compra/v1/compras/{id}'
+            '/api/gestion-compra/v1/compras/{id}',
         );
     }
 
     getTiposCompraSinRelacionar(): Observable<TipoCompraDTO[]> {
         return this.gcRestService.get<TipoCompraDTO[]>(
-            '/api/restricciones/v1/tipos-compras/todos-sin-relacionar'
+            '/api/restricciones/v1/tipos-compras/todos-sin-relacionar',
         );
     }
 
     getSubTipoCompra(
         tipo: string,
-        subtipo: string
+        subtipo: string,
     ): Observable<SubtipoCompraDTO> {
         return this.gcRestService.get<SubtipoCompraDTO>(
-            '/api/restricciones/v1/subtipos-compras/' + tipo + '/' + subtipo
+            '/api/restricciones/v1/subtipos-compras/' + tipo + '/' + subtipo,
         );
     }
 
     getSubTiposCompraPorTipoCompra(id: string): Observable<SubtipoCompraDTO[]> {
         return this.gcRestService.get<SubtipoCompraDTO[]>(
             '/api/restricciones/v1/tipos-compras/' +
-            id +
-            '/subtipos-compras/todos'
+                id +
+                '/subtipos-compras/todos',
         );
     }
 
     getSubTiposCompraPorTipoCompraSinRelacionar(
-        id: string
+        id: string,
     ): Observable<SubtipoCompraDTO[]> {
         return this.gcRestService.get<SubtipoCompraDTO[]>(
             '/api/restricciones/v1/tipos-compras/' +
-            id +
-            '/subtipos-compras/todos-sin-relacionar'
+                id +
+                '/subtipos-compras/todos-sin-relacionar',
         );
     }
 
     getTiposCompraRelacionar(
         idTipoCompraRelacionar: string,
-        idSubtipoCompraRelacionar: string
+        idSubtipoCompraRelacionar: string,
     ): Observable<TipoCompraDTO[]> {
         return this.gcRestService.get<TipoCompraDTO[]>(
-            `/api/restricciones/v1/tipos-compras/relacionar/${idTipoCompraRelacionar}/${idSubtipoCompraRelacionar}`
+            `/api/restricciones/v1/tipos-compras/relacionar/${idTipoCompraRelacionar}/${idSubtipoCompraRelacionar}`,
         );
     }
 
     getSubTiposCompraRelacionar(
         idTipoCompraRelacionar: string,
         idSubtipoCompraRelacionar: string,
-        idTipoCompra: string
+        idTipoCompra: string,
     ): Observable<SubtipoCompraDTO[]> {
         return this.gcRestService.get<SubtipoCompraDTO[]>(
-            `/api/restricciones/v1/subtipos-compras/relacionar/${idTipoCompraRelacionar}/${idSubtipoCompraRelacionar}/${idTipoCompra}`
+            `/api/restricciones/v1/subtipos-compras/relacionar/${idTipoCompraRelacionar}/${idSubtipoCompraRelacionar}/${idTipoCompra}`,
         );
     }
 
     getTiposCompraRelacionarNomina(
         idNomina: number,
         idTipoCompraRelacionar: string,
-        idSubtipoCompraRelacionar: string
+        idSubtipoCompraRelacionar: string,
     ): Observable<TipoCompraDTO[]> {
         return this.gcRestService.get<TipoCompraDTO[]>(
-            `/api/restricciones/v1/tipos-compras/relacionar/${idNomina}/${idTipoCompraRelacionar}/${idSubtipoCompraRelacionar}`
+            `/api/restricciones/v1/tipos-compras/relacionar/${idNomina}/${idTipoCompraRelacionar}/${idSubtipoCompraRelacionar}`,
         );
     }
 
@@ -99,10 +99,10 @@ export class GeneralService {
         idNomina: number,
         idTipoCompraRelacionar: string,
         idSubtipoCompraRelacionar: string,
-        idTipoCompra: string
+        idTipoCompra: string,
     ): Observable<SubtipoCompraDTO[]> {
         return this.gcRestService.get<SubtipoCompraDTO[]>(
-            `/api/restricciones/v1/subtipos-compras/relacionar/${idNomina}/${idTipoCompraRelacionar}/${idSubtipoCompraRelacionar}/${idTipoCompra}`
+            `/api/restricciones/v1/subtipos-compras/relacionar/${idNomina}/${idTipoCompraRelacionar}/${idSubtipoCompraRelacionar}/${idTipoCompra}`,
         );
     }
 }

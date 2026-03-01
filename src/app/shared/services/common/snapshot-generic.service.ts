@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 export class SnapshotGenericService {
     save(key: string, data: unknown): void {
-
         sessionStorage.setItem(key, JSON.stringify(data));
     }
 

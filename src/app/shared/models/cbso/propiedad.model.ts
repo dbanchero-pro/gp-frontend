@@ -3,8 +3,9 @@ export interface IPropiedadDTO {
     descPropiedad?: string;
 }
 
-
 export class PropiedadDTO implements IPropiedadDTO {
-    constructor(public id?: number, public descPropiedad?: string) {
-    }
+    constructor(
+        public id?: number,
+        public descPropiedad?: string,
+    ) {}
 }

@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { InputDocumentoComponent } from 'src/app/shared/components/input-documento/input-documento.component';
 import { PopupBaseComponent } from 'src/app/shared/components/popup-base/popup-base.component';
@@ -10,17 +17,15 @@ import { TipoCompraService } from 'src/app/shared/services/sice/tipo-compra.serv
 import { UsuarioOrganismoService } from 'src/app/shared/services/usuario/usuario-organismo.service';
 import { UsuarioOrganismoPerfilService } from 'src/app/shared/services/usuario/usuario-perfil.service';
 import { transformarNroDocumento } from 'src/app/shared/utils/functions';
-import { Logger } from 'src/app/shared/utils/logger';import { SharedModule } from 'src/app/shared/shared.module';
-
+import { Logger } from 'src/app/shared/utils/logger';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
     selector: 'app-nuevo-usuario-tipo-compra-popup',
     templateUrl: './nuevo-usuario-tipo-compra-popup.component.html',
     styleUrls: ['./nuevo-usuario-tipo-compra-popup.component.scss'],
-  standalone: true,
-  imports: [
-    SharedModule,
-  ],
+    standalone: true,
+    imports: [SharedModule],
 })
 export class NuevoUsuarioTipoCompraPopupComponent
     extends PopupBaseComponent
@@ -52,7 +57,7 @@ export class NuevoUsuarioTipoCompraPopupComponent
         private readonly fb: FormBuilder,
         private readonly usuarioOrganismoService: UsuarioOrganismoService,
         private readonly usuarioOrganismoPerfilService: UsuarioOrganismoPerfilService,
-        private readonly tipoCompraService: TipoCompraService
+        private readonly tipoCompraService: TipoCompraService,
     ) {
         super();
     }
@@ -95,7 +100,7 @@ export class NuevoUsuarioTipoCompraPopupComponent
 
         const dataAGuardar = {
             idUsuario: transformarNroDocumento(
-                this.form.get('nroDocumento')!.value
+                this.form.get('nroDocumento')!.value,
             ),
             idTipoCompra: this.form.get('idTipoCompra')!.value,
             esEditorPrincipal: this.form.get('esEditorPrincipal')!.value,
@@ -154,5 +159,3 @@ export class NuevoUsuarioTipoCompraPopupComponent
             });
     }
 }
-
-

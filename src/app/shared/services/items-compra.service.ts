@@ -9,52 +9,52 @@ import { RestService } from './common/rest.service';
 })
 export class ItemsCompraService {
     url = '/api/gestion-contratos/v1/items-compra';
-    constructor(private readonly gcRestService: RestService) { }
+    constructor(private readonly gcRestService: RestService) {}
 
     modificar(
         idCompra: number,
         idItem: number,
-        data: Partial<ItemCompraDto>
+        data: Partial<ItemCompraDto>,
     ): Observable<ItemCompraDto> {
         return this.gcRestService.put(
             `${this.url}/${idCompra}/${idItem}`,
-            data
+            data,
         );
     }
 
     eliminar(idCompra: number, idItem: number): Observable<void> {
         return this.gcRestService.delete(
-            `${this.url}/eliminar/${idCompra}/${idItem}`
+            `${this.url}/eliminar/${idCompra}/${idItem}`,
         );
     }
 
     obtenerItemsPorId(
         idCompra: number,
-        idItem: number
+        idItem: number,
     ): Observable<ItemCompraDto> {
         return this.gcRestService.get<ItemCompraDto>(
-            `${this.url}/${idCompra}/${idItem}`
+            `${this.url}/${idCompra}/${idItem}`,
         );
     }
 
     copiar(idCompra: number, idItem: number): Observable<void> {
         return this.gcRestService.put(
             `${this.url}/copiarItem/${idCompra}/${idItem}`,
-            null
+            null,
         );
     }
 
     buscarPorArticulo(
         idCompra: number,
         texto: string,
-        tipoBusqueda: TipoBusqueda
+        tipoBusqueda: TipoBusqueda,
     ): Observable<ItemCompraFiltroDTO[]> {
         let filtro = 'filtrar-articulos';
         if (tipoBusqueda === TipoBusqueda.NROITEM) {
             filtro = 'filtrar-nroitem';
         }
         return this.gcRestService.get<ItemCompraFiltroDTO[]>(
-            `${this.url}/${filtro}/${idCompra}/${texto}`
+            `${this.url}/${filtro}/${idCompra}/${texto}`,
         );
     }
 }

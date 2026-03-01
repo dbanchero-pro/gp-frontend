@@ -1,5 +1,4 @@
 export enum TipoPerfil {
     Conformidad = 'CONFORMIDAD',
-    Recepcion = 'RECEPCION'
-  }
-  
+    Recepcion = 'RECEPCION',
+}

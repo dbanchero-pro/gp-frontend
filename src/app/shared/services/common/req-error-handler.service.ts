@@ -1,7 +1,7 @@
-import {Injectable, EventEmitter} from "@angular/core";
+import { Injectable, EventEmitter } from '@angular/core';
 
 @Injectable({
-    providedIn: "root"
+    providedIn: 'root',
 })
 export class ReqErrorHandlerService {
     evShowError = new EventEmitter<string>();

@@ -16,7 +16,6 @@ export class ArchivoDTO implements IArchivoDTO {
         public contenido?: string,
         public modificado?: boolean,
         public eliminado?: boolean,
-        public fecha?: Date) {
-        
-    }
+        public fecha?: Date,
+    ) {}
 }

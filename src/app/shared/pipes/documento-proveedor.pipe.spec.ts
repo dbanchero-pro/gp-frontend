@@ -12,7 +12,7 @@ describe('DocumentoProveedorPipe', () => {
         const prov: any = {
             tipoDocumento: 'RUT',
             nroDocumento: '23812831823',
-            paisDocumento: { descripcion: 'Uruguay' }
+            paisDocumento: { descripcion: 'Uruguay' },
         };
         expect(pipe.transform(prov)).toBe('RUT 23812831823 Uruguay');
     });

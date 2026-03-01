@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { InputDocumentoComponent } from 'src/app/shared/components/input-documento/input-documento.component';
 import { PopupBaseComponent } from 'src/app/shared/components/popup-base/popup-base.component';
@@ -8,17 +15,15 @@ import { UsuarioOrganismoDTO } from 'src/app/shared/models/usuario/usuario-organ
 import { UsuarioOrganismoService } from 'src/app/shared/services/usuario/usuario-organismo.service';
 import { UsuarioOrganismoPerfilService } from 'src/app/shared/services/usuario/usuario-perfil.service';
 import { transformarNroDocumento } from 'src/app/shared/utils/functions';
-import { Logger } from 'src/app/shared/utils/logger';import { SharedModule } from 'src/app/shared/shared.module';
-
+import { Logger } from 'src/app/shared/utils/logger';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
     selector: 'app-nuevo-usuario-popup',
     templateUrl: './nuevo-usuario-popup.component.html',
     styleUrls: ['./nuevo-usuario-popup.component.scss'],
-  standalone: true,
-  imports: [
-    SharedModule,
-  ],
+    standalone: true,
+    imports: [SharedModule],
 })
 export class NuevoUsuarioPopupComponent
     extends PopupBaseComponent
@@ -41,7 +46,7 @@ export class NuevoUsuarioPopupComponent
     constructor(
         private readonly fb: FormBuilder,
         private readonly usuarioOrganismoService: UsuarioOrganismoService,
-        private readonly usuarioOrganismoPerfilService: UsuarioOrganismoPerfilService
+        private readonly usuarioOrganismoPerfilService: UsuarioOrganismoPerfilService,
     ) {
         super();
     }
@@ -70,7 +75,7 @@ export class NuevoUsuarioPopupComponent
 
         const dataAGuardar = {
             idUsuario: transformarNroDocumento(
-                this.form.get('nroDocumento')!.value
+                this.form.get('nroDocumento')!.value,
             ),
             esEditorPrincipal: this.form.get('esEditorPrincipal')!.value,
             esEditor: this.form.get('esEditor')!.value,
@@ -95,7 +100,7 @@ export class NuevoUsuarioPopupComponent
         if (this.inputDocumento) {
             this.inputDocumento.markAsTouched();
         }
-        
+
         if (this.form.get('nroDocumento')!.invalid) {
             return;
         }
@@ -109,7 +114,8 @@ export class NuevoUsuarioPopupComponent
 
         this.deshabilitarCapturaErrores();
         this.buscando = true;
-        this.usuarioOrganismoService.obtenerInformacionUsuarioSice(idUsuario, this.tipoPerfil)
+        this.usuarioOrganismoService
+            .obtenerInformacionUsuarioSice(idUsuario, this.tipoPerfil)
             .subscribe({
                 next: (usuario: UsuarioOrganismoDTO) => {
                     this.actualizarService.capturarErrores = true;
@@ -160,11 +166,9 @@ export class NuevoUsuarioPopupComponent
                 error: (error) => {
                     Logger.logError(
                         'Error al verificar permiso global ',
-                        error
+                        error,
                     );
                 },
             });
     }
 }
-
-

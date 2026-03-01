@@ -1,5 +1,5 @@
-import { IItemDTO } from "./item.model";
-import { IZonaDTO } from "./zona.model";
+import { IItemDTO } from './item.model';
+import { IZonaDTO } from './zona.model';
 
 export interface IZonaEntregaDTO {
     id?: number;
@@ -11,7 +11,6 @@ export interface IZonaEntregaDTO {
     observacion?: string;
     descZona?: string;
     penalizableFechaIngreso?: boolean;
-
 }
 
 export class ZonaEntregaDTO implements IZonaEntregaDTO {
@@ -24,6 +23,6 @@ export class ZonaEntregaDTO implements IZonaEntregaDTO {
         public periodoRecepcionFin?: Date,
         public observacion?: string,
         public descZona?: string,
-        public penalizableFechaIngreso?: boolean) {
-    }
+        public penalizableFechaIngreso?: boolean,
+    ) {}
 }

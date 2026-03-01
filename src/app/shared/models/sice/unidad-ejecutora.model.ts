@@ -1,4 +1,4 @@
-import { IIncisoDTO } from "./inciso.model";
+import { IIncisoDTO } from './inciso.model';
 
 export interface IUnidadEjecutoraDTO {
     id?: number;
@@ -8,6 +8,10 @@ export interface IUnidadEjecutoraDTO {
 }
 
 export class UnidadEjecutoraDTO implements IUnidadEjecutoraDTO {
-    constructor(public id?: number, public inciso?: IIncisoDTO, public idUnidadEjecutora?: number, public descUnidadEjecutora?: string) {
-    }
+    constructor(
+        public id?: number,
+        public inciso?: IIncisoDTO,
+        public idUnidadEjecutora?: number,
+        public descUnidadEjecutora?: string,
+    ) {}
 }

@@ -8,55 +8,58 @@ import { AgregarModificarSeccionComponent } from './agregar-modificar-seccion.co
 import { SeccionService } from '../../../services/seccion.service';
 
 describe('AgregarModificarSeccionComponent', () => {
-  let component: AgregarModificarSeccionComponent;
-  let fixture: ComponentFixture<AgregarModificarSeccionComponent>;
+    let component: AgregarModificarSeccionComponent;
+    let fixture: ComponentFixture<AgregarModificarSeccionComponent>;
 
-  const activatedRouteStub = {
-    params: of({}),
-    snapshot: {
-      params: {},
-      paramMap: { get: (_key: string) => null },
-      queryParamMap: { get: (_key: string) => null }
-    }
-  };
-  const routerStub = {
-    navigate: jasmine.createSpy('navigate'),
-    getCurrentNavigation: () => null
-  };
-  const bsModalServiceStub = {
-    show: jasmine.createSpy('show').and.returnValue({ content: {}, hide: jasmine.createSpy('hide') })
-  };
-  const seccionServiceStub = jasmine.createSpyObj('SeccionService', ['obtenerSeccionPorId', 'crearSeccion', 'actualizarSeccion', 'aprobarSeccion']);
-  seccionServiceStub.obtenerSeccionPorId.and.returnValue(of(undefined));
-  seccionServiceStub.crearSeccion.and.returnValue(of({}));
-  seccionServiceStub.actualizarSeccion.and.returnValue(of({}));
-  seccionServiceStub.aprobarSeccion.and.returnValue(of({}));
+    const activatedRouteStub = {
+        params: of({}),
+        snapshot: {
+            params: {},
+            paramMap: { get: (_key: string) => null },
+            queryParamMap: { get: (_key: string) => null },
+        },
+    };
+    const routerStub = {
+        navigate: jasmine.createSpy('navigate'),
+        getCurrentNavigation: () => null,
+    };
+    const bsModalServiceStub = {
+        show: jasmine
+            .createSpy('show')
+            .and.returnValue({ content: {}, hide: jasmine.createSpy('hide') }),
+    };
+    const seccionServiceStub = jasmine.createSpyObj('SeccionService', [
+        'obtenerSeccionPorId',
+        'crearSeccion',
+        'actualizarSeccion',
+        'aprobarSeccion',
+    ]);
+    seccionServiceStub.obtenerSeccionPorId.and.returnValue(of(undefined));
+    seccionServiceStub.crearSeccion.and.returnValue(of({}));
+    seccionServiceStub.actualizarSeccion.and.returnValue(of({}));
+    seccionServiceStub.aprobarSeccion.and.returnValue(of({}));
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [],
-      imports: [
-        ReactiveFormsModule,
-        AgregarModificarSeccionComponent,
-      ],
-      providers: [
-        { provide: ActivatedRoute, useValue: activatedRouteStub },
-        { provide: Router, useValue: routerStub },
-        { provide: BsModalService, useValue: bsModalServiceStub },
-        { provide: SeccionService, useValue: seccionServiceStub }
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
-  });
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [],
+            imports: [ReactiveFormsModule, AgregarModificarSeccionComponent],
+            providers: [
+                { provide: ActivatedRoute, useValue: activatedRouteStub },
+                { provide: Router, useValue: routerStub },
+                { provide: BsModalService, useValue: bsModalServiceStub },
+                { provide: SeccionService, useValue: seccionServiceStub },
+            ],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        }).compileComponents();
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(AgregarModificarSeccionComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(AgregarModificarSeccionComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('debería crearse', () => {
-    expect(component).toBeTruthy();
-  });
+    it('debería crearse', () => {
+        expect(component).toBeTruthy();
+    });
 });

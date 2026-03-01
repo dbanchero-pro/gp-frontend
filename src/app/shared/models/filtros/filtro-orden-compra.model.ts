@@ -1,4 +1,3 @@
-
 export interface FiltroOrdenCompraDTO {
     numCompra?: number;
     idInciso?: number;

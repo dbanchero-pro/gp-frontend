@@ -3,8 +3,18 @@
     <div class="row mt-3 pr-2">
         <div class="col-6">
             <div class="form-check d-flex align-items-center">
-                <input class="form-check-input" type="radio" name="option" id="option1" [value]="TipoBusqueda.NROITEM"
-                    [formControl]="tipoBusqueda" (click)="cambioDatosFiltros(); cambioArticulo(null, TipoBusqueda.NROITEM)" />
+                <input
+                    class="form-check-input"
+                    type="radio"
+                    name="option"
+                    id="option1"
+                    [value]="TipoBusqueda.NROITEM"
+                    [formControl]="tipoBusqueda"
+                    (click)="
+                        cambioDatosFiltros();
+                        cambioArticulo(null, TipoBusqueda.NROITEM)
+                    "
+                />
                 <label class="form-check-label col-form-label" for="option1">
                     N° de ítem
                 </label>
@@ -13,8 +23,18 @@
 
         <div class="col-6">
             <div class="form-check d-flex align-items-center">
-                <input class="form-check-input" type="radio" name="option" id="option2" [value]="TipoBusqueda.ARTICULO"
-                    [formControl]="tipoBusqueda" (click)="cambioDatosFiltros(); cambioArticulo(null, TipoBusqueda.ARTICULO)" />
+                <input
+                    class="form-check-input"
+                    type="radio"
+                    name="option"
+                    id="option2"
+                    [value]="TipoBusqueda.ARTICULO"
+                    [formControl]="tipoBusqueda"
+                    (click)="
+                        cambioDatosFiltros();
+                        cambioArticulo(null, TipoBusqueda.ARTICULO)
+                    "
+                />
                 <label class="form-check-label col-form-label" for="option2">
                     Artículos
                 </label>
@@ -22,23 +42,43 @@
         </div>
     </div>
 </fieldset>
-<div class="row" *ngIf="tipoBusqueda.value===TipoBusqueda.NROITEM">
+<div class="row" *ngIf="tipoBusqueda.value === TipoBusqueda.NROITEM">
     <div class="form-group form-row col-12 m-0 pb-4 pt-0">
-        <label for="itemBusquedaTexto" class="col-form-label pl-0"> N° de ítem </label>
-        <input id="itemBusquedaTexto" [formControl]="itemBusquedaTexto" maxlength="3" (input)="inputSoloNumeros($event)"
-            (keyup)="cambioItem($event)" autocomplete="off" class="form-control col-12" type="text" />
+        <label for="itemBusquedaTexto" class="col-form-label pl-0">
+            N° de ítem
+        </label>
+        <input
+            id="itemBusquedaTexto"
+            [formControl]="itemBusquedaTexto"
+            maxlength="3"
+            (input)="inputSoloNumeros($event)"
+            (keyup)="cambioItem($event)"
+            autocomplete="off"
+            class="form-control col-12"
+            type="text"
+        />
     </div>
 </div>
 
-<div class="row" *ngIf="tipoBusqueda.value===TipoBusqueda.ARTICULO">
+<div class="row" *ngIf="tipoBusqueda.value === TipoBusqueda.ARTICULO">
     <div class="form-group form-row col-12 m-0 pb-0 pt-0">
         <label for="articulo" class="col-form-label pl-0"> Artículo </label>
         <input
             id="articulo"
-            [formControl]="articuloBusquedaTexto" [typeahead]="itemsInterno" typeaheadOptionField="descripcionItem"
-            (typeaheadOnSelect)="cambioArticulo($event, TipoBusqueda.ARTICULO)" autocomplete="off" [typeaheadAsync]="true"
-            [typeaheadOptionsLimit]="999" [typeaheadOptionsInScrollableView]="10" [typeaheadScrollable]="true"
-            type="text" [typeaheadSingleWords]="false" class="form-control col-12" (keyup)="buscar($event)"
-            (blur)="cambioArticulo(null, TipoBusqueda.ARTICULO)" />
+            [formControl]="articuloBusquedaTexto"
+            [typeahead]="itemsInterno"
+            typeaheadOptionField="descripcionItem"
+            (typeaheadOnSelect)="cambioArticulo($event, TipoBusqueda.ARTICULO)"
+            autocomplete="off"
+            [typeaheadAsync]="true"
+            [typeaheadOptionsLimit]="999"
+            [typeaheadOptionsInScrollableView]="10"
+            [typeaheadScrollable]="true"
+            type="text"
+            [typeaheadSingleWords]="false"
+            class="form-control col-12"
+            (keyup)="buscar($event)"
+            (blur)="cambioArticulo(null, TipoBusqueda.ARTICULO)"
+        />
     </div>
 </div>

@@ -1,5 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+    FormBuilder,
+    Validators,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { UsuarioDTO } from '../../models/usuario/usuario.model';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -18,54 +23,44 @@ import { FormatoCiPipe } from '../../pipes/formato-ci.pipe';
 import { FiltroOrganismoComponent } from '../filtro-organismo/filtro-organismo.component';
 import { PopupBaseComponent } from '../popup-base/popup-base.component';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 @Component({
     selector: 'app-organismo-popup',
     templateUrl: './organismo-popup.component.html',
     styleUrls: ['./organismo-popup.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
-    AlertModule,
-    BsDropdownModule,
-    BsDatepickerModule,
-    ModalModule,
-    PaginationModule,
-    TabsModule,
-    TooltipModule,
-    TypeaheadModule,
-    NgxDaterangepickerBootstrapModule,
-    NgxEditorModule,
-    NgxDatatableModule,
-    FormatoCiPipe,
-    FiltroOrganismoComponent,
-  ],
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule,
+        AlertModule,
+        BsDropdownModule,
+        BsDatepickerModule,
+        ModalModule,
+        PaginationModule,
+        TabsModule,
+        TooltipModule,
+        TypeaheadModule,
+        NgxDaterangepickerBootstrapModule,
+        NgxEditorModule,
+        NgxDatatableModule,
+        FormatoCiPipe,
+        FiltroOrganismoComponent,
+    ],
 })
-export class OrganismoPopupComponent extends PopupBaseComponent implements OnInit {
+export class OrganismoPopupComponent
+    extends PopupBaseComponent
+    implements OnInit
+{
     @Input() idUsuarioSeleccionado: string | undefined;
     @Input() usuario?: UsuarioDTO;
     @Output() guardarEvento = new EventEmitter<any>();
 
     intentoGuardar = false;
 
-    constructor(
-        private readonly fb: FormBuilder
-    ) { super(); }
+    constructor(private readonly fb: FormBuilder) {
+        super();
+    }
 
     override ngOnInit(): void {
         super.ngOnInit();
@@ -106,6 +101,4 @@ export class OrganismoPopupComponent extends PopupBaseComponent implements OnIni
             this.form.get('esAprobador')!.value
         );
     }
-
 }
-

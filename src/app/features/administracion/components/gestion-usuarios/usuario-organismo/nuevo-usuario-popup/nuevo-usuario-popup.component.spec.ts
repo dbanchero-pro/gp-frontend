@@ -1,6 +1,15 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, forwardRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { AbstractControl, ControlValueAccessor, FormBuilder, NG_VALIDATORS, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
+import {
+    AbstractControl,
+    ControlValueAccessor,
+    FormBuilder,
+    NG_VALIDATORS,
+    NG_VALUE_ACCESSOR,
+    ReactiveFormsModule,
+    ValidationErrors,
+    Validator,
+} from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { of } from 'rxjs';
 import { TipoPerfil } from 'src/app/shared/enum/tipo-perfil.enum';
@@ -28,22 +37,34 @@ export const mockHttp = {
         {
             provide: NG_VALUE_ACCESSOR,
             useExisting: forwardRef(() => MockInputDocumentoComponent),
-            multi: true
+            multi: true,
         },
         {
             provide: NG_VALIDATORS,
             useExisting: forwardRef(() => MockInputDocumentoComponent),
-            multi: true
-        }
-    ]
+            multi: true,
+        },
+    ],
 })
-export class MockInputDocumentoComponent implements ControlValueAccessor, Validator {
+export class MockInputDocumentoComponent
+    implements ControlValueAccessor, Validator
+{
     // no-op state
-    writeValue(obj: any): void { /* no-op */ }
-    registerOnChange(fn: any): void { /* no-op */ }
-    registerOnTouched(fn: any): void { /* no-op */ }
-    setDisabledState?(isDisabled: boolean): void { /* no-op */ }
-    markAsTouched(): void { /* no-op */ }
+    writeValue(obj: any): void {
+        /* no-op */
+    }
+    registerOnChange(fn: any): void {
+        /* no-op */
+    }
+    registerOnTouched(fn: any): void {
+        /* no-op */
+    }
+    setDisabledState?(isDisabled: boolean): void {
+        /* no-op */
+    }
+    markAsTouched(): void {
+        /* no-op */
+    }
 
     validate(control: AbstractControl): ValidationErrors | null {
         return null; // siempre válido
@@ -58,17 +79,24 @@ describe('NuevoUsuarioPopup', () => {
     let bsModalService: jasmine.SpyObj<BsModalService>;
     beforeEach(async () => {
         bsModalRef = jasmine.createSpyObj('BsModalRef', ['hide']);
-        usuarioService = jasmine.createSpyObj('UsuarioService', ['obtenerInformacionUsuarioSice']);
-        usuarioPerfilService = jasmine.createSpyObj('UsuarioOrganismoPerfilService', ['obtenerTodos']);
-        actualizarService = jasmine.createSpyObj('ActualizarService', [], { capturarErrores: true, });
+        usuarioService = jasmine.createSpyObj('UsuarioService', [
+            'obtenerInformacionUsuarioSice',
+        ]);
+        usuarioPerfilService = jasmine.createSpyObj(
+            'UsuarioOrganismoPerfilService',
+            ['obtenerTodos'],
+        );
+        actualizarService = jasmine.createSpyObj('ActualizarService', [], {
+            capturarErrores: true,
+        });
         bsModalService = jasmine.createSpyObj('BsModalService', ['show']);
 
         await TestBed.configureTestingModule({
             declarations: [],
             imports: [
-              ReactiveFormsModule,
-              MockInputDocumentoComponent,
-              NuevoUsuarioPopupComponent,
+                ReactiveFormsModule,
+                MockInputDocumentoComponent,
+                NuevoUsuarioPopupComponent,
             ],
             providers: [
                 { provide: BsModalRef, useValue: bsModalRef },
@@ -100,9 +128,12 @@ describe('NuevoUsuarioPopup', () => {
         component.guardar();
 
         expect(component.guardarEvento.emit).toHaveBeenCalledWith(
-            jasmine.objectContaining({ idUsuario: 'uy-ci-1234567', esEditor: true }) as any
+            jasmine.objectContaining({
+                idUsuario: 'uy-ci-1234567',
+                esEditor: true,
+            }) as any,
         );
-        
+
         expect(component.cerrarPopup).toHaveBeenCalled();
     });
 
@@ -114,9 +145,12 @@ describe('NuevoUsuarioPopup', () => {
         component.guardar();
 
         expect(component.guardarEvento.emit).toHaveBeenCalledWith(
-            jasmine.objectContaining({ idUsuario: 'uy-ci-1234567', esEditor: true }) as any
+            jasmine.objectContaining({
+                idUsuario: 'uy-ci-1234567',
+                esEditor: true,
+            }) as any,
         );
-        
+
         expect(component.cerrarPopup).toHaveBeenCalled();
     });
 
@@ -167,7 +201,7 @@ describe('NuevoUsuarioPopup', () => {
             correo: '',
         };
         usuarioService.obtenerInformacionUsuarioSice.and.returnValue(
-            of(usuario)
+            of(usuario),
         );
 
         const emptyPage: PageModel<UsuarioOrganismoPerfilDTO> = {
@@ -262,6 +296,3 @@ describe('NuevoUsuarioPopup', () => {
         expect(component.guardarEvento.emit).not.toHaveBeenCalled();
     });
 });
-
-
-

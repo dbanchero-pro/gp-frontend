@@ -10,60 +10,64 @@ import { ConsultaSeccionesComponent } from './consulta-secciones.component';
 import { SeccionService } from '../../../services/seccion.service';
 
 describe('ConsultaSeccionesComponent', () => {
-  let component: ConsultaSeccionesComponent;
-  let fixture: ComponentFixture<ConsultaSeccionesComponent>;
+    let component: ConsultaSeccionesComponent;
+    let fixture: ComponentFixture<ConsultaSeccionesComponent>;
 
-  const activatedRouteStub = {
-    snapshot: {
-      queryParamMap: { get: (_key: string) => null },
-      params: {},
-      paramMap: { get: (_key: string) => null }
-    }
-  };
-  const routerStub = {
-    navigate: jasmine.createSpy('navigate')
-  };
-  const locationStub = {
-    back: jasmine.createSpy('back'),
-    path: jasmine.createSpy('path').and.returnValue(''),
-    replaceState: jasmine.createSpy('replaceState')
-  };
-  const snapshotServiceStub = {
-    load: jasmine.createSpy('load').and.returnValue(null),
-    save: jasmine.createSpy('save'),
-    clear: jasmine.createSpy('clear')
-  };
-  const seccionServiceStub = jasmine.createSpyObj('SeccionService', ['buscarSecciones', 'eliminarSeccion']);
-  seccionServiceStub.buscarSecciones.and.returnValue(of([]));
-  seccionServiceStub.eliminarSeccion.and.returnValue(of({ exitoso: true, mensaje: '' }));
+    const activatedRouteStub = {
+        snapshot: {
+            queryParamMap: { get: (_key: string) => null },
+            params: {},
+            paramMap: { get: (_key: string) => null },
+        },
+    };
+    const routerStub = {
+        navigate: jasmine.createSpy('navigate'),
+    };
+    const locationStub = {
+        back: jasmine.createSpy('back'),
+        path: jasmine.createSpy('path').and.returnValue(''),
+        replaceState: jasmine.createSpy('replaceState'),
+    };
+    const snapshotServiceStub = {
+        load: jasmine.createSpy('load').and.returnValue(null),
+        save: jasmine.createSpy('save'),
+        clear: jasmine.createSpy('clear'),
+    };
+    const seccionServiceStub = jasmine.createSpyObj('SeccionService', [
+        'buscarSecciones',
+        'eliminarSeccion',
+    ]);
+    seccionServiceStub.buscarSecciones.and.returnValue(of([]));
+    seccionServiceStub.eliminarSeccion.and.returnValue(
+        of({ exitoso: true, mensaje: '' }),
+    );
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [],
-      imports: [
-        ReactiveFormsModule,
-        ConsultaSeccionesComponent,
-      ],
-      providers: [
-        { provide: ActivatedRoute, useValue: activatedRouteStub },
-        { provide: Router, useValue: routerStub },
-        { provide: Location, useValue: locationStub },
-        { provide: SnapshotGenericService, useValue: snapshotServiceStub },
-        { provide: SeccionService, useValue: seccionServiceStub },
-        FechaPipe
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
-  });
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [],
+            imports: [ReactiveFormsModule, ConsultaSeccionesComponent],
+            providers: [
+                { provide: ActivatedRoute, useValue: activatedRouteStub },
+                { provide: Router, useValue: routerStub },
+                { provide: Location, useValue: locationStub },
+                {
+                    provide: SnapshotGenericService,
+                    useValue: snapshotServiceStub,
+                },
+                { provide: SeccionService, useValue: seccionServiceStub },
+                FechaPipe,
+            ],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        }).compileComponents();
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ConsultaSeccionesComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(ConsultaSeccionesComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('debería crearse', () => {
-    expect(component).toBeTruthy();
-  });
+    it('debería crearse', () => {
+        expect(component).toBeTruthy();
+    });
 });

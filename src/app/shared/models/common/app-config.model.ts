@@ -1,4 +1,4 @@
-import { LoggingLevel } from "../../services/common/logger.service";
+import { LoggingLevel } from '../../services/common/logger.service';
 
 export interface IAppConfig {
     apiCargaMasivaUrl: string;

@@ -1,4 +1,4 @@
-import { IMarcaDTO } from "./marca.model";
+import { IMarcaDTO } from './marca.model';
 
 export interface IDetalleVarianteDTO {
     descDetalleVariante?: string;
@@ -7,6 +7,9 @@ export interface IDetalleVarianteDTO {
 }
 
 export class DetalleVarianteDTO {
-    constructor(public descDetalleVariante?: string, public id?: number, public marca?: IMarcaDTO) {
-    }
+    constructor(
+        public descDetalleVariante?: string,
+        public id?: number,
+        public marca?: IMarcaDTO,
+    ) {}
 }

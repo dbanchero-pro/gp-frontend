@@ -1,6 +1,10 @@
 import { A11yModule } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+    HTTP_INTERCEPTORS,
+    provideHttpClient,
+    withInterceptorsFromDi,
+} from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -8,7 +12,10 @@ import { RouterModule } from '@angular/router';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { AlertComponent, AlertConfig, AlertModule } from 'ngx-bootstrap/alert';
 import { defineLocale } from 'ngx-bootstrap/chronos';
-import { BsDatepickerConfig, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import {
+    BsDatepickerConfig,
+    BsDatepickerModule,
+} from 'ngx-bootstrap/datepicker';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { FocusTrapModule } from 'ngx-bootstrap/focus-trap';
 import { esLocale } from 'ngx-bootstrap/locale';
@@ -17,7 +24,10 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
-import { NgxDaterangepickerBootstrapModule, NgxDaterangepickerLocaleService } from 'ngx-daterangepicker-bootstrap';
+import {
+    NgxDaterangepickerBootstrapModule,
+    NgxDaterangepickerLocaleService,
+} from 'ngx-daterangepicker-bootstrap';
 import { NgxEditorModule } from 'ngx-editor';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { DocumentoProveedorPipe } from 'src/app/shared/pipes/documento-proveedor.pipe';
@@ -29,14 +39,21 @@ import { DoubleScrollComponent } from './components/double-scroll/double-scroll.
 import { FiltroItemsArticulosComponent } from './components/filtro-items-articulos/filtro-items-articulos.component';
 import { FiltroOrganismoComponent } from './components/filtro-organismo/filtro-organismo.component';
 import { FiltroComponent } from './components/filtro/filtro.component';
-import { GrupoColapsableComponent, GrupoColapsableContenidoComponent, GrupoColapsableTituloComponent } from './components/grupo-colapsable/grupo-colapsable.component';
+import {
+    GrupoColapsableComponent,
+    GrupoColapsableContenidoComponent,
+    GrupoColapsableTituloComponent,
+} from './components/grupo-colapsable/grupo-colapsable.component';
 import { InputDocumentoComponent } from './components/input-documento/input-documento.component';
 import { MensajeComponent } from './components/mensaje/mensaje.component';
 import { OrganismoPopupComponent } from './components/organismo-popup/organismo-popup.component';
 import { PaginadoComponent } from './components/paginado/paginado.component';
 import { RangoFechasComponent } from './components/rango-fechas/rango-fechas.component';
 import { RegistroUsuario } from './components/registro-usuario/registro-usuario.component';
-import { AppTabDirective, TabsComponent } from './components/tabs/tabs.component';
+import {
+    AppTabDirective,
+    TabsComponent,
+} from './components/tabs/tabs.component';
 import { TextEditorComponent } from './components/text-editor/text-editor.component';
 import { SoloNumerosDirective } from './directives/solo-numeros.directive';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
@@ -146,85 +163,86 @@ const configEditor = {
         AppTabDirective,
     ],
     imports: [
-      CommonModule,
-      CommonModule,
-      MatDialogModule,
-      BsDropdownModule.forRoot(),
-      TypeaheadModule.forRoot(),
-      TabsModule.forRoot(),
-      A11yModule,
-      BsDatepickerModule.forRoot(),
-      ModalModule.forRoot(),
-      FocusTrapModule,
-      AlertModule.forRoot(),
-      PaginationModule.forRoot(),
-      FormsModule,
-      NgxDatatableModule,
-      ReactiveFormsModule,
-      NgxMaskDirective,
-      RouterModule.forChild([]),
-      TooltipModule.forRoot(),
-      NgxDaterangepickerBootstrapModule.forRoot({
+        CommonModule,
+        CommonModule,
+        MatDialogModule,
+        BsDropdownModule.forRoot(),
+        TypeaheadModule.forRoot(),
+        TabsModule.forRoot(),
+        A11yModule,
+        BsDatepickerModule.forRoot(),
+        ModalModule.forRoot(),
+        FocusTrapModule,
+        AlertModule.forRoot(),
+        PaginationModule.forRoot(),
+        FormsModule,
+        NgxDatatableModule,
+        ReactiveFormsModule,
+        NgxMaskDirective,
+        RouterModule.forChild([]),
+        TooltipModule.forRoot(),
+        NgxDaterangepickerBootstrapModule.forRoot({
             customRangeLabel: 'Custom range12',
             separator: ' - ',
         }),
-      NgxEditorModule.forRoot(configEditor),
-      RegistroUsuario,
-      FiltroItemsArticulosComponent,
-      MensajeComponent,
-      FiltroOrganismoComponent,
-      FiltroComponent,
-      AlertDialogComponent,
-      ConfirmDialogComponent,
-      TextEditorComponent,
-      PaginadoComponent,
-      BotonAccionComponent,
-      CabezalConsultaComponent,
-      FechaPipe,
-      FechaHoraPipe,
-      HtmlSeguroPipe,
-      CapitalizarPrimerLetraPipe,
-      DoubleScrollComponent,
-      RangoFechasComponent,
-      OrganismoPopupComponent,
-      FormatoCiPipe,
-      CompraResumenPipe,
-      ItemResumenPipe,
-      SoloNumerosDirective,
-      UnidadCompraResumenPipe,
-      IdUsuarioPipe,
-      NumeroCompraPipe,
-      IdProveedorPipe,
-      InputDocumentoComponent,
-      DocumentoProveedorPipe,
-      SiNoValorPipe,
-      ProveedorPipe,
-      GrupoColapsableComponent,
-      GrupoColapsableTituloComponent,
-      GrupoColapsableContenidoComponent,
-      TabsComponent,
-      AppTabDirective,
-    ], providers: [
-            UtilService,
-            AlertConfig,
-            BsDatepickerConfig,
-            BsDropdownConfig,
-            BsModalService,
-            FechaPipe,
-            FechaHoraPipe,
-            {
-                provide: HTTP_INTERCEPTORS,
-                useClass: ErrorInterceptor,
-                multi: true,
-            },
-            {
-                provide: HTTP_INTERCEPTORS,
-                useClass: LoadingInterceptor,
-                multi: true,
-            },
-            NgxDaterangepickerLocaleService,
-            provideHttpClient(withInterceptorsFromDi()),
-            provideNgxMask()
-        ]
+        NgxEditorModule.forRoot(configEditor),
+        RegistroUsuario,
+        FiltroItemsArticulosComponent,
+        MensajeComponent,
+        FiltroOrganismoComponent,
+        FiltroComponent,
+        AlertDialogComponent,
+        ConfirmDialogComponent,
+        TextEditorComponent,
+        PaginadoComponent,
+        BotonAccionComponent,
+        CabezalConsultaComponent,
+        FechaPipe,
+        FechaHoraPipe,
+        HtmlSeguroPipe,
+        CapitalizarPrimerLetraPipe,
+        DoubleScrollComponent,
+        RangoFechasComponent,
+        OrganismoPopupComponent,
+        FormatoCiPipe,
+        CompraResumenPipe,
+        ItemResumenPipe,
+        SoloNumerosDirective,
+        UnidadCompraResumenPipe,
+        IdUsuarioPipe,
+        NumeroCompraPipe,
+        IdProveedorPipe,
+        InputDocumentoComponent,
+        DocumentoProveedorPipe,
+        SiNoValorPipe,
+        ProveedorPipe,
+        GrupoColapsableComponent,
+        GrupoColapsableTituloComponent,
+        GrupoColapsableContenidoComponent,
+        TabsComponent,
+        AppTabDirective,
+    ],
+    providers: [
+        UtilService,
+        AlertConfig,
+        BsDatepickerConfig,
+        BsDropdownConfig,
+        BsModalService,
+        FechaPipe,
+        FechaHoraPipe,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ErrorInterceptor,
+            multi: true,
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: LoadingInterceptor,
+            multi: true,
+        },
+        NgxDaterangepickerLocaleService,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideNgxMask(),
+    ],
 })
-export class SharedModule { }
+export class SharedModule {}

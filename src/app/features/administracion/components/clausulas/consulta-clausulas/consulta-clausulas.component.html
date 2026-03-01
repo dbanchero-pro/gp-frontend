@@ -1,303 +1,583 @@
 <div class="row">
-  <div [ngClass]="colFiltro" class="sidebar p-0">
-    <app-filtro title="Búsqueda" titleBtn="Buscar" iconTitle="fa fa-search" claseCabezal="ml-2 pl-2 mr-2 pr-2" 
-      (evFilter)="actualizarFiltrosYBuscar()">
-      
-      <div [formGroup]="formularioFiltro" class="col-12 ml-0 pl-0 mr-0 pr-0">
-
-          <app-grupo-colapsable class="pl-0" classTitulo="pl-3"  classContenido="ml-2 pl-2 pr-2 mr-2" 
-            titulo="Filtro por organismo" ariaLabel="Expandir o colapsar filtro por organismo">
-
-            <div class="row">
-              <div class="form-group form-row col-12">
-                <label for="incisoId" class="col-form-label col-12">Inciso</label>
-                <select class="form-control col-12" id="incisoId" formControlName="incisoId">
-                  <option [ngValue]="null">Todos los incisos</option>
-                  <option *ngFor="let inciso of incisos" [ngValue]="inciso.id">
-                    {{ inciso.id }} - {{ inciso.descInciso }}
-                  </option>
-                </select>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="form-group form-row col-12">
-                <label for="unidadEjecutoraId" class="col-form-label col-12">Unidad ejecutora</label>
-                <select class="form-control col-12" id="unidadEjecutoraId" formControlName="unidadEjecutoraId"
-                  [disabled]="!formularioFiltro.value.incisoId">
-                  <option [ngValue]="null">Todas las unidades ejecutoras</option>
-                  <option *ngFor="let ue of unidadesEjecutoras" [ngValue]="ue.id">
-                    {{ ue.idUnidadEjecutora }} - {{ ue.descUnidadEjecutora }}
-                  </option>
-                </select>
-              </div>
-            </div>
-          </app-grupo-colapsable>
-
-          <app-grupo-colapsable class="pl-0" classTitulo="pl-3"  classContenido="ml-2 pl-2 pr-2 mr-2" 
-            titulo="Filtro por tipo de contratación" ariaLabel="Expandir o colapsar filtro por tipo de contratación">
-          
-              <div class="row">
-                <div class="form-group form-row col-12">
-                  <label for="tipoCompraId" class="col-form-label col-12">Tipo de compra</label>
-                  <select class="form-control col-12" id="tipoCompraId" formControlName="tipoCompraId">
-                    <option [ngValue]="null">Todos los tipos</option>
-                    <option *ngFor="let tipo of tiposCompra" [ngValue]="tipo.id">
-                      {{ tipo.descTipoCompra }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="form-group form-row col-12">
-                  <label for="subtipoCompraId" class="col-form-label col-12">Subtipo de compra</label>
-                  <select class="form-control col-12" id="subtipoCompraId" formControlName="subtipoCompraId"
-                    [disabled]="!formularioFiltro.value.tipoCompraId">
-                    <option [ngValue]="null">Todos los subtipos</option>
-                    <option *ngFor="let subtipo of subtiposCompra" [ngValue]="subtipo.idSubtipoCompra">
-                      {{ subtipo.descSubtipoCompra }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </app-grupo-colapsable>
-
-            <app-grupo-colapsable class="pl-0 borde-inferior" classTitulo="pl-3"  classContenido="ml-2 pl-2 pr-2 mr-2" 
-              titulo="Filtro por artículo" ariaLabel="Expandir o colapsar filtro por artículo">
-              <div class="row">
-                <div class="form-group form-row col-12">
-                  <label for="familiaId" class="col-form-label col-12">Familia</label>
-                  <select class="form-control col-12" id="familiaId" formControlName="familiaId">
-                    <option [ngValue]="null">Todas las familias</option>
-                    <option *ngFor="let familia of familias" [ngValue]="familia.id">
-                      {{ familia.descFamilia }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="form-group form-row col-12">
-                  <label for="subfamiliaId" class="col-form-label col-12">Subfamilia</label>
-                  <select class="form-control col-12" id="subfamiliaId" formControlName="subfamiliaId"
-                    [disabled]="!formularioFiltro.value.familiaId">
-                    <option [ngValue]="null">Todas las subfamilias</option>
-                    <option *ngFor="let subfamilia of subfamilias" [ngValue]="subfamilia.id">
-                      {{ subfamilia.descSubfamilia }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="form-group form-row col-12">
-                  <label for="claseId" class="col-form-label col-12">Clase</label>
-                  <select class="form-control col-12" id="claseId" formControlName="claseId"
-                    [disabled]="!formularioFiltro.value.subfamiliaId">
-                    <option [ngValue]="null">Todas las clases</option>
-                    <option *ngFor="let clase of clases" [ngValue]="clase.id">
-                      {{ clase.descClase }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="form-group form-row col-12">
-                  <label for="subclaseId" class="col-form-label col-12">Subclase</label>
-                  <select class="form-control col-12" id="subclaseId" formControlName="subclaseId"
-                    [disabled]="!formularioFiltro.value.claseId">
-                    <option [ngValue]="null">Todas las subclases</option>
-                    <option *ngFor="let subclase of subclases" [ngValue]="subclase.id">
-                      {{ subclase.descSubclase }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="form-group form-row col-12">
-                  <label for="articuloId" class="col-form-label col-12">Artículo</label>
-                  <select class="form-control col-12" id="articuloId" formControlName="articuloId"
-                    [disabled]="!formularioFiltro.value.subclaseId">
-                    <option [ngValue]="null">Todos los artículos</option>
-                    <option *ngFor="let articulo of articulos" [ngValue]="articulo.id">
-                      {{ articulo.descArticuloServObra }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </app-grupo-colapsable>
-
-            <div class="row pr-3 pl-3">
-              <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-2">
-                <label for="denominacion" class="col-form-label col-12">Denominación</label>
-                <input type="text" class="form-control col-12" id="denominacion"
-                  formControlName="denominacion" placeholder="Ingrese denominación">
-              </div>
-            </div>
-
-            <div class="row pr-3 pl-3">
-              <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-2">
-                <label for="articuloId" class="col-form-label col-12">Estado</label>
-                <select class="form-control col-12">
-                  <option value="null">Todos los estados</option>
-                  <option value="V"> Vigente</option>
-                  <option value="N"> No vigente</option>
-                  <option value="B"> Borrador</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="row p-3">
-              <div class="clean-filter col-12">
-                <button type="button" class="btn btn-link" (click)="nuevaConsulta()">
-                  Nueva consulta
-                </button>
-              </div>
-            </div>
-          </div>
-        </app-filtro>
-      </div>
-
-  <div [ngClass]="colTabla">
-
-      <div class="row justify-content-end pr-2 mb-2" *ngIf="!mostrarSoloSeleccion">
-          <button class="btn btn-primary mr-2" (click)="agregarClausula()">
-              <em class="fa fa-plus mr-1"></em>
-              Agregar cláusula
-          </button>
-      </div>
-       
-      <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total===-1">
-          <div class="card-body py-sm-2 mb-sm-2 col-12 text-center  pt-sm-4 pb-sm-4" >
-          <em class=" fa fa-search  fa-2x  d-block mb-4"></em>
-              <h6>Ingresa las opciones de búsqueda y presiona buscar para consultar cláusulas</h6>
-          </div>
-      </div>
-
-    <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden"
-      [columnaOrden]="parametros.sort" [orden]="parametros.order"
-      (orderChange)="cambioOrden($event)" (sortChange)="cambioColumnaOrden($event)">
-    </app-cabezal-consulta>
-
-    <div *ngFor="let clausula of clausulas" class="row">
-      <div class="col-12 my-1">
-        <div class="card">
-          <div class="d-flex justify-content-between align-items-center border-bottom px-3 py-2">
-            <div>
-              <span class="font-weight-bold">{{ clausula.denominacion }}</span>
-              <span class="badge ml-2" *ngIf="!esBorrador(clausula)" [ngClass]="{
-                'badge-success': obtenerEstadoVigencia(clausula) === 'VIGENTE',
-                'badge-cancel': obtenerEstadoVigencia(clausula) === 'NO_VIGENTE'
-              }">
-                {{ obtenerTextoEstadoVigencia(clausula) }}
-              </span>
-              <span *ngIf="esBorrador(clausula)" class="badge badge-info ml-1">
-                Borrador
-              </span>
-            </div>
-            <div class="d-flex" *ngIf="!mostrarSoloSeleccion">
-              <div class="z-index-10">
-                <app-boton-accion [acciones]="obtenerAccionesClausula(clausula)"
-                  [ariaLabelMasOpciones]="'Mas opciones de la clausula ' + clausula.denominacion">
-                </app-boton-accion>
-              </div>
-            </div>
-            <div *ngIf="mostrarSoloSeleccion">
-              <button type="button" class="btn btn-success" (click)="seleccionarClausula(clausula)">
-                <em class="fa fa-check"></em> Seleccionar
-              </button>
-            </div>
-          </div>
-
-          <div class="px-3 py-2">
-            <div class="row g-0 py-1 px-3">
-              <div class="col-md-2 col-lg-2 etiqueta">Vigencia</div>
-              <div class="col-md-8 col-lg-8 font-weight-bold">{{ obtenerTextoVigencia(clausula) }}</div>
-              <div class="col-md-2 col-lg-2 font-weight-bold text-right" *ngIf="!esBorrador(clausula)">Version: {{ clausula.version }}</div>
-            </div>
-
-            <div class="row g-0 py-1 px-3">
-              <div class="col-md-3 col-lg-2 etiqueta">Tipos de compra</div>
-              <div class="col font-weight-bold">{{ obtenerResumenTiposCompra(clausula) }}</div>
-            </div>
-
-            <div class="row g-0 py-1 px-3">
-              <div class="col-md-3 col-lg-2 etiqueta">Organismo</div>
-              <div class="col font-weight-bold">{{ obtenerResumenIncisos(clausula) }}</div>
-            </div>
-
-            <div class="row g-0 py-1 px-3">
-              <div class="col-md-3 col-lg-2 etiqueta">Objetos de compra</div>
-              <div class="col font-weight-bold">{{ obtenerResumenObjetosCompra(clausula) }}</div>
-            </div>
-
-            <div class="row g-0 py-1 px-3">
-              <div class="col-md-3 col-lg-2 etiqueta">Apertura electrónica</div>
-              <div class="col font-weight-bold">{{ clausula.aperturaElectronica ? 'Sí' : 'No' }}</div>
-            </div>
-
-             <div class="row g-0 py-1 px-3">
-              <div class="col-md-3 col-lg-2 etiqueta">Obligatoria</div>
-              <div class="col font-weight-bold">{{ clausula.obligatoria ? 'Sí' : 'No' }}</div>
-            </div>
-
-            <div class="row g-0 py-1 px-3">
-              <div class="col-md-3 col-lg-2 etiqueta">Editable</div>
-              <div class="col font-weight-bold">{{ clausula.obligatoria ? 'Sí' : 'No' }}</div>
-            </div>
-
-            <div *ngIf="clausula.redacciones.length > 0" class="row g-0 py-2">
-              <div class="col-12">
+    <div [ngClass]="colFiltro" class="sidebar p-0">
+        <app-filtro
+            title="Búsqueda"
+            titleBtn="Buscar"
+            iconTitle="fa fa-search"
+            claseCabezal="ml-2 pl-2 mr-2 pr-2"
+            (evFilter)="actualizarFiltrosYBuscar()"
+        >
+            <div
+                [formGroup]="formularioFiltro"
+                class="col-12 ml-0 pl-0 mr-0 pr-0"
+            >
                 <app-grupo-colapsable
-                  [colapsado]="true"
-                  class="w-100"
-                  classContenido="p-0"
-                  [ariaLabel]="'Mostrar u ocultar redacciones de la cláusula ' + clausula.denominacion">
-                  <titulo>Redacciones ({{ clausula.redacciones.length }})</titulo>
-                  <contenido>
-                    <div class="px-3 py-2">
-                      <div *ngFor="let redaccion of clausula.redacciones" class="card mb-2">
-                        <div class="card-body">
-                          <span class="badge badge-secondary mb-2">Prioridad: {{ redaccion.prioridad }}</span>
-                          <span class="text-center">
-                            <button
-                              *ngFor="let accion of obtenerAccionesRedaccion(redaccion)"
-                              type="button"
-                              [class]="accion.clase"
-                              [attr.aria-label]="accion.ariaLabel"
-                              (click)="accion.accion && accion.accion()">
-                              <em [class]="accion.icono"></em>
-                            </button>
-                        </span>
-                          <div class="mb-0" [innerHTML]="truncarRedaccion(redaccion.redaccion) | safeHtml"></div>
-                          <small *ngIf="esRedaccionTruncada(redaccion.redaccion)" class="text-muted">
-                            <i class="fa fa-info-circle"></i> Texto truncado
-                          </small>
+                    class="pl-0"
+                    classTitulo="pl-3"
+                    classContenido="ml-2 pl-2 pr-2 mr-2"
+                    titulo="Filtro por organismo"
+                    ariaLabel="Expandir o colapsar filtro por organismo"
+                >
+                    <div class="row">
+                        <div class="form-group form-row col-12">
+                            <label for="incisoId" class="col-form-label col-12"
+                                >Inciso</label
+                            >
+                            <select
+                                class="form-control col-12"
+                                id="incisoId"
+                                formControlName="incisoId"
+                            >
+                                <option [ngValue]="null">
+                                    Todos los incisos
+                                </option>
+                                <option
+                                    *ngFor="let inciso of incisos"
+                                    [ngValue]="inciso.id"
+                                >
+                                    {{ inciso.id }} - {{ inciso.descInciso }}
+                                </option>
+                            </select>
                         </div>
-                      </div>
                     </div>
-                  </contenido>
+
+                    <div class="row">
+                        <div class="form-group form-row col-12">
+                            <label
+                                for="unidadEjecutoraId"
+                                class="col-form-label col-12"
+                                >Unidad ejecutora</label
+                            >
+                            <select
+                                class="form-control col-12"
+                                id="unidadEjecutoraId"
+                                formControlName="unidadEjecutoraId"
+                                [disabled]="!formularioFiltro.value.incisoId"
+                            >
+                                <option [ngValue]="null">
+                                    Todas las unidades ejecutoras
+                                </option>
+                                <option
+                                    *ngFor="let ue of unidadesEjecutoras"
+                                    [ngValue]="ue.id"
+                                >
+                                    {{ ue.idUnidadEjecutora }} -
+                                    {{ ue.descUnidadEjecutora }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
                 </app-grupo-colapsable>
-              </div>
+
+                <app-grupo-colapsable
+                    class="pl-0"
+                    classTitulo="pl-3"
+                    classContenido="ml-2 pl-2 pr-2 mr-2"
+                    titulo="Filtro por tipo de contratación"
+                    ariaLabel="Expandir o colapsar filtro por tipo de contratación"
+                >
+                    <div class="row">
+                        <div class="form-group form-row col-12">
+                            <label
+                                for="tipoCompraId"
+                                class="col-form-label col-12"
+                                >Tipo de compra</label
+                            >
+                            <select
+                                class="form-control col-12"
+                                id="tipoCompraId"
+                                formControlName="tipoCompraId"
+                            >
+                                <option [ngValue]="null">
+                                    Todos los tipos
+                                </option>
+                                <option
+                                    *ngFor="let tipo of tiposCompra"
+                                    [ngValue]="tipo.id"
+                                >
+                                    {{ tipo.descTipoCompra }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group form-row col-12">
+                            <label
+                                for="subtipoCompraId"
+                                class="col-form-label col-12"
+                                >Subtipo de compra</label
+                            >
+                            <select
+                                class="form-control col-12"
+                                id="subtipoCompraId"
+                                formControlName="subtipoCompraId"
+                                [disabled]="
+                                    !formularioFiltro.value.tipoCompraId
+                                "
+                            >
+                                <option [ngValue]="null">
+                                    Todos los subtipos
+                                </option>
+                                <option
+                                    *ngFor="let subtipo of subtiposCompra"
+                                    [ngValue]="subtipo.idSubtipoCompra"
+                                >
+                                    {{ subtipo.descSubtipoCompra }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </app-grupo-colapsable>
+
+                <app-grupo-colapsable
+                    class="pl-0 borde-inferior"
+                    classTitulo="pl-3"
+                    classContenido="ml-2 pl-2 pr-2 mr-2"
+                    titulo="Filtro por artículo"
+                    ariaLabel="Expandir o colapsar filtro por artículo"
+                >
+                    <div class="row">
+                        <div class="form-group form-row col-12">
+                            <label for="familiaId" class="col-form-label col-12"
+                                >Familia</label
+                            >
+                            <select
+                                class="form-control col-12"
+                                id="familiaId"
+                                formControlName="familiaId"
+                            >
+                                <option [ngValue]="null">
+                                    Todas las familias
+                                </option>
+                                <option
+                                    *ngFor="let familia of familias"
+                                    [ngValue]="familia.id"
+                                >
+                                    {{ familia.descFamilia }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group form-row col-12">
+                            <label
+                                for="subfamiliaId"
+                                class="col-form-label col-12"
+                                >Subfamilia</label
+                            >
+                            <select
+                                class="form-control col-12"
+                                id="subfamiliaId"
+                                formControlName="subfamiliaId"
+                                [disabled]="!formularioFiltro.value.familiaId"
+                            >
+                                <option [ngValue]="null">
+                                    Todas las subfamilias
+                                </option>
+                                <option
+                                    *ngFor="let subfamilia of subfamilias"
+                                    [ngValue]="subfamilia.id"
+                                >
+                                    {{ subfamilia.descSubfamilia }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group form-row col-12">
+                            <label for="claseId" class="col-form-label col-12"
+                                >Clase</label
+                            >
+                            <select
+                                class="form-control col-12"
+                                id="claseId"
+                                formControlName="claseId"
+                                [disabled]="
+                                    !formularioFiltro.value.subfamiliaId
+                                "
+                            >
+                                <option [ngValue]="null">
+                                    Todas las clases
+                                </option>
+                                <option
+                                    *ngFor="let clase of clases"
+                                    [ngValue]="clase.id"
+                                >
+                                    {{ clase.descClase }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group form-row col-12">
+                            <label
+                                for="subclaseId"
+                                class="col-form-label col-12"
+                                >Subclase</label
+                            >
+                            <select
+                                class="form-control col-12"
+                                id="subclaseId"
+                                formControlName="subclaseId"
+                                [disabled]="!formularioFiltro.value.claseId"
+                            >
+                                <option [ngValue]="null">
+                                    Todas las subclases
+                                </option>
+                                <option
+                                    *ngFor="let subclase of subclases"
+                                    [ngValue]="subclase.id"
+                                >
+                                    {{ subclase.descSubclase }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group form-row col-12">
+                            <label
+                                for="articuloId"
+                                class="col-form-label col-12"
+                                >Artículo</label
+                            >
+                            <select
+                                class="form-control col-12"
+                                id="articuloId"
+                                formControlName="articuloId"
+                                [disabled]="!formularioFiltro.value.subclaseId"
+                            >
+                                <option [ngValue]="null">
+                                    Todos los artículos
+                                </option>
+                                <option
+                                    *ngFor="let articulo of articulos"
+                                    [ngValue]="articulo.id"
+                                >
+                                    {{ articulo.descArticuloServObra }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </app-grupo-colapsable>
+
+                <div class="row pr-3 pl-3">
+                    <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-2">
+                        <label for="denominacion" class="col-form-label col-12"
+                            >Denominación</label
+                        >
+                        <input
+                            type="text"
+                            class="form-control col-12"
+                            id="denominacion"
+                            formControlName="denominacion"
+                            placeholder="Ingrese denominación"
+                        />
+                    </div>
+                </div>
+
+                <div class="row pr-3 pl-3">
+                    <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-2">
+                        <label for="articuloId" class="col-form-label col-12"
+                            >Estado</label
+                        >
+                        <select class="form-control col-12">
+                            <option value="null">Todos los estados</option>
+                            <option value="V">Vigente</option>
+                            <option value="N">No vigente</option>
+                            <option value="B">Borrador</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row p-3">
+                    <div class="clean-filter col-12">
+                        <button
+                            type="button"
+                            class="btn btn-link"
+                            (click)="nuevaConsulta()"
+                        >
+                            Nueva consulta
+                        </button>
+                    </div>
+                </div>
             </div>
-          </div>
+        </app-filtro>
+    </div>
+
+    <div [ngClass]="colTabla">
+        <div
+            class="row justify-content-end pr-2 mb-2"
+            *ngIf="!mostrarSoloSeleccion"
+        >
+            <button class="btn btn-primary mr-2" (click)="agregarClausula()">
+                <em class="fa fa-plus mr-1"></em>
+                Agregar cláusula
+            </button>
         </div>
-      </div>
-    </div>
 
-    <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina"
-      [paginaActual]="parametros.pagina + 1" (cambioPagina)="cambioPagina($event)"
-      (cambioItemsPorPagina)="cambioPorPagina($event)">
-    </app-paginado>
+        <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total === -1">
+            <div
+                class="card-body py-sm-2 mb-sm-2 col-12 text-center pt-sm-4 pb-sm-4"
+            >
+                <em class="fa fa-search fa-2x d-block mb-4"></em>
+                <h6>
+                    Ingresa las opciones de búsqueda y presiona buscar para
+                    consultar cláusulas
+                </h6>
+            </div>
+        </div>
 
-    <div class="btn-back d-flex justify-content-end" *ngIf="mostrarSoloSeleccion">
-      <button class="btn btn-link" type="button" (click)="volver()">
-        <em class="fa fa-arrow-left mr-1"></em>Volver
-      </button>
+        <app-cabezal-consulta
+            [totalItems]="total"
+            [listaOrden]="listaOrden"
+            [columnaOrden]="parametros.sort"
+            [orden]="parametros.order"
+            (orderChange)="cambioOrden($event)"
+            (sortChange)="cambioColumnaOrden($event)"
+        >
+        </app-cabezal-consulta>
+
+        <div *ngFor="let clausula of clausulas" class="row">
+            <div class="col-12 my-1">
+                <div class="card">
+                    <div
+                        class="d-flex justify-content-between align-items-center border-bottom px-3 py-2"
+                    >
+                        <div>
+                            <span class="font-weight-bold">{{
+                                clausula.denominacion
+                            }}</span>
+                            <span
+                                class="badge ml-2"
+                                *ngIf="!esBorrador(clausula)"
+                                [ngClass]="{
+                                    'badge-success':
+                                        obtenerEstadoVigencia(clausula) ===
+                                        'VIGENTE',
+                                    'badge-cancel':
+                                        obtenerEstadoVigencia(clausula) ===
+                                        'NO_VIGENTE',
+                                }"
+                            >
+                                {{ obtenerTextoEstadoVigencia(clausula) }}
+                            </span>
+                            <span
+                                *ngIf="esBorrador(clausula)"
+                                class="badge badge-info ml-1"
+                            >
+                                Borrador
+                            </span>
+                        </div>
+                        <div class="d-flex" *ngIf="!mostrarSoloSeleccion">
+                            <div class="z-index-10">
+                                <app-boton-accion
+                                    [acciones]="
+                                        obtenerAccionesClausula(clausula)
+                                    "
+                                    [ariaLabelMasOpciones]="
+                                        'Mas opciones de la clausula ' +
+                                        clausula.denominacion
+                                    "
+                                >
+                                </app-boton-accion>
+                            </div>
+                        </div>
+                        <div *ngIf="mostrarSoloSeleccion">
+                            <button
+                                type="button"
+                                class="btn btn-success"
+                                (click)="seleccionarClausula(clausula)"
+                            >
+                                <em class="fa fa-check"></em> Seleccionar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="px-3 py-2">
+                        <div class="row g-0 py-1 px-3">
+                            <div class="col-md-2 col-lg-2 etiqueta">
+                                Vigencia
+                            </div>
+                            <div class="col-md-8 col-lg-8 font-weight-bold">
+                                {{ obtenerTextoVigencia(clausula) }}
+                            </div>
+                            <div
+                                class="col-md-2 col-lg-2 font-weight-bold text-right"
+                                *ngIf="!esBorrador(clausula)"
+                            >
+                                Version: {{ clausula.version }}
+                            </div>
+                        </div>
+
+                        <div class="row g-0 py-1 px-3">
+                            <div class="col-md-3 col-lg-2 etiqueta">
+                                Tipos de compra
+                            </div>
+                            <div class="col font-weight-bold">
+                                {{ obtenerResumenTiposCompra(clausula) }}
+                            </div>
+                        </div>
+
+                        <div class="row g-0 py-1 px-3">
+                            <div class="col-md-3 col-lg-2 etiqueta">
+                                Organismo
+                            </div>
+                            <div class="col font-weight-bold">
+                                {{ obtenerResumenIncisos(clausula) }}
+                            </div>
+                        </div>
+
+                        <div class="row g-0 py-1 px-3">
+                            <div class="col-md-3 col-lg-2 etiqueta">
+                                Objetos de compra
+                            </div>
+                            <div class="col font-weight-bold">
+                                {{ obtenerResumenObjetosCompra(clausula) }}
+                            </div>
+                        </div>
+
+                        <div class="row g-0 py-1 px-3">
+                            <div class="col-md-3 col-lg-2 etiqueta">
+                                Apertura electrónica
+                            </div>
+                            <div class="col font-weight-bold">
+                                {{ clausula.aperturaElectronica ? "Sí" : "No" }}
+                            </div>
+                        </div>
+
+                        <div class="row g-0 py-1 px-3">
+                            <div class="col-md-3 col-lg-2 etiqueta">
+                                Obligatoria
+                            </div>
+                            <div class="col font-weight-bold">
+                                {{ clausula.obligatoria ? "Sí" : "No" }}
+                            </div>
+                        </div>
+
+                        <div class="row g-0 py-1 px-3">
+                            <div class="col-md-3 col-lg-2 etiqueta">
+                                Editable
+                            </div>
+                            <div class="col font-weight-bold">
+                                {{ clausula.obligatoria ? "Sí" : "No" }}
+                            </div>
+                        </div>
+
+                        <div
+                            *ngIf="clausula.redacciones.length > 0"
+                            class="row g-0 py-2"
+                        >
+                            <div class="col-12">
+                                <app-grupo-colapsable
+                                    [colapsado]="true"
+                                    class="w-100"
+                                    classContenido="p-0"
+                                    [ariaLabel]="
+                                        'Mostrar u ocultar redacciones de la cláusula ' +
+                                        clausula.denominacion
+                                    "
+                                >
+                                    <titulo
+                                        >Redacciones ({{
+                                            clausula.redacciones.length
+                                        }})</titulo
+                                    >
+                                    <contenido>
+                                        <div class="px-3 py-2">
+                                            <div
+                                                *ngFor="
+                                                    let redaccion of clausula.redacciones
+                                                "
+                                                class="card mb-2"
+                                            >
+                                                <div class="card-body">
+                                                    <span
+                                                        class="badge badge-secondary mb-2"
+                                                        >Prioridad:
+                                                        {{
+                                                            redaccion.prioridad
+                                                        }}</span
+                                                    >
+                                                    <span class="text-center">
+                                                        <button
+                                                            *ngFor="
+                                                                let accion of obtenerAccionesRedaccion(
+                                                                    redaccion
+                                                                )
+                                                            "
+                                                            type="button"
+                                                            [class]="
+                                                                accion.clase
+                                                            "
+                                                            [attr.aria-label]="
+                                                                accion.ariaLabel
+                                                            "
+                                                            (click)="
+                                                                accion.accion &&
+                                                                    accion.accion()
+                                                            "
+                                                        >
+                                                            <em
+                                                                [class]="
+                                                                    accion.icono
+                                                                "
+                                                            ></em>
+                                                        </button>
+                                                    </span>
+                                                    <div
+                                                        class="mb-0"
+                                                        [innerHTML]="
+                                                            truncarRedaccion(
+                                                                redaccion.redaccion
+                                                            ) | safeHtml
+                                                        "
+                                                    ></div>
+                                                    <small
+                                                        *ngIf="
+                                                            esRedaccionTruncada(
+                                                                redaccion.redaccion
+                                                            )
+                                                        "
+                                                        class="text-muted"
+                                                    >
+                                                        <i
+                                                            class="fa fa-info-circle"
+                                                        ></i>
+                                                        Texto truncado
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </contenido>
+                                </app-grupo-colapsable>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <app-paginado
+            [totalItems]="total"
+            [itemsPorPagina]="parametros.tamanoPagina"
+            [paginaActual]="parametros.pagina + 1"
+            (cambioPagina)="cambioPagina($event)"
+            (cambioItemsPorPagina)="cambioPorPagina($event)"
+        >
+        </app-paginado>
+
+        <div
+            class="btn-back d-flex justify-content-end"
+            *ngIf="mostrarSoloSeleccion"
+        >
+            <button class="btn btn-link" type="button" (click)="volver()">
+                <em class="fa fa-arrow-left mr-1"></em>Volver
+            </button>
+        </div>
     </div>
-  </div>
 </div>
-

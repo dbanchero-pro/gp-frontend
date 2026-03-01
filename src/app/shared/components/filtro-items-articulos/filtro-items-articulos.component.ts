@@ -16,45 +16,44 @@ import { FiltroBusquedaArticulosDTO } from '../../models/filtros/filtro-busqueda
 import { FiltroItemCompraDTO } from '../../models/filtros/filtro-item-compra.model';
 import { ItemCompraFiltroDTO } from '../../models/item-compra-filtro.model';
 import { ItemsCompraService } from '../../services/items-compra.service';
-import { UsuarioOrganismoPerfilService } from '../../services/usuario/usuario-perfil.service';import { CommonModule } from '@angular/common';import { RouterModule } from '@angular/router';import { AlertModule } from 'ngx-bootstrap/alert';import { BsDropdownModule } from 'ngx-bootstrap/dropdown';import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';import { ModalModule } from 'ngx-bootstrap/modal';import { PaginationModule } from 'ngx-bootstrap/pagination';import { TabsModule } from 'ngx-bootstrap/tabs';import { TooltipModule } from 'ngx-bootstrap/tooltip';import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';import { NgxEditorModule } from 'ngx-editor';import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-
-
-
-
-
-
-
-
-
-
-
-
+import { UsuarioOrganismoPerfilService } from '../../services/usuario/usuario-perfil.service';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';
+import { NgxEditorModule } from 'ngx-editor';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 @Component({
     selector: 'app-filtro-items-articulos',
     templateUrl: './filtro-items-articulos.component.html',
     styleUrls: ['./filtro-items-articulos.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
-    AlertModule,
-    BsDropdownModule,
-    BsDatepickerModule,
-    ModalModule,
-    PaginationModule,
-    TabsModule,
-    TooltipModule,
-    TypeaheadModule,
-    NgxDaterangepickerBootstrapModule,
-    NgxEditorModule,
-    NgxDatatableModule
-  ],
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule,
+        AlertModule,
+        BsDropdownModule,
+        BsDatepickerModule,
+        ModalModule,
+        PaginationModule,
+        TabsModule,
+        TooltipModule,
+        TypeaheadModule,
+        NgxDaterangepickerBootstrapModule,
+        NgxEditorModule,
+        NgxDatatableModule,
+    ],
 })
 export class FiltroItemsArticulosComponent implements OnInit {
-
     @Input() idCompra: number | undefined = undefined;
     @Input() disabled = false;
     @Input() tipoPerfil?: TipoPerfil;
@@ -79,8 +78,8 @@ export class FiltroItemsArticulosComponent implements OnInit {
 
     constructor(
         private readonly itemCompraService: ItemsCompraService,
-        private readonly usuarioPerfilService: UsuarioOrganismoPerfilService
-    ) { }
+        private readonly usuarioPerfilService: UsuarioOrganismoPerfilService,
+    ) {}
 
     ngOnInit(): void {
         if (this.disabled) this.setDisabledState(true);
@@ -90,34 +89,53 @@ export class FiltroItemsArticulosComponent implements OnInit {
             distinctUntilChanged(),
             switchMap((texto: string) => {
                 if (!texto) return of([]);
-                if (this.tipoBusqueda.value === TipoBusqueda.NROITEM && isNaN(+texto)) {
+                if (
+                    this.tipoBusqueda.value === TipoBusqueda.NROITEM &&
+                    isNaN(+texto)
+                ) {
                     return of([]);
                 } else if (this.modoCliente) {
                     return this.buscarEnCliente(texto);
-                        
                 } else if (!this.idCompra) {
                     const filtros: FiltroBusquedaArticulosDTO = {
                         ...this.filtroParaBusqueda,
-                        filtrarPorArticulo: this.tipoBusqueda.value === TipoBusqueda.ARTICULO,
-                        nroItem: this.tipoBusqueda.value === TipoBusqueda.NROITEM ? texto : undefined,
-                        descripcionArticulo: this.tipoBusqueda.value === TipoBusqueda.ARTICULO ? texto : undefined,
+                        filtrarPorArticulo:
+                            this.tipoBusqueda.value === TipoBusqueda.ARTICULO,
+                        nroItem:
+                            this.tipoBusqueda.value === TipoBusqueda.NROITEM
+                                ? texto
+                                : undefined,
+                        descripcionArticulo:
+                            this.tipoBusqueda.value === TipoBusqueda.ARTICULO
+                                ? texto
+                                : undefined,
                     };
-                    return this.usuarioPerfilService.buscarArticulos(this.tipoPerfil ?? TipoPerfil.Conformidad, filtros);
-                } 
-                else {
-                    return this.itemCompraService.buscarPorArticulo( this.idCompra, texto, this.tipoBusqueda.value );
+                    return this.usuarioPerfilService.buscarArticulos(
+                        this.tipoPerfil ?? TipoPerfil.Conformidad,
+                        filtros,
+                    );
+                } else {
+                    return this.itemCompraService.buscarPorArticulo(
+                        this.idCompra,
+                        texto,
+                        this.tipoBusqueda.value,
+                    );
                 }
-            })
+            }),
         );
         this.limpiar();
 
         if (this.filtroInicial?.item) {
             const texto = this.filtroInicial.item.toString();
-            this.tipoBusqueda.setValue(this.filtroInicial.tipoBusqueda ?? TipoBusqueda.NROITEM);
+            this.tipoBusqueda.setValue(
+                this.filtroInicial.tipoBusqueda ?? TipoBusqueda.NROITEM,
+            );
             if (this.filtroInicial.tipoBusqueda === TipoBusqueda.NROITEM) {
                 this.itemBusquedaTexto.setValue(texto);
                 this.busqueda.setValue(texto);
-            } else if (this.filtroInicial.tipoBusqueda === TipoBusqueda.ARTICULO) {
+            } else if (
+                this.filtroInicial.tipoBusqueda === TipoBusqueda.ARTICULO
+            ) {
                 this.articuloBusquedaTexto.setValue(texto);
                 this.busqueda.setValue(texto);
             }
@@ -129,11 +147,22 @@ export class FiltroItemsArticulosComponent implements OnInit {
         if (this.tipoBusqueda.value === TipoBusqueda.NROITEM && isNaN(+texto)) {
             return of([]);
         } else if (this.tipoBusqueda.value === TipoBusqueda.NROITEM) {
-            return of(this.items.filter((item: ItemCompraFiltroDTO) => item.nroItem === texto));
+            return of(
+                this.items.filter(
+                    (item: ItemCompraFiltroDTO) => item.nroItem === texto,
+                ),
+            );
         } else if (this.tipoBusqueda.value === TipoBusqueda.ARTICULO) {
-            return of(this.items.filter((item: ItemCompraFiltroDTO) =>
-                item.descripcionItem?.toLowerCase().includes(texto.toLowerCase())
-                || item.descArticulo?.toLowerCase().includes(texto.toLowerCase()))
+            return of(
+                this.items.filter(
+                    (item: ItemCompraFiltroDTO) =>
+                        item.descripcionItem
+                            ?.toLowerCase()
+                            .includes(texto.toLowerCase()) ||
+                        item.descArticulo
+                            ?.toLowerCase()
+                            .includes(texto.toLowerCase()),
+                ),
             );
         } else {
             return of([]);
@@ -145,7 +174,10 @@ export class FiltroItemsArticulosComponent implements OnInit {
         if (!texto) {
             return;
         }
-        if (this.tipoBusqueda.value === TipoBusqueda.NROITEM && isNaN(Number(texto))) {
+        if (
+            this.tipoBusqueda.value === TipoBusqueda.NROITEM &&
+            isNaN(Number(texto))
+        ) {
             return;
         }
         this.articuloBusquedaArticulo$.next(texto);
@@ -169,7 +201,6 @@ export class FiltroItemsArticulosComponent implements OnInit {
     }
 
     cambioArticulo(event: TypeaheadMatch | null, tipoBusqueda: TipoBusqueda) {
-        
         if (event && this.tipoBusqueda.value === TipoBusqueda.ARTICULO) {
             const value = event.item.descArticulo;
             this.busqueda.setValue(value);
@@ -181,15 +212,17 @@ export class FiltroItemsArticulosComponent implements OnInit {
             this.busqueda.setValue('');
             this.cambioDatosFiltros();
         }
-        if (tipoBusqueda == TipoBusqueda.NROITEM && tipoBusqueda !== this.tipoBusqueda.value) {
+        if (
+            tipoBusqueda == TipoBusqueda.NROITEM &&
+            tipoBusqueda !== this.tipoBusqueda.value
+        ) {
             this.itemBusquedaTexto.setValue('');
         }
 
-        
         this.busqueda.setValue(
             this.tipoBusqueda.value === TipoBusqueda.NROITEM
                 ? this.itemBusquedaTexto.value
-                : this.articuloBusquedaTexto.value
+                : this.articuloBusquedaTexto.value,
         );
     }
 
@@ -236,5 +269,3 @@ export class FiltroItemsArticulosComponent implements OnInit {
         this.cambioDatosFiltros();
     }
 }
-
-

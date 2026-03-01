@@ -19,44 +19,49 @@ interface ObtenerParams {
     providedIn: 'root',
 })
 export class CompraSiceService {
+    constructor(private readonly gcRestService: RestService) {}
 
-    constructor(private readonly gcRestService: RestService) { }
-
-    obtenerCompras(parametros: ObtenerParams): Observable<PageModel<CompraDTO>> {
+    obtenerCompras(
+        parametros: ObtenerParams,
+    ): Observable<PageModel<CompraDTO>> {
         const params = this._buildHttpParams(parametros);
-
 
         return this.gcRestService.get<PageModel<CompraDTO>>(
             '/api/gestion-contratos/v1/compra-sice/all',
-            params
+            params,
         );
     }
 
-
-    obtenerItemsCompra(parametros: ObtenerParams): Observable<PageModel<ItemCompraDto>> {
+    obtenerItemsCompra(
+        parametros: ObtenerParams,
+    ): Observable<PageModel<ItemCompraDto>> {
         const params = this._buildHttpParams(parametros);
-      
+
         return this.gcRestService.get<PageModel<ItemCompraDto>>(
             '/api/gestion-contratos/v1/compra-sice/item/all',
-            params
+            params,
         );
     }
 
-    obtenerListaItemsCompra(parametros: FiltroCompraDTO): Observable<ItemCompraDto[]> {
+    obtenerListaItemsCompra(
+        parametros: FiltroCompraDTO,
+    ): Observable<ItemCompraDto[]> {
         const params = this._buildHttpParamsDesdeFiltro(parametros);
         return this.gcRestService.get<ItemCompraDto[]>(
             '/api/gestion-contratos/v1/compra-sice/item/all-unpaged',
-            params
+            params,
         );
     }
 
     obtenerCompraPorId(idCompra: number): Observable<CompraDTO> {
         return this.gcRestService.get<CompraDTO>(
-            `/api/gestion-contratos/v1/compra-sice/${idCompra}`
+            `/api/gestion-contratos/v1/compra-sice/${idCompra}`,
         );
     }
 
-    private _buildHttpParamsDesdeFiltro(filtro: Partial<FiltroCompraDTO>): HttpParams {
+    private _buildHttpParamsDesdeFiltro(
+        filtro: Partial<FiltroCompraDTO>,
+    ): HttpParams {
         const filtroMap: { [key in keyof FiltroCompraDTO]?: string } = {
             idInciso: 'idInciso',
             idUnidadEjecutora: 'idUnidadEjecutora',
@@ -69,7 +74,9 @@ export class CompraSiceService {
         };
         const queryParams: { [param: string]: string | number | boolean } = {};
         if (filtro) {
-            for (const key of Object.keys(filtro) as Array<keyof FiltroCompraDTO>) {
+            for (const key of Object.keys(filtro) as Array<
+                keyof FiltroCompraDTO
+            >) {
                 const valor = filtro[key];
                 if (valor !== undefined && valor !== null && valor !== '') {
                     const paramName = filtroMap[key];
@@ -82,7 +89,6 @@ export class CompraSiceService {
 
         return new HttpParams({ fromObject: queryParams });
     }
-
 
     private _buildHttpParams(options: ObtenerParams): HttpParams {
         const filtroMap: { [key in keyof FiltroCompraDTO]?: string } = {
@@ -102,11 +108,13 @@ export class CompraSiceService {
         const queryParams: { [param: string]: string | number | boolean } = {
             page: options.page,
             size: options.size,
-            sort: `${this.mapearColumnaOrdenamiento(options.sort)},${options.order === 'desc' ? 'desc' : 'asc'}`
+            sort: `${this.mapearColumnaOrdenamiento(options.sort)},${options.order === 'desc' ? 'desc' : 'asc'}`,
         };
 
         if (options.filtro) {
-            for (const key of Object.keys(options.filtro) as Array<keyof FiltroCompraDTO>) {
+            for (const key of Object.keys(options.filtro) as Array<
+                keyof FiltroCompraDTO
+            >) {
                 const valor = options.filtro[key];
                 if (valor !== undefined && valor !== null && valor !== '') {
                     const paramName = filtroMap[key];
@@ -120,16 +128,15 @@ export class CompraSiceService {
         return new HttpParams({ fromObject: queryParams });
     }
 
-
     private mapearColumnaOrdenamiento(columna: string): string {
         const mapeo: { [key: string]: string } = {
-            'idInciso': 'unidadCompra.idInciso',
-            'idUnidadEjecutora': 'unidadCompra.idUnidadEjecutora',
-            'idUnidadCompra': 'unidadCompra.idUnidadCompra',
-            'numeroCompra': 'numCompra',
-            'nroItem': 'nroItem',
-            'descArticulo': 'descArticulo',
-            'tipoCompra': 'tipoCompra.id'
+            idInciso: 'unidadCompra.idInciso',
+            idUnidadEjecutora: 'unidadCompra.idUnidadEjecutora',
+            idUnidadCompra: 'unidadCompra.idUnidadCompra',
+            numeroCompra: 'numCompra',
+            nroItem: 'nroItem',
+            descArticulo: 'descArticulo',
+            tipoCompra: 'tipoCompra.id',
         };
         return mapeo[columna] || columna;
     }

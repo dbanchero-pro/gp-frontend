@@ -1,16 +1,31 @@
 <ng-template #template>
     <div class="modal-header">
-       <h4 class="modal-title pull-left">{{titulo}}</h4>
-       <button type="button" class="close pull-right" aria-label="Cerrar" (click)="modalRef.hide()">
-          <span aria-hidden="true">×</span>
-       </button>
+        <h4 class="modal-title pull-left">{{ titulo }}</h4>
+        <button
+            type="button"
+            class="close pull-right"
+            aria-label="Cerrar"
+            (click)="modalRef.hide()"
+        >
+            <span aria-hidden="true">×</span>
+        </button>
     </div>
-    <div class="modal-body" [innerHTML]="mensajeInicial">
-      
+    <div class="modal-body" [innerHTML]="mensajeInicial"></div>
+    <textarea
+        aria-label="Texto adicional de la alerta"
+        class="col-12 textoadicional"
+        *ngIf="mostrarTextoAdicional"
+        [readonly]="true"
+        >{{ textoAdicional }}</textarea
+    >
+    <div class="modal-footer place-content-center">
+        <button
+            autofocus="true"
+            class="Button btn btn-primary"
+            aria-label="Aceptar"
+            (click)="modalRef.hide()"
+        >
+            Aceptar
+        </button>
     </div>
-    <textarea aria-label="Texto adicional de la alerta" class="col-12 textoadicional"
-         *ngIf="mostrarTextoAdicional"  [readonly]="true">{{textoAdicional}}</textarea>
-    <div class="modal-footer place-content-center" >
-       <button autofocus="true" class="Button btn btn-primary" aria-label="Aceptar" (click)="modalRef.hide()">Aceptar</button>
-    </div>
- </ng-template>
+</ng-template>

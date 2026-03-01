@@ -1,25 +1,29 @@
-import { Injectable } from "@angular/core";
-import { ILogger, LoggerService } from "../services/common/logger.service";
-import { InjectorHolder } from "./injector-holder";
+import { Injectable } from '@angular/core';
+import { ILogger, LoggerService } from '../services/common/logger.service';
+import { InjectorHolder } from './injector-holder';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class Logger {
     static get instance(): ILogger {
         const logger = InjectorHolder.get<LoggerService>(LoggerService);
-        if (logger)
-            return logger;
+        if (logger) return logger;
         else
             return {
-                logError: (message: any, ...optionalParams: any[]): void => { },
-                logWarning: (message: any, ...optionalParams: any[]): void => { },
-                logInfo: (message: any, ...optionalParams: any[]): void => { },
-                logDebug: (message: any, ...optionalParams: any[]): void => { },
-                logVerbose: (message: any, ...optionalParams: any[]): void => { },
+                logError: (message: any, ...optionalParams: any[]): void => {},
+                logWarning: (
+                    message: any,
+                    ...optionalParams: any[]
+                ): void => {},
+                logInfo: (message: any, ...optionalParams: any[]): void => {},
+                logDebug: (message: any, ...optionalParams: any[]): void => {},
+                logVerbose: (
+                    message: any,
+                    ...optionalParams: any[]
+                ): void => {},
             };
     }
-
 
     static logError(message: any, ...optionalParams: any[]) {
         if (Logger.instance?.logError) {

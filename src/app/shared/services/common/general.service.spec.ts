@@ -22,7 +22,7 @@ describe('GeneralService', () => {
         TestBed.configureTestingModule({
             providers: [
                 GeneralService,
-                { provide: RestService, useClass: MockgcRestService }
+                { provide: RestService, useClass: MockgcRestService },
             ],
         });
 
@@ -45,7 +45,7 @@ describe('GeneralService', () => {
         });
 
         expect(gcRestService.get).toHaveBeenCalledWith(
-            '/api/restricciones/v1/tipos-compras/todos'
+            '/api/restricciones/v1/tipos-compras/todos',
         );
     });
 
@@ -68,12 +68,16 @@ describe('GeneralService', () => {
             });
 
         expect(gcRestService.get).toHaveBeenCalledWith(
-            `/api/restricciones/v1/tipos-compras/${idTipoCompra}/subtipos-compras/todos`
+            `/api/restricciones/v1/tipos-compras/${idTipoCompra}/subtipos-compras/todos`,
         );
     });
 
     it('debería obtener una compra por ID', () => {
-        const compraMock = { id: '123', nombre: 'Compra1', subtipoCompra: { id: 'SD', descTipoCompra: 'Sistema Dinamico' } } as CompraDTO;
+        const compraMock = {
+            id: '123',
+            nombre: 'Compra1',
+            subtipoCompra: { id: 'SD', descTipoCompra: 'Sistema Dinamico' },
+        } as CompraDTO;
         spyOn(gcRestService, 'get').and.returnValue(of(compraMock));
 
         service.getCompra().subscribe((res) => {
@@ -81,12 +85,14 @@ describe('GeneralService', () => {
         });
 
         expect(gcRestService.get).toHaveBeenCalledWith(
-            '/api/gestion-compra/v1/compras/{id}'
+            '/api/gestion-compra/v1/compras/{id}',
         );
     });
 
     it('debería obtener tipos de compra sin relacionar', () => {
-        const tiposMock: TipoCompraDTO[] = [{ id: '2', descTipoCompra: 'Sin Relación' }];
+        const tiposMock: TipoCompraDTO[] = [
+            { id: '2', descTipoCompra: 'Sin Relación' },
+        ];
         spyOn(gcRestService, 'get').and.returnValue(of(tiposMock));
 
         service.getTiposCompraSinRelacionar().subscribe((res) => {
@@ -94,7 +100,7 @@ describe('GeneralService', () => {
         });
 
         expect(gcRestService.get).toHaveBeenCalledWith(
-            '/api/restricciones/v1/tipos-compras/todos-sin-relacionar'
+            '/api/restricciones/v1/tipos-compras/todos-sin-relacionar',
         );
     });
 
@@ -105,7 +111,7 @@ describe('GeneralService', () => {
             idSubtipoCompra: subtipo,
             descSubtipoCompra: 'Desc ST1',
             idTipoCompra: tipo,
-            descTipoCompra: 'Desc T1'
+            descTipoCompra: 'Desc T1',
         };
 
         spyOn(gcRestService, 'get').and.returnValue(of(subtipoMock));
@@ -115,7 +121,7 @@ describe('GeneralService', () => {
         });
 
         expect(gcRestService.get).toHaveBeenCalledWith(
-            `/api/restricciones/v1/subtipos-compras/${tipo}/${subtipo}`
+            `/api/restricciones/v1/subtipos-compras/${tipo}/${subtipo}`,
         );
     });
 
@@ -126,7 +132,7 @@ describe('GeneralService', () => {
             idSubtipoCompra: subtipo,
             descSubtipoCompra: 'Desc ST1',
             idTipoCompra: tipo,
-            descTipoCompra: 'Desc T1'
+            descTipoCompra: 'Desc T1',
         };
 
         spyOn(gcRestService, 'get').and.returnValue(of(subtipoMock));
@@ -136,7 +142,7 @@ describe('GeneralService', () => {
         });
 
         expect(gcRestService.get).toHaveBeenCalledWith(
-            `/api/restricciones/v1/subtipos-compras/${tipo}/${subtipo}`
+            `/api/restricciones/v1/subtipos-compras/${tipo}/${subtipo}`,
         );
     });
 
@@ -147,18 +153,20 @@ describe('GeneralService', () => {
                 idSubtipoCompra: 'ST1',
                 descSubtipoCompra: 'Sub1',
                 idTipoCompra: id,
-                descTipoCompra: 'Tipo'
-            }
+                descTipoCompra: 'Tipo',
+            },
         ];
 
         spyOn(gcRestService, 'get').and.returnValue(of(mockData));
 
-        service.getSubTiposCompraPorTipoCompraSinRelacionar(id).subscribe((res) => {
-            expect(res).toEqual(mockData);
-        });
+        service
+            .getSubTiposCompraPorTipoCompraSinRelacionar(id)
+            .subscribe((res) => {
+                expect(res).toEqual(mockData);
+            });
 
         expect(gcRestService.get).toHaveBeenCalledWith(
-            `/api/restricciones/v1/tipos-compras/${id}/subtipos-compras/todos-sin-relacionar`
+            `/api/restricciones/v1/tipos-compras/${id}/subtipos-compras/todos-sin-relacionar`,
         );
     });
 
@@ -169,25 +177,29 @@ describe('GeneralService', () => {
                 idSubtipoCompra: 'ST1',
                 descSubtipoCompra: 'Sub1',
                 idTipoCompra: id,
-                descTipoCompra: 'Tipo'
-            }
+                descTipoCompra: 'Tipo',
+            },
         ];
 
         spyOn(gcRestService, 'get').and.returnValue(of(mockData));
 
-        service.getSubTiposCompraPorTipoCompraSinRelacionar(id).subscribe((res) => {
-            expect(res).toEqual(mockData);
-        });
+        service
+            .getSubTiposCompraPorTipoCompraSinRelacionar(id)
+            .subscribe((res) => {
+                expect(res).toEqual(mockData);
+            });
 
         expect(gcRestService.get).toHaveBeenCalledWith(
-            `/api/restricciones/v1/tipos-compras/${id}/subtipos-compras/todos-sin-relacionar`
+            `/api/restricciones/v1/tipos-compras/${id}/subtipos-compras/todos-sin-relacionar`,
         );
     });
 
     it('debería obtener tipos de compra para relacionar', () => {
         const tipoId = 'T1';
         const subtipoId = 'ST1';
-        const tiposMock: TipoCompraDTO[] = [{ id: '99', descTipoCompra: 'Relacionar' }];
+        const tiposMock: TipoCompraDTO[] = [
+            { id: '99', descTipoCompra: 'Relacionar' },
+        ];
 
         spyOn(gcRestService, 'get').and.returnValue(of(tiposMock));
 
@@ -196,7 +208,7 @@ describe('GeneralService', () => {
         });
 
         expect(gcRestService.get).toHaveBeenCalledWith(
-            `/api/restricciones/v1/tipos-compras/relacionar/${tipoId}/${subtipoId}`
+            `/api/restricciones/v1/tipos-compras/relacionar/${tipoId}/${subtipoId}`,
         );
     });
 
@@ -205,21 +217,25 @@ describe('GeneralService', () => {
         const subtipoId = 'ST1';
         const tipoCompra = 'T2';
 
-        const mockSubtipos: SubtipoCompraDTO[] = [{
-            idSubtipoCompra: '1',
-            descSubtipoCompra: 'Relacionado',
-            idTipoCompra: tipoCompra,
-            descTipoCompra: 'Tipo'
-        }];
+        const mockSubtipos: SubtipoCompraDTO[] = [
+            {
+                idSubtipoCompra: '1',
+                descSubtipoCompra: 'Relacionado',
+                idTipoCompra: tipoCompra,
+                descTipoCompra: 'Tipo',
+            },
+        ];
 
         spyOn(gcRestService, 'get').and.returnValue(of(mockSubtipos));
 
-        service.getSubTiposCompraRelacionar(tipoId, subtipoId, tipoCompra).subscribe((res) => {
-            expect(res).toEqual(mockSubtipos);
-        });
+        service
+            .getSubTiposCompraRelacionar(tipoId, subtipoId, tipoCompra)
+            .subscribe((res) => {
+                expect(res).toEqual(mockSubtipos);
+            });
 
         expect(gcRestService.get).toHaveBeenCalledWith(
-            `/api/restricciones/v1/subtipos-compras/relacionar/${tipoId}/${subtipoId}/${tipoCompra}`
+            `/api/restricciones/v1/subtipos-compras/relacionar/${tipoId}/${subtipoId}/${tipoCompra}`,
         );
     });
 
@@ -228,15 +244,19 @@ describe('GeneralService', () => {
         const tipoId = 'T1';
         const subtipoId = 'ST1';
 
-        const mockTipos: TipoCompraDTO[] = [{ id: '7', descTipoCompra: 'Con Nómina' }];
+        const mockTipos: TipoCompraDTO[] = [
+            { id: '7', descTipoCompra: 'Con Nómina' },
+        ];
         spyOn(gcRestService, 'get').and.returnValue(of(mockTipos));
 
-        service.getTiposCompraRelacionarNomina(idNomina, tipoId, subtipoId).subscribe((res) => {
-            expect(res).toEqual(mockTipos);
-        });
+        service
+            .getTiposCompraRelacionarNomina(idNomina, tipoId, subtipoId)
+            .subscribe((res) => {
+                expect(res).toEqual(mockTipos);
+            });
 
         expect(gcRestService.get).toHaveBeenCalledWith(
-            `/api/restricciones/v1/tipos-compras/relacionar/${idNomina}/${tipoId}/${subtipoId}`
+            `/api/restricciones/v1/tipos-compras/relacionar/${idNomina}/${tipoId}/${subtipoId}`,
         );
     });
     it('debería volver usando Location.back', () => {

@@ -5,31 +5,31 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { AgregarModificarReglaPopupComponent } from './agregar-modificar-regla-popup.component';
 
 describe('AgregarModificarReglaPopupComponent', () => {
-  let component: AgregarModificarReglaPopupComponent;
-  let fixture: ComponentFixture<AgregarModificarReglaPopupComponent>;
+    let component: AgregarModificarReglaPopupComponent;
+    let fixture: ComponentFixture<AgregarModificarReglaPopupComponent>;
 
-  const bsModalServiceStub = {
-    show: jasmine.createSpy('show').and.returnValue({ content: {}, hide: jasmine.createSpy('hide') })
-  };
+    const bsModalServiceStub = {
+        show: jasmine
+            .createSpy('show')
+            .and.returnValue({ content: {}, hide: jasmine.createSpy('hide') }),
+    };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [],
-      imports: [
-        ReactiveFormsModule,
-        AgregarModificarReglaPopupComponent,
-      ],
-      providers: [{ provide: BsModalService, useValue: bsModalServiceStub }],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [],
+            imports: [ReactiveFormsModule, AgregarModificarReglaPopupComponent],
+            providers: [
+                { provide: BsModalService, useValue: bsModalServiceStub },
+            ],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(AgregarModificarReglaPopupComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(AgregarModificarReglaPopupComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('debería crearse', () => {
-    expect(component).toBeTruthy();
-  });
+    it('debería crearse', () => {
+        expect(component).toBeTruthy();
+    });
 });

@@ -14,373 +14,396 @@ import { PaginaBusquedaComponent } from '../../../../shared/components/pagina-bu
 import { PageModel } from '../../../../shared/models/common/page/page.model';
 import { CancelarPliegoPopupComponent } from '../cancelar-pliego-popup/cancelar-pliego-popup.component';
 import { FiltroBandejaEntradaDTO } from '../../models/filtros/filtro-bandeja-entrada.model';
-import { PliegoDTO } from '../../models/pliego.model';import { SharedModule } from 'src/app/shared/shared.module';
-
+import { PliegoDTO } from '../../models/pliego.model';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
-  selector: 'app-bandeja-entrada',
-  templateUrl: './bandeja-entrada.component.html',
-  styleUrls: ['./bandeja-entrada.component.scss'],
-  standalone: true,
-  imports: [
-    SharedModule,
-  ],
+    selector: 'app-bandeja-entrada',
+    templateUrl: './bandeja-entrada.component.html',
+    styleUrls: ['./bandeja-entrada.component.scss'],
+    standalone: true,
+    imports: [SharedModule],
 })
-export class BandejaEntradaComponent extends PaginaBusquedaComponent<FiltroBandejaEntradaDTO> implements OnInit, AfterViewInit {
-  private readonly fb = inject(FormBuilder);
-  private readonly bandejaEntradaService = inject(BandejaEntradaService);
-  private readonly router = inject(Router);
-  private readonly fechaHoraPipe = inject(FechaHoraPipe);
+export class BandejaEntradaComponent
+    extends PaginaBusquedaComponent<FiltroBandejaEntradaDTO>
+    implements OnInit, AfterViewInit
+{
+    private readonly fb = inject(FormBuilder);
+    private readonly bandejaEntradaService = inject(BandejaEntradaService);
+    private readonly router = inject(Router);
+    private readonly fechaHoraPipe = inject(FechaHoraPipe);
 
-  procesos: PliegoDTO[] = [];
-  cargando = false;
+    procesos: PliegoDTO[] = [];
+    cargando = false;
 
-  columnaOrdenInicial = 'estado';
-  ordenInicial: 'asc' | 'desc' = 'asc';
+    columnaOrdenInicial = 'estado';
+    ordenInicial: 'asc' | 'desc' = 'asc';
 
-  listaOrden: IColumnaOrden[] = [
-    { id: 'estado', nombre: 'Estado' },
-    { id: 'numeroCompra', nombre: 'N°/Año compra' },
-    { id: 'tipoCompraDescripcion', nombre: 'Tipo de compra' }
-  ];
+    listaOrden: IColumnaOrden[] = [
+        { id: 'estado', nombre: 'Estado' },
+        { id: 'numeroCompra', nombre: 'N°/Año compra' },
+        { id: 'tipoCompraDescripcion', nombre: 'Tipo de compra' },
+    ];
 
-  incisos: IncisoDTO[] = [];
+    incisos: IncisoDTO[] = [];
 
-  unidadesEjecutoras: UnidadEjecutoraDTO[] = [];
-  unidadesEjecutorasBase: UnidadEjecutoraDTO[] = [];
+    unidadesEjecutoras: UnidadEjecutoraDTO[] = [];
+    unidadesEjecutorasBase: UnidadEjecutoraDTO[] = [];
 
-  unidadesCompra: UnidadCompraDTO[] = [];
-  unidadesCompraBase: UnidadCompraDTO[] = [];
+    unidadesCompra: UnidadCompraDTO[] = [];
+    unidadesCompraBase: UnidadCompraDTO[] = [];
 
-  tiposCompra: TipoCompraDTO[] = [];
+    tiposCompra: TipoCompraDTO[] = [];
 
-  estados = [
-    { valor: EstadoPliego.PENDIENTE, nombre: 'Pendiente' },
-    { valor: EstadoPliego.ASIGNADO, nombre: 'Asignado' },
-    { valor: EstadoPliego.EN_PROCESO, nombre: 'En proceso' },
-    { valor: EstadoPliego.PENDIENTE_VALIDACION, nombre: 'Pendiente validación' },
-    { valor: EstadoPliego.PENDIENTE_APROBACION, nombre: 'Pendiente aprobación' },
-    { valor: EstadoPliego.APROBADO, nombre: 'Aprobado' },
-    { valor: EstadoPliego.CANCELADO, nombre: 'Publicado (vigente)' }
-  ];
+    estados = [
+        { valor: EstadoPliego.PENDIENTE, nombre: 'Pendiente' },
+        { valor: EstadoPliego.ASIGNADO, nombre: 'Asignado' },
+        { valor: EstadoPliego.EN_PROCESO, nombre: 'En proceso' },
+        {
+            valor: EstadoPliego.PENDIENTE_VALIDACION,
+            nombre: 'Pendiente validación',
+        },
+        {
+            valor: EstadoPliego.PENDIENTE_APROBACION,
+            nombre: 'Pendiente aprobación',
+        },
+        { valor: EstadoPliego.APROBADO, nombre: 'Aprobado' },
+        { valor: EstadoPliego.CANCELADO, nombre: 'Publicado (vigente)' },
+    ];
 
-  constructor() {
-    super();
-    this.form = this.fb.nonNullable.group({
-      incisoId: [null],
-      unidadEjecutoraId: [null],
-      unidadCompraId: [null],
-      numeroCompra: [null],
-      anioCompra: [null],
-      tipoCompraId: [null],
-      estado: [null],
-      soloPublicadosVigentes: [false]
-    });
-  }
+    constructor() {
+        super();
+        this.form = this.fb.nonNullable.group({
+            incisoId: [null],
+            unidadEjecutoraId: [null],
+            unidadCompraId: [null],
+            numeroCompra: [null],
+            anioCompra: [null],
+            tipoCompraId: [null],
+            estado: [null],
+            soloPublicadosVigentes: [false],
+        });
+    }
 
-  override ngOnInit(): void {
-    super.ngOnInit();
-    this.cargarFiltros();
-    this.configurarCambiosFiltros();
-  }
+    override ngOnInit(): void {
+        super.ngOnInit();
+        this.cargarFiltros();
+        this.configurarCambiosFiltros();
+    }
 
-  private cargarFiltros(): void {
-    this.bandejaEntradaService.obtenerFiltrosBandeja().subscribe((filtros) => {
-      this.incisos = filtros.incisos;
-      this.unidadesEjecutorasBase = filtros.unidadesEjecutoras;
-      this.unidadesCompraBase = filtros.unidadesCompra;
-      this.tiposCompra = filtros.tiposCompra;
-    });
-  }
+    private cargarFiltros(): void {
+        this.bandejaEntradaService
+            .obtenerFiltrosBandeja()
+            .subscribe((filtros) => {
+                this.incisos = filtros.incisos;
+                this.unidadesEjecutorasBase = filtros.unidadesEjecutoras;
+                this.unidadesCompraBase = filtros.unidadesCompra;
+                this.tiposCompra = filtros.tiposCompra;
+            });
+    }
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.buscar();
-    }, 100);
-  }
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.buscar();
+        }, 100);
+    }
 
-  configurarCambiosFiltros(): void {
-    this.form.get('incisoId')?.valueChanges.subscribe(incisoId => {
-      this.unidadesEjecutoras = incisoId
-        ? this.unidadesEjecutorasBase.filter(ue => (ue.inciso as any)?.id === incisoId)
-        : [];
-      this.form.patchValue({
-        unidadEjecutoraId: null,
-        unidadCompraId: null
-      });
-      this.unidadesCompra = [];
-    });
+    configurarCambiosFiltros(): void {
+        this.form.get('incisoId')?.valueChanges.subscribe((incisoId) => {
+            this.unidadesEjecutoras = incisoId
+                ? this.unidadesEjecutorasBase.filter(
+                      (ue) => (ue.inciso as any)?.id === incisoId,
+                  )
+                : [];
+            this.form.patchValue({
+                unidadEjecutoraId: null,
+                unidadCompraId: null,
+            });
+            this.unidadesCompra = [];
+        });
 
-    this.form.get('unidadEjecutoraId')?.valueChanges.subscribe(unidadEjecutoraId => {
-      this.unidadesCompra = unidadEjecutoraId
-        ? this.unidadesCompraBase.filter(uc => uc.idUnidadEjecutora === unidadEjecutoraId)
-        : [];
-      this.form.patchValue({ unidadCompraId: null });
-    });
-  }
+        this.form
+            .get('unidadEjecutoraId')
+            ?.valueChanges.subscribe((unidadEjecutoraId) => {
+                this.unidadesCompra = unidadEjecutoraId
+                    ? this.unidadesCompraBase.filter(
+                          (uc) => uc.idUnidadEjecutora === unidadEjecutoraId,
+                      )
+                    : [];
+                this.form.patchValue({ unidadCompraId: null });
+            });
+    }
 
-  buscar(): void {
-    this.cargando = true;
-    const v = this.form.value;
-    const filtro = new FiltroBandejaEntradaDTO(
-      v.incisoId || undefined,
-      v.unidadEjecutoraId || undefined,
-      v.unidadCompraId || undefined,
-      v.numeroCompra || undefined,
-      v.anioCompra || undefined,
-      v.tipoCompraId || undefined,
-      v.estado || undefined,
-      v.soloPublicadosVigentes || false
-    );
+    buscar(): void {
+        this.cargando = true;
+        const v = this.form.value;
+        const filtro = new FiltroBandejaEntradaDTO(
+            v.incisoId || undefined,
+            v.unidadEjecutoraId || undefined,
+            v.unidadCompraId || undefined,
+            v.numeroCompra || undefined,
+            v.anioCompra || undefined,
+            v.tipoCompraId || undefined,
+            v.estado || undefined,
+            v.soloPublicadosVigentes || false,
+        );
 
-    this.bandejaEntradaService.buscarProcesos(
-      filtro,
-      this.parametros.pagina,
-      this.parametros.tamanoPagina,
-      this.parametros.sort,
-      this.parametros.order
-    ).subscribe({
-      next: (page: PageModel<PliegoDTO>) => {
-        this.procesos = page.content || [];
-        this.total = page.totalElements || 0;
-        this.cargando = false;
-      },
-      error: () => {
-        this.cargando = false;
+        this.bandejaEntradaService
+            .buscarProcesos(
+                filtro,
+                this.parametros.pagina,
+                this.parametros.tamanoPagina,
+                this.parametros.sort,
+                this.parametros.order,
+            )
+            .subscribe({
+                next: (page: PageModel<PliegoDTO>) => {
+                    this.procesos = page.content || [];
+                    this.total = page.totalElements || 0;
+                    this.cargando = false;
+                },
+                error: () => {
+                    this.cargando = false;
+                    this.procesos = [];
+                    this.total = 0;
+                },
+            });
+    }
+
+    actualizarFiltrosYBuscar(): void {
+        this.parametros.pagina = 0;
+        this.buscar();
+    }
+
+    override nuevaConsulta(): void {
+        this.form.reset({
+            soloPublicadosVigentes: false,
+        });
+        this.parametros = {
+            filtro: new FiltroBandejaEntradaDTO(),
+            pagina: 0,
+            tamanoPagina: 10,
+            sort: this.columnaOrdenInicial,
+            order: this.ordenInicial,
+        };
         this.procesos = [];
-        this.total = 0;
-      }
-    });
-  }
+        this.total = -1;
+    }
 
-  actualizarFiltrosYBuscar(): void {
-    this.parametros.pagina = 0;
-    this.buscar();
-  }
+    obtenerAccionesProceso(proceso: PliegoDTO): AccionBoton[] {
+        const acciones: AccionBoton[] = [];
 
-  override nuevaConsulta(): void {
-    this.form.reset({
-      soloPublicadosVigentes: false
-    });
-    this.parametros = {
-      filtro: new FiltroBandejaEntradaDTO(),
-      pagina: 0,
-      tamanoPagina: 10,
-      sort: this.columnaOrdenInicial,
-      order: this.ordenInicial
-    };
-    this.procesos = [];
-    this.total = -1;
-  }
+        switch (proceso.estado) {
+            case EstadoPliego.PENDIENTE:
+                acciones.push({
+                    nombre: 'Asignar',
+                    clase: 'btn btn-success btn-ancho-fijo',
+                    icono: 'fa fa-user-plus',
+                    ariaLabel: 'Asignar proceso ' + proceso.numeroCompra,
+                    accion: () => this.asignarProceso(proceso),
+                });
+                break;
 
-  obtenerAccionesProceso(proceso: PliegoDTO): AccionBoton[] {
-    const acciones: AccionBoton[] = [];
+            case EstadoPliego.ASIGNADO:
+                acciones.push({
+                    nombre: 'Iniciar',
+                    clase: 'btn btn-success btn-ancho-fijo',
+                    icono: 'fa fa-play',
+                    ariaLabel: 'Iniciar proceso ' + proceso.numeroCompra,
+                    accion: () => this.iniciarProceso(proceso),
+                });
+                acciones.push({
+                    nombre: 'Cancelar',
+                    clase: 'btn btn-success btn-ancho-fijo',
+                    icono: 'fa fa-ban',
+                    ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
+                    accion: () => this.cancelarProceso(proceso),
+                });
+                break;
 
-    switch (proceso.estado) {
-      case EstadoPliego.PENDIENTE:
-        acciones.push({
-          nombre: 'Asignar',
-          clase: 'btn btn-success btn-ancho-fijo',
-          icono: 'fa fa-user-plus',
-          ariaLabel: 'Asignar proceso ' + proceso.numeroCompra,
-          accion: () => this.asignarProceso(proceso)
-        });
-        break;
+            case EstadoPliego.EN_PROCESO:
+                acciones.push({
+                    nombre: 'Elaborar',
+                    clase: 'btn btn-success btn-ancho-fijo',
+                    icono: 'fa fa-edit',
+                    ariaLabel: 'Elaborar proceso ' + proceso.numeroCompra,
+                    accion: () => this.elaborarProceso(proceso),
+                });
+                acciones.push({
+                    nombre: 'Cancelar',
+                    clase: 'btn btn-success btn-ancho-fijo',
+                    icono: 'fa fa-ban',
+                    ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
+                    accion: () => this.cancelarProceso(proceso),
+                });
+                break;
 
-      case EstadoPliego.ASIGNADO:
-        acciones.push({
-          nombre: 'Iniciar',
-          clase: 'btn btn-success btn-ancho-fijo',
-          icono: 'fa fa-play',
-          ariaLabel: 'Iniciar proceso ' + proceso.numeroCompra,
-          accion: () => this.iniciarProceso(proceso)
-        });
-        acciones.push({
-          nombre: 'Cancelar',
-          clase: 'btn btn-success btn-ancho-fijo',
-          icono: 'fa fa-ban',
-          ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
-          accion: () => this.cancelarProceso(proceso)
-        });
-        break;
+            case EstadoPliego.PENDIENTE_VALIDACION:
+                acciones.push({
+                    nombre: 'Validar',
+                    clase: 'btn btn-success btn-ancho-fijo',
+                    icono: 'fa fa-check',
+                    ariaLabel: 'Validar proceso ' + proceso.numeroCompra,
+                    accion: () => this.validarProceso(proceso),
+                });
+                acciones.push({
+                    nombre: 'Cancelar',
+                    clase: 'btn btn-success btn-ancho-fijo',
+                    icono: 'fa fa-ban',
+                    ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
+                    accion: () => this.cancelarProceso(proceso),
+                });
+                break;
 
-      case EstadoPliego.EN_PROCESO:
-        acciones.push({
-          nombre: 'Elaborar',
-          clase: 'btn btn-success btn-ancho-fijo',
-          icono: 'fa fa-edit',
-          ariaLabel: 'Elaborar proceso ' + proceso.numeroCompra,
-          accion: () => this.elaborarProceso(proceso)
-        });
-        acciones.push({
-          nombre: 'Cancelar',
-          clase: 'btn btn-success btn-ancho-fijo',
-          icono: 'fa fa-ban',
-          ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
-          accion: () => this.cancelarProceso(proceso)
-        });
-        break;
+            case EstadoPliego.PENDIENTE_APROBACION:
+                acciones.push({
+                    nombre: 'Aprobar',
+                    clase: 'btn btn-success btn-ancho-fijo',
+                    icono: 'fa fa-check-circle',
+                    ariaLabel: 'Aprobar proceso ' + proceso.numeroCompra,
+                    accion: () => this.aprobarProceso(proceso),
+                });
+                acciones.push({
+                    nombre: 'Cancelar',
+                    clase: 'btn btn-success btn-ancho-fijo',
+                    icono: 'fa fa-ban',
+                    ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
+                    accion: () => this.cancelarProceso(proceso),
+                });
+                break;
 
-      case EstadoPliego.PENDIENTE_VALIDACION:
-        acciones.push({
-          nombre: 'Validar',
-          clase: 'btn btn-success btn-ancho-fijo',
-          icono: 'fa fa-check',
-          ariaLabel: 'Validar proceso ' + proceso.numeroCompra,
-          accion: () => this.validarProceso(proceso)
-        });
-        acciones.push({
-          nombre: 'Cancelar',
-          clase: 'btn btn-success btn-ancho-fijo',
-          icono: 'fa fa-ban',
-          ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
-          accion: () => this.cancelarProceso(proceso)
-        });
-        break;
+            case EstadoPliego.APROBADO:
+                acciones.push({
+                    nombre: 'Cancelar',
+                    clase: 'btn btn-success btn-ancho-fijo',
+                    icono: 'fa fa-ban',
+                    ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
+                    accion: () => this.cancelarProceso(proceso),
+                });
+                break;
 
-      case EstadoPliego.PENDIENTE_APROBACION:
-        acciones.push({
-          nombre: 'Aprobar',
-          clase: 'btn btn-success btn-ancho-fijo',
-          icono: 'fa fa-check-circle',
-          ariaLabel: 'Aprobar proceso ' + proceso.numeroCompra,
-          accion: () => this.aprobarProceso(proceso)
-        });
-        acciones.push({
-          nombre: 'Cancelar',
-          clase: 'btn btn-success btn-ancho-fijo',
-          icono: 'fa fa-ban',
-          ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
-          accion: () => this.cancelarProceso(proceso)
-        });
-        break;
-
-      case EstadoPliego.APROBADO:
-        acciones.push({
-          nombre: 'Cancelar',
-          clase: 'btn btn-success btn-ancho-fijo',
-          icono: 'fa fa-ban',
-          ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
-          accion: () => this.cancelarProceso(proceso)
-        });
-        break;
-
-      case EstadoPliego.PUBLICADO:
-        if (this.esPublicadoVigente(proceso)) {
-          acciones.push({
-            nombre: 'Modificar',
-            clase: 'btn btn-success btn-ancho-fijo',
-            icono: 'fa fa-edit',
-            ariaLabel: 'Modificar pliego publicado ' + proceso.numeroCompra,
-            accion: () => this.modificarPliegoPublicado(proceso)
-          });
-          acciones.push({
-            nombre: 'Cancelar',
-            clase: 'btn btn-success btn-ancho-fijo',
-            icono: 'fa fa-ban',
-            ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
-            accion: () => this.cancelarProceso(proceso)
-          });
+            case EstadoPliego.PUBLICADO:
+                if (this.esPublicadoVigente(proceso)) {
+                    acciones.push({
+                        nombre: 'Modificar',
+                        clase: 'btn btn-success btn-ancho-fijo',
+                        icono: 'fa fa-edit',
+                        ariaLabel:
+                            'Modificar pliego publicado ' +
+                            proceso.numeroCompra,
+                        accion: () => this.modificarPliegoPublicado(proceso),
+                    });
+                    acciones.push({
+                        nombre: 'Cancelar',
+                        clase: 'btn btn-success btn-ancho-fijo',
+                        icono: 'fa fa-ban',
+                        ariaLabel: 'Cancelar proceso ' + proceso.numeroCompra,
+                        accion: () => this.cancelarProceso(proceso),
+                    });
+                }
+                break;
         }
-        break;
-    }
 
-    acciones.push({
-      nombre: 'Ver ítems',
-      clase: 'btn btn-success btn-ancho-fijo',
-      icono: 'fa fa-list',
-      ariaLabel: 'Ver ítems del proceso ' + proceso.numeroCompra,
-      accion: () => this.verItems(proceso)
-    });
-
-    return acciones;
-  }
-
-  asignarProceso(proceso: PliegoDTO): void {
-    this.router.navigate(['/pliegos/bandeja-entrada/asignar', proceso.id]);
-  }
-
-  iniciarProceso(proceso: PliegoDTO): void {
-    if (!proceso.id) {
-      return;
-    }
-    this.router.navigate(['/pliegos/bandeja-entrada/iniciar', proceso.id]);
-  }
-
-  elaborarProceso(proceso: PliegoDTO): void {
-    this.router.navigate(['/pliegos/bandeja-entrada/elaborar', proceso.id]);
-  }
-
-  validarProceso(proceso: PliegoDTO): void {
-    console.log('Validar proceso:', proceso);
-  }
-
-  aprobarProceso(proceso: PliegoDTO): void {
-    console.log('Aprobar proceso:', proceso);
-  }
-
-  cancelarProceso(proceso: PliegoDTO): void {
-     const modalRef = this.abrirPopupGrande(CancelarPliegoPopupComponent, 'Guardar', {
-          backdrop: 'static',
-          keyboard: false,
-          initialState: { proceso: proceso}
+        acciones.push({
+            nombre: 'Ver ítems',
+            clase: 'btn btn-success btn-ancho-fijo',
+            icono: 'fa fa-list',
+            ariaLabel: 'Ver ítems del proceso ' + proceso.numeroCompra,
+            accion: () => this.verItems(proceso),
         });
 
-
-    modalRef.onHide?.subscribe(() => {
-      // Aquí se puede refrescar la lista si es necesario
-      this.buscar();
-    });
-  }
-
-  modificarPliegoPublicado(proceso: PliegoDTO): void {
-    console.log('Modificar pliego publicado:', proceso);
-  }
-
-  verItems(proceso: PliegoDTO): void {
-    console.log('Ver ítems del proceso:', proceso);
-  }
-
-  obtenerTextoOrganismo(proceso: PliegoDTO): string {
-    const inciso = proceso.unidadEjecutora?.inciso?.descInciso ?? '';
-    const unidadEjecutora = proceso.unidadEjecutora?.descUnidadEjecutora ?? '';
-    return `${inciso} | ${unidadEjecutora}`;
-  }
-
-  obtenerTextoTipoCompra(proceso: PliegoDTO): string {
-    return `${proceso.subtipoCompra?.descTipoCompra ?? ''} | ${proceso.subtipoCompra?.descSubtipoCompra ?? ''}`;
-  }
-
-  obtenerTextoNumeroCompra(proceso: PliegoDTO): string {
-    return `${proceso.numeroCompra}/${proceso.anioCompra}`;
-  }
-
-  obtenerClaseBadgeEstado(estado: EstadoPliego): string {
-    const clases: { [key in EstadoPliego]: string } = {
-      [EstadoPliego.PENDIENTE]: 'badge-info',
-      [EstadoPliego.ASIGNADO]: 'badge-info',
-      [EstadoPliego.EN_PROCESO]: 'badge-warning',
-      [EstadoPliego.PENDIENTE_VALIDACION]: 'badge-warning',
-      [EstadoPliego.PENDIENTE_APROBACION]: 'badge-warning',
-      [EstadoPliego.APROBADO]: 'badge-warning',
-      [EstadoPliego.PUBLICADO]: 'badge-success',
-      [EstadoPliego.CANCELADO]: 'badge-cancel'
-    };
-    return clases[estado];
-  }
-
-  formatearFechaHora(fecha: Date | null | undefined): string {
-    if (!fecha) return '';
-    return this.fechaHoraPipe.transform(fecha) || '';
-  }
-
-  private esPublicadoVigente(proceso: PliegoDTO): boolean {
-    if (proceso.estado !== EstadoPliego.PUBLICADO || !proceso.fechaTopeRecepcionOfertas) {
-      return false;
+        return acciones;
     }
-    return new Date(proceso.fechaTopeRecepcionOfertas) >= new Date();
-  }
+
+    asignarProceso(proceso: PliegoDTO): void {
+        this.router.navigate(['/pliegos/bandeja-entrada/asignar', proceso.id]);
+    }
+
+    iniciarProceso(proceso: PliegoDTO): void {
+        if (!proceso.id) {
+            return;
+        }
+        this.router.navigate(['/pliegos/bandeja-entrada/iniciar', proceso.id]);
+    }
+
+    elaborarProceso(proceso: PliegoDTO): void {
+        this.router.navigate(['/pliegos/bandeja-entrada/elaborar', proceso.id]);
+    }
+
+    validarProceso(proceso: PliegoDTO): void {
+        console.log('Validar proceso:', proceso);
+    }
+
+    aprobarProceso(proceso: PliegoDTO): void {
+        console.log('Aprobar proceso:', proceso);
+    }
+
+    cancelarProceso(proceso: PliegoDTO): void {
+        const modalRef = this.abrirPopupGrande(
+            CancelarPliegoPopupComponent,
+            'Guardar',
+            {
+                backdrop: 'static',
+                keyboard: false,
+                initialState: { proceso: proceso },
+            },
+        );
+
+        modalRef.onHide?.subscribe(() => {
+            // Aquí se puede refrescar la lista si es necesario
+            this.buscar();
+        });
+    }
+
+    modificarPliegoPublicado(proceso: PliegoDTO): void {
+        console.log('Modificar pliego publicado:', proceso);
+    }
+
+    verItems(proceso: PliegoDTO): void {
+        console.log('Ver ítems del proceso:', proceso);
+    }
+
+    obtenerTextoOrganismo(proceso: PliegoDTO): string {
+        const inciso = proceso.unidadEjecutora?.inciso?.descInciso ?? '';
+        const unidadEjecutora =
+            proceso.unidadEjecutora?.descUnidadEjecutora ?? '';
+        return `${inciso} | ${unidadEjecutora}`;
+    }
+
+    obtenerTextoTipoCompra(proceso: PliegoDTO): string {
+        return `${proceso.subtipoCompra?.descTipoCompra ?? ''} | ${proceso.subtipoCompra?.descSubtipoCompra ?? ''}`;
+    }
+
+    obtenerTextoNumeroCompra(proceso: PliegoDTO): string {
+        return `${proceso.numeroCompra}/${proceso.anioCompra}`;
+    }
+
+    obtenerClaseBadgeEstado(estado: EstadoPliego): string {
+        const clases: { [key in EstadoPliego]: string } = {
+            [EstadoPliego.PENDIENTE]: 'badge-info',
+            [EstadoPliego.ASIGNADO]: 'badge-info',
+            [EstadoPliego.EN_PROCESO]: 'badge-warning',
+            [EstadoPliego.PENDIENTE_VALIDACION]: 'badge-warning',
+            [EstadoPliego.PENDIENTE_APROBACION]: 'badge-warning',
+            [EstadoPliego.APROBADO]: 'badge-warning',
+            [EstadoPliego.PUBLICADO]: 'badge-success',
+            [EstadoPliego.CANCELADO]: 'badge-cancel',
+        };
+        return clases[estado];
+    }
+
+    formatearFechaHora(fecha: Date | null | undefined): string {
+        if (!fecha) return '';
+        return this.fechaHoraPipe.transform(fecha) || '';
+    }
+
+    private esPublicadoVigente(proceso: PliegoDTO): boolean {
+        if (
+            proceso.estado !== EstadoPliego.PUBLICADO ||
+            !proceso.fechaTopeRecepcionOfertas
+        ) {
+            return false;
+        }
+        return new Date(proceso.fechaTopeRecepcionOfertas) >= new Date();
+    }
 }
-
-
-

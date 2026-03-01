@@ -1,4 +1,3 @@
-
 export interface PageableModel {
     sort: string;
     order: 'asc' | 'desc';

@@ -1,53 +1,93 @@
 <div class="modal-header d-flex justify-content-between align-items-center">
-  <h1 class="modal-title mb-0" id="tituloPopup">{{titulo}}</h1>
-  <button type="button" aria-label="Cerrar" class="close" (click)="cerrarPopup()">&times;</button>
+    <h1 class="modal-title mb-0" id="tituloPopup">{{ titulo }}</h1>
+    <button
+        type="button"
+        aria-label="Cerrar"
+        class="close"
+        (click)="cerrarPopup()"
+    >
+        &times;
+    </button>
 </div>
 
 <div class="modal-body p-2 justify-content-center">
-  <div class="form-group">
-    <div class="col-12">
-      <div class="row py-1 pl-3 pb-4 subtitle">
-        <div class="float-left pr-3">Usuario seleccionado:</div>
-        <div class="float-left  font-weight-bold  pr-3">CI {{ usuario.id | formatoCi }}</div>
-        <div class="float-left font-weight-bold ">{{ usuario.nombre }}</div>
-      </div>
-      <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden" [columnaOrden]="parametros.sort"
-        [orden]="parametros.order" (orderChange)="cambioOrden($event)" titulo="Unidades de compra asignadas"
-        (sortChange)="cambioColumnaOrden($event)"></app-cabezal-consulta>
+    <div class="form-group">
+        <div class="col-12">
+            <div class="row py-1 pl-3 pb-4 subtitle">
+                <div class="float-left pr-3">Usuario seleccionado:</div>
+                <div class="float-left font-weight-bold pr-3">
+                    CI {{ usuario.id | formatoCi }}
+                </div>
+                <div class="float-left font-weight-bold">
+                    {{ usuario.nombre }}
+                </div>
+            </div>
+            <app-cabezal-consulta
+                [totalItems]="total"
+                [listaOrden]="listaOrden"
+                [columnaOrden]="parametros.sort"
+                [orden]="parametros.order"
+                (orderChange)="cambioOrden($event)"
+                titulo="Unidades de compra asignadas"
+                (sortChange)="cambioColumnaOrden($event)"
+            ></app-cabezal-consulta>
 
-      <div class="card mb-4" *ngIf="unidadesCompra.length > 0">
-        <div class="table-responsive m-0">
-          <table class="table table-striped table-hover mb-0 align-middle" aria-label="Tabla de unidades de compra">
-            <thead class="table-light sticky-top">
-              <tr>
-                <th>Inciso</th>
-                <th>Unidad ejecutora</th>
-                <th>Unidad de compra</th>
-              </tr>
-            </thead>
+            <div class="card mb-4" *ngIf="unidadesCompra.length > 0">
+                <div class="table-responsive m-0">
+                    <table
+                        class="table table-striped table-hover mb-0 align-middle"
+                        aria-label="Tabla de unidades de compra"
+                    >
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th>Inciso</th>
+                                <th>Unidad ejecutora</th>
+                                <th>Unidad de compra</th>
+                            </tr>
+                        </thead>
 
-            <tbody>
-              <tr *ngFor="let reg of unidadesCompra">
-                <td>{{ reg.idInciso }} - {{ reg.descInciso }}</td>
-                <td>{{ reg.idUnidadEjecutora }} - {{ reg.descUnidadEjecutora }}</td>
-                <td>{{ reg.idUnidadCompra }} - {{ reg.descUnidadCompra}}</td>
-              </tr>
+                        <tbody>
+                            <tr *ngFor="let reg of unidadesCompra">
+                                <td>
+                                    {{ reg.idInciso }} - {{ reg.descInciso }}
+                                </td>
+                                <td>
+                                    {{ reg.idUnidadEjecutora }} -
+                                    {{ reg.descUnidadEjecutora }}
+                                </td>
+                                <td>
+                                    {{ reg.idUnidadCompra }} -
+                                    {{ reg.descUnidadCompra }}
+                                </td>
+                            </tr>
 
-              <tr *ngIf="unidadesCompra.length === 0">
-                <td colspan="3" class="text-center py-4">Sin resultados</td>
-              </tr>
-            </tbody>
-          </table>
+                            <tr *ngIf="unidadesCompra.length === 0">
+                                <td colspan="3" class="text-center py-4">
+                                    Sin resultados
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <app-paginado
+                [totalItems]="total"
+                [itemsPorPagina]="parametros.tamanoPagina"
+                [paginaActual]="parametros.pagina + 1"
+                (cambioPagina)="cambioPagina($event)"
+                (cambioItemsPorPagina)="cambioPorPagina($event)"
+            ></app-paginado>
         </div>
-      </div>
 
-      <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina"
-        [paginaActual]="parametros.pagina + 1" (cambioPagina)="cambioPagina($event)"
-        (cambioItemsPorPagina)="cambioPorPagina($event)"></app-paginado>
+        <div class="d-flex justify-content-end mt-3 pe-3">
+            <button
+                type="button"
+                class="Button btn-link"
+                (click)="cerrarPopup()"
+            >
+                Cancelar
+            </button>
+        </div>
     </div>
-
-    <div class="d-flex justify-content-end mt-3 pe-3">
-
-      <button type="button" class="Button btn-link" (click)="cerrarPopup()">Cancelar</button>
-    </div>
-  </div>
+</div>

@@ -1,65 +1,167 @@
 <ng-container *ngIf="orientacion !== 'horizontal'">
     <div [formGroup]="form">
-        <div class="row">               
-            <div class="form-group form-row col-12 m-0 pb-0 pt-0"
-                [class.field-error]="form.get('idInciso')?.invalid && form.get('idInciso')?.touched">
-                <label for="idInciso_{{idControl}}" class="col-form-label col-12"
-                    [class.field-error]="form.get('idInciso')?.invalid && form.get('idInciso')?.touched">
-                    {{ requeridoInciso ? '* ' : '' }}Inciso
+        <div class="row">
+            <div
+                class="form-group form-row col-12 m-0 pb-0 pt-0"
+                [class.field-error]="
+                    form.get('idInciso')?.invalid &&
+                    form.get('idInciso')?.touched
+                "
+            >
+                <label
+                    for="idInciso_{{ idControl }}"
+                    class="col-form-label col-12"
+                    [class.field-error]="
+                        form.get('idInciso')?.invalid &&
+                        form.get('idInciso')?.touched
+                    "
+                >
+                    {{ requeridoInciso ? "* " : "" }}Inciso
                 </label>
-                <select class="form-control col-12" id="idInciso_{{idControl}}" name="idInciso{{idControl}}"
-                    formControlName="idInciso" (change)="cambioInciso()"
-                    [class.is-invalid]="form.get('idInciso')?.invalid && form.get('idInciso')?.touched">
-                    <option value="" *ngIf="requeridoInciso == false">Todos los incisos</option>
-                    <option value="" *ngIf="requeridoInciso == true">Seleccione un inciso</option>
-                    <option *ngFor="let option of incisos" [value]="option.idInciso">
+                <select
+                    class="form-control col-12"
+                    id="idInciso_{{ idControl }}"
+                    name="idInciso{{ idControl }}"
+                    formControlName="idInciso"
+                    (change)="cambioInciso()"
+                    [class.is-invalid]="
+                        form.get('idInciso')?.invalid &&
+                        form.get('idInciso')?.touched
+                    "
+                >
+                    <option value="" *ngIf="requeridoInciso == false">
+                        Todos los incisos
+                    </option>
+                    <option value="" *ngIf="requeridoInciso == true">
+                        Seleccione un inciso
+                    </option>
+                    <option
+                        *ngFor="let option of incisos"
+                        [value]="option.idInciso"
+                    >
                         {{ option.idInciso }} - {{ option.descInciso }}
                     </option>
                 </select>
-                <span [style.visibility]="form.get('idInciso')?.invalid && form.get('idInciso')?.touched ? 'visible' : 'hidden'" class="texto-error">
+                <span
+                    [style.visibility]="
+                        form.get('idInciso')?.invalid &&
+                        form.get('idInciso')?.touched
+                            ? 'visible'
+                            : 'hidden'
+                    "
+                    class="texto-error"
+                >
                     El inciso no puede estar vacío
                 </span>
             </div>
         </div>
-        <div class="row">               
-            <div class="form-group form-row col-12 m-0 pb-0 pt-0"
-                [class.field-error]="form.get('idUnidadEjecutora')?.invalid && form.get('idUnidadEjecutora')?.touched">
-                <label for="idUnidadEjecutora_{{idControl}}" class="col-form-label col-12"
-                    [class.field-error]="form.get('idUnidadEjecutora')?.invalid && form.get('idUnidadEjecutora')?.touched">
-                    {{ requeridoUE ? '* ' : '' }}Unidad ejecutora
+        <div class="row">
+            <div
+                class="form-group form-row col-12 m-0 pb-0 pt-0"
+                [class.field-error]="
+                    form.get('idUnidadEjecutora')?.invalid &&
+                    form.get('idUnidadEjecutora')?.touched
+                "
+            >
+                <label
+                    for="idUnidadEjecutora_{{ idControl }}"
+                    class="col-form-label col-12"
+                    [class.field-error]="
+                        form.get('idUnidadEjecutora')?.invalid &&
+                        form.get('idUnidadEjecutora')?.touched
+                    "
+                >
+                    {{ requeridoUE ? "* " : "" }}Unidad ejecutora
                 </label>
-                <select class="form-control col-12" id="idUnidadEjecutora_{{idControl}}" name="idUnidadEjecutora"
-                    formControlName="idUnidadEjecutora" (change)="cambioUE()"
-                    [class.is-invalid]="form.get('idUnidadEjecutora')?.invalid && form.get('idUnidadEjecutora')?.touched">
-                    <option value="" *ngIf="requeridoUE == false">Todas las unidades ejecutoras</option>
-                    <option value="" *ngIf="requeridoUE == true">Seleccione una unidad ejecutora</option>
-                    <option *ngFor="let item of unidadesEjecutoras" [value]="item.idUnidadEjecutora">
-                        {{ item.idUnidadEjecutora }} - {{ item.descUnidadEjecutora }}
+                <select
+                    class="form-control col-12"
+                    id="idUnidadEjecutora_{{ idControl }}"
+                    name="idUnidadEjecutora"
+                    formControlName="idUnidadEjecutora"
+                    (change)="cambioUE()"
+                    [class.is-invalid]="
+                        form.get('idUnidadEjecutora')?.invalid &&
+                        form.get('idUnidadEjecutora')?.touched
+                    "
+                >
+                    <option value="" *ngIf="requeridoUE == false">
+                        Todas las unidades ejecutoras
+                    </option>
+                    <option value="" *ngIf="requeridoUE == true">
+                        Seleccione una unidad ejecutora
+                    </option>
+                    <option
+                        *ngFor="let item of unidadesEjecutoras"
+                        [value]="item.idUnidadEjecutora"
+                    >
+                        {{ item.idUnidadEjecutora }} -
+                        {{ item.descUnidadEjecutora }}
                     </option>
                 </select>
-                <span [style.visibility]="form.get('idUnidadEjecutora')?.invalid && form.get('idUnidadEjecutora')?.touched ? 'visible' : 'hidden'"
-                    class="texto-error">
+                <span
+                    [style.visibility]="
+                        form.get('idUnidadEjecutora')?.invalid &&
+                        form.get('idUnidadEjecutora')?.touched
+                            ? 'visible'
+                            : 'hidden'
+                    "
+                    class="texto-error"
+                >
                     La unidad ejecutora no puede estar vacía
                 </span>
             </div>
         </div>
         <div class="row">
-            <div class="form-group form-row col-12 m-0 pb-0 pt-0"
-                [class.field-error]="form.get('idUnidadCompra')?.invalid && form.get('idUnidadCompra')?.touched">
-                <label for="idUnidadCompra_{{idControl}}" class="col-form-label col-12"
-                    [class.field-error]="form.get('idUnidadCompra')?.invalid && form.get('idUnidadCompra')?.touched">
-                    {{ requeridoUC ? '* ' : '' }}Unidad de compra
+            <div
+                class="form-group form-row col-12 m-0 pb-0 pt-0"
+                [class.field-error]="
+                    form.get('idUnidadCompra')?.invalid &&
+                    form.get('idUnidadCompra')?.touched
+                "
+            >
+                <label
+                    for="idUnidadCompra_{{ idControl }}"
+                    class="col-form-label col-12"
+                    [class.field-error]="
+                        form.get('idUnidadCompra')?.invalid &&
+                        form.get('idUnidadCompra')?.touched
+                    "
+                >
+                    {{ requeridoUC ? "* " : "" }}Unidad de compra
                 </label>
-                <select class="form-control col-12" id="idUnidadCompra_{{idControl}}" name="idUnidadCompra"
-                    formControlName="idUnidadCompra" (change)="cambioUC()"
-                    [class.is-invalid]="form.get('idUnidadCompra')?.invalid && form.get('idUnidadCompra')?.touched">
-                    <option value="" *ngIf="requeridoUC == false">Todas las unidades de compra</option>
-                    <option value="" *ngIf="requeridoUC == true">Seleccione una unidad de compra</option>
-                    <option *ngFor="let item of unidadesCompra" [value]="item.idUnidadCompra">
+                <select
+                    class="form-control col-12"
+                    id="idUnidadCompra_{{ idControl }}"
+                    name="idUnidadCompra"
+                    formControlName="idUnidadCompra"
+                    (change)="cambioUC()"
+                    [class.is-invalid]="
+                        form.get('idUnidadCompra')?.invalid &&
+                        form.get('idUnidadCompra')?.touched
+                    "
+                >
+                    <option value="" *ngIf="requeridoUC == false">
+                        Todas las unidades de compra
+                    </option>
+                    <option value="" *ngIf="requeridoUC == true">
+                        Seleccione una unidad de compra
+                    </option>
+                    <option
+                        *ngFor="let item of unidadesCompra"
+                        [value]="item.idUnidadCompra"
+                    >
                         {{ item.descUnidadCompra }}
                     </option>
                 </select>
-                <span  [style.visibility]="form.get('idUnidadCompra')?.invalid && form.get('idUnidadCompra')?.touched ? 'visible' : 'hidden'" class="texto-error">
+                <span
+                    [style.visibility]="
+                        form.get('idUnidadCompra')?.invalid &&
+                        form.get('idUnidadCompra')?.touched
+                            ? 'visible'
+                            : 'hidden'
+                    "
+                    class="texto-error"
+                >
                     La unidad de compra no puede estar vacía
                 </span>
             </div>
@@ -71,80 +173,171 @@
     <div [formGroup]="form" (ngSubmit)="cambioDatosFiltros()">
         <div class="row">
             <div class="col-md-4">
-                <div class="form-group form-row w-100"
-                    [class.field-error]="form.get('idInciso')?.invalid && form.get('idInciso')?.touched">
-                    <label for="idInciso_{{idControl}}" class="col-form-label col-12"
-                        [class.field-error]="form.get('idInciso')?.invalid && form.get('idInciso')?.touched">
-                        {{ requeridoInciso ? '* ' : '' }}Inciso
+                <div
+                    class="form-group form-row w-100"
+                    [class.field-error]="
+                        form.get('idInciso')?.invalid &&
+                        form.get('idInciso')?.touched
+                    "
+                >
+                    <label
+                        for="idInciso_{{ idControl }}"
+                        class="col-form-label col-12"
+                        [class.field-error]="
+                            form.get('idInciso')?.invalid &&
+                            form.get('idInciso')?.touched
+                        "
+                    >
+                        {{ requeridoInciso ? "* " : "" }}Inciso
                     </label>
 
-                    <select class="form-control col-12" id="idInciso_{{idControl}}" name="idInciso" formControlName="idInciso"
+                    <select
+                        class="form-control col-12"
+                        id="idInciso_{{ idControl }}"
+                        name="idInciso"
+                        formControlName="idInciso"
                         (change)="cambioInciso()"
-                        [class.is-invalid]="form.get('idInciso')?.invalid && form.get('idInciso')?.touched">
-                        <option value="" *ngIf="requeridoInciso == false">Todos los incisos</option>
-                        <option value="" *ngIf="requeridoInciso == true">Seleccione un inciso</option>
-                        <option *ngFor="let option of incisos" [value]="option.idInciso">
+                        [class.is-invalid]="
+                            form.get('idInciso')?.invalid &&
+                            form.get('idInciso')?.touched
+                        "
+                    >
+                        <option value="" *ngIf="requeridoInciso == false">
+                            Todos los incisos
+                        </option>
+                        <option value="" *ngIf="requeridoInciso == true">
+                            Seleccione un inciso
+                        </option>
+                        <option
+                            *ngFor="let option of incisos"
+                            [value]="option.idInciso"
+                        >
                             {{ option.idInciso }} - {{ option.descInciso }}
                         </option>
                     </select>
 
-                    <div *ngIf="form.get('idInciso')?.invalid && form.get('idInciso')?.touched" class="texto-error">
+                    <div
+                        *ngIf="
+                            form.get('idInciso')?.invalid &&
+                            form.get('idInciso')?.touched
+                        "
+                        class="texto-error"
+                    >
                         El inciso no puede estar vacío
                     </div>
                 </div>
-
             </div>
 
             <div class="col-md-4">
-                <div class="form-group form-row"
-                    [class.field-error]="form.get('idUnidadEjecutora')?.invalid && form.get('idUnidadEjecutora')?.touched">
-                    <label for="idUnidadEjecutora_{{idControl}}" class="col-form-label col-12"
-                        [class.field-error]="form.get('idUnidadEjecutora')?.invalid && form.get('idUnidadEjecutora')?.touched">
-                        {{ requeridoUE ? '* ' : '' }}Unidad ejecutora
+                <div
+                    class="form-group form-row"
+                    [class.field-error]="
+                        form.get('idUnidadEjecutora')?.invalid &&
+                        form.get('idUnidadEjecutora')?.touched
+                    "
+                >
+                    <label
+                        for="idUnidadEjecutora_{{ idControl }}"
+                        class="col-form-label col-12"
+                        [class.field-error]="
+                            form.get('idUnidadEjecutora')?.invalid &&
+                            form.get('idUnidadEjecutora')?.touched
+                        "
+                    >
+                        {{ requeridoUE ? "* " : "" }}Unidad ejecutora
                     </label>
 
-                    <select class="form-control col-12" id="idUnidadEjecutora_{{idControl}}" name="idUnidadEjecutora"
-                        formControlName="idUnidadEjecutora" (change)="cambioUE()"
-                        [class.is-invalid]="form.get('idUnidadEjecutora')?.invalid && form.get('idUnidadEjecutora')?.touched">
-                        <option value="" *ngIf="requeridoUE == false">Todas las unidades ejecutoras</option>
-                        <option value="" *ngIf="requeridoUE == true">Seleccione una unidad ejecutora</option>
-                        <option *ngFor="let item of unidadesEjecutoras" [value]="item.idUnidadEjecutora">
-                            {{ item.idUnidadEjecutora }} - {{ item.descUnidadEjecutora }}
+                    <select
+                        class="form-control col-12"
+                        id="idUnidadEjecutora_{{ idControl }}"
+                        name="idUnidadEjecutora"
+                        formControlName="idUnidadEjecutora"
+                        (change)="cambioUE()"
+                        [class.is-invalid]="
+                            form.get('idUnidadEjecutora')?.invalid &&
+                            form.get('idUnidadEjecutora')?.touched
+                        "
+                    >
+                        <option value="" *ngIf="requeridoUE == false">
+                            Todas las unidades ejecutoras
+                        </option>
+                        <option value="" *ngIf="requeridoUE == true">
+                            Seleccione una unidad ejecutora
+                        </option>
+                        <option
+                            *ngFor="let item of unidadesEjecutoras"
+                            [value]="item.idUnidadEjecutora"
+                        >
+                            {{ item.idUnidadEjecutora }} -
+                            {{ item.descUnidadEjecutora }}
                         </option>
                     </select>
 
-                    <div *ngIf="form.get('idUnidadEjecutora')?.invalid && form.get('idUnidadEjecutora')?.touched"
-                        class="texto-error">
+                    <div
+                        *ngIf="
+                            form.get('idUnidadEjecutora')?.invalid &&
+                            form.get('idUnidadEjecutora')?.touched
+                        "
+                        class="texto-error"
+                    >
                         La unidad ejecutora no puede estar vacía
                     </div>
                 </div>
-
             </div>
 
             <div class="col-md-4">
-                <div class="form-group form-row"
-                    [class.field-error]="form.get('idUnidadCompra')?.invalid && form.get('idUnidadCompra')?.touched">
-                    <label for="idUnidadCompra_{{idControl}}" class="col-form-label col-12"
-                        [class.field-error]="form.get('idUnidadCompra')?.invalid && form.get('idUnidadCompra')?.touched">
-                        {{ requeridoUC ? '* ' : '' }}Unidad de compra
+                <div
+                    class="form-group form-row"
+                    [class.field-error]="
+                        form.get('idUnidadCompra')?.invalid &&
+                        form.get('idUnidadCompra')?.touched
+                    "
+                >
+                    <label
+                        for="idUnidadCompra_{{ idControl }}"
+                        class="col-form-label col-12"
+                        [class.field-error]="
+                            form.get('idUnidadCompra')?.invalid &&
+                            form.get('idUnidadCompra')?.touched
+                        "
+                    >
+                        {{ requeridoUC ? "* " : "" }}Unidad de compra
                     </label>
 
-                    <select class="form-control col-12" id="idUnidadCompra_{{idControl}}" name="idUnidadCompra"
+                    <select
+                        class="form-control col-12"
+                        id="idUnidadCompra_{{ idControl }}"
+                        name="idUnidadCompra"
                         formControlName="idUnidadCompra"
-                        [class.is-invalid]="form.get('idUnidadCompra')?.invalid && form.get('idUnidadCompra')?.touched">
-                        <option value="" *ngIf="requeridoUC == false">Todas las unidades de compra</option>
-                        <option value="" *ngIf="requeridoUC == true">Seleccione una unidad de compra</option>
-                        <option *ngFor="let item of unidadesCompra" [value]="item.idUnidadCompra">
+                        [class.is-invalid]="
+                            form.get('idUnidadCompra')?.invalid &&
+                            form.get('idUnidadCompra')?.touched
+                        "
+                    >
+                        <option value="" *ngIf="requeridoUC == false">
+                            Todas las unidades de compra
+                        </option>
+                        <option value="" *ngIf="requeridoUC == true">
+                            Seleccione una unidad de compra
+                        </option>
+                        <option
+                            *ngFor="let item of unidadesCompra"
+                            [value]="item.idUnidadCompra"
+                        >
                             {{ item.descUnidadCompra }}
                         </option>
                     </select>
 
-                    <div *ngIf="form.get('idUnidadCompra')?.invalid && form.get('idUnidadCompra')?.touched"
-                        class="texto-error">
+                    <div
+                        *ngIf="
+                            form.get('idUnidadCompra')?.invalid &&
+                            form.get('idUnidadCompra')?.touched
+                        "
+                        class="texto-error"
+                    >
                         La unidad de compra no puede estar vacía
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

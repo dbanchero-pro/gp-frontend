@@ -1,75 +1,143 @@
 <div class="modal-header d-flex justify-content-between align-items-center">
-  <h1 class="modal-title mb-0" id="tituloPopup">{{titulo}}</h1>
-  <button type="button" aria-label="Cerrar" class="close" (click)="cerrarPopup()">&times;</button>
+    <h1 class="modal-title mb-0" id="tituloPopup">{{ titulo }}</h1>
+    <button
+        type="button"
+        aria-label="Cerrar"
+        class="close"
+        (click)="cerrarPopup()"
+    >
+        &times;
+    </button>
 </div>
 
-<div class="modal-body justify-content-center p-20" >
-  <div>
-    <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
-  </div>
-  <form [formGroup]="form" (submit)="guardar()" >
-   
-     <div class="Box Box--colorInfo" *ngIf="usuario">
-        <span class="subtitle mb-0"><strong>CI {{ usuario.id | formatoCi }}</strong> - {{ usuario.nombre }} </span>
+<div class="modal-body justify-content-center p-20">
+    <div>
+        <app-mensaje
+            [messages]="resultMsg"
+            [showMsg]="showMsg"
+            [typeMsg]="typeMsg"
+        ></app-mensaje>
     </div>
+    <form [formGroup]="form" (submit)="guardar()">
+        <div class="Box Box--colorInfo" *ngIf="usuario">
+            <span class="subtitle mb-0"
+                ><strong>CI {{ usuario.id | formatoCi }}</strong> -
+                {{ usuario.nombre }}
+            </span>
+        </div>
 
-    <div class="row" *ngIf="!usuario">
-      <div class="form-row col-12">
-        <div class="form-group col-md-5">
-            <app-input-documento #inputDocumento formControlName="nroDocumento" [esCedula]="true" [minLength]="7" [required]="true"
-                label="Cédula de identidad">
-            </app-input-documento>
+        <div class="row" *ngIf="!usuario">
+            <div class="form-row col-12">
+                <div class="form-group col-md-5">
+                    <app-input-documento
+                        #inputDocumento
+                        formControlName="nroDocumento"
+                        [esCedula]="true"
+                        [minLength]="7"
+                        [required]="true"
+                        label="Cédula de identidad"
+                    >
+                    </app-input-documento>
+                </div>
+                <div
+                    class="form-group col-md-3"
+                    style="margin-top: 2rem; margin-bottom: 0px"
+                >
+                    <button
+                        type="button"
+                        class="Button btn btn-primary buttonFilter"
+                        [disabled]="form.invalid"
+                        (click)="buscar()"
+                        [disabled]="buscando"
+                    >
+                        <em class="fa fa-search"></em>Buscar
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="form-group col-md-3" style="margin-top: 2rem; margin-bottom: 0px;">
-          <button type="button" class="Button btn btn-primary buttonFilter" [disabled]="form.invalid"
-            (click)="buscar()" [disabled]="buscando"><em class="fa fa-search"></em>Buscar</button>
-        </div>
-      </div>
-    </div>
 
-    <div class="row" *ngIf="submitText === 'Guardar'">
-      <div class="form-group form-row col-12 m-0 pb-0 pt-0" [class.field-error]="!alMenosUnRolSeleccionado() && intentoGuardar">
-        <label for="roles">* Roles</label>
-        <div class="d-flex justify-content-center w-100 col-12 Box">
-          <div class="form-check col-3">
-              <input type="checkbox" class="form-check-input" id="esEditorPrincipal"
-                  formControlName="esEditorPrincipal">
-              <label class="form-check-label" for="esEditorPrincipal">
-                  Editor principal
-              </label>
-          </div>
-          <div class="form-check col-2">
-              <input type="checkbox" class="form-check-input" id="esEditor"
-                  formControlName="esEditor">
-              <label class="form-check-label" for="esEditor">
-                  Editor
-              </label>
-          </div>
-          <div class="form-check col-2">
-              <input type="checkbox" class="form-check-input" id="esValidador"
-                  formControlName="esValidador">
-              <label class="form-check-label" for="esValidador">
-                  Validador
-              </label>
-          </div>
-          <div class="form-check col-2">
-              <input type="checkbox" class="form-check-input" id="esAprobador"
-                  formControlName="esAprobador">
-              <label class="form-check-label" for="esAprobador">
-                  Aprobador
-              </label>
-          </div>
+        <div class="row" *ngIf="submitText === 'Guardar'">
+            <div
+                class="form-group form-row col-12 m-0 pb-0 pt-0"
+                [class.field-error]="
+                    !alMenosUnRolSeleccionado() && intentoGuardar
+                "
+            >
+                <label for="roles">* Roles</label>
+                <div class="d-flex justify-content-center w-100 col-12 Box">
+                    <div class="form-check col-3">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="esEditorPrincipal"
+                            formControlName="esEditorPrincipal"
+                        />
+                        <label class="form-check-label" for="esEditorPrincipal">
+                            Editor principal
+                        </label>
+                    </div>
+                    <div class="form-check col-2">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="esEditor"
+                            formControlName="esEditor"
+                        />
+                        <label class="form-check-label" for="esEditor">
+                            Editor
+                        </label>
+                    </div>
+                    <div class="form-check col-2">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="esValidador"
+                            formControlName="esValidador"
+                        />
+                        <label class="form-check-label" for="esValidador">
+                            Validador
+                        </label>
+                    </div>
+                    <div class="form-check col-2">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="esAprobador"
+                            formControlName="esAprobador"
+                        />
+                        <label class="form-check-label" for="esAprobador">
+                            Aprobador
+                        </label>
+                    </div>
+                </div>
+                <span
+                    class="texto-error col-12"
+                    [style.visibility]="
+                        !alMenosUnRolSeleccionado() && intentoGuardar
+                            ? 'visible'
+                            : 'hidden'
+                    "
+                >
+                    Debe seleccionar al menos un rol
+                </span>
+            </div>
         </div>
-        <span class="texto-error col-12" [style.visibility]="!alMenosUnRolSeleccionado() && intentoGuardar ? 'visible' : 'hidden'">
-            Debe seleccionar al menos un rol
-        </span>
-      </div>
-    </div>
-    <div class="d-flex justify-content-end mt-3 pe-3">
-      <button type="submit" class="btn btn-primary" (click)="guardar()" [disabled]="deshabilitarGuardar" >
-        {{submitText}}
-      </button>
-      <button type="button" class="Button btn-link" (click)="cerrarPopup()">Cancelar</button>
-    </div>
-  </form>
+        <div class="d-flex justify-content-end mt-3 pe-3">
+            <button
+                type="submit"
+                class="btn btn-primary"
+                (click)="guardar()"
+                [disabled]="deshabilitarGuardar"
+            >
+                {{ submitText }}
+            </button>
+            <button
+                type="button"
+                class="Button btn-link"
+                (click)="cerrarPopup()"
+            >
+                Cancelar
+            </button>
+        </div>
+    </form>
 </div>

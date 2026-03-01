@@ -1,4 +1,9 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+    HttpEvent,
+    HttpHandler,
+    HttpInterceptor,
+    HttpRequest,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -7,22 +12,25 @@ import { ActualizarService } from '../services/common/actualizar.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(private readonly actualizar: ActualizarService) { }
+    constructor(private readonly actualizar: ActualizarService) {}
 
     intercept(
         request: HttpRequest<any>,
-        next: HttpHandler
+        next: HttpHandler,
     ): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
             tap({
                 error: (error: any) => {
                     const errorMessage: string | string[] =
                         ErrorInterceptor.procesarErrorMessage(error);
-                    if (this.actualizar.capturarErrores === undefined || this.actualizar.capturarErrores) {
+                    if (
+                        this.actualizar.capturarErrores === undefined ||
+                        this.actualizar.capturarErrores
+                    ) {
                         this.actualizar.mensajeError(errorMessage);
                     }
-                }
-            })
+                },
+            }),
         );
     }
 
@@ -48,21 +56,22 @@ export class ErrorInterceptor implements HttpInterceptor {
         return errorMessage;
     }
 
-    private static forzarRecargarPagina() { 
+    private static forzarRecargarPagina() {
         setTimeout(() => {
-           
-                if (window.location.href.includes("?")) {
-                    window.location.href += '&';
-                } else {
-                    window.location.href += '?';
-                }
-                if (window.location.href.includes('ts=')) {
-                    window.location.href = window.location.href.replace(/ts=\d+/, 'ts=' + new Date().getTime());
-                } else {
-                    window.location.href += 'ts=' + new Date().getTime();
-                }
-                window.location.reload();
-       
-        }, 2000);   
+            if (window.location.href.includes('?')) {
+                window.location.href += '&';
+            } else {
+                window.location.href += '?';
+            }
+            if (window.location.href.includes('ts=')) {
+                window.location.href = window.location.href.replace(
+                    /ts=\d+/,
+                    'ts=' + new Date().getTime(),
+                );
+            } else {
+                window.location.href += 'ts=' + new Date().getTime();
+            }
+            window.location.reload();
+        }, 2000);
     }
 }

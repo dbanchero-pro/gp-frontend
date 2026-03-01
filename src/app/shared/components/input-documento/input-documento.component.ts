@@ -1,49 +1,77 @@
-import { Component, ElementRef, EventEmitter, forwardRef, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { uuidv4 } from '../../utils/functions';import { CommonModule } from '@angular/common';import { RouterModule } from '@angular/router';import { AlertModule } from 'ngx-bootstrap/alert';import { BsDropdownModule } from 'ngx-bootstrap/dropdown';import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';import { ModalModule } from 'ngx-bootstrap/modal';import { PaginationModule } from 'ngx-bootstrap/pagination';import { TabsModule } from 'ngx-bootstrap/tabs';import { TooltipModule } from 'ngx-bootstrap/tooltip';import { TypeaheadModule } from 'ngx-bootstrap/typeahead';import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';import { NgxEditorModule } from 'ngx-editor';import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-
-
-
-
-
-
-
-
-
-
-
-
-
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    forwardRef,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+    ViewChild,
+} from '@angular/core';
+import {
+    AbstractControl,
+    ControlValueAccessor,
+    NG_VALIDATORS,
+    NG_VALUE_ACCESSOR,
+    ValidationErrors,
+    Validator,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
+import { uuidv4 } from '../../utils/functions';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';
+import { NgxEditorModule } from 'ngx-editor';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 @Component({
     selector: 'app-input-documento',
     templateUrl: './input-documento.component.html',
     styleUrls: ['./input-documento.component.scss'],
     providers: [
-        { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => InputDocumentoComponent), multi: true },
-        { provide: NG_VALIDATORS, useExisting: forwardRef(() => InputDocumentoComponent), multi: true }
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => InputDocumentoComponent),
+            multi: true,
+        },
+        {
+            provide: NG_VALIDATORS,
+            useExisting: forwardRef(() => InputDocumentoComponent),
+            multi: true,
+        },
     ],
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
-    AlertModule,
-    BsDropdownModule,
-    BsDatepickerModule,
-    ModalModule,
-    PaginationModule,
-    TabsModule,
-    TooltipModule,
-    TypeaheadModule,
-    NgxDaterangepickerBootstrapModule,
-    NgxEditorModule,
-    NgxDatatableModule
-  ],
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule,
+        AlertModule,
+        BsDropdownModule,
+        BsDatepickerModule,
+        ModalModule,
+        PaginationModule,
+        TabsModule,
+        TooltipModule,
+        TypeaheadModule,
+        NgxDaterangepickerBootstrapModule,
+        NgxEditorModule,
+        NgxDatatableModule,
+    ],
 })
-export class InputDocumentoComponent implements ControlValueAccessor, Validator, OnChanges {
-
+export class InputDocumentoComponent
+    implements ControlValueAccessor, Validator, OnChanges
+{
     @Input() placeholder = '';
     @Input() esCedula = false;
     @Input() required = false;
@@ -51,12 +79,17 @@ export class InputDocumentoComponent implements ControlValueAccessor, Validator,
     @Input() label = 'Cédula de identidad';
     @Input() id = 'nroDocumento' + uuidv4();
     @Output() enter = new EventEmitter<string>();
-    @ViewChild('input', { static: true }) inputRef!: ElementRef<HTMLInputElement>;
+    @ViewChild('input', { static: true })
+    inputRef!: ElementRef<HTMLInputElement>;
     @Output() blur = new EventEmitter<void>();
 
     ngOnChanges(changes: SimpleChanges): void {
         // Si cambia esCedula y el componente ya se cambio
-        if (changes['esCedula'] && !changes['esCedula'].firstChange && this.touched) {
+        if (
+            changes['esCedula'] &&
+            !changes['esCedula'].firstChange &&
+            this.touched
+        ) {
             this.validateInput();
             this.onValidatorChange();
 
@@ -71,9 +104,9 @@ export class InputDocumentoComponent implements ControlValueAccessor, Validator,
     errorMessage = '';
 
     private _value = '';
-    private onChange: (v: any) => void = () => { };
-    private onTouched: () => void = () => { };
-    private onValidatorChange: () => void = () => { };
+    private onChange: (v: any) => void = () => {};
+    private onTouched: () => void = () => {};
+    private onValidatorChange: () => void = () => {};
     // regex para validación de formato
     private readonly pattern = /^(?:\d\.\d{3}\.\d{3}-\d|\d{3}\.\d{3}-\d)$/;
 
@@ -110,11 +143,20 @@ export class InputDocumentoComponent implements ControlValueAccessor, Validator,
         if (this.touched) {
             if (this.required && !this._value) {
                 this.invalid = true;
-                this.errorMessage = 'La cédula de identidad no puede estar vacía';
-            } else if (this.esCedula && this._value && this._value.replace(/\D+/g, '').length < this.minLength) {
+                this.errorMessage =
+                    'La cédula de identidad no puede estar vacía';
+            } else if (
+                this.esCedula &&
+                this._value &&
+                this._value.replace(/\D+/g, '').length < this.minLength
+            ) {
                 this.invalid = true;
                 this.errorMessage = `El formato de la cédula es inválido`;
-            } else if (this.esCedula && this._value && !this.pattern.test(this.formatearValor(this._value))) {
+            } else if (
+                this.esCedula &&
+                this._value &&
+                !this.pattern.test(this.formatearValor(this._value))
+            ) {
                 this.invalid = true;
                 this.errorMessage = 'El formato de la cédula es incorrecto';
             }
@@ -158,17 +200,25 @@ export class InputDocumentoComponent implements ControlValueAccessor, Validator,
             this.onBlur();
             this.enter.emit(this._value);
         }
-    } formatearValor(valor: string): string {
+    }
+    formatearValor(valor: string): string {
         if (this.esCedula) {
             let digits = valor.replace(/\D+/g, '');
             if (digits.length > 8) {
                 digits = digits.slice(0, 8);
             }
             let formatted = digits;
-            if (digits.length === 4 || digits.length === 5 || digits.length === 6) {
+            if (
+                digits.length === 4 ||
+                digits.length === 5 ||
+                digits.length === 6
+            ) {
                 formatted = digits.replace(/^(\d{1,3})(\d{3})$/, '$1.$2');
             } else if (digits.length === 8) {
-                formatted = digits.replace(/^(\d)(\d{3})(\d{3})(\d)$/, '$1.$2.$3-$4');
+                formatted = digits.replace(
+                    /^(\d)(\d{3})(\d{3})(\d)$/,
+                    '$1.$2.$3-$4',
+                );
             } else if (digits.length === 7) {
                 formatted = digits.replace(/^(\d{3})(\d{3})(\d)$/, '$1.$2-$3');
             }
@@ -183,12 +233,21 @@ export class InputDocumentoComponent implements ControlValueAccessor, Validator,
         }
 
         if (this.esCedula && control.value) {
-            const digitsLength = control.value.toString().replace(/\D+/g, '').length;
+            const digitsLength = control.value
+                .toString()
+                .replace(/\D+/g, '').length;
             if (digitsLength < this.minLength) {
-                return { minlength: { requiredLength: this.minLength, actualLength: digitsLength } };
+                return {
+                    minlength: {
+                        requiredLength: this.minLength,
+                        actualLength: digitsLength,
+                    },
+                };
             }
 
-            return this.pattern.test(this.formatearValor(control.value)) ? null : { pattern: true };
+            return this.pattern.test(this.formatearValor(control.value))
+                ? null
+                : { pattern: true };
         } else {
             return null;
         }
@@ -202,6 +261,3 @@ export class InputDocumentoComponent implements ControlValueAccessor, Validator,
         this.inputRef.nativeElement.value = val;
     }
 }
-
-
-

@@ -1,5 +1,4 @@
-
 export interface UsuarioAsignadoPliegoDTO {
-  rol: string;
-  nombre: string;
+    rol: string;
+    nombre: string;
 }

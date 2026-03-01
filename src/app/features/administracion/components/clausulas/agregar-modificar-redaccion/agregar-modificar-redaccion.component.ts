@@ -1,249 +1,310 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormularioBaseComponent } from '../../../../../shared/components/base/formulario-base.component';
 import { FechaPipe } from '../../../../../shared/pipes/fecha.pipe';
 import { SnapshotGenericService } from '../../../../../shared/services/common/snapshot-generic.service';
-import { RedaccionDTO } from 'src/app/shared/models/pliego/clausula/redaccion.model';import { SharedModule } from 'src/app/shared/shared.module';
-
+import { RedaccionDTO } from 'src/app/shared/models/pliego/clausula/redaccion.model';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
-  selector: 'app-agregar-modificar-redaccion',
-  templateUrl: './agregar-modificar-redaccion.component.html',
-  styleUrls: ['./agregar-modificar-redaccion.component.scss'],
-  standalone: true,
-  imports: [
-    SharedModule,
-  ],
+    selector: 'app-agregar-modificar-redaccion',
+    templateUrl: './agregar-modificar-redaccion.component.html',
+    styleUrls: ['./agregar-modificar-redaccion.component.scss'],
+    standalone: true,
+    imports: [SharedModule],
 })
-export class AgregarModificarRedaccionComponent extends FormularioBaseComponent implements OnInit {
-  private readonly fb = inject(FormBuilder);
-  private readonly fechaPipe = inject(FechaPipe);
-  private readonly route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
-  private readonly location = inject(Location);
-  private readonly snapshotService = inject(SnapshotGenericService);
+export class AgregarModificarRedaccionComponent
+    extends FormularioBaseComponent
+    implements OnInit
+{
+    private readonly fb = inject(FormBuilder);
+    private readonly fechaPipe = inject(FechaPipe);
+    private readonly route = inject(ActivatedRoute);
+    private readonly router = inject(Router);
+    private readonly location = inject(Location);
+    private readonly snapshotService = inject(SnapshotGenericService);
 
-  clausulaInfo: any;
-  redaccion?: RedaccionDTO;
-  redaccionesExistentes: RedaccionDTO[] = [];
-  modoIngreso = true;
-  colapsado = true;
-  idClausula?: number;
-  idRedaccion?: number;
-  titulo: string = 'Agregar redacción';
+    clausulaInfo: any;
+    redaccion?: RedaccionDTO;
+    redaccionesExistentes: RedaccionDTO[] = [];
+    modoIngreso = true;
+    colapsado = true;
+    idClausula?: number;
+    idRedaccion?: number;
+    titulo: string = 'Agregar redacción';
 
-  override form!: FormGroup<{
-    prioridad: FormControl<number | null>;
-    redaccion: FormControl<string>;
-  }>;
+    override form!: FormGroup<{
+        prioridad: FormControl<number | null>;
+        redaccion: FormControl<string>;
+    }>;
 
-  ngOnInit(): void {
-    this.idClausula = Number(this.route.snapshot.paramMap.get('idClausula'));
-    const idRedaccionParam = this.route.snapshot.paramMap.get('idRedaccion');
-    this.idRedaccion = idRedaccionParam ? Number(idRedaccionParam) : undefined;
+    ngOnInit(): void {
+        this.idClausula = Number(
+            this.route.snapshot.paramMap.get('idClausula'),
+        );
+        const idRedaccionParam =
+            this.route.snapshot.paramMap.get('idRedaccion');
+        this.idRedaccion = idRedaccionParam
+            ? Number(idRedaccionParam)
+            : undefined;
 
-    this.modoIngreso = !this.idRedaccion;
+        this.modoIngreso = !this.idRedaccion;
 
-    console.log('Inicializando redacción - Modo:', this.modoIngreso ? 'INGRESO' : 'MODIFICACIÓN');
-    console.log('ID Cláusula:', this.idClausula);
-    console.log('ID Redacción:', this.idRedaccion, 'Tipo:', typeof this.idRedaccion);
+        console.log(
+            'Inicializando redacción - Modo:',
+            this.modoIngreso ? 'INGRESO' : 'MODIFICACIÓN',
+        );
+        console.log('ID Cláusula:', this.idClausula);
+        console.log(
+            'ID Redacción:',
+            this.idRedaccion,
+            'Tipo:',
+            typeof this.idRedaccion,
+        );
 
-    this.cargarDatosTemporales();
-    this.inicializarFormulario();
+        this.cargarDatosTemporales();
+        this.inicializarFormulario();
 
-    if (!this.modoIngreso)
-      this.titulo = 'Modificar redacción';
+        if (!this.modoIngreso) this.titulo = 'Modificar redacción';
 
-    console.log('Redacción cargada:', this.redaccion);
-    console.log('Valores del formulario - Prioridad:', this.form.value.prioridad, 'Redacción length:', this.form.value.redaccion?.length);
+        console.log('Redacción cargada:', this.redaccion);
+        console.log(
+            'Valores del formulario - Prioridad:',
+            this.form.value.prioridad,
+            'Redacción length:',
+            this.form.value.redaccion?.length,
+        );
 
-    this.route.queryParams.subscribe(params => {
-      const etiquetaCopiada = params['etiquetaCopiada'];
+        this.route.queryParams.subscribe((params) => {
+            const etiquetaCopiada = params['etiquetaCopiada'];
 
-      if (etiquetaCopiada) {
-        setTimeout(() => {
-          this.actualizarService.mensajeCorrecto(`Campo copiado: [[${etiquetaCopiada}]]`);
-          this.limpiarQueryParams();
-        }, 300);
-      } 
-    });
-  }
+            if (etiquetaCopiada) {
+                setTimeout(() => {
+                    this.actualizarService.mensajeCorrecto(
+                        `Campo copiado: [[${etiquetaCopiada}]]`,
+                    );
+                    this.limpiarQueryParams();
+                }, 300);
+            }
+        });
+    }
 
-  private cargarDatosTemporales(): void {
-    const datos = this.snapshotService.load<any>('clausula_temporal');
+    private cargarDatosTemporales(): void {
+        const datos = this.snapshotService.load<any>('clausula_temporal');
 
-    if (datos) {
-      this.clausulaInfo = datos.clausulaInfo;
-      this.redaccionesExistentes = datos.redacciones || [];
+        if (datos) {
+            this.clausulaInfo = datos.clausulaInfo;
+            this.redaccionesExistentes = datos.redacciones || [];
 
-      if (this.idRedaccion) {
-        this.redaccion = this.redaccionesExistentes.find(r => Number(r.id) === Number(this.idRedaccion));
+            if (this.idRedaccion) {
+                this.redaccion = this.redaccionesExistentes.find(
+                    (r) => Number(r.id) === Number(this.idRedaccion),
+                );
 
-        if (!this.redaccion) {
-          console.error('No se encontró la redacción con ID:', this.idRedaccion);
-          console.log('Redacciones disponibles:', this.redaccionesExistentes.map(r => ({ id: r.id, prioridad: r.prioridad })));
+                if (!this.redaccion) {
+                    console.error(
+                        'No se encontró la redacción con ID:',
+                        this.idRedaccion,
+                    );
+                    console.log(
+                        'Redacciones disponibles:',
+                        this.redaccionesExistentes.map((r) => ({
+                            id: r.id,
+                            prioridad: r.prioridad,
+                        })),
+                    );
+                }
+            }
         }
-      }
-    }
-  }
-
-  private inicializarFormulario(): void {
-    this.form = this.fb.nonNullable.group({
-      prioridad: this.fb.control<number | null>(
-        this.redaccion?.prioridad || null,
-        [Validators.required, Validators.min(1)]
-      ),
-      redaccion: this.fb.nonNullable.control<string>(
-        this.redaccion?.redaccion || '',
-        Validators.required
-      )
-    });
-  }
-
-  aceptar(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      this.actualizarService.mensajeError('Por favor complete todos los campos obligatorios');
-      return;
     }
 
-    const prioridad = this.form.value.prioridad;
-
-    const yaExiste = this.redaccionesExistentes.some(r =>
-      r.prioridad === prioridad && Number(r.id) !== Number(this.idRedaccion)
-    );
-
-    if (yaExiste) {
-      this.actualizarService.mensajeError('Ya existe una redacción con esta prioridad');
-      return;
+    private inicializarFormulario(): void {
+        this.form = this.fb.nonNullable.group({
+            prioridad: this.fb.control<number | null>(
+                this.redaccion?.prioridad || null,
+                [Validators.required, Validators.min(1)],
+            ),
+            redaccion: this.fb.nonNullable.control<string>(
+                this.redaccion?.redaccion || '',
+                Validators.required,
+            ),
+        });
     }
 
-    const redaccionNueva: RedaccionDTO = {
-      id: this.idRedaccion,
-      prioridad: prioridad!,
-      redaccion: this.form.value.redaccion!
-    };
-
-    const datos = this.snapshotService.load<any>('clausula_temporal');
-    if (datos) {
-      if (this.modoIngreso) {
-        datos.redacciones = datos.redacciones || [];
-        redaccionNueva.id = this.obtenerNuevoId(datos.redacciones);
-        datos.redacciones.push(redaccionNueva);
-      } else {
-        const index = datos.redacciones.findIndex((r: RedaccionDTO) => Number(r.id) === Number(this.idRedaccion));
-        if (index > -1) {
-          datos.redacciones[index] = redaccionNueva;
-        } else {
-          console.error('No se pudo encontrar la redacción para actualizar. ID:', this.idRedaccion);
-        }
-      }
-
-      this.snapshotService.save('clausula_temporal', datos);
-    }
-
-    this.form.markAsPristine();
-    this.volver();
-  }
-
-  private obtenerNuevoId(redacciones: RedaccionDTO[]): number {
-    if (!redacciones || redacciones.length === 0) {
-      return 1;
-    }
-    const maxId = Math.max(...redacciones.map(r => r.id || 0));
-    return maxId + 1;
-  }
-
-  volver(): void {
-    this.location.back();
-  }
-
-  private limpiarQueryParams(): void {
-    if (this.idClausula && this.idRedaccion) {
-      const ruta = this.modoIngreso
-        ? ['/administracion/clausulas/agregar/redaccion/modificar', this.idRedaccion]
-        : ['/administracion/clausulas/modificar', this.idClausula, 'redaccion/modificar', this.idRedaccion];
-
-      this.router.navigate(ruta, {
-        replaceUrl: true
-      });
-    }
-  }
-
-  canDeactivate(): boolean {
-    return !this.form.dirty;
-  }
-
-  obtenerResumenTiposCompra(): string {
-    if (!this.clausulaInfo?.tiposCompra || this.clausulaInfo.tiposCompra.length === 0) {
-      return 'No especificados';
-    }
-
-    return this.clausulaInfo.tiposCompra
-      .map((tc: any) => {
-        const tipo = tc.tipoCompra?.descTipoCompra || '';
-        const subtipo = tc.subtipoCompra?.descSubtipoCompra || 'Todos los subtipos';
-        return tipo ? `${tipo} | ${subtipo}` : '';
-      })
-      .filter((texto: string) => texto.length > 0)
-      .join(' • ');
-  }
-
-  obtenerResumenObjetosCompra(): string {
-    if (!this.clausulaInfo?.objetosCompra || this.clausulaInfo.objetosCompra.length === 0) {
-      return 'No especificados';
-    }
-
-    return this.clausulaInfo.objetosCompra
-      .map((oc: any) => {
-        const partes: string[] = [];
-        if (oc.familia?.descFamilia) partes.push(oc.familia.descFamilia);
-        if (oc.subfamilia?.descSubfamilia) partes.push(oc.subfamilia.descSubfamilia);
-        if (oc.clase?.descClase) partes.push(oc.clase.descClase);
-        if (oc.subclase?.descSubclase) partes.push(oc.subclase.descSubclase);
-
-        let resultado = partes.join(' | ');
-
-        if (oc.articulo?.descArticuloServObra) {
-          resultado += ` | ${oc.articulo.descArticuloServObra}`;
+    aceptar(): void {
+        if (this.form.invalid) {
+            this.form.markAllAsTouched();
+            this.actualizarService.mensajeError(
+                'Por favor complete todos los campos obligatorios',
+            );
+            return;
         }
 
-        return resultado;
-      })
-      .filter((texto: string) => texto.length > 0)
-      .join(' • ');
-  }
+        const prioridad = this.form.value.prioridad;
 
-  obtenerTextoVigencia(): string {
-    const desde = this.clausulaInfo?.fechaVigenciaDesde
-      ? this.fechaPipe.transform(this.clausulaInfo.fechaVigenciaDesde)
-      : '';
-    const hasta = this.clausulaInfo?.fechaVigenciaHasta
-      ? this.fechaPipe.transform(this.clausulaInfo.fechaVigenciaHasta)
-      : '';
-    return `${desde} - ${hasta}`;
-  }
+        const yaExiste = this.redaccionesExistentes.some(
+            (r) =>
+                r.prioridad === prioridad &&
+                Number(r.id) !== Number(this.idRedaccion),
+        );
 
-  toggleColapsado(): void {
-    this.colapsado = !this.colapsado;
-  }
-
-  navegarACamposDinamicos(): void {
-    navigator.clipboard.writeText('');
-    if (this.idClausula && this.idRedaccion) {
-      this.router.navigate(
-        ['/administracion/campos-reglas'],
-        {
-          queryParams: {
-            idClausula: this.idClausula,
-            idRedaccion: this.idRedaccion
-          }
+        if (yaExiste) {
+            this.actualizarService.mensajeError(
+                'Ya existe una redacción con esta prioridad',
+            );
+            return;
         }
-      );
+
+        const redaccionNueva: RedaccionDTO = {
+            id: this.idRedaccion,
+            prioridad: prioridad!,
+            redaccion: this.form.value.redaccion!,
+        };
+
+        const datos = this.snapshotService.load<any>('clausula_temporal');
+        if (datos) {
+            if (this.modoIngreso) {
+                datos.redacciones = datos.redacciones || [];
+                redaccionNueva.id = this.obtenerNuevoId(datos.redacciones);
+                datos.redacciones.push(redaccionNueva);
+            } else {
+                const index = datos.redacciones.findIndex(
+                    (r: RedaccionDTO) =>
+                        Number(r.id) === Number(this.idRedaccion),
+                );
+                if (index > -1) {
+                    datos.redacciones[index] = redaccionNueva;
+                } else {
+                    console.error(
+                        'No se pudo encontrar la redacción para actualizar. ID:',
+                        this.idRedaccion,
+                    );
+                }
+            }
+
+            this.snapshotService.save('clausula_temporal', datos);
+        }
+
+        this.form.markAsPristine();
+        this.volver();
     }
-  }
+
+    private obtenerNuevoId(redacciones: RedaccionDTO[]): number {
+        if (!redacciones || redacciones.length === 0) {
+            return 1;
+        }
+        const maxId = Math.max(...redacciones.map((r) => r.id || 0));
+        return maxId + 1;
+    }
+
+    volver(): void {
+        this.location.back();
+    }
+
+    private limpiarQueryParams(): void {
+        if (this.idClausula && this.idRedaccion) {
+            const ruta = this.modoIngreso
+                ? [
+                      '/administracion/clausulas/agregar/redaccion/modificar',
+                      this.idRedaccion,
+                  ]
+                : [
+                      '/administracion/clausulas/modificar',
+                      this.idClausula,
+                      'redaccion/modificar',
+                      this.idRedaccion,
+                  ];
+
+            this.router.navigate(ruta, {
+                replaceUrl: true,
+            });
+        }
+    }
+
+    canDeactivate(): boolean {
+        return !this.form.dirty;
+    }
+
+    obtenerResumenTiposCompra(): string {
+        if (
+            !this.clausulaInfo?.tiposCompra ||
+            this.clausulaInfo.tiposCompra.length === 0
+        ) {
+            return 'No especificados';
+        }
+
+        return this.clausulaInfo.tiposCompra
+            .map((tc: any) => {
+                const tipo = tc.tipoCompra?.descTipoCompra || '';
+                const subtipo =
+                    tc.subtipoCompra?.descSubtipoCompra || 'Todos los subtipos';
+                return tipo ? `${tipo} | ${subtipo}` : '';
+            })
+            .filter((texto: string) => texto.length > 0)
+            .join(' • ');
+    }
+
+    obtenerResumenObjetosCompra(): string {
+        if (
+            !this.clausulaInfo?.objetosCompra ||
+            this.clausulaInfo.objetosCompra.length === 0
+        ) {
+            return 'No especificados';
+        }
+
+        return this.clausulaInfo.objetosCompra
+            .map((oc: any) => {
+                const partes: string[] = [];
+                if (oc.familia?.descFamilia)
+                    partes.push(oc.familia.descFamilia);
+                if (oc.subfamilia?.descSubfamilia)
+                    partes.push(oc.subfamilia.descSubfamilia);
+                if (oc.clase?.descClase) partes.push(oc.clase.descClase);
+                if (oc.subclase?.descSubclase)
+                    partes.push(oc.subclase.descSubclase);
+
+                let resultado = partes.join(' | ');
+
+                if (oc.articulo?.descArticuloServObra) {
+                    resultado += ` | ${oc.articulo.descArticuloServObra}`;
+                }
+
+                return resultado;
+            })
+            .filter((texto: string) => texto.length > 0)
+            .join(' • ');
+    }
+
+    obtenerTextoVigencia(): string {
+        const desde = this.clausulaInfo?.fechaVigenciaDesde
+            ? this.fechaPipe.transform(this.clausulaInfo.fechaVigenciaDesde)
+            : '';
+        const hasta = this.clausulaInfo?.fechaVigenciaHasta
+            ? this.fechaPipe.transform(this.clausulaInfo.fechaVigenciaHasta)
+            : '';
+        return `${desde} - ${hasta}`;
+    }
+
+    toggleColapsado(): void {
+        this.colapsado = !this.colapsado;
+    }
+
+    navegarACamposDinamicos(): void {
+        navigator.clipboard.writeText('');
+        if (this.idClausula && this.idRedaccion) {
+            this.router.navigate(['/administracion/campos-reglas'], {
+                queryParams: {
+                    idClausula: this.idClausula,
+                    idRedaccion: this.idRedaccion,
+                },
+            });
+        }
+    }
 }
-
-

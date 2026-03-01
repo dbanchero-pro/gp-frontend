@@ -1,5 +1,5 @@
-import { ProveedorDTO } from "../proveedor/proveedor.model";
-import { IUnidadCompraDTO } from "../sice/unidad-compra.model";
+import { ProveedorDTO } from '../proveedor/proveedor.model';
+import { IUnidadCompraDTO } from '../sice/unidad-compra.model';
 
 export interface IUsuarioInfoDTO {
     nombre?: string;
@@ -10,5 +10,11 @@ export interface IUsuarioInfoDTO {
 }
 
 export class UsuarioInfoDTO implements IUsuarioInfoDTO {
-    constructor(public nombre?: string, public usuario?: string, public permisos?: string[], public unidadesCompra?: IUnidadCompraDTO[], public proveedores?: ProveedorDTO[]) { }
+    constructor(
+        public nombre?: string,
+        public usuario?: string,
+        public permisos?: string[],
+        public unidadesCompra?: IUnidadCompraDTO[],
+        public proveedores?: ProveedorDTO[],
+    ) {}
 }

@@ -1,6 +1,5 @@
-import { OperadorRegla } from "../enums/operador-regla.enum";
-import { TipoRegla } from "../enums/tipo-regla.enum";
-
+import { OperadorRegla } from '../enums/operador-regla.enum';
+import { TipoRegla } from '../enums/tipo-regla.enum';
 
 export interface IReglaDTO {
     id?: number;
@@ -24,6 +23,6 @@ export class ReglaDTO implements IReglaDTO {
         public valor?: any,
         public idCampoComparar?: number,
         public etiquetaCampoComparar?: string,
-        public mensajeError?: string
+        public mensajeError?: string,
     ) {}
 }

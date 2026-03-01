@@ -5,6 +5,9 @@ export interface IFamiliaDTO {
 }
 
 export class FamiliaDTO implements IFamiliaDTO {
-    constructor(public id?: number, public codFamilia?: string, public descFamilia?: string) {
-    }
+    constructor(
+        public id?: number,
+        public codFamilia?: string,
+        public descFamilia?: string,
+    ) {}
 }

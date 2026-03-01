@@ -1,4 +1,4 @@
-import { ClaseDTO } from "./clase.model";
+import { ClaseDTO } from './clase.model';
 
 export interface ICbsoDTO {
     id?: number;
@@ -11,8 +11,14 @@ export interface ICbsoDTO {
 }
 
 export class CbsoDTO implements ICbsoDTO {
-    constructor(public id?: number, public familia?: number | string, public subfamilia?: number | string,
-        public claseId?: number | string, public subclaseId?: number | string, public obligatorio?: boolean,
-        public anioDesde?: number, public clase?: ClaseDTO) {
-    }
+    constructor(
+        public id?: number,
+        public familia?: number | string,
+        public subfamilia?: number | string,
+        public claseId?: number | string,
+        public subclaseId?: number | string,
+        public obligatorio?: boolean,
+        public anioDesde?: number,
+        public clase?: ClaseDTO,
+    ) {}
 }

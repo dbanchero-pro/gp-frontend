@@ -1,5 +1,5 @@
 export const environment: any = {
     production: true,
-    nombre: "",
+    nombre: '',
     pageSize: 10,
 };

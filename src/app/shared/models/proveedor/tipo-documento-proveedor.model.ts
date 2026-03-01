@@ -7,5 +7,5 @@ export class TipoDocumentoProveedorDTO implements ITipoDocumentoProveedorDTO {
     constructor(
         public tipoDocumento?: string,
         public descripcion?: string,
-    ) { }
+    ) {}
 }

@@ -13,13 +13,9 @@ describe('FilterComponent', () => {
             // componentes
             declarations: [],
             // modulos
-            imports: [
-              FiltroComponent,
-            ],
+            imports: [FiltroComponent],
             // servicios
-            providers: [
-                provideHttpClientTesting(),
-                provideRouter([]),],
+            providers: [provideHttpClientTesting(), provideRouter([])],
             teardown: { destroyAfterEach: false },
         }).compileComponents();
     });

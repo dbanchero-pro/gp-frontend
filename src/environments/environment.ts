@@ -4,7 +4,7 @@
 
 export const environment: any = {
     production: false,
-    nombre: "",
+    nombre: '',
     pageSize: 10,
 };
 

@@ -1,4 +1,4 @@
-import { FamiliaDTO } from "./familia.model";
+import { FamiliaDTO } from './familia.model';
 
 export interface ISubfamiliaDTO {
     id?: number;
@@ -9,7 +9,11 @@ export interface ISubfamiliaDTO {
 }
 
 export class SubfamiliaDTO implements ISubfamiliaDTO {
-    constructor(public id?: number, public codSubfamilia?: string, public descSubfamilia?: string,
-        public familiaId?: string, public familia?: FamiliaDTO) {
-    }
+    constructor(
+        public id?: number,
+        public codSubfamilia?: string,
+        public descSubfamilia?: string,
+        public familiaId?: string,
+        public familia?: FamiliaDTO,
+    ) {}
 }

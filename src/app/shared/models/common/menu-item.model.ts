@@ -1,5 +1,3 @@
-
-
 export interface IMenuItem {
     nombre: string;
     titulo?: string;
@@ -22,6 +20,5 @@ export class MenuItem implements IMenuItem {
         public items?: IMenuItem[],
         public visible?: boolean,
         public padre?: IMenuItem,
-    ) {
-    }
+    ) {}
 }

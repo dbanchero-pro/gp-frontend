@@ -43,13 +43,12 @@ describe('ConsultaUsuariosConformidadCompraComponent', () => {
             'confirmar',
             'mensajeCorrecto',
         ]);
-        router = { navigate: jasmine.createSpy('navigate')};
+        router = { navigate: jasmine.createSpy('navigate') };
         const paramMap = { get: () => null };
         route = { paramMap: of(paramMap), queryParamMap: {} };
-        usuarioService = jasmine.createSpyObj(
-            'UsuarioService',
-            ['obtenerUsuarioPorId'],
-        );
+        usuarioService = jasmine.createSpyObj('UsuarioService', [
+            'obtenerUsuarioPorId',
+        ]);
         tipoCompraService = jasmine.createSpyObj('TipoCompraService', [
             'obtenerTiposCompraSinPaginado',
         ]);
@@ -59,7 +58,7 @@ describe('ConsultaUsuariosConformidadCompraComponent', () => {
         ]);
         usuarioOrganismoPerfilService = jasmine.createSpyObj(
             'UsuarioOrganismoPerfilService',
-            ['agregarConformidadPorCompra', 'agregarConformidadPorItem']
+            ['agregarConformidadPorCompra', 'agregarConformidadPorItem'],
         );
         snapshotSrv = jasmine.createSpyObj('SnapshotGenericService', [
             'save',
@@ -70,14 +69,14 @@ describe('ConsultaUsuariosConformidadCompraComponent', () => {
         await TestBed.configureTestingModule({
             declarations: [],
             imports: [
-              ReactiveFormsModule,
-              NgxEditorModule.forRoot(),
-              ConsultaUsuariosConformidadCompraComponent,
-              FiltroComponent,
-              FiltroOrganismoComponent,
-              FiltroItemsArticulosComponent,
-              PaginadoComponent,
-              CabezalConsultaComponent,
+                ReactiveFormsModule,
+                NgxEditorModule.forRoot(),
+                ConsultaUsuariosConformidadCompraComponent,
+                FiltroComponent,
+                FiltroOrganismoComponent,
+                FiltroItemsArticulosComponent,
+                PaginadoComponent,
+                CabezalConsultaComponent,
             ],
             providers: [
                 provideHttpClientTesting(),
@@ -110,12 +109,18 @@ describe('ConsultaUsuariosConformidadCompraComponent', () => {
                     useValue: usuarioOrganismoPerfilService,
                 },
                 { provide: SnapshotGenericService, useValue: snapshotSrv },
-                { provide: Location, useValue: { path: () => '/p?volver=1', replaceState: jasmine.createSpy('replaceState') } },
+                {
+                    provide: Location,
+                    useValue: {
+                        path: () => '/p?volver=1',
+                        replaceState: jasmine.createSpy('replaceState'),
+                    },
+                },
             ],
         }).compileComponents();
 
         fixture = TestBed.createComponent(
-            ConsultaUsuariosConformidadCompraComponent
+            ConsultaUsuariosConformidadCompraComponent,
         );
         component = fixture.componentInstance;
     });
@@ -158,7 +163,7 @@ describe('ConsultaUsuariosConformidadCompraComponent', () => {
         component.volver();
         expect(router.navigate).toHaveBeenCalledWith(
             ['/administracion/gestion-usuarios/consulta-usuario-conformidad'],
-            { queryParams: { volver: '1' } }
+            { queryParams: { volver: '1' } },
         );
     });
 
@@ -180,7 +185,7 @@ describe('ConsultaUsuariosConformidadCompraComponent', () => {
                 nroDocumento: '12345678',
                 pais: {},
                 tipoDocumento: {},
-            })
+            }),
         );
         component.obtenerUsuario('123123');
         setTimeout(() => {
@@ -191,7 +196,7 @@ describe('ConsultaUsuariosConformidadCompraComponent', () => {
 
     it('cargarTiposCompra llena lista', () => {
         tipoCompraService.obtenerTiposCompraSinPaginado.and.returnValue(
-            of([{ id: 1 }])
+            of([{ id: 1 }]),
         );
         component.cargarTiposCompra();
         expect(component.tiposCompra.length).toBe(1);
@@ -201,14 +206,14 @@ describe('ConsultaUsuariosConformidadCompraComponent', () => {
         const compra = { idCompra: 5 } as any;
         component.usuario = { id: 10 } as any;
         actualizarService.confirmar.and.callFake((msg: string, cb: Function) =>
-            cb()
+            cb(),
         );
         usuarioOrganismoPerfilService.agregarConformidadPorCompra.and.returnValue(
-            of({})
+            of({}),
         );
         component.agregarPermisoPorCompra(compra);
         expect(
-            usuarioOrganismoPerfilService.agregarConformidadPorCompra
+            usuarioOrganismoPerfilService.agregarConformidadPorCompra,
         ).toHaveBeenCalledWith(5, 10);
     });
 
@@ -254,16 +259,29 @@ describe('ConsultaUsuariosConformidadCompraComponent', () => {
     });
 
     it('agregarPermisoPorCompra no llama servicio si faltan ids', () => {
-        actualizarService.confirmar.and.callFake((_m: any, cb: () => void) => cb());
+        actualizarService.confirmar.and.callFake((_m: any, cb: () => void) =>
+            cb(),
+        );
         component.usuario = { id: undefined } as any;
         component.agregarPermisoPorCompra({ idCompra: undefined } as any);
-        expect(usuarioOrganismoPerfilService.agregarConformidadPorCompra).not.toHaveBeenCalled();
+        expect(
+            usuarioOrganismoPerfilService.agregarConformidadPorCompra,
+        ).not.toHaveBeenCalled();
     });
 
     it('guardarFiltro persiste snapshot con filtros', () => {
         component.usuario = { id: 'u1' } as any;
-        component.form.patchValue({ idTipoCompra: '1', nroAnioCompra: '10/2024' });
-        component.form.get('organismo')?.setValue({ idInciso: 1, idUnidadEjecutora: 2, idUnidadCompra: 3 });
+        component.form.patchValue({
+            idTipoCompra: '1',
+            nroAnioCompra: '10/2024',
+        });
+        component.form
+            .get('organismo')
+            ?.setValue({
+                idInciso: 1,
+                idUnidadEjecutora: 2,
+                idUnidadCompra: 3,
+            });
         (component as any).actualizarFiltro();
         (component as any).guardarFiltro();
         expect(snapshotSrv.save).toHaveBeenCalled();
@@ -274,7 +292,12 @@ describe('ConsultaUsuariosConformidadCompraComponent', () => {
 
     it('buscarInicial carga snapshot y ejecuta buscar', () => {
         const snap = {
-            filtro: { idTipoCompra: '1', idInciso: 1, idUnidadEjecutora: 2, idUnidadCompra: 3 },
+            filtro: {
+                idTipoCompra: '1',
+                idInciso: 1,
+                idUnidadEjecutora: 2,
+                idUnidadCompra: 3,
+            },
         };
         snapshotSrv.load.and.returnValue(snap);
         spyOn(component, 'buscar');
@@ -310,132 +333,157 @@ describe('ConsultaUsuariosConformidadCompraComponent', () => {
         expect(component.nroCompraValido).toBeTrue();
     });
 
+    it('ngOnInit obtiene usuario cuando hay id compuesto en la ruta', () => {
+        const activatedRoute = TestBed.inject(ActivatedRoute) as any;
+        activatedRoute.paramMap = of({ has: () => true, get: () => 'uy-ci-1' });
+        tipoCompraService.obtenerTiposCompraSinPaginado.and.returnValue(of([]));
+        const spyObtener = spyOn(component, 'obtenerUsuario').and.stub();
 
+        component.ngOnInit();
 
-it('ngOnInit obtiene usuario cuando hay id compuesto en la ruta', () => {
-    const activatedRoute = TestBed.inject(ActivatedRoute) as any;
-    activatedRoute.paramMap = of({ has: () => true, get: () => 'uy-ci-1' });
-    tipoCompraService.obtenerTiposCompraSinPaginado.and.returnValue(of([]));
-    const spyObtener = spyOn(component, 'obtenerUsuario').and.stub();
+        expect(spyObtener).toHaveBeenCalledWith('uy-ci-1');
+    });
 
-    component.ngOnInit();
+    it('ngOnInit no intenta obtener usuario si la ruta no trae id', () => {
+        const activatedRoute = TestBed.inject(ActivatedRoute) as any;
+        activatedRoute.paramMap = of({ has: () => false, get: () => null });
+        tipoCompraService.obtenerTiposCompraSinPaginado.and.returnValue(of([]));
+        const spyObtener = spyOn(component, 'obtenerUsuario').and.stub();
 
-    expect(spyObtener).toHaveBeenCalledWith('uy-ci-1');
-});
+        component.ngOnInit();
 
-it('ngOnInit no intenta obtener usuario si la ruta no trae id', () => {
-    const activatedRoute = TestBed.inject(ActivatedRoute) as any;
-    activatedRoute.paramMap = of({ has: () => false, get: () => null });
-    tipoCompraService.obtenerTiposCompraSinPaginado.and.returnValue(of([]));
-    const spyObtener = spyOn(component, 'obtenerUsuario').and.stub();
+        expect(spyObtener).not.toHaveBeenCalled();
+    });
 
-    component.ngOnInit();
+    it('ngAfterViewInit llama a buscarVolver cuando el parámetro volver es 1', () => {
+        const volverSpy = spyOn(component as any, 'buscarVolver');
+        const inicialSpy = spyOn(component as any, 'buscarInicial');
+        (component as any).route = {
+            snapshot: { queryParamMap: { get: () => '1' } },
+        } as any;
 
-    expect(spyObtener).not.toHaveBeenCalled();
-});
+        component.ngAfterViewInit();
 
-it('ngAfterViewInit llama a buscarVolver cuando el parámetro volver es 1', () => {
-    const volverSpy = spyOn(component as any, 'buscarVolver');
-    const inicialSpy = spyOn(component as any, 'buscarInicial');
-    (component as any).route = { snapshot: { queryParamMap: { get: () => '1' } } } as any;
+        expect(volverSpy).toHaveBeenCalled();
+        expect(inicialSpy).not.toHaveBeenCalled();
+    });
 
-    component.ngAfterViewInit();
+    it('ngAfterViewInit espera a que se cargue el usuario cuando no hay parámetro volver', () => {
+        const volverSpy = spyOn(component as any, 'buscarVolver');
+        const inicialSpy = spyOn(component as any, 'buscarInicial');
+        (component as any).route = {
+            snapshot: { queryParamMap: { get: () => null } },
+        } as any;
 
-    expect(volverSpy).toHaveBeenCalled();
-    expect(inicialSpy).not.toHaveBeenCalled();
-});
+        component.ngAfterViewInit();
+        (component as any).usuarioCargado$.next(true);
 
-it('ngAfterViewInit espera a que se cargue el usuario cuando no hay parámetro volver', () => {
-    const volverSpy = spyOn(component as any, 'buscarVolver');
-    const inicialSpy = spyOn(component as any, 'buscarInicial');
-    (component as any).route = { snapshot: { queryParamMap: { get: () => null } } } as any;
+        expect(volverSpy).not.toHaveBeenCalled();
+        expect(inicialSpy).toHaveBeenCalled();
+    });
 
-    component.ngAfterViewInit();
-    (component as any).usuarioCargado$.next(true);
+    it('buscarVolver restaura snapshot y ejecuta la búsqueda', fakeAsync(() => {
+        const location = TestBed.inject(Location) as any;
+        const snapshot = {
+            pagina: 2,
+            tamanoPagina: 15,
+            sort: 'numCompra',
+            order: 'desc',
+            filtro: {
+                idTipoCompra: '1',
+                nroAnioCompra: '12/2024',
+                idInciso: 1,
+                idUnidadEjecutora: 2,
+                idUnidadCompra: 3,
+            },
+            usuario: { id: 'u1' },
+        };
+        snapshotSrv.load.and.returnValue(snapshot);
+        const buscarSpy = spyOn(component, 'buscar');
+        const detectSpy = spyOn(component['cdr'] as any, 'detectChanges');
 
-    expect(volverSpy).not.toHaveBeenCalled();
-    expect(inicialSpy).toHaveBeenCalled();
-});
+        (component as any).buscarVolver();
+        tick(100);
 
-it('buscarVolver restaura snapshot y ejecuta la búsqueda', fakeAsync(() => {
-    const location = TestBed.inject(Location) as any;
-    const snapshot = {
-        pagina: 2,
-        tamanoPagina: 15,
-        sort: 'numCompra',
-        order: 'desc',
-        filtro: {
-            idTipoCompra: '1',
-            nroAnioCompra: '12/2024',
-            idInciso: 1,
-            idUnidadEjecutora: 2,
-            idUnidadCompra: 3,
-        },
-        usuario: { id: 'u1' }
-    };
-    snapshotSrv.load.and.returnValue(snapshot);
-    const buscarSpy = spyOn(component, 'buscar');
-    const detectSpy = spyOn(component['cdr'] as any, 'detectChanges');
+        expect(detectSpy).toHaveBeenCalled();
+        expect(component.parametros.pagina).toBe(2);
+        expect(component.usuario?.id).toBe(snapshot.usuario.id);
+        expect(buscarSpy).toHaveBeenCalled();
+        expect(location.replaceState).toHaveBeenCalledWith('/p');
+    }));
 
-    (component as any).buscarVolver();
-    tick(100);
+    it('buscarVolver limpia el parámetro volver aunque no haya snapshot', () => {
+        const location = TestBed.inject(Location) as any;
+        snapshotSrv.load.and.returnValue(undefined);
 
-    expect(detectSpy).toHaveBeenCalled();
-    expect(component.parametros.pagina).toBe(2);
-    expect(component.usuario?.id).toBe(snapshot.usuario.id);
-    expect(buscarSpy).toHaveBeenCalled();
-    expect(location.replaceState).toHaveBeenCalledWith('/p');
-}));
+        (component as any).buscarVolver();
 
-it('buscarVolver limpia el parámetro volver aunque no haya snapshot', () => {
-    const location = TestBed.inject(Location) as any;
-    snapshotSrv.load.and.returnValue(undefined);
+        expect(location.replaceState).toHaveBeenCalledWith('/p');
+    });
 
-    (component as any).buscarVolver();
+    it('buscar marca el formulario cuando no es búsqueda inicial', () => {
+        const markSpy = spyOn(component.form, 'markAllAsTouched');
+        component.form
+            .get('organismo')
+            ?.setValue({
+                idInciso: 1,
+                idUnidadEjecutora: 1,
+                idUnidadCompra: 1,
+            });
+        compraSiceService.obtenerCompras.and.returnValue(
+            of({ content: [], page: { totalElements: 0 } }),
+        );
 
-    expect(location.replaceState).toHaveBeenCalledWith('/p');
-});
+        component.buscar();
 
-it('buscar marca el formulario cuando no es búsqueda inicial', () => {
-    const markSpy = spyOn(component.form, 'markAllAsTouched');
-    component.form.get('organismo')?.setValue({ idInciso: 1, idUnidadEjecutora: 1, idUnidadCompra: 1 });
-    compraSiceService.obtenerCompras.and.returnValue(of({ content: [], page: { totalElements: 0 } }));
+        expect(markSpy).toHaveBeenCalled();
+    });
 
-    component.buscar();
+    it('buscar no marca el formulario cuando la búsqueda inicial no tiene filtros completos', () => {
+        const markSpy = spyOn(component.form, 'markAllAsTouched');
+        component.form
+            .get('organismo')
+            ?.setValue({
+                idInciso: 1,
+                idUnidadEjecutora: 1,
+                idUnidadCompra: 1,
+            });
+        compraSiceService.obtenerCompras.and.returnValue(
+            of({ content: [], page: { totalElements: 0 } }),
+        );
 
-    expect(markSpy).toHaveBeenCalled();
-});
+        component.buscar(false, { filtro: { idInciso: 1 } }, true);
 
-it('buscar no marca el formulario cuando la búsqueda inicial no tiene filtros completos', () => {
-    const markSpy = spyOn(component.form, 'markAllAsTouched');
-    component.form.get('organismo')?.setValue({ idInciso: 1, idUnidadEjecutora: 1, idUnidadCompra: 1 });
-    compraSiceService.obtenerCompras.and.returnValue(of({ content: [], page: { totalElements: 0 } }));
+        expect(markSpy).not.toHaveBeenCalled();
+    });
 
-    component.buscar(false, { filtro: { idInciso: 1 } }, true);
+    it('buscar resetea la página cuando se solicita', () => {
+        component.parametros.pagina = 5;
+        component.form
+            .get('organismo')
+            ?.setValue({
+                idInciso: 1,
+                idUnidadEjecutora: 1,
+                idUnidadCompra: 1,
+            });
+        compraSiceService.obtenerCompras.and.returnValue(
+            of({ content: [], page: { totalElements: 0 } }),
+        );
 
-    expect(markSpy).not.toHaveBeenCalled();
-});
+        component.buscar(true);
 
-it('buscar resetea la página cuando se solicita', () => {
-    component.parametros.pagina = 5;
-    component.form.get('organismo')?.setValue({ idInciso: 1, idUnidadEjecutora: 1, idUnidadCompra: 1 });
-    compraSiceService.obtenerCompras.and.returnValue(of({ content: [], page: { totalElements: 0 } }));
+        expect(component.parametros.pagina).toBe(0);
+    });
 
-    component.buscar(true);
+    it('buscar no ejecuta la consulta cuando el formulario es inválido', () => {
+        spyOnProperty(component.form, 'valid', 'get').and.returnValue(false);
 
-    expect(component.parametros.pagina).toBe(0);
-});
+        component.buscar();
 
-it('buscar no ejecuta la consulta cuando el formulario es inválido', () => {
-    spyOnProperty(component.form, 'valid', 'get').and.returnValue(false);
+        expect(compraSiceService.obtenerCompras).not.toHaveBeenCalled();
+    });
 
-    component.buscar();
-
-    expect(compraSiceService.obtenerCompras).not.toHaveBeenCalled();
-});
-
-it('dividirNroAnioCompra devuelve objeto vacío cuando el valor es undefined', () => {
-    expect(component['dividirNroAnioCompra'](undefined as any)).toEqual({});
-});
-
+    it('dividirNroAnioCompra devuelve objeto vacío cuando el valor es undefined', () => {
+        expect(component['dividirNroAnioCompra'](undefined as any)).toEqual({});
+    });
 });

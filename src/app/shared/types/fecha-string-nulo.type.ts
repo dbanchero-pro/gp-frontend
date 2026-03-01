@@ -1,1 +1,1 @@
-export type FechaStringNulo = string | Date | null
+export type FechaStringNulo = string | Date | null;

@@ -4,6 +4,8 @@ export interface IColorDTO {
 }
 
 export class ClassColorDTO implements IColorDTO {
-    constructor(public id?: number, public descColor?: string) {
-    }
+    constructor(
+        public id?: number,
+        public descColor?: string,
+    ) {}
 }

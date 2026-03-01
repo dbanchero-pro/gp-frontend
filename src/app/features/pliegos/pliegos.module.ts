@@ -31,60 +31,59 @@ import { FormatoCiPipe } from 'src/app/shared/pipes/formato-ci.pipe';
 import { NumeroCompraPipe } from 'src/app/shared/pipes/nro-compra-pipe';
 
 export const routes: Routes = [
-    
     {
         path: 'bandeja-entrada',
-        component: BandejaEntradaComponent
+        component: BandejaEntradaComponent,
     },
     {
         path: 'bandeja-entrada/asignar/:id',
         component: AsignarUsuariosComponent,
-        canDeactivate: [DeactivateGuard]
+        canDeactivate: [DeactivateGuard],
     },
     {
         path: 'bandeja-entrada/iniciar/:id',
-        component: IniciarPliegoComponent
+        component: IniciarPliegoComponent,
     },
     {
         path: 'bandeja-entrada/elaborar/:id',
         component: ElaborarPliegoComponent,
-        canDeactivate: [DeactivateGuard]
-    }
+        canDeactivate: [DeactivateGuard],
+    },
 ];
 
 export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
     RouterModule.forChild(routes);
 
 @NgModule({
-    declarations: [], imports: [
-      CommonModule,
-      SharedModule,
-      RouterModule.forChild(routes),
-      NgxMaskDirective,
-      ConsultaRepositorioArchivosComponent,
-      AgregarModificarRepositorioArchivoComponent,
-      ConsultaClausulasComponent,
-      AgregarModificarClausulaComponent,
-      AgregarModificarRedaccionComponent,
-      HistorialClausulasComponent,
-      DiferenciasClausulasComponent,
-      ModelosClausulaComponent,
-      ConsultaCapitulosComponent,
-      AgregarModificarCapituloComponent,
-      ConsultaSeccionesComponent,
-      AgregarModificarSeccionComponent,
-      ConsultaModelosComponent,
-      AgregarModificarModeloComponent,
-      BandejaEntradaComponent,
-      CancelarPliegoPopupComponent,
-      AsignarUsuariosComponent,
-      AgregarUsuarioPopupComponent,
-      ModificarUsuarioPopupComponent,
-      IniciarPliegoComponent,
-      ElaborarPliegoComponent,
+    declarations: [],
+    imports: [
+        CommonModule,
+        SharedModule,
+        RouterModule.forChild(routes),
+        NgxMaskDirective,
+        ConsultaRepositorioArchivosComponent,
+        AgregarModificarRepositorioArchivoComponent,
+        ConsultaClausulasComponent,
+        AgregarModificarClausulaComponent,
+        AgregarModificarRedaccionComponent,
+        HistorialClausulasComponent,
+        DiferenciasClausulasComponent,
+        ModelosClausulaComponent,
+        ConsultaCapitulosComponent,
+        AgregarModificarCapituloComponent,
+        ConsultaSeccionesComponent,
+        AgregarModificarSeccionComponent,
+        ConsultaModelosComponent,
+        AgregarModificarModeloComponent,
+        BandejaEntradaComponent,
+        CancelarPliegoPopupComponent,
+        AsignarUsuariosComponent,
+        AgregarUsuarioPopupComponent,
+        ModificarUsuarioPopupComponent,
+        IniciarPliegoComponent,
+        ElaborarPliegoComponent,
     ],
     providers: [provideNgxMask()],
     exports: [FormatoCiPipe, CompraResumenPipe],
 })
-export class PliegosModule { }
-
+export class PliegosModule {}

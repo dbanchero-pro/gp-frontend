@@ -1,19 +1,41 @@
-import { AfterViewInit, Component, forwardRef, Injector, Input, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR, NgControl, ValidationErrors, Validator, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';import { CommonModule } from '@angular/common';import { RouterModule } from '@angular/router';import { AlertModule } from 'ngx-bootstrap/alert';import { BsDropdownModule } from 'ngx-bootstrap/dropdown';import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';import { ModalModule } from 'ngx-bootstrap/modal';import { PaginationModule } from 'ngx-bootstrap/pagination';import { TabsModule } from 'ngx-bootstrap/tabs';import { TooltipModule } from 'ngx-bootstrap/tooltip';import { TypeaheadModule } from 'ngx-bootstrap/typeahead';import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';import { NgxEditorModule } from 'ngx-editor';import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-
-
-
-
-
-
-
-
-
-
-
-
-
+import {
+    AfterViewInit,
+    Component,
+    forwardRef,
+    Injector,
+    Input,
+    OnDestroy,
+    OnInit,
+} from '@angular/core';
+import {
+    AbstractControl,
+    ControlValueAccessor,
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    NG_VALIDATORS,
+    NG_VALUE_ACCESSOR,
+    NgControl,
+    ValidationErrors,
+    Validator,
+    Validators,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';
+import { NgxEditorModule } from 'ngx-editor';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 @Component({
     selector: 'app-rango-fechas',
@@ -23,35 +45,36 @@ import { Subscription } from 'rxjs';import { CommonModule } from '@angular/commo
         {
             provide: NG_VALUE_ACCESSOR,
             useExisting: forwardRef(() => RangoFechasComponent),
-            multi: true
+            multi: true,
         },
         {
             provide: NG_VALIDATORS,
             useExisting: forwardRef(() => RangoFechasComponent),
-            multi: true
-        }
+            multi: true,
+        },
     ],
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
-    AlertModule,
-    BsDropdownModule,
-    BsDatepickerModule,
-    ModalModule,
-    PaginationModule,
-    TabsModule,
-    TooltipModule,
-    TypeaheadModule,
-    NgxDaterangepickerBootstrapModule,
-    NgxEditorModule,
-    NgxDatatableModule
-  ],
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule,
+        AlertModule,
+        BsDropdownModule,
+        BsDatepickerModule,
+        ModalModule,
+        PaginationModule,
+        TabsModule,
+        TooltipModule,
+        TypeaheadModule,
+        NgxDaterangepickerBootstrapModule,
+        NgxEditorModule,
+        NgxDatatableModule,
+    ],
 })
-
-export class RangoFechasComponent implements ControlValueAccessor, Validator, OnInit, OnDestroy, AfterViewInit {
+export class RangoFechasComponent
+    implements ControlValueAccessor, Validator, OnInit, OnDestroy, AfterViewInit
+{
     @Input() orientacion: 'horizontal' | 'vertical' = 'vertical';
     @Input() etiquetaFechaDesde: string | null = 'Fecha desde';
     @Input() etiquetaFechaHasta: string | null = 'Fecha hasta';
@@ -60,11 +83,14 @@ export class RangoFechasComponent implements ControlValueAccessor, Validator, On
     @Input() requiereFechaHasta: boolean = false;
     @Input() permiteFechaFutura: boolean = false;
 
-
     protected form!: FormGroup;
 
-    private onChange: (value: any) => void = () => { console.log("onChange no implementado"); };
-    private onTouched: () => void = () => { console.log("onTouched no implementado"); };
+    private onChange: (value: any) => void = () => {
+        console.log('onChange no implementado');
+    };
+    private onTouched: () => void = () => {
+        console.log('onTouched no implementado');
+    };
     private readonly subscriptions: Subscription[] = [];
     disabled = false;
 
@@ -74,24 +100,27 @@ export class RangoFechasComponent implements ControlValueAccessor, Validator, On
     rootControl: AbstractControl | null = null;
     maxFecha: string | null = null;
 
-    constructor(private readonly fb: FormBuilder,
-        private readonly injector: Injector
-    ) {
-
-    }
+    constructor(
+        private readonly fb: FormBuilder,
+        private readonly injector: Injector,
+    ) {}
 
     ngOnInit() {
-
         this.form = this.fb.group({
-            fechaDesde: ['', this.requiereFechaDesde ? Validators.required : []],
-            fechaHasta: ['', this.requiereFechaHasta ? Validators.required : []]
+            fechaDesde: [
+                '',
+                this.requiereFechaDesde ? Validators.required : [],
+            ],
+            fechaHasta: [
+                '',
+                this.requiereFechaHasta ? Validators.required : [],
+            ],
         });
 
         if (!this.permiteFechaFutura) {
             const hoy = new Date();
             this.maxFecha = hoy.toISOString().split('T')[0]; // formato 'YYYY-MM-DD'
         }
-
     }
 
     ngAfterViewInit(): void {
@@ -102,7 +131,11 @@ export class RangoFechasComponent implements ControlValueAccessor, Validator, On
             const parentControl = ngControl.control as FormControl | null;
             if (parentControl) {
                 const originalMark = parentControl.markAsTouched;
-                parentControl.markAsTouched = (...args: [opts?: { onlySelf?: boolean; emitEvent?: boolean; }]) => {
+                parentControl.markAsTouched = (
+                    ...args: [
+                        opts?: { onlySelf?: boolean; emitEvent?: boolean },
+                    ]
+                ) => {
                     originalMark.apply(parentControl, args);
                     this.form.markAllAsTouched();
                 };
@@ -111,17 +144,13 @@ export class RangoFechasComponent implements ControlValueAccessor, Validator, On
     }
 
     cambioFechaDesde(): void {
-       
         this.validate(this.form as any);
         this.onChange(this.form.value);
     }
     cambioFechaHasta(): void {
-       
         this.validate(this.form as any);
         this.onChange(this.form.value);
     }
-
-
 
     writeValue(value: { fechaDesde: string; fechaHasta: string } | null): void {
         if (value) {
@@ -149,7 +178,7 @@ export class RangoFechasComponent implements ControlValueAccessor, Validator, On
         this.errorFecha = null;
         this.form.get('fechaDesde')?.setErrors(null);
         this.form.get('fechaHasta')?.setErrors(null);
-        
+
         const { fechaDesde, fechaHasta } = this.form.value;
 
         const errors: ValidationErrors = {};
@@ -157,43 +186,61 @@ export class RangoFechasComponent implements ControlValueAccessor, Validator, On
         // Validaciones fecha desde
         if (this.requiereFechaDesde && !fechaDesde) {
             errors['requiereFechaDesde'] = 'Fecha desde es obligatoria';
-            this.form.get('fechaDesde')?.setErrors({ 'requiereFechaDesde': true });
+            this.form
+                .get('fechaDesde')
+                ?.setErrors({ requiereFechaDesde: true });
             this.errorFecha = 'Fecha desde no puede estar vacío';
         }
 
         if (this.maxFecha != null && fechaDesde > this.maxFecha) {
             errors['maxFecha'] = 'La fecha desde no puede mayor a hoy';
-            this.form.get('fechaDesde')?.setErrors({ 'maxFecha': true });
+            this.form.get('fechaDesde')?.setErrors({ maxFecha: true });
             this.errorFecha = 'Fecha desde no puede mayor a hoy';
         }
 
-        //Validaciones fecha hasta 
+        //Validaciones fecha hasta
         if (this.requiereFechaHasta && !fechaHasta) {
             errors['requiereFechaHasta'] = 'La fecha hasta es obligatoria';
-            this.form.get('fechaHasta')?.setErrors({ 'requiereFechaHasta': true });
+            this.form
+                .get('fechaHasta')
+                ?.setErrors({ requiereFechaHasta: true });
             this.errorFecha = 'Fecha hasta no puede estar vacío';
         }
 
         if (this.maxFecha != null && fechaHasta > this.maxFecha) {
-            errors['requiereFechaHasta'] = 'La fecha hasta no puede mayor a hoy';
-            this.form.get('fechaHasta')?.setErrors({ 'requiereFechaDesde': true });
+            errors['requiereFechaHasta'] =
+                'La fecha hasta no puede mayor a hoy';
+            this.form
+                .get('fechaHasta')
+                ?.setErrors({ requiereFechaDesde: true });
             this.errorFecha = 'Fecha hasta no puede mayor a hoy';
         }
 
         //Validaciones conjuntas
-        if (this.requiereFechaDesde && this.requiereFechaHasta && !fechaDesde && !fechaHasta) {
+        if (
+            this.requiereFechaDesde &&
+            this.requiereFechaHasta &&
+            !fechaDesde &&
+            !fechaHasta
+        ) {
             this.errorFecha = 'Las fechas desde y hasta no pueden estar vacías';
         }
 
-        if (this.maxFecha != null && fechaHasta > this.maxFecha && fechaDesde > this.maxFecha) {
-            this.errorFecha = 'Las fechas desde y hasta no pueden ser mayor a hoy';
+        if (
+            this.maxFecha != null &&
+            fechaHasta > this.maxFecha &&
+            fechaDesde > this.maxFecha
+        ) {
+            this.errorFecha =
+                'Las fechas desde y hasta no pueden ser mayor a hoy';
         }
 
         if (fechaDesde && fechaHasta && fechaDesde > fechaHasta) {
-            errors['rangoInvalido'] = 'Fecha desde debe ser anterior a fecha hasta';
+            errors['rangoInvalido'] =
+                'Fecha desde debe ser anterior a fecha hasta';
             this.errorFecha = 'Fecha desde debe ser anterior a fecha hasta';
-            this.form.get('fechaDesde')?.setErrors({ 'rangoInvalido': true });
-            this.form.get('fechaHasta')?.setErrors({ 'rangoInvalido': true });
+            this.form.get('fechaDesde')?.setErrors({ rangoInvalido: true });
+            this.form.get('fechaHasta')?.setErrors({ rangoInvalido: true });
             this.form.get('fechaDesde')?.markAsDirty();
             this.form.get('fechaHasta')?.markAsDirty();
         }
@@ -202,7 +249,6 @@ export class RangoFechasComponent implements ControlValueAccessor, Validator, On
 
         return Object.keys(errors).length > 0 ? errors : null;
     }
-
 
     setDisabledState?(isDisabled: boolean): void {
         this.disabled = isDisabled;
@@ -215,7 +261,11 @@ export class RangoFechasComponent implements ControlValueAccessor, Validator, On
 
     campoError(campo: 'fechaDesde' | 'fechaHasta'): boolean {
         const control = this.form.get(campo);
-        return !!(control && control.invalid && (control.dirty || control.touched));
+        return !!(
+            control &&
+            control.invalid &&
+            (control.dirty || control.touched)
+        );
     }
 
     markAsTouched(): void {
@@ -224,7 +274,6 @@ export class RangoFechasComponent implements ControlValueAccessor, Validator, On
     }
 
     ngOnDestroy(): void {
-        this.subscriptions.forEach(s => s.unsubscribe());
+        this.subscriptions.forEach((s) => s.unsubscribe());
     }
 }
-

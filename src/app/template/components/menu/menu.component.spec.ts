@@ -1,15 +1,15 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import {
-    ComponentFixture,
-    TestBed,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { AppConfig } from 'src/app/app.config';
 import { IAppConfig } from 'src/app/shared/models/common/app-config.model';
 import { UsuarioInfoDTO } from 'src/app/shared/models/usuario/usuario-info.model';
 import { UtilService } from 'src/app/shared/services/common/util.service';
 
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+    provideHttpClient,
+    withInterceptorsFromDi,
+} from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Pais } from 'src/app/shared/enum/pais.enum';
@@ -34,7 +34,7 @@ class AppConfigStub {
         loggingLevel: 'DEBUG',
         archivosCantidadMax: 10,
         archivosTamanoMaxBytes: 1000000,
-        contenidoInicio: ''
+        contenidoInicio: '',
     };
 }
 
@@ -57,7 +57,7 @@ class SeguridadServiceMock {
         return [];
     }
     usuarioLogueadoEsUsuarioOrganismo(): boolean {
-        return  this.esUsuarioOrganismo;
+        return this.esUsuarioOrganismo;
     }
     usuarioLogueadoEsUsuarioProveedor(): boolean {
         return this.esUsuarioProveedor;
@@ -66,15 +66,25 @@ class SeguridadServiceMock {
         return this.esUsuarioOrganismo && this.esUsuarioProveedor;
     }
 
-    almacenarPermisos: (permisos: string[]) => void = () => { };
+    almacenarPermisos: (permisos: string[]) => void = () => {};
 
-    almacenarProveedores: (proveedores: any[]) => void = () =>  { }
+    almacenarProveedores: (proveedores: any[]) => void = () => {};
 
-    obtenerNombreUsuarioLogueado(){ return 'usuario'}
-    tienePermiso(_permiso: string) { return true;}
-    tieneAlgunPermiso(_permisos: string[]) { return true; }
-    limpiarContexto(){ return; }
-    obtenerUnidadesCompra(){ return []; }
+    obtenerNombreUsuarioLogueado() {
+        return 'usuario';
+    }
+    tienePermiso(_permiso: string) {
+        return true;
+    }
+    tieneAlgunPermiso(_permisos: string[]) {
+        return true;
+    }
+    limpiarContexto() {
+        return;
+    }
+    obtenerUnidadesCompra() {
+        return [];
+    }
 }
 
 describe('MenuComponent', () => {
@@ -83,30 +93,29 @@ describe('MenuComponent', () => {
     let utilService: UtilService;
     let menuService: MenuService;
     let authRaw: AuthRawService;
-    
 
     const usuarioInfoDTO: UsuarioInfoDTO = new UsuarioInfoDTO(
         'nombre',
         'usuario',
-        ['permiso1', 'permiso2']
+        ['permiso1', 'permiso2'],
     );
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             declarations: [],
-            imports: [
-              RouterTestingModule,
-              MenuComponent,
-            ],
+            imports: [RouterTestingModule, MenuComponent],
             providers: [
                 MenuService,
                 { provide: AuthRawService, useClass: AuthRawServiceMock },
                 { provide: SeguridadService, useClass: SeguridadServiceMock },
-                { provide: MatDialog, useValue: jasmine.createSpyObj('MatDialog', ['open']) },
+                {
+                    provide: MatDialog,
+                    useValue: jasmine.createSpyObj('MatDialog', ['open']),
+                },
                 { provide: AppConfig, useClass: AppConfigStub },
                 provideHttpClient(withInterceptorsFromDi()),
                 provideHttpClientTesting(),
-            ]
+            ],
         }).compileComponents();
     });
 
@@ -147,7 +156,7 @@ describe('MenuComponent', () => {
 
     it('obtenerMenu() vacío debería manejar un menú inexistente', () => {
         let menuServiceSpy = spyOn(menuService, 'obtenerMenu').and.returnValue(
-            []
+            [],
         );
         component.obtenerMenu(['XXXXXXX']);
         expect(menuServiceSpy).toHaveBeenCalled();
@@ -157,7 +166,7 @@ describe('MenuComponent', () => {
         spyOn(authRaw, 'clearToken');
 
         let keycloakSpy = spyOn(authRaw, 'logout').and.returnValue(
-            Promise.resolve()
+            Promise.resolve(),
         );
         component.cerrarSesion();
         expect(keycloakSpy).toHaveBeenCalled();
@@ -184,7 +193,12 @@ describe('MenuComponent', () => {
         component.isMobile = true;
         const menu = { items: [{ _open: false }] };
         component.menuItems$ = [menu] as any;
-        component.toggleSubmenu(new MouseEvent('focus'), menu, menu.items[0], false);
+        component.toggleSubmenu(
+            new MouseEvent('focus'),
+            menu,
+            menu.items[0],
+            false,
+        );
         expect(menu.items[0]._open).toBeFalse();
     });
 
@@ -192,7 +206,12 @@ describe('MenuComponent', () => {
         component.isMobile = true;
         const menu = { items: [{ _open: false }] };
         component.menuItems$ = [menu] as any;
-        component.toggleSubmenu(new MouseEvent('click'), menu, menu.items[0], true);
+        component.toggleSubmenu(
+            new MouseEvent('click'),
+            menu,
+            menu.items[0],
+            true,
+        );
         expect(menu.items[0]._open).toBeTrue();
     });
 
@@ -207,8 +226,12 @@ describe('MenuComponent', () => {
 
     it('debería definir estilo de foco visible para las opciones del menú', () => {
         fixture.detectChanges();
-        const styleTag = Array.from(document.head.querySelectorAll('style')).find(s => s.textContent?.includes('.span-menu'));
-        expect(styleTag?.textContent).toContain('box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25)');
+        const styleTag = Array.from(
+            document.head.querySelectorAll('style'),
+        ).find((s) => s.textContent?.includes('.span-menu'));
+        expect(styleTag?.textContent).toContain(
+            'box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25)',
+        );
     });
 
     it('debería marcar como móvil cuando la ventana es pequeña', () => {
@@ -219,7 +242,12 @@ describe('MenuComponent', () => {
 
     it('debería cerrar el menú al cambiar a escritorio', () => {
         component.innerWidth = 1000;
-        component.buttonMenu = { nativeElement: { getAttribute: () => 'true', click: jasmine.createSpy('click') } } as any;
+        component.buttonMenu = {
+            nativeElement: {
+                getAttribute: () => 'true',
+                click: jasmine.createSpy('click'),
+            },
+        } as any;
         (component as any).checkMobile();
         expect(component.isMobile).toBeFalse();
         expect(component.buttonMenu.nativeElement.click).toHaveBeenCalled();
@@ -227,7 +255,12 @@ describe('MenuComponent', () => {
 
     it('no hace click si el menú ya está cerrado en escritorio', () => {
         component.innerWidth = 1200;
-        component.buttonMenu = { nativeElement: { getAttribute: () => 'false', click: jasmine.createSpy('click') } } as any;
+        component.buttonMenu = {
+            nativeElement: {
+                getAttribute: () => 'false',
+                click: jasmine.createSpy('click'),
+            },
+        } as any;
         (component as any).checkMobile();
         expect(component.buttonMenu.nativeElement.click).not.toHaveBeenCalled();
     });
@@ -240,17 +273,23 @@ describe('MenuComponent', () => {
     });
 
     it('obtenerMenu emite mensaje de error cuando no hay ítems visibles', (done) => {
-        spyOn(menuService, 'obtenerMenu').and.returnValue([{ visible: false }] as any);
+        spyOn(menuService, 'obtenerMenu').and.returnValue([
+            { visible: false },
+        ] as any);
         const mensajeSpy = spyOn(component.actualizar, 'mensajeError');
-        component.obtenerMenu([]).subscribe(items => {
+        component.obtenerMenu([]).subscribe((items) => {
             expect(items.length).toBe(0);
-            expect(mensajeSpy).toHaveBeenCalledWith('El usuario no tiene permisos');
+            expect(mensajeSpy).toHaveBeenCalledWith(
+                'El usuario no tiene permisos',
+            );
             done();
         });
     });
 
     it('cerrarSesion llama a logout y limpia el token', async () => {
-        const logoutSpy = spyOn(authRaw, 'logout').and.returnValue(Promise.resolve());
+        const logoutSpy = spyOn(authRaw, 'logout').and.returnValue(
+            Promise.resolve(),
+        );
         const clearSpy = spyOn(authRaw, 'clearToken');
 
         await component.cerrarSesion();

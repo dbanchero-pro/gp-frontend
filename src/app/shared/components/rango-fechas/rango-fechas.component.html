@@ -1,48 +1,111 @@
 <ng-container *ngIf="orientacion === 'horizontal'">
-  <div [formGroup]="form" class="row">
-    <div class="col-12">
-      <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-4 px-3">
-        <label for="fechaDesde" class="col-form-label col-12 pl-0"
-          [class.field-error]="campoError('fechaDesde') || campoError('fechaHasta')">
-          {{ !etiquetaFechaDesde ? etiquetaRango : '* ' + etiquetaRango }}
-        </label>
-        <div class="wrapper w-100 d-flex">
-          <div class="fecha-desde w-50 pr-1" [class.field-error]="campoError('fechaDesde')">
-            <input [attr.aria-label]="etiquetaFechaDesde" type="date" formControlName="fechaDesde" id="fechaDesde"
-              class="form-control" [attr.max]="maxFecha" (change)="cambioFechaDesde()"
-              [required]="!!etiquetaFechaDesde" />
-          </div>
-          <div class="fecha-hasta w-50 pl-1" [class.field-error]="campoError('fechaHasta')">
-            <input [attr.aria-label]="etiquetaFechaHasta" type="date" formControlName="fechaHasta" id="fechaHasta"
-              class="form-control" [attr.max]="maxFecha" (change)="cambioFechaHasta()"
-              [required]="requiereFechaHasta" />
-          </div>
+    <div [formGroup]="form" class="row">
+        <div class="col-12">
+            <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-4 px-3">
+                <label
+                    for="fechaDesde"
+                    class="col-form-label col-12 pl-0"
+                    [class.field-error]="
+                        campoError('fechaDesde') || campoError('fechaHasta')
+                    "
+                >
+                    {{
+                        !etiquetaFechaDesde
+                            ? etiquetaRango
+                            : "* " + etiquetaRango
+                    }}
+                </label>
+                <div class="wrapper w-100 d-flex">
+                    <div
+                        class="fecha-desde w-50 pr-1"
+                        [class.field-error]="campoError('fechaDesde')"
+                    >
+                        <input
+                            [attr.aria-label]="etiquetaFechaDesde"
+                            type="date"
+                            formControlName="fechaDesde"
+                            id="fechaDesde"
+                            class="form-control"
+                            [attr.max]="maxFecha"
+                            (change)="cambioFechaDesde()"
+                            [required]="!!etiquetaFechaDesde"
+                        />
+                    </div>
+                    <div
+                        class="fecha-hasta w-50 pl-1"
+                        [class.field-error]="campoError('fechaHasta')"
+                    >
+                        <input
+                            [attr.aria-label]="etiquetaFechaHasta"
+                            type="date"
+                            formControlName="fechaHasta"
+                            id="fechaHasta"
+                            class="form-control"
+                            [attr.max]="maxFecha"
+                            (change)="cambioFechaHasta()"
+                            [required]="requiereFechaHasta"
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </ng-container>
 
 <!-- Contenido específico para orientación vertical -->
 <ng-container *ngIf="orientacion === 'vertical'">
-  <div [formGroup]="form" class="w-100">
-    <div class="col-12 px-0">
-      <div class="form-group form-row w-100" [class.field-error]="campoError('fechaDesde')">
-        <label for="fechaDesde" class="col-form-label">
-          {{ !requiereFechaDesde ? etiquetaFechaDesde : '* ' + etiquetaFechaDesde }}
-        </label>
-        <input aria-label="Fecha desde" type="date" formControlName="fechaDesde" id="fechaDesde" class="form-control"
-          [attr.max]="maxFecha" (change)="cambioFechaDesde()" [required]="requiereFechaDesde" />
-      </div>
-      <div class="form-group form-row w-100" [class.field-error]="campoError('fechaHasta')">
-        <label for="fechaHasta" class="col-form-label">
-          {{ !requiereFechaHasta ? etiquetaFechaHasta : '* ' + etiquetaFechaHasta }}
-        </label>
-        <input aria-label="Fecha hasta" type="date" formControlName="fechaHasta" id="fechaHasta" class="form-control"
-          [attr.max]="maxFecha" (change)="cambioFechaHasta()" [required]="requiereFechaHasta" />
-      </div>
+    <div [formGroup]="form" class="w-100">
+        <div class="col-12 px-0">
+            <div
+                class="form-group form-row w-100"
+                [class.field-error]="campoError('fechaDesde')"
+            >
+                <label for="fechaDesde" class="col-form-label">
+                    {{
+                        !requiereFechaDesde
+                            ? etiquetaFechaDesde
+                            : "* " + etiquetaFechaDesde
+                    }}
+                </label>
+                <input
+                    aria-label="Fecha desde"
+                    type="date"
+                    formControlName="fechaDesde"
+                    id="fechaDesde"
+                    class="form-control"
+                    [attr.max]="maxFecha"
+                    (change)="cambioFechaDesde()"
+                    [required]="requiereFechaDesde"
+                />
+            </div>
+            <div
+                class="form-group form-row w-100"
+                [class.field-error]="campoError('fechaHasta')"
+            >
+                <label for="fechaHasta" class="col-form-label">
+                    {{
+                        !requiereFechaHasta
+                            ? etiquetaFechaHasta
+                            : "* " + etiquetaFechaHasta
+                    }}
+                </label>
+                <input
+                    aria-label="Fecha hasta"
+                    type="date"
+                    formControlName="fechaHasta"
+                    id="fechaHasta"
+                    class="form-control"
+                    [attr.max]="maxFecha"
+                    (change)="cambioFechaHasta()"
+                    [required]="requiereFechaHasta"
+                />
+            </div>
+        </div>
     </div>
-  </div>
 </ng-container>
 
-<span [style.visibility]="errorRango && (form.dirty || form.touched)" class="texto-error">{{ errorFecha }}&nbsp;</span>
+<span
+    [style.visibility]="errorRango && (form.dirty || form.touched)"
+    class="texto-error"
+    >{{ errorFecha }}&nbsp;</span
+>

@@ -9,24 +9,24 @@ import { RestApiService } from './rest-api.service';
     providedIn: 'root',
 })
 export class RestService {
-    constructor(private readonly apiService: RestApiService) { }
+    constructor(private readonly apiService: RestApiService) {}
 
     get<T>(url: string, params: HttpParams = new HttpParams()): Observable<T> {
         return this.apiService.get<T>(
             `${AppConfig.settings?.apiUrl}${url}`,
-            params
+            params,
         );
     }
 
     post<T, D>(
         url: string,
         data: D,
-        params: HttpParams = new HttpParams()
+        params: HttpParams = new HttpParams(),
     ): Observable<T> {
         return this.apiService.post(
             AppConfig.settings.apiUrl + url,
             data,
-            params
+            params,
         );
     }
 

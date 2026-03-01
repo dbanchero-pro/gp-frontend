@@ -43,15 +43,15 @@ const routes: Routes = [
         path: 'campos-reglas/agregar',
         component: AgregarModificarCampoComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [DeactivateGuard]
+        canDeactivate: [DeactivateGuard],
     },
     {
         path: 'campos-reglas/modificar/:idCampo',
         component: AgregarModificarCampoComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [DeactivateGuard]
+        canDeactivate: [DeactivateGuard],
     },
-       
+
     {
         path: 'gestion-usuarios/consulta-usuario-roles',
         component: ConsultaUsuariosRolesComponent,
@@ -76,13 +76,13 @@ const routes: Routes = [
         path: 'repositorio-archivos/agregar',
         component: AgregarModificarRepositorioArchivoComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [DeactivateGuard]
+        canDeactivate: [DeactivateGuard],
     },
     {
         path: 'repositorio-archivos/modificar/:idDocumento',
         component: AgregarModificarRepositorioArchivoComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [DeactivateGuard]
+        canDeactivate: [DeactivateGuard],
     },
     {
         path: 'clausulas',
@@ -108,37 +108,37 @@ const routes: Routes = [
         path: 'clausulas/agregar',
         component: AgregarModificarClausulaComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [DeactivateGuard]
+        canDeactivate: [DeactivateGuard],
     },
     {
         path: 'clausulas/agregar/redaccion/agregar',
         component: AgregarModificarRedaccionComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [DeactivateGuard]
+        canDeactivate: [DeactivateGuard],
     },
     {
         path: 'clausulas/agregar/redaccion/modificar/:idRedaccion',
         component: AgregarModificarRedaccionComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [DeactivateGuard]
+        canDeactivate: [DeactivateGuard],
     },
     {
         path: 'clausulas/modificar/:idClausula',
         component: AgregarModificarClausulaComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [DeactivateGuard]
+        canDeactivate: [DeactivateGuard],
     },
     {
         path: 'clausulas/modificar/:idClausula/redaccion/agregar',
         component: AgregarModificarRedaccionComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [DeactivateGuard]
+        canDeactivate: [DeactivateGuard],
     },
     {
         path: 'clausulas/modificar/:idClausula/redaccion/modificar/:idRedaccion',
         component: AgregarModificarRedaccionComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [DeactivateGuard]
+        canDeactivate: [DeactivateGuard],
     },
     {
         path: 'capitulos',
@@ -149,13 +149,13 @@ const routes: Routes = [
         path: 'capitulos/agregar',
         component: AgregarModificarCapituloComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [DeactivateGuard]
+        canDeactivate: [DeactivateGuard],
     },
     {
         path: 'capitulos/modificar/:idCapitulo',
         component: AgregarModificarCapituloComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [DeactivateGuard]
+        canDeactivate: [DeactivateGuard],
     },
     {
         path: 'secciones',
@@ -166,13 +166,13 @@ const routes: Routes = [
         path: 'secciones/agregar',
         component: AgregarModificarSeccionComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [DeactivateGuard]
+        canDeactivate: [DeactivateGuard],
     },
     {
         path: 'secciones/modificar/:idSeccion',
         component: AgregarModificarSeccionComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [DeactivateGuard]
+        canDeactivate: [DeactivateGuard],
     },
     {
         path: 'modelos',
@@ -183,15 +183,14 @@ const routes: Routes = [
         path: 'modelos/agregar',
         component: AgregarModificarModeloComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [DeactivateGuard]
+        canDeactivate: [DeactivateGuard],
     },
     {
         path: 'modelos/modificar/:idModelo',
         component: AgregarModificarModeloComponent,
         canActivate: [AuthGuard],
-        canDeactivate: [DeactivateGuard]
-    }
-
+        canDeactivate: [DeactivateGuard],
+    },
 ];
 
 export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
@@ -200,24 +199,23 @@ export const manageEmialsRoutingModule: ModuleWithProviders<RouterModule> =
 @NgModule({
     declarations: [],
     imports: [
-      CommonModule,
-      SharedModule,
-      RouterModule.forChild(routes),
-      NgxMaskDirective,
-      ConsultaCamposReglasComponent,
-      AgregarModificarCampoComponent,
-      AgregarModificarReglaPopupComponent,
-      ConsultaUsuariosConformidadComponent,
-      ConsultaUsuariosConformidadCompraComponent,
-      NuevoUsuarioPopupComponent,
-      NuevoUsuarioTipoCompraPopupComponent,
-      NuevoUsuarioUcPopupComponent,
-      UnidadesCompraSicePopupComponent,
-      ConsultaUsuariosRolesComponent,
-      ConsultaUsuariosRolesCompraComponent,
-      ConsultaUsuariosRolesItemsComponent,
-      ModificarRolPopupComponent,
+        CommonModule,
+        SharedModule,
+        RouterModule.forChild(routes),
+        NgxMaskDirective,
+        ConsultaCamposReglasComponent,
+        AgregarModificarCampoComponent,
+        AgregarModificarReglaPopupComponent,
+        ConsultaUsuariosConformidadComponent,
+        ConsultaUsuariosConformidadCompraComponent,
+        NuevoUsuarioPopupComponent,
+        NuevoUsuarioTipoCompraPopupComponent,
+        NuevoUsuarioUcPopupComponent,
+        UnidadesCompraSicePopupComponent,
+        ConsultaUsuariosRolesComponent,
+        ConsultaUsuariosRolesCompraComponent,
+        ConsultaUsuariosRolesItemsComponent,
+        ModificarRolPopupComponent,
     ],
 })
 export class AdministracionModule {}
-

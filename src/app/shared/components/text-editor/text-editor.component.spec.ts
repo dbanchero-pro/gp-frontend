@@ -11,10 +11,7 @@ describe('TextEditorComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [],
-            imports: [
-              SharedModule,
-              TextEditorComponent,
-            ],
+            imports: [SharedModule, TextEditorComponent],
         });
         fixture = TestBed.createComponent(TextEditorComponent);
         component = fixture.componentInstance;

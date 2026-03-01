@@ -8,6 +8,6 @@ export class ZonaDto implements IZonaDTO {
     constructor(
         public id?: number,
         public descripcionZona?: string,
-        public dadoBaja?: boolean) {
-    }
+        public dadoBaja?: boolean,
+    ) {}
 }

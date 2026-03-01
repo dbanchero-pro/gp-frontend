@@ -1,9 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { SiNoValor } from '../enum/si-no-valor.enum';
 
-@Pipe({ 
+@Pipe({
     standalone: true,
-name: 'siNoValor'})
+    name: 'siNoValor',
+})
 export class SiNoValorPipe implements PipeTransform {
     opcionesRequerido: any = [
         { id: SiNoValor.SI, nombre: 'Si' },

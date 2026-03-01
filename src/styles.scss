@@ -3,7 +3,8 @@
 @use "scss/portal-tipo/portal-tipo.scss";
 @use "scss/sidebar/style.scss";
 @use "../node_modules/@swimlane/ngx-datatable/index.css";
-@use "../node_modules/@swimlane/ngx-datatable/themes/bootstrap.css" as ngx-datatable-bootstrap;
+@use "../node_modules/@swimlane/ngx-datatable/themes/bootstrap.css" as
+    ngx-datatable-bootstrap;
 @use "../node_modules/@swimlane/ngx-datatable/assets/icons.css";
 @use "../node_modules/bootstrap/dist/css/bootstrap.css";
 @use "scss/portal-tipo/variables.scss" as variables;
@@ -27,9 +28,7 @@ ul.data-list {
     text-align: center;
 }
 
-
 @media screen and (max-width: 576px) {
-
     /* toca los formularios
         nuevo año
         nuevo día
@@ -290,7 +289,6 @@ em.btn-split {
         max-width: 147px !important;
     }
 
-
     .btn-ancho-fijo-wider.btn-block {
         &:first-child {
             width: 209px !important;
@@ -359,7 +357,6 @@ em.btn-split {
     }
 }
 
-
 .clean-filter {
     display: flex;
     justify-content: flex-end;
@@ -419,7 +416,6 @@ select.form-control:focus {
         min-width: 100% !important;
         max-width: 100% !important;
     }
-
 }
 
 @media screen and (max-width: 566px) {
@@ -465,14 +461,12 @@ thead th {
     white-space: nowrap;
 }
 
-
 .error-popup {
     position: relative;
     top: -25px;
     left: -39px;
     width: calc(100% + 78px);
     min-height: 23px;
-
 }
 
 .error-popup .alert {
@@ -499,7 +493,7 @@ app-input-documento {
 }
 
 .modal {
-    background: rgba(0, 0, 0, .5);
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .modal-backdrop.show {
@@ -664,7 +658,7 @@ app-input-documento {
 }
 
 a {
-    color: #003DA5;
+    color: #003da5;
 }
 
 .tabla-scroll-x {
@@ -705,15 +699,15 @@ a {
     place-items: center;
 }
 
-input[type=radio]:focus,
-input[type=checkbox]:focus,
+input[type="radio"]:focus,
+input[type="checkbox"]:focus,
 button:not(:disabled):focus,
-[type=button]:not(:disabled):focus,
-input[type=text]:focus,
-input[type=email]:focus,
-input[type=password]:focus,
-input[type=tel]:focus,
-input[type=date]:focus,
+[type="button"]:not(:disabled):focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="tel"]:focus,
+input[type="date"]:focus,
 input.form-control:focus,
 .input-check:focus,
 a:focus,
@@ -725,47 +719,51 @@ select:focus {
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
 }
 
-input[type=radio],
-input[type=checkbox] {
+input[type="radio"],
+input[type="checkbox"] {
     box-sizing: border-box;
     padding: 0;
     width: 15px;
     height: 15px;
 }
 
-input[type=radio] {
+input[type="radio"] {
     margin-bottom: 5px;
 }
 
 .no-spinners::-webkit-outer-spin-button,
 .no-spinners::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 .no-spinners {
-  -moz-appearance: textfield;
-  appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 .vertical-align-top {
     vertical-align: top;
 }
 
-.align-items-center{
+.align-items-center {
     align-items: center;
 }
 
-.text-crop{
+.text-crop {
     text-overflow: ellipsis;
     width: 100%;
     overflow-x: hidden;
 }
 
 @media (min-width: 1400px) {
-  .modal-xxl{ max-width: 1400px; }
+    .modal-xxl {
+        max-width: 1400px;
+    }
 }
 @media (min-width: 1800px) {
-  .modal-xxl{ max-width: 1600px; }
+    .modal-xxl {
+        max-width: 1600px;
+    }
 }
 
 .label-sin-width {

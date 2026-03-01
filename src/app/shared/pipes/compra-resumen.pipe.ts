@@ -3,14 +3,14 @@ import { CompraDTO } from 'src/app/shared/models/compra.model';
 
 type SeccionResumen = 'unidad' | 'detalle' | 'detalleHtml' | 'full';
 
-@Pipe({ 
+@Pipe({
     standalone: true,
-name: 'compraResumen' })
+    name: 'compraResumen',
+})
 export class CompraResumenPipe implements PipeTransform {
-
     transform(
         compra: Partial<CompraDTO> | null | undefined,
-        seccion: SeccionResumen = 'full'
+        seccion: SeccionResumen = 'full',
     ): string {
         if (!compra) return '';
 
@@ -22,7 +22,8 @@ export class CompraResumenPipe implements PipeTransform {
 
         if (uc.descInciso) partesUnidad.push(uc.descInciso);
         if (uc.descUnidadEjecutora) partesUnidad.push(uc.descUnidadEjecutora);
-        if (uc.descUnidadCompra) partesUnidad.push(`${unidadLabel}${uc.descUnidadCompra}`);
+        if (uc.descUnidadCompra)
+            partesUnidad.push(`${unidadLabel}${uc.descUnidadCompra}`);
 
         const unidadStr = partesUnidad.join(' | ');
 
@@ -33,24 +34,30 @@ export class CompraResumenPipe implements PipeTransform {
         const anioCompra = compra.anioCompra;
         const nroAmpliacion = compra.nroAmpliacion;
 
-        const convenio = (tipoCompra && numCompra != null && anioCompra != null)
-            ? `${tipoCompra} Nº ${numCompra}/${anioCompra}`
-            : '';
+        const convenio =
+            tipoCompra && numCompra != null && anioCompra != null
+                ? `${tipoCompra} Nº ${numCompra}/${anioCompra}`
+                : '';
 
-        const convenioHtml = (tipoCompra && numCompra != null && anioCompra != null)
-            ? `<strong>${tipoCompra} | ${subtipoCompra} Nº ${numCompra}/${anioCompra}</strong>`
-            : '';
+        const convenioHtml =
+            tipoCompra && numCompra != null && anioCompra != null
+                ? `<strong>${tipoCompra} | ${subtipoCompra} Nº ${numCompra}/${anioCompra}</strong>`
+                : '';
 
-        const ampliacion = nroAmpliacion != null && nroAmpliacion !== 0
-            ? `Nº ampliación/renovación: ${nroAmpliacion}`
-            : '';
+        const ampliacion =
+            nroAmpliacion != null && nroAmpliacion !== 0
+                ? `Nº ampliación/renovación: ${nroAmpliacion}`
+                : '';
 
-        const ampliacionHtml = nroAmpliacion != null && nroAmpliacion !== 0
-            ? `Nº ampliación/renovación: <strong>${nroAmpliacion}</strong>`
-            : '';
+        const ampliacionHtml =
+            nroAmpliacion != null && nroAmpliacion !== 0
+                ? `Nº ampliación/renovación: <strong>${nroAmpliacion}</strong>`
+                : '';
 
         const detalleStr = [convenio, ampliacion].filter(Boolean).join(' | ');
-        const detalleHtml = [convenioHtml, ampliacionHtml].filter(Boolean).join(' | ');
+        const detalleHtml = [convenioHtml, ampliacionHtml]
+            .filter(Boolean)
+            .join(' | ');
 
         // Resultado según sección
         switch (seccion) {

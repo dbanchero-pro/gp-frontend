@@ -5,6 +5,9 @@ export interface IIncisoDTO {
 }
 
 export class IncisoDTO implements IIncisoDTO {
-    constructor(public id?: number, public descInciso?: string, public habilitado: boolean = true) {
-    }
+    constructor(
+        public id?: number,
+        public descInciso?: string,
+        public habilitado: boolean = true,
+    ) {}
 }

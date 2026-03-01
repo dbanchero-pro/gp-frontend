@@ -1,25 +1,49 @@
-import { Component, EventEmitter, forwardRef, Injector, Input, OnChanges, OnInit, Output, SimpleChanges, } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR, NgControl, ValidationErrors, Validator, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+    Component,
+    EventEmitter,
+    forwardRef,
+    Injector,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
+} from '@angular/core';
+import {
+    AbstractControl,
+    ControlValueAccessor,
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    NG_VALIDATORS,
+    NG_VALUE_ACCESSOR,
+    NgControl,
+    ValidationErrors,
+    Validator,
+    Validators,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { IFiltroOrganismoDTO } from '../../models/filtros/filtro-organismo.model';
 import { IIncisoDTO } from '../../models/sice/inciso.model';
 import { UnidadCompraDTO } from '../../models/sice/unidad-compra.model';
 import { UnidadEjecutoraDTO } from '../../models/sice/unidad-ejecutora.model';
 import { OrganismoService } from '../../services/organismo.service';
-import { NumeroNulo } from '../../types/numero-nulo.type';import { CommonModule } from '@angular/common';import { RouterModule } from '@angular/router';import { AlertModule } from 'ngx-bootstrap/alert';import { BsDropdownModule } from 'ngx-bootstrap/dropdown';import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';import { ModalModule } from 'ngx-bootstrap/modal';import { PaginationModule } from 'ngx-bootstrap/pagination';import { TabsModule } from 'ngx-bootstrap/tabs';import { TooltipModule } from 'ngx-bootstrap/tooltip';import { TypeaheadModule } from 'ngx-bootstrap/typeahead';import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';import { NgxEditorModule } from 'ngx-editor';import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-
-
-
-
-
-
-
-
-
-
-
-
-
+import { NumeroNulo } from '../../types/numero-nulo.type';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';
+import { NgxEditorModule } from 'ngx-editor';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 @Component({
     selector: 'app-filtro-organismo',
@@ -37,30 +61,28 @@ import { NumeroNulo } from '../../types/numero-nulo.type';import { CommonModule 
             multi: true,
         },
     ],
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
-    AlertModule,
-    BsDropdownModule,
-    BsDatepickerModule,
-    ModalModule,
-    PaginationModule,
-    TabsModule,
-    TooltipModule,
-    TypeaheadModule,
-    NgxDaterangepickerBootstrapModule,
-    NgxEditorModule,
-    NgxDatatableModule
-  ],
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule,
+        AlertModule,
+        BsDropdownModule,
+        BsDatepickerModule,
+        ModalModule,
+        PaginationModule,
+        TabsModule,
+        TooltipModule,
+        TypeaheadModule,
+        NgxDaterangepickerBootstrapModule,
+        NgxEditorModule,
+        NgxDatatableModule,
+    ],
 })
-
-
 export class FiltroOrganismoComponent
-    implements OnChanges, OnInit, ControlValueAccessor, Validator {
-
+    implements OnChanges, OnInit, ControlValueAccessor, Validator
+{
     @Output() cambioFiltro = new EventEmitter<IFiltroOrganismoDTO>();
     @Output() limpiarFiltro = new EventEmitter();
     // Emitido cuando se cargan los datos del filtro para poder deshabilitarlo o hacerle acciones adicionales
@@ -77,9 +99,9 @@ export class FiltroOrganismoComponent
     @Input() idUsuarioSeleccionado: string | undefined;
     @Input() tipoSeguimientoProveedor: boolean = false;
 
-    private onChange: (v: IFiltroOrganismoDTO) => void = () => { };
-    private onTouched: () => void = () => { };
-    private onValidatorChange: () => void = () => { };
+    private onChange: (v: IFiltroOrganismoDTO) => void = () => {};
+    private onTouched: () => void = () => {};
+    private onValidatorChange: () => void = () => {};
     private tocado = false;
     private sucio = false;
     public idControl!: number;
@@ -97,10 +119,9 @@ export class FiltroOrganismoComponent
     constructor(
         private readonly injector: Injector,
         private readonly filterService: OrganismoService,
-        private readonly formBuild: FormBuilder
-    ) { }
+        private readonly formBuild: FormBuilder,
+    ) {}
 
-    
     ngOnInit(): void {
         this.idControl = Math.random(); //NOSONAR
         const validatorsInciso = this.requeridoInciso
@@ -111,21 +132,32 @@ export class FiltroOrganismoComponent
 
         this.form = this.formBuild.group({
             idInciso: this.formBuild.control<NumeroNulo>('', validatorsInciso),
-            idUnidadEjecutora: this.formBuild.control<NumeroNulo>('', validatorsUE),
-            idUnidadCompra: this.formBuild.control<NumeroNulo>('', validatorsUC),
+            idUnidadEjecutora: this.formBuild.control<NumeroNulo>(
+                '',
+                validatorsUE,
+            ),
+            idUnidadCompra: this.formBuild.control<NumeroNulo>(
+                '',
+                validatorsUC,
+            ),
         });
 
-        this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => this.cambioDatosFiltros());
+        this.form.valueChanges
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => this.cambioDatosFiltros());
         let observador;
         if (this.tipoSeguimientoProveedor) {
             observador = this.filterService.obtenerIncisosOCProveedor();
         } else {
-            observador = this.filterService.obtenerIncisos(this.incluirAdministrativas, this.idUsuarioSeleccionado);
+            observador = this.filterService.obtenerIncisos(
+                this.incluirAdministrativas,
+                this.idUsuarioSeleccionado,
+            );
         }
         observador.subscribe((res: IIncisoDTO[]) => {
             this.incisos = res;
         });
-       
+
         if (this.disabled) {
             this.form.disable({ emitEvent: false });
         }
@@ -167,10 +199,10 @@ export class FiltroOrganismoComponent
         }
     }
 
-    cambioUC () {
+    cambioUC() {
         //Se deja por si se necesita
     }
-    
+
     aplicarValidadores(changes: SimpleChanges): void {
         if (changes['requeridoInciso'] && this.form) {
             const ctrl = this.form.get('idInciso')!;
@@ -226,7 +258,7 @@ export class FiltroOrganismoComponent
                     idUnidadEjecutora: dto.idUnidadEjecutora ?? '',
                     idUnidadCompra: dto.idUnidadCompra ?? '',
                 },
-                { emitEvent: false }
+                { emitEvent: false },
             );
 
             this.resetPristine();
@@ -236,7 +268,6 @@ export class FiltroOrganismoComponent
                 this.form.get('idInciso')?.setValue('');
                 this.resetPristine();
             }
-
         } else {
             this.limpiar();
         }
@@ -276,7 +307,10 @@ export class FiltroOrganismoComponent
         if (selectedValue && !isNaN(selectedValue)) {
             this.cargarUnidadesEjecutoras(selectedValue, limpiarSeleccion);
         } else {
-            if (oldidUnidadEjecutora !== this.form.get('idUnidadEjecutora')?.value) {
+            if (
+                oldidUnidadEjecutora !==
+                this.form.get('idUnidadEjecutora')?.value
+            ) {
                 this.form.get('idUnidadEjecutora')?.markAsTouched();
             }
             if (oldidUnidadCompra !== this.form.get('idUnidadCompra')?.value) {
@@ -285,13 +319,20 @@ export class FiltroOrganismoComponent
         }
     }
 
-    private cargarUnidadesEjecutoras(selectedValue: number, limpiarSeleccion: boolean) {
+    private cargarUnidadesEjecutoras(
+        selectedValue: number,
+        limpiarSeleccion: boolean,
+    ) {
         let observador;
 
         if (this.tipoSeguimientoProveedor) {
             observador = this.filterService.obtenerUEOCProveedor(selectedValue);
         } else {
-            observador = this.filterService.obtenerUE(selectedValue, this.incluirAdministrativas, this.idUsuarioSeleccionado);
+            observador = this.filterService.obtenerUE(
+                selectedValue,
+                this.incluirAdministrativas,
+                this.idUsuarioSeleccionado,
+            );
         }
         observador.pipe(takeUntil(this.destroy$)).subscribe({
             next: (res: UnidadEjecutoraDTO[]) => {
@@ -299,17 +340,28 @@ export class FiltroOrganismoComponent
                 if (this.unidadesEjecutoras.length > 0 && !this.disabled) {
                     this.form.get('idUnidadEjecutora')?.enable();
                 }
-                if (res.length === 1
-                    && (!this.form.get('idUnidadEjecutora')?.value || this.form.get('idUnidadEjecutora')?.value === '')) {
-                    this.form.get('idUnidadEjecutora')?.setValue(res[0].idUnidadEjecutora ?? '');
+                if (
+                    res.length === 1 &&
+                    (!this.form.get('idUnidadEjecutora')?.value ||
+                        this.form.get('idUnidadEjecutora')?.value === '')
+                ) {
+                    this.form
+                        .get('idUnidadEjecutora')
+                        ?.setValue(res[0].idUnidadEjecutora ?? '');
                     this.resetPristine();
                 }
-                if (this.form.get('idUnidadEjecutora')?.value && this.form.get('idUnidadEjecutora')?.value !== '') {
+                if (
+                    this.form.get('idUnidadEjecutora')?.value &&
+                    this.form.get('idUnidadEjecutora')?.value !== ''
+                ) {
                     this.cambioUE(limpiarSeleccion);
                 }
             },
             error: (err: Error) => {
-                console.error('Error cargando unidades ejecutoras:', err.message);
+                console.error(
+                    'Error cargando unidades ejecutoras:',
+                    err.message,
+                );
                 this.unidadesEjecutoras = [];
                 this.form.get('idUnidadEjecutora')?.setValue('');
                 this.unidadesCompra = [];
@@ -331,14 +383,27 @@ export class FiltroOrganismoComponent
         this.unidadesCompra = [];
         this.form.get('idUnidadCompra')?.markAsUntouched();
         this.form.get('idUnidadCompra')?.markAsPristine();
-        if (selectedIncisoValue && !isNaN(selectedIncisoValue) && selectedValue && !isNaN(selectedValue)) {
+        if (
+            selectedIncisoValue &&
+            !isNaN(selectedIncisoValue) &&
+            selectedValue &&
+            !isNaN(selectedValue)
+        ) {
             let observador;
             if (this.tipoSeguimientoProveedor) {
-                observador = this.filterService.obtenerUCProveedor(selectedIncisoValue, selectedValue);
+                observador = this.filterService.obtenerUCProveedor(
+                    selectedIncisoValue,
+                    selectedValue,
+                );
             } else {
-                observador = this.filterService.obtenerUC(selectedIncisoValue, selectedValue, this.incluirAdministrativas, this.idUsuarioSeleccionado);
+                observador = this.filterService.obtenerUC(
+                    selectedIncisoValue,
+                    selectedValue,
+                    this.incluirAdministrativas,
+                    this.idUsuarioSeleccionado,
+                );
             }
-                    
+
             observador.subscribe({
                 next: (res: UnidadCompraDTO[]) => {
                     this.unidadesCompra = res;
@@ -346,18 +411,19 @@ export class FiltroOrganismoComponent
                         this.form.get('idUnidadCompra')?.enable();
                     }
                     if (res.length === 1) {
-                        this.form.get('idUnidadCompra')?.setValue(res[0].idUnidadCompra ?? '');
+                        this.form
+                            .get('idUnidadCompra')
+                            ?.setValue(res[0].idUnidadCompra ?? '');
                         this.resetPristine();
                     }
                     this.datosCargados.emit();
                 },
                 error: (err: any) => {
-                    console.error('Error cargando unidades de compra:', err );
+                    console.error('Error cargando unidades de compra:', err);
                     this.datosCargados.emit();
                 },
             });
         } else {
-           
             if (oldidUnidadCompra !== this.form.get('idUnidadCompra')?.value) {
                 this.form.get('idUnidadCompra')?.markAsTouched();
             }
@@ -394,9 +460,13 @@ export class FiltroOrganismoComponent
         }
         return {
             filtroIncompleto: {
-                requiredInciso: this.requeridoInciso && !this.form.get('idInciso')!.value,
-                requiredUE: this.requeridoUE && !this.form.get('idUnidadEjecutora')!.value,
-                requiredUC: this.requeridoUC && !this.form.get('idUnidadCompra')!.value,
+                requiredInciso:
+                    this.requeridoInciso && !this.form.get('idInciso')!.value,
+                requiredUE:
+                    this.requeridoUE &&
+                    !this.form.get('idUnidadEjecutora')!.value,
+                requiredUC:
+                    this.requeridoUC && !this.form.get('idUnidadCompra')!.value,
             },
         };
     }
@@ -444,7 +514,7 @@ export class FiltroOrganismoComponent
 
     private chequearTocado(ngControl: NgControl) {
         const nowTouched = ngControl.touched;
-        
+
         this.tocado = false;
         if (nowTouched !== this.tocado) {
             this.tocado = nowTouched ?? false;
@@ -481,5 +551,3 @@ export class FiltroOrganismoComponent
         }, 100);
     }
 }
-
-

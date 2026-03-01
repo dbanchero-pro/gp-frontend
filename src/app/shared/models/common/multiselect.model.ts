@@ -4,5 +4,8 @@ export interface IMultiSelect {
 }
 
 export class MultiSelect implements IMultiSelect {
-    constructor(public id: number | string, public nombre: string) {}
+    constructor(
+        public id: number | string,
+        public nombre: string,
+    ) {}
 }

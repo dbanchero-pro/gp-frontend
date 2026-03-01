@@ -1,52 +1,98 @@
 <div class="modal-header d-flex justify-content-between align-items-center">
-    <h1 class="modal-title mb-0" id="tituloPopup">Asignar roles por unidad de compra</h1>
-    <button type="button" aria-label="Cerrar" class="close" (click)="cancelarConConfirmacion()">&times;</button>
+    <h1 class="modal-title mb-0" id="tituloPopup">
+        Asignar roles por unidad de compra
+    </h1>
+    <button
+        type="button"
+        aria-label="Cerrar"
+        class="close"
+        (click)="cancelarConConfirmacion()"
+    >
+        &times;
+    </button>
 </div>
 
 <div class="modal-body">
     <div class="Box Box--colorInfo" *ngIf="usuario">
-        <span class="subtitle mb-0"><strong>CI {{ usuario.id | formatoCi }}</strong> - {{ usuario.nombre }} </span>
+        <span class="subtitle mb-0"
+            ><strong>CI {{ usuario.id | formatoCi }}</strong> -
+            {{ usuario.nombre }}
+        </span>
     </div>
 
     <form [formGroup]="form" (submit)="guardar()">
-        <app-filtro-organismo formControlName="organismo" [requeridoInciso]="true" [requeridoUC]="true"
-            [requeridoUE]="true" *ngIf="idUsuarioSeleccionado" [idUsuarioSeleccionado]="idUsuarioSeleccionado">
+        <app-filtro-organismo
+            formControlName="organismo"
+            [requeridoInciso]="true"
+            [requeridoUC]="true"
+            [requeridoUE]="true"
+            *ngIf="idUsuarioSeleccionado"
+            [idUsuarioSeleccionado]="idUsuarioSeleccionado"
+        >
         </app-filtro-organismo>
 
         <div class="row">
-            <div class="form-group form-row col-12 m-0 pb-0 pt-0" [class.field-error]="!alMenosUnRolSeleccionado() && intentoGuardar">
+            <div
+                class="form-group form-row col-12 m-0 pb-0 pt-0"
+                [class.field-error]="
+                    !alMenosUnRolSeleccionado() && intentoGuardar
+                "
+            >
                 <label for="roles">* Roles</label>
                 <div class="d-flex justify-content-center w-100 col-12 Box">
-                        <div class="form-check col-3">
-                            <input type="checkbox" class="form-check-input" id="esEditorPrincipal"
-                                formControlName="esEditorPrincipal">
-                            <label class="form-check-label" for="esEditorPrincipal">
-                                Editor principal
-                            </label>
-                        </div>
-                        <div class="form-check col-2">
-                            <input type="checkbox" class="form-check-input" id="esEditor"
-                                formControlName="esEditor">
-                            <label class="form-check-label" for="esEditor">
-                                Editor
-                            </label>
-                        </div>
-                        <div class="form-check col-2">
-                            <input type="checkbox" class="form-check-input" id="esValidador"
-                                formControlName="esValidador">
-                            <label class="form-check-label" for="esValidador">
-                                Validador
-                            </label>
-                        </div>
-                        <div class="form-check col-2">
-                            <input type="checkbox" class="form-check-input" id="esAprobador"
-                                formControlName="esAprobador">
-                            <label class="form-check-label" for="esAprobador">
-                                Aprobador
-                            </label>
-                        </div>
+                    <div class="form-check col-3">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="esEditorPrincipal"
+                            formControlName="esEditorPrincipal"
+                        />
+                        <label class="form-check-label" for="esEditorPrincipal">
+                            Editor principal
+                        </label>
+                    </div>
+                    <div class="form-check col-2">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="esEditor"
+                            formControlName="esEditor"
+                        />
+                        <label class="form-check-label" for="esEditor">
+                            Editor
+                        </label>
+                    </div>
+                    <div class="form-check col-2">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="esValidador"
+                            formControlName="esValidador"
+                        />
+                        <label class="form-check-label" for="esValidador">
+                            Validador
+                        </label>
+                    </div>
+                    <div class="form-check col-2">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="esAprobador"
+                            formControlName="esAprobador"
+                        />
+                        <label class="form-check-label" for="esAprobador">
+                            Aprobador
+                        </label>
+                    </div>
                 </div>
-                <span class="texto-error col-12" [style.visibility]="!alMenosUnRolSeleccionado() && intentoGuardar ? 'visible' : 'hidden'">
+                <span
+                    class="texto-error col-12"
+                    [style.visibility]="
+                        !alMenosUnRolSeleccionado() && intentoGuardar
+                            ? 'visible'
+                            : 'hidden'
+                    "
+                >
                     Debe seleccionar al menos un rol
                 </span>
             </div>
@@ -56,7 +102,13 @@
             <button type="submit" class="btn btn-primary" (click)="guardar()">
                 Guardar
             </button>
-            <button type="button" class="Button btn-link" (click)="cancelarConConfirmacion()">Cancelar</button>
+            <button
+                type="button"
+                class="Button btn-link"
+                (click)="cancelarConConfirmacion()"
+            >
+                Cancelar
+            </button>
         </div>
     </form>
 </div>

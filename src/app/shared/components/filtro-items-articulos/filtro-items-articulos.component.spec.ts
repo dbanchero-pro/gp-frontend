@@ -1,7 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {
+    ComponentFixture,
+    TestBed,
+    fakeAsync,
+    tick,
+} from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
@@ -14,7 +19,7 @@ const mockHttpClient = {
     get: jasmine.createSpy('get').and.returnValue(of({})),
     post: jasmine.createSpy('post').and.returnValue(of({})),
     put: jasmine.createSpy('put').and.returnValue(of({})),
-    delete: jasmine.createSpy('delete').and.returnValue(of({}))
+    delete: jasmine.createSpy('delete').and.returnValue(of({})),
 };
 
 class ItemsCompraServiceStub {
@@ -36,15 +41,18 @@ describe('FiltroItemsArticulos', () => {
         TestBed.configureTestingModule({
             declarations: [],
             imports: [
-              FormsModule,
-              ReactiveFormsModule,
-              FiltroItemsArticulosComponent,
+                FormsModule,
+                ReactiveFormsModule,
+                FiltroItemsArticulosComponent,
             ],
             providers: [
                 provideHttpClientTesting(),
                 provideRouter([]),
                 { provide: HttpClient, useValue: mockHttpClient },
-                { provide: ItemsCompraService, useClass: ItemsCompraServiceStub },
+                {
+                    provide: ItemsCompraService,
+                    useClass: ItemsCompraServiceStub,
+                },
             ],
             schemas: [NO_ERRORS_SCHEMA],
         });
@@ -106,11 +114,13 @@ describe('FiltroItemsArticulos', () => {
         expect(spy).toHaveBeenCalledWith('algo');
     });
 
-
     it('debería actualizar los campos correctamente en cambioArticulo()', () => {
         const spy = spyOn(component, 'cambioDatosFiltros');
         component.tipoBusqueda.setValue('ARTICULO');
-        component.cambioArticulo({ item: { descArticulo: 'nuevo' } } as any, TipoBusqueda.ARTICULO);
+        component.cambioArticulo(
+            { item: { descArticulo: 'nuevo' } } as any,
+            TipoBusqueda.ARTICULO,
+        );
         expect(component.busqueda.value).toBe('nuevo');
         expect(component.articuloBusquedaTexto.value).toBe('nuevo');
         expect(spy).toHaveBeenCalled();
@@ -130,10 +140,10 @@ describe('FiltroItemsArticulos', () => {
         const mockEvent = new Event('input');
         Object.defineProperty(mockEvent, 'target', {
             value: {
-                value: '55'
+                value: '55',
             },
             writable: false,
-            configurable: true
+            configurable: true,
         });
         component.cambioItem(mockEvent);
         expect(component.busqueda.value).toBe('55');
@@ -141,7 +151,6 @@ describe('FiltroItemsArticulos', () => {
 
         expect(spy).toHaveBeenCalled();
     });
-
 
     it('debería limpiar los campos si cambioItem es null', () => {
         const spy = spyOn(component, 'cambioDatosFiltros');
@@ -173,7 +182,7 @@ describe('FiltroItemsArticulos', () => {
     it('buscarEnCliente filtra por nro item', (done) => {
         component.tipoBusqueda.setValue('NROITEM');
         component.items = [{ nroItem: '5', descArticulo: 'A' } as any];
-        component.buscarEnCliente('5').subscribe(res => {
+        component.buscarEnCliente('5').subscribe((res) => {
             expect(res.length).toBe(1);
             done();
         });
@@ -182,7 +191,7 @@ describe('FiltroItemsArticulos', () => {
     it('buscarEnCliente retorna vacío para texto no numérico', (done) => {
         component.tipoBusqueda.setValue('NROITEM');
         component.items = [{ nroItem: '5', descArticulo: 'A' } as any];
-        component.buscarEnCliente('x').subscribe(res => {
+        component.buscarEnCliente('x').subscribe((res) => {
             expect(res.length).toBe(0);
             done();
         });
@@ -191,7 +200,7 @@ describe('FiltroItemsArticulos', () => {
     it('buscarEnCliente filtra por artículo', (done) => {
         component.tipoBusqueda.setValue('ARTICULO');
         component.items = [{ nroItem: '5', descArticulo: 'ArticuloA' } as any];
-        component.buscarEnCliente('articuloa').subscribe(res => {
+        component.buscarEnCliente('articuloa').subscribe((res) => {
             expect(res.length).toBe(1);
             done();
         });

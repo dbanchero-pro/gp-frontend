@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
-import { of, Subject } from "rxjs";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { of, Subject } from 'rxjs';
 
-import { AlertModule } from "ngx-bootstrap/alert";
-import { MensajeComponent } from "./mensaje.component";
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { MensajeComponent } from './mensaje.component';
 
 describe('MensajeComponent', () => {
     let component: MensajeComponent;
@@ -14,22 +14,19 @@ describe('MensajeComponent', () => {
             // componentes
             declarations: [],
             // modulos
-            imports: [
-              AlertModule,
-              MensajeComponent,
-            ],
+            imports: [AlertModule, MensajeComponent],
             // servicios
             providers: [
                 { provide: ActivatedRoute, useClass: ActivatedRouteStub },
                 {
                     provide: Router,
                     useValue: {
-                        url: "/test",
-                        events: of(new NavigationEnd(0, "/test", "/test")),
-                        navigate: jasmine.createSpy("navigate")
-                    }
-                }
-            ]
+                        url: '/test',
+                        events: of(new NavigationEnd(0, '/test', '/test')),
+                        navigate: jasmine.createSpy('navigate'),
+                    },
+                },
+            ],
         }).compileComponents();
     });
 
@@ -42,15 +39,14 @@ describe('MensajeComponent', () => {
         expect(component).toBeTruthy();
     });
 
-
-    it("ngOnInit() debería setear El showMsg en false si ocurre un eventos del tipo NavigationEnd y si showMsg era true ", () => {
+    it('ngOnInit() debería setear El showMsg en false si ocurre un eventos del tipo NavigationEnd y si showMsg era true ', () => {
         component.showMsg = true;
         fixture.detectChanges();
 
         expect(component.showMsg).toBeFalse();
     });
 
-    it("onClose() debería setear El showMsg en false", () => {
+    it('onClose() debería setear El showMsg en false', () => {
         component.showMsg = true;
 
         component.onClose();
@@ -58,7 +54,6 @@ describe('MensajeComponent', () => {
         expect(component.showMsg).toBeFalse();
     });
 });
-
 
 class ActivatedRouteStub {
     private readonly subject = new Subject();

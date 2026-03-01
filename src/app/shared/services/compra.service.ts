@@ -17,8 +17,7 @@ interface ObtenerParams {
     providedIn: 'root',
 })
 export class CompraService {
-
-    constructor(private readonly gcRestService: RestService) { }
+    constructor(private readonly gcRestService: RestService) {}
 
     obtenerCompras(parametros: {
         filtro: Partial<FiltroCompraDTO> | null;
@@ -26,29 +25,28 @@ export class CompraService {
         tamanoPagina: number;
         sort: string;
         order: string;
-    }): Observable<{ contenido: CompraDTO[], totalElementos: number }> {
+    }): Observable<{ contenido: CompraDTO[]; totalElementos: number }> {
         const params = this._buildHttpParams({
             filtro: parametros.filtro,
             page: parametros.pagina,
             size: parametros.tamanoPagina,
             sort: parametros.sort,
-            order: parametros.order
+            order: parametros.order,
         });
 
-        return this.gcRestService.get<any>(
-            '/api/gestion-contratos/v1/compra/all',
-            params
-        ).pipe(
-            map(response => ({
-                contenido: response.content,
-                totalElementos: response.totalElements
-            }))
-        );
+        return this.gcRestService
+            .get<any>('/api/gestion-contratos/v1/compra/all', params)
+            .pipe(
+                map((response) => ({
+                    contenido: response.content,
+                    totalElementos: response.totalElements,
+                })),
+            );
     }
 
     obtenerCompraPorId(idCompra: number): Observable<CompraDTO> {
         return this.gcRestService.get<CompraDTO>(
-            `/api/gestion-contratos/v1/compra/${idCompra}`
+            `/api/gestion-contratos/v1/compra/${idCompra}`,
         );
     }
 
@@ -68,11 +66,13 @@ export class CompraService {
         const queryParams: { [param: string]: string | number | boolean } = {
             page: options.page,
             size: options.size,
-            sort: `${this.mapearColumnaOrdenamiento(options.sort)},${options.order === 'desc' ? 'desc' : 'asc'}`
+            sort: `${this.mapearColumnaOrdenamiento(options.sort)},${options.order === 'desc' ? 'desc' : 'asc'}`,
         };
 
         if (options.filtro) {
-            for (const key of Object.keys(options.filtro) as Array<keyof FiltroCompraDTO>) {
+            for (const key of Object.keys(options.filtro) as Array<
+                keyof FiltroCompraDTO
+            >) {
                 const valor = options.filtro[key];
                 if (valor !== undefined && valor !== null && valor !== '') {
                     const paramName = filtroMap[key];
@@ -88,10 +88,11 @@ export class CompraService {
 
     mapearColumnaOrdenamiento(columna: string): string {
         const mapeo: { [key: string]: string } = {
-            'idInciso': 'unidadCompra.id.unidadEjecutora.id.inciso.id',
-            'idUnidadEjecutora': 'unidadCompra.id.unidadEjecutora.id.idUnidadEjecutora',
-            'idUnidadCompra': 'unidadCompra.id.idUnidadCompra',
-            'numeroCompra': 'numCompra'
+            idInciso: 'unidadCompra.id.unidadEjecutora.id.inciso.id',
+            idUnidadEjecutora:
+                'unidadCompra.id.unidadEjecutora.id.idUnidadEjecutora',
+            idUnidadCompra: 'unidadCompra.id.idUnidadCompra',
+            numeroCompra: 'numCompra',
         };
         return mapeo[columna] || mapeo['idInciso'];
     }

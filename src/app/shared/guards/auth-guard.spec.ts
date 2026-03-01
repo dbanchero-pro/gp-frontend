@@ -1,7 +1,15 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+    provideHttpClient,
+    withInterceptorsFromDi,
+} from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import {
+    ActivatedRouteSnapshot,
+    Router,
+    RouterStateSnapshot,
+    UrlTree,
+} from '@angular/router';
 import { KeycloakService } from 'keycloak-angular'; //NOSONAR
 import { of } from 'rxjs';
 import { AppConfig } from 'src/app/app.config';
@@ -27,9 +35,8 @@ class MockAuthRawService {
 
     login(options: any) {
         // Simula el inicio de sesión
-     }
+    }
 }
-
 
 class MockMenuService {
     tienePermisoUrl(url: string) {
@@ -37,7 +44,11 @@ class MockMenuService {
         return true;
     }
     obtenerItemMasAbajo(url: string): IMenuItem | undefined {
-        return { titulo: 'Mocked Item', subtitulo: 'Mocked Subitem', nombre: 'nombre'  };
+        return {
+            titulo: 'Mocked Item',
+            subtitulo: 'Mocked Subitem',
+            nombre: 'nombre',
+        };
     }
 }
 
@@ -60,7 +71,7 @@ class AppConfigStub {
         loggingLevel: 'DEBUG',
         archivosCantidadMax: 10,
         archivosTamanoMaxBytes: 1000000,
-        contenidoInicio: ''
+        contenidoInicio: '',
     };
 }
 describe('AuthGuard', () => {
@@ -72,7 +83,7 @@ describe('AuthGuard', () => {
 
     beforeEach(() => {
         AppConfig.settings = AppConfigStub.settings;
-        
+
         TestBed.configureTestingModule({
             imports: [],
             providers: [
@@ -84,7 +95,7 @@ describe('AuthGuard', () => {
                 { provide: SeguridadService, useClass: MockSeguridadService },
                 provideHttpClient(withInterceptorsFromDi()),
                 provideHttpClientTesting(),
-            ]
+            ],
         });
 
         guard = TestBed.inject(AuthGuard);
@@ -101,21 +112,29 @@ describe('AuthGuard', () => {
     });
 
     it('debe retornar true si el usuario tiene acceso', fakeAsync(() => {
-        spyOn(authRawService, 'getToken').and.returnValue(Promise.resolve('mocked-token'));
+        spyOn(authRawService, 'getToken').and.returnValue(
+            Promise.resolve('mocked-token'),
+        );
         spyOn(menuService, 'tienePermisoUrl').and.returnValue(true);
 
         let result: any;
-        guard.isAccessAllowed(activatedRouteSnapshot, routerStateSnapshot).then((res: any) => (result = res));
+        guard
+            .isAccessAllowed(activatedRouteSnapshot, routerStateSnapshot)
+            .then((res: any) => (result = res));
         tick(2000);
 
         expect(result).toBeTrue();
     }));
 
     it('debe redirigir a 403 cuando no tiene permiso', fakeAsync(() => {
-        spyOn(authRawService, 'getToken').and.returnValue(Promise.resolve('mocked-token'));
+        spyOn(authRawService, 'getToken').and.returnValue(
+            Promise.resolve('mocked-token'),
+        );
         spyOn(menuService, 'tienePermisoUrl').and.returnValue(false);
         let result: any;
-        guard.isAccessAllowed(activatedRouteSnapshot, routerStateSnapshot).then((res: any) => result = res);
+        guard
+            .isAccessAllowed(activatedRouteSnapshot, routerStateSnapshot)
+            .then((res: any) => (result = res));
         tick(2000);
         expect(result instanceof UrlTree).toBeTrue();
     }));
@@ -130,10 +149,15 @@ describe('AuthGuard', () => {
     }));
 
     it('debe permitir acceso luego de reintentar obtener el token', fakeAsync(() => {
-        spyOn(authRawService, 'getToken').and.returnValues(Promise.resolve(''), Promise.resolve('retry-token'));
+        spyOn(authRawService, 'getToken').and.returnValues(
+            Promise.resolve(''),
+            Promise.resolve('retry-token'),
+        );
         spyOn(menuService, 'tienePermisoUrl').and.returnValue(true);
         let result: any;
-        guard.isAccessAllowed(activatedRouteSnapshot, routerStateSnapshot).then((res: any) => result = res);
+        guard
+            .isAccessAllowed(activatedRouteSnapshot, routerStateSnapshot)
+            .then((res: any) => (result = res));
         tick(2000);
         expect(result).toBeTrue();
     }));
@@ -142,7 +166,9 @@ describe('AuthGuard', () => {
         spyOn(authRawService, 'getToken').and.returnValue(Promise.resolve(''));
         spyOn(menuService, 'tienePermisoUrl').and.returnValue(false);
         let result: any;
-        guard.isAccessAllowed(activatedRouteSnapshot, routerStateSnapshot).then(res => result = res);
+        guard
+            .isAccessAllowed(activatedRouteSnapshot, routerStateSnapshot)
+            .then((res) => (result = res));
         tick(2000);
         expect(result instanceof UrlTree).toBeTrue();
     }));

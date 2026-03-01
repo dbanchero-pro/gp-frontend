@@ -11,14 +11,16 @@ import { ArchivoService } from '../common/archivo.service';
 import { RestService } from '../common/rest.service';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class UsuarioOrganismoPerfilService {
-    private readonly baseUrl = '/api/gestion-contratos/v1/usuarios-organismo-perfil';
+    private readonly baseUrl =
+        '/api/gestion-contratos/v1/usuarios-organismo-perfil';
 
-    constructor(private readonly gcRestService: RestService,
-        private readonly archivoService: ArchivoService
-    ) { }
+    constructor(
+        private readonly gcRestService: RestService,
+        private readonly archivoService: ArchivoService,
+    ) {}
 
     obtenerTodos(
         filtros: {
@@ -40,7 +42,7 @@ export class UsuarioOrganismoPerfilService {
         } = {},
         page: number = 0,
         size: number = 10,
-        sort: string = 'usuarioOrganismo.usuario.nroDocumento,asc'
+        sort: string = 'usuarioOrganismo.usuario.nroDocumento,asc',
     ): Observable<PageModel<UsuarioOrganismoPerfilDTO>> {
         let params = new HttpParams()
             .set('page', page)
@@ -69,18 +71,26 @@ export class UsuarioOrganismoPerfilService {
         agregarSiDefinido('idPuntoRecepcion', filtros.idPuntoRecepcion);
         agregarSiDefinido('descripcionArticulo', filtros.descArticulo);
 
-        return this.gcRestService.get<PageModel<UsuarioOrganismoPerfilDTO>>(`${this.baseUrl}/all`, params);
+        return this.gcRestService.get<PageModel<UsuarioOrganismoPerfilDTO>>(
+            `${this.baseUrl}/all`,
+            params,
+        );
     }
 
-    guardar(dto: UsuarioOrganismoPerfilDTO): Observable<UsuarioOrganismoPerfilDTO> {
-        return this.gcRestService.post<UsuarioOrganismoPerfilDTO, UsuarioOrganismoPerfilDTO>(this.baseUrl, dto);
+    guardar(
+        dto: UsuarioOrganismoPerfilDTO,
+    ): Observable<UsuarioOrganismoPerfilDTO> {
+        return this.gcRestService.post<
+            UsuarioOrganismoPerfilDTO,
+            UsuarioOrganismoPerfilDTO
+        >(this.baseUrl, dto);
     }
 
     agregarConformidadUC(
         idInciso: number,
         idUnidadEjecutora: number,
         idUnidadCompra: number,
-        idUsuario: string
+        idUsuario: string,
     ): Observable<boolean> {
         const params = new HttpParams()
             .set('idInciso', idInciso.toString())
@@ -91,7 +101,7 @@ export class UsuarioOrganismoPerfilService {
         return this.gcRestService.post<boolean, null>(
             `${this.baseUrl}/agregar-conformidad-uc`,
             null,
-            params
+            params,
         );
     }
 
@@ -101,36 +111,46 @@ export class UsuarioOrganismoPerfilService {
         return this.gcRestService.post<boolean, null>(
             `${this.baseUrl}/agregar-conformidad-uc-todas`,
             null,
-            params
+            params,
         );
     }
 
     agregarConformidadPorCompra(
         idCompra: number,
-        idUsuario: string): Observable<boolean> {
+        idUsuario: string,
+    ): Observable<boolean> {
         const params = new HttpParams()
             .set('idCompra', idCompra.toString())
             .set('idUsuario', idUsuario);
 
-        return this.gcRestService.post<boolean, null>(`${this.baseUrl}/agregar-conformidad-compra`, null, params);
+        return this.gcRestService.post<boolean, null>(
+            `${this.baseUrl}/agregar-conformidad-compra`,
+            null,
+            params,
+        );
     }
 
     agregarConformidadPorItem(
         idCompra: number,
         idItem: number,
-        idUsuario: string): Observable<boolean> {
+        idUsuario: string,
+    ): Observable<boolean> {
         const params = new HttpParams()
             .set('idCompra', idCompra.toString())
             .set('idItem', idItem.toString())
             .set('idUsuario', idUsuario);
 
-        return this.gcRestService.post<boolean, null>(`${this.baseUrl}/agregar-conformidad-item`, null, params
+        return this.gcRestService.post<boolean, null>(
+            `${this.baseUrl}/agregar-conformidad-item`,
+            null,
+            params,
         );
     }
 
     agregarResponsablePuntoRecepcion(
         idPuntoRecepcion: number,
-        idUsuario: string): Observable<boolean> {
+        idUsuario: string,
+    ): Observable<boolean> {
         const params = new HttpParams()
             .set('idPuntoRecepcion', idPuntoRecepcion.toString())
             .set('idUsuario', idUsuario);
@@ -138,7 +158,7 @@ export class UsuarioOrganismoPerfilService {
         return this.gcRestService.post<boolean, null>(
             `${this.baseUrl}/agregar-resonsable-punto-recepcion`,
             null,
-            params
+            params,
         );
     }
 
@@ -146,7 +166,8 @@ export class UsuarioOrganismoPerfilService {
         idInciso: number,
         idUnidadEjecutora: number,
         idUnidadCompra: number,
-        idUsuario: string): Observable<boolean> {
+        idUsuario: string,
+    ): Observable<boolean> {
         const params = new HttpParams()
             .set('idInciso', idInciso.toString())
             .set('idUnidadEjecutora', idUnidadEjecutora.toString())
@@ -156,52 +177,70 @@ export class UsuarioOrganismoPerfilService {
         return this.gcRestService.post<boolean, null>(
             `${this.baseUrl}/agregar-resonsable-recepcion-uc`,
             null,
-            params
+            params,
         );
     }
 
-    agregarResponsableRecepcionUCTodas(
-        idUsuario: string): Observable<boolean> {
-        const params = new HttpParams()
-            .set('idUsuario', idUsuario);
+    agregarResponsableRecepcionUCTodas(idUsuario: string): Observable<boolean> {
+        const params = new HttpParams().set('idUsuario', idUsuario);
 
         return this.gcRestService.post<boolean, null>(
             `${this.baseUrl}/agregar-resonsable-recepcion-uc-todas`,
             null,
-            params
+            params,
         );
     }
 
     eliminarPerfil(idUsuarioOrganismoPerfil: number): Observable<boolean> {
-        return this.gcRestService.delete<boolean>(`${this.baseUrl}/${idUsuarioOrganismoPerfil}`);
-    }
-
-    exportarUsuariosPerfil(filtros: any): void {
-        this.gcRestService.post<IArchivoDTO, any>(
-            `${this.baseUrl}/excel`,
-            filtros
-        ).subscribe((res: ArchivoDTO) => this.archivoService.descargar(res));
-    }
-
-
-    buscarArticulos(
-        tipoPerfil: string = TipoPerfil.Conformidad, filtros?: FiltroBusquedaArticulosDTO): Observable<ItemCompraFiltroDTO[]> {
-
-        let params = new HttpParams().set('tipoPerfil', tipoPerfil);
-
-        if (filtros?.idIncisoCompra !== undefined) params = params.set('idInciso', filtros.idIncisoCompra.toString());
-        if (filtros?.idUECompra !== undefined) params = params.set('idUnidadEjecutora', filtros.idUECompra.toString());
-        if (filtros?.idUCCompra !== undefined) params = params.set('idUnidadCompra', filtros.idUCCompra.toString());
-        if (filtros?.anioCompra !== undefined) params = params.set('anioCompra', filtros.anioCompra.toString());
-        if (filtros?.numCompra !== undefined) params = params.set('numCompra', filtros.numCompra.toString());
-        if (filtros?.nroItem !== undefined) params = params.set('nroItem', filtros.nroItem.toString());
-        if (filtros?.descripcionArticulo !== undefined) params = params.set('descripcionArticulo', filtros.descripcionArticulo);
-        if (filtros?.filtrarPorArticulo !== undefined) params = params.set('filtrarPorArticulo', filtros.filtrarPorArticulo.toString());
-
-        return this.gcRestService.get<ItemCompraFiltroDTO[]>(
-            `${this.baseUrl}/obtener-articulos`,
-            params
+        return this.gcRestService.delete<boolean>(
+            `${this.baseUrl}/${idUsuarioOrganismoPerfil}`,
         );
     }
 
+    exportarUsuariosPerfil(filtros: any): void {
+        this.gcRestService
+            .post<IArchivoDTO, any>(`${this.baseUrl}/excel`, filtros)
+            .subscribe((res: ArchivoDTO) => this.archivoService.descargar(res));
+    }
+
+    buscarArticulos(
+        tipoPerfil: string = TipoPerfil.Conformidad,
+        filtros?: FiltroBusquedaArticulosDTO,
+    ): Observable<ItemCompraFiltroDTO[]> {
+        let params = new HttpParams().set('tipoPerfil', tipoPerfil);
+
+        if (filtros?.idIncisoCompra !== undefined)
+            params = params.set('idInciso', filtros.idIncisoCompra.toString());
+        if (filtros?.idUECompra !== undefined)
+            params = params.set(
+                'idUnidadEjecutora',
+                filtros.idUECompra.toString(),
+            );
+        if (filtros?.idUCCompra !== undefined)
+            params = params.set(
+                'idUnidadCompra',
+                filtros.idUCCompra.toString(),
+            );
+        if (filtros?.anioCompra !== undefined)
+            params = params.set('anioCompra', filtros.anioCompra.toString());
+        if (filtros?.numCompra !== undefined)
+            params = params.set('numCompra', filtros.numCompra.toString());
+        if (filtros?.nroItem !== undefined)
+            params = params.set('nroItem', filtros.nroItem.toString());
+        if (filtros?.descripcionArticulo !== undefined)
+            params = params.set(
+                'descripcionArticulo',
+                filtros.descripcionArticulo,
+            );
+        if (filtros?.filtrarPorArticulo !== undefined)
+            params = params.set(
+                'filtrarPorArticulo',
+                filtros.filtrarPorArticulo.toString(),
+            );
+
+        return this.gcRestService.get<ItemCompraFiltroDTO[]>(
+            `${this.baseUrl}/obtener-articulos`,
+            params,
+        );
+    }
 }

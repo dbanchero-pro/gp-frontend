@@ -1,33 +1,32 @@
-import { Component } from "@angular/core";
-import { NavigationEnd, Router } from "@angular/router";
-import { IMenuItem } from "src/app/shared/models/common/menu-item.model";
-import { ActualizarService } from "src/app/shared/services/common/actualizar.service";
-import { MenuService } from "../../../shared/services/common/menu.service";import { SharedModule } from 'src/app/shared/shared.module';
+import { Component } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { IMenuItem } from 'src/app/shared/models/common/menu-item.model';
+import { ActualizarService } from 'src/app/shared/services/common/actualizar.service';
+import { MenuService } from '../../../shared/services/common/menu.service';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
-    selector: "app-breadcrumbs",
-    templateUrl: "./breadcrumbs.component.html",
-    styleUrls: ["./breadcrumbs.component.scss"],
-  standalone: true,
-  imports: [
-    SharedModule,
-  ],
+    selector: 'app-breadcrumbs',
+    templateUrl: './breadcrumbs.component.html',
+    styleUrls: ['./breadcrumbs.component.scss'],
+    standalone: true,
+    imports: [SharedModule],
 })
 export class BreadcrumbsComponent {
     item: IMenuItem | undefined;
     superItem: IMenuItem | undefined;
     superItem2: IMenuItem | undefined;
     superItem3: IMenuItem | undefined;
-    constructor(private readonly menu: MenuService, 
+    constructor(
+        private readonly menu: MenuService,
         private readonly router: Router,
-        private readonly actualizar: ActualizarService) {
-       
+        private readonly actualizar: ActualizarService,
+    ) {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
                 this.actualizarMigaPan();
             }
         });
-        
     }
 
     private actualizarMigaPan() {
@@ -48,6 +47,4 @@ export class BreadcrumbsComponent {
     ir(url: string | undefined) {
         this.router.navigate([url], { queryParams: { volver: 1 } });
     }
-
 }
-

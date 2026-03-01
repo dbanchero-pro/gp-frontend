@@ -1,29 +1,29 @@
 @use "_vars.scss";
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700');
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700");
 
 body {
-  background-color: vars.$grey;
-  font-family: 'Source Sans Pro', sans-serif;
-  color: vars.$darkBlue;
-  font-size: 1rem;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    background-color: vars.$grey;
+    font-family: "Source Sans Pro", sans-serif;
+    color: vars.$darkBlue;
+    font-size: 1rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 #content {
-  width: 100%;
-  @include vars.smoothTrans;
+    width: 100%;
+    @include vars.smoothTrans;
 }
 
 .tooltip {
-  margin: 2px;
+    margin: 2px;
 }
 
 .tooltip-inner {
-  background-color: rgba(0, 32, 74, 0.8);
+    background-color: rgba(0, 32, 74, 0.8);
 }
 
-.tooltip.bs-tooltip-auto[x-placement^=right] .arrow::before,
+.tooltip.bs-tooltip-auto[x-placement^="right"] .arrow::before,
 .tooltip.bs-tooltip-right .arrow::before {
-  border-right-color: rgba(0, 32, 74, 0.8);
+    border-right-color: rgba(0, 32, 74, 0.8);
 }

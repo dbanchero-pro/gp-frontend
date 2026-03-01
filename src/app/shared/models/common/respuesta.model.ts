@@ -3,8 +3,5 @@ export interface IRespuestaDTO {
 }
 
 export class RespuestaDTO implements IRespuestaDTO {
-    constructor(
-        public mensaje?: string
-    ) {
-    }
+    constructor(public mensaje?: string) {}
 }

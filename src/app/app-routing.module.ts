@@ -17,18 +17,17 @@ const routes: Routes = [
     {
         path: 'administracion',
         loadChildren: () =>
-            import(
-                './features/administracion/administracion.module'
-            ).then((m) => m.AdministracionModule),
-
+            import('./features/administracion/administracion.module').then(
+                (m) => m.AdministracionModule,
+            ),
     },
     {
         path: 'pliegos',
         loadChildren: () =>
             import('./features/pliegos/pliegos.module').then(
-                (m) => m.PliegosModule
+                (m) => m.PliegosModule,
             ),
-            
+
         canActivate: [AuthGuard],
     },
     { path: '', pathMatch: 'full', redirectTo: 'inicio' },
@@ -50,4 +49,4 @@ const routes: Routes = [
     ],
     exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

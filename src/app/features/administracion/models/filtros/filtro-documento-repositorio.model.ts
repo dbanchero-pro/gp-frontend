@@ -1,4 +1,4 @@
-import { TipoArchivoRepositorio } from "src/app/shared/enum/tipo-archivo-repositorio.enum";
+import { TipoArchivoRepositorio } from 'src/app/shared/enum/tipo-archivo-repositorio.enum';
 
 export interface IFiltroDocumentoRepositorioDTO {
     idInciso?: number;
@@ -12,6 +12,6 @@ export class FiltroDocumentoRepositorioDTO implements IFiltroDocumentoRepositori
         public idInciso?: number,
         public idUnidadEjecutora?: number,
         public nombreDocumento?: string,
-        public tipoArchivo?: TipoArchivoRepositorio
+        public tipoArchivo?: TipoArchivoRepositorio,
     ) {}
 }

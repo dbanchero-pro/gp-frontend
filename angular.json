@@ -24,9 +24,7 @@
                             "base": "dist/gp-frontend"
                         },
                         "index": "src/index.html",
-                        "polyfills": [
-                            "zone.js"
-                        ],
+                        "polyfills": ["zone.js"],
                         "sourceMap": {
                             "scripts": true,
                             "styles": true,
@@ -34,13 +32,8 @@
                         },
                         "tsConfig": "tsconfig.app.json",
                         "aot": true,
-                        "assets": [
-                            "src/favicon.ico",
-                            "src/assets"
-                        ],
-                        "styles": [
-                            "src/styles.scss"
-                        ],
+                        "assets": ["src/favicon.ico", "src/assets"],
+                        "styles": ["src/styles.scss"],
                         "scripts": [
                             "node_modules/jquery/dist/jquery.min.js",
                             "node_modules/bootstrap/dist/js/bootstrap.min.js"
@@ -66,13 +59,9 @@
                         },
                         "browser": "src/main.ts",
                         "stylePreprocessorOptions": {
-                            "includePaths": [
-                                "."
-                            ],
+                            "includePaths": ["."],
                             "sass": {
-                                "silenceDeprecations": [
-                                    "import"
-                                ]
+                                "silenceDeprecations": ["import"]
                             }
                         }
                     },
@@ -161,10 +150,7 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "polyfills": [
-                            "zone.js",
-                            "zone.js/testing"
-                        ],
+                        "polyfills": ["zone.js", "zone.js/testing"],
                         "tsConfig": "tsconfig.spec.json",
                         "karmaConfig": "karma.conf.js",
                         "codeCoverageExclude": [
@@ -172,13 +158,8 @@
                             "**/environments/**"
                         ],
                         "inlineStyleLanguage": "scss",
-                        "assets": [
-                            "src/favicon.ico",
-                            "src/assets"
-                        ],
-                        "styles": [
-                            "src/styles.scss"
-                        ],
+                        "assets": ["src/favicon.ico", "src/assets"],
+                        "styles": ["src/styles.scss"],
                         "scripts": [],
                         "codeCoverage": true
                     }
@@ -191,9 +172,7 @@
                             "tsconfig.spec.json",
                             "e2e/tsconfig.json"
                         ],
-                        "exclude": [
-                            "**/node_modules/**"
-                        ]
+                        "exclude": ["**/node_modules/**"]
                     }
                 },
                 "e2e": {
@@ -217,7 +196,7 @@
     "cli": {
         "analytics": false,
         "cache": {
-          "enabled": false
+            "enabled": false
         }
     }
 }

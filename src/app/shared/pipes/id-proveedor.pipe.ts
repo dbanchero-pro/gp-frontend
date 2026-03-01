@@ -2,9 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { ProveedorDTO } from '../models/proveedor/proveedor.model';
 
 @Pipe({
-    
     standalone: true,
-name: 'idProveedor'
+    name: 'idProveedor',
 })
 export class IdProveedorPipe implements PipeTransform {
     transform(value: ProveedorDTO | undefined): string {
@@ -12,6 +11,12 @@ export class IdProveedorPipe implements PipeTransform {
             return '';
         }
 
-        return (value.paisDocumento.id + "-" + value.tipoDocumento + "-" + value.nroDocumento).toUpperCase();
+        return (
+            value.paisDocumento.id +
+            '-' +
+            value.tipoDocumento +
+            '-' +
+            value.nroDocumento
+        ).toUpperCase();
     }
 }

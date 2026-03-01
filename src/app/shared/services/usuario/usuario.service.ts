@@ -6,50 +6,60 @@ import { UsuarioDTO } from '../../models/usuario/usuario.model';
 import { RestService } from '../common/rest.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class UsuarioService {
-  private readonly baseUrlUsuario = '/api/gestion-contratos/v1/usuarios';
+    private readonly baseUrlUsuario = '/api/gestion-contratos/v1/usuarios';
 
-  constructor(private readonly gcRestService: RestService) { }
+    constructor(private readonly gcRestService: RestService) {}
 
+    obtenerTodosUsuarios(
+        page: number = 0,
+        size: number = 20,
+        sort: string = 'id,asc',
+        idPais?: string,
+        idTipoDocumento?: string,
+        nroDocumento?: string,
+    ): Observable<PageModel<UsuarioDTO>> {
+        let params = new HttpParams()
+            .set('page', page)
+            .set('size', size)
+            .set('sort', sort);
 
+        if (idPais) params = params.set('idPais', idPais);
+        if (idTipoDocumento)
+            params = params.set('idTipoDocumento', idTipoDocumento);
+        if (nroDocumento) params = params.set('nroDocumento', nroDocumento);
 
-  obtenerTodosUsuarios(
-    page: number = 0,
-    size: number = 20,
-    sort: string = 'id,asc',
-    idPais?: string,
-    idTipoDocumento?: string,
-    nroDocumento?: string
-  ): Observable<PageModel<UsuarioDTO>> {
-    let params = new HttpParams()
-      .set('page', page)
-      .set('size', size)
-      .set('sort', sort);
+        return this.gcRestService.get<PageModel<UsuarioDTO>>(
+            `${this.baseUrlUsuario}/all`,
+            params,
+        );
+    }
 
-    if (idPais) params = params.set('idPais', idPais);
-    if (idTipoDocumento) params = params.set('idTipoDocumento', idTipoDocumento);
-    if (nroDocumento) params = params.set('nroDocumento', nroDocumento);
+    obtenerUsuarioPorId(idUsuario: string): Observable<UsuarioDTO> {
+        return this.gcRestService.get<UsuarioDTO>(
+            `${this.baseUrlUsuario}/${idUsuario}`,
+        );
+    }
 
-    return this.gcRestService.get<PageModel<UsuarioDTO>>(`${this.baseUrlUsuario}/all`, params);
-  }
+    buscarUsuarioPorId(idUsuario: string): Observable<UsuarioDTO> {
+        return this.gcRestService.get<UsuarioDTO>(
+            `${this.baseUrlUsuario}/buscar/${idUsuario}`,
+        );
+    }
 
-  obtenerUsuarioPorId(idUsuario: string): Observable<UsuarioDTO> {
-    return this.gcRestService.get<UsuarioDTO>(`${this.baseUrlUsuario}/${idUsuario}`);
-  }
-  
-  buscarUsuarioPorId(idUsuario: string): Observable<UsuarioDTO> {
-    return this.gcRestService.get<UsuarioDTO>(`${this.baseUrlUsuario}/buscar/${idUsuario}`);
-  }
+    buscarUsuario(
+        nroDocumento?: string,
+        nombre?: string,
+    ): Observable<UsuarioDTO | null> {
+        let params = new HttpParams();
+        if (nroDocumento) params = params.set('nroDocumento', nroDocumento);
+        if (nombre) params = params.set('nombre', nombre);
 
-  buscarUsuario(nroDocumento?: string, nombre?: string): Observable<UsuarioDTO | null> {
-    let params = new HttpParams();
-    if (nroDocumento) params = params.set('nroDocumento', nroDocumento);
-    if (nombre) params = params.set('nombre', nombre);
-
-    return this.gcRestService.get<UsuarioDTO | null>(`${this.baseUrlUsuario}/buscar`, params);
-  }
-
+        return this.gcRestService.get<UsuarioDTO | null>(
+            `${this.baseUrlUsuario}/buscar`,
+            params,
+        );
+    }
 }
-

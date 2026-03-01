@@ -15,16 +15,12 @@ import { AuthRawService } from 'src/app/shared/services/common/auth-raw-service'
 import { MenuService } from '../../../shared/services/common/menu.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 
-
 @Component({
     selector: 'app-menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.scss'],
-  standalone: true,
-  imports: [
-    SharedModule,
-    RouterLink,
-  ],
+    standalone: true,
+    imports: [SharedModule, RouterLink],
 })
 export class MenuComponent implements OnInit {
     menuItems$?: Observable<Array<IMenuItem>>;
@@ -38,8 +34,7 @@ export class MenuComponent implements OnInit {
     @ViewChild('buttonMenu') buttonMenu: any;
 
     innerWidth!: number;
-    isMobile!: boolean;  // true si < 992px
-
+    isMobile!: boolean; // true si < 992px
 
     constructor(
         readonly menu: MenuService,
@@ -47,11 +42,8 @@ export class MenuComponent implements OnInit {
         readonly actualizar: ActualizarService,
         readonly seguridad: SeguridadService,
         readonly authRaw: AuthRawService,
-        public dialog: MatDialog
-    ) {
-       
-     }
-
+        public dialog: MatDialog,
+    ) {}
 
     ngOnInit(): void {
         // Valor inicial al arrancar la app
@@ -61,7 +53,6 @@ export class MenuComponent implements OnInit {
         this.itemsUC = this.seguridad.obtenerUnidadesCompra();
         this.mostrarCambiarPerfil = this.verificarMostrarCambiarPerfil();
         this.menuItems$ = this.obtenerMenu(this.seguridad.obtenerPermisos());
-
     }
 
     obtenerProveedoresUsuarioLogueado(): ProveedorDTO[] {
@@ -77,10 +68,12 @@ export class MenuComponent implements OnInit {
     private checkMobile() {
         this.isMobile = this.innerWidth < 992;
         if (!this.isMobile) {
-            if (this.buttonMenu?.nativeElement.getAttribute('aria-expanded') === 'true') {
+            if (
+                this.buttonMenu?.nativeElement.getAttribute('aria-expanded') ===
+                'true'
+            ) {
                 this.buttonMenu?.nativeElement.click();
             }
-
         }
     }
 
@@ -89,33 +82,47 @@ export class MenuComponent implements OnInit {
     }
 
     public obtenerMenu(permisos: string[]): Observable<IMenuItem[]> {
-        const items: IMenuItem[] = this.menu.obtenerMenu(permisos).filter(item => item.visible === undefined || item.visible === true);
-        items.forEach(item => {
+        const items: IMenuItem[] = this.menu
+            .obtenerMenu(permisos)
+            .filter(
+                (item) => item.visible === undefined || item.visible === true,
+            );
+        items.forEach((item) => {
             if (item.items) {
-                item.items = item.items.filter(subItem => subItem.visible === undefined || subItem.visible === true);
+                item.items = item.items.filter(
+                    (subItem) =>
+                        subItem.visible === undefined ||
+                        subItem.visible === true,
+                );
             }
         });
         if (!items || items.length === 0) {
-            this.actualizar.mensajeError( 'El usuario no tiene permisos' );
+            this.actualizar.mensajeError('El usuario no tiene permisos');
         }
         return from<IMenuItem[][]>([items]);
     }
 
     public cerrarSesion(): void {
-        this.authRaw.logout(window.location.origin + AppConfig.settings.urlBaseFrontEnd)
+        this.authRaw
+            .logout(window.location.origin + AppConfig.settings.urlBaseFrontEnd)
             .then(() => {
-               this.authRaw.clearToken();
+                this.authRaw.clearToken();
             });
     }
 
-    toggleSubmenu(event: MouseEvent, menu: any, item: any, esClick: boolean = false) {
+    toggleSubmenu(
+        event: MouseEvent,
+        menu: any,
+        item: any,
+        esClick: boolean = false,
+    ) {
         this.menuItems$?.forEach((menu2: any) => {
             if (!this.isMobile) {
                 menu.items.forEach((it: any) => {
                     if (item !== it) {
                         it._open = false;
-                    };
-                })
+                    }
+                });
             }
         });
         if (esClick || !this.isMobile) {
@@ -126,9 +133,8 @@ export class MenuComponent implements OnInit {
     toggleMenu(event: MouseEvent, menu: any) {
         this.menuItems$?.forEach((menu2: any) => {
             if (menu2 !== menu) {
-                menu.items.forEach((it: any) => it._open = false);
+                menu.items.forEach((it: any) => (it._open = false));
             }
         });
     }
-
 }

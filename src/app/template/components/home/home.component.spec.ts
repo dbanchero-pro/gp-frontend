@@ -1,20 +1,29 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
-import { provideHttpClientTesting } from "@angular/common/http/testing";
-import { FormBuilder, FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { NavigationEnd, provideRouter, Router } from "@angular/router";
-import { of } from "rxjs";
-import { AppConfig } from "src/app/app.config";
-import { ActualizarService } from "src/app/shared/services/common/actualizar.service";
-import { AuthRawService } from "src/app/shared/services/common/auth-raw-service";
-import { HomeComponent } from "./home.component";
+import {
+    provideHttpClient,
+    withInterceptorsFromDi,
+} from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NavigationEnd, provideRouter, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { AppConfig } from 'src/app/app.config';
+import { ActualizarService } from 'src/app/shared/services/common/actualizar.service';
+import { AuthRawService } from 'src/app/shared/services/common/auth-raw-service';
+import { HomeComponent } from './home.component';
 
 class MockServices {
     // router
-    public events = of(new NavigationEnd(0, "http://localhost:4200/prueba", "http://localhost:4200/prueba"));
+    public events = of(
+        new NavigationEnd(
+            0,
+            'http://localhost:4200/prueba',
+            'http://localhost:4200/prueba',
+        ),
+    );
 }
-describe("HomeComponent", () => {
+describe('HomeComponent', () => {
     let component: HomeComponent;
     let fixture: ComponentFixture<HomeComponent>;
 
@@ -22,9 +31,7 @@ describe("HomeComponent", () => {
         await TestBed.configureTestingModule({
             // componentes
             declarations: [],
-            imports: [FormsModule,
-                ReactiveFormsModule,
-                ],
+            imports: [FormsModule, ReactiveFormsModule],
             providers: [
                 FormBuilder,
                 Router,
@@ -34,9 +41,8 @@ describe("HomeComponent", () => {
                 provideRouter([]),
                 provideHttpClient(withInterceptorsFromDi()),
                 provideHttpClientTesting(),
-            ]
-        })
-        .compileComponents();
+            ],
+        }).compileComponents();
     });
 
     beforeEach(() => {
@@ -49,7 +55,7 @@ describe("HomeComponent", () => {
             loggingLevel: 0 as any,
             archivosTamanoMaxBytes: 0,
             archivosCantidadMax: 10,
-            contenidoInicio: '123'
+            contenidoInicio: '123',
         };
         fixture = TestBed.createComponent(HomeComponent);
         component = fixture.componentInstance;
@@ -60,13 +66,12 @@ describe("HomeComponent", () => {
         expect(component).toBeTruthy();
     });
 
-    it("confirmar()", () => {
+    it('confirmar()', () => {
         let actualizarService = TestBed.inject(ActualizarService);
-        spyOn(actualizarService, "confirmar").and.callFake((texto, accion) => {
+        spyOn(actualizarService, 'confirmar').and.callFake((texto, accion) => {
             accion();
         });
         component.confirmar();
         expect(1).toEqual(1);
     });
-
 });

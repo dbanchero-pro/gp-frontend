@@ -1,4 +1,4 @@
-import { IClaseDTO } from "./clase.model";
+import { IClaseDTO } from './clase.model';
 
 export interface ISubclaseDTO {
     id?: number;
@@ -11,7 +11,13 @@ export interface ISubclaseDTO {
 }
 
 export class SubclaseDTO implements ISubclaseDTO {
-    constructor(public id?: number, public codClase?: string, public descSubclase?: string,
-        public familiaId?: string, public subfamiliaId?: string, public claseId?: string, public clase?: IClaseDTO) {
-    }
+    constructor(
+        public id?: number,
+        public codClase?: string,
+        public descSubclase?: string,
+        public familiaId?: string,
+        public subfamiliaId?: string,
+        public claseId?: string,
+        public clase?: IClaseDTO,
+    ) {}
 }

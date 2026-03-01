@@ -23,7 +23,7 @@ export const getISOLocalDate: (date: Date) => string = (date: Date) => {
     const local = new Date(date.getTime() - tzOffset);
     // Tomamos solo la parte de fecha
     return local.toISOString().slice(0, 10);
-}
+};
 
 export const getUTCDateES: (date: string) => string = (date: string) => {
     const options: any = {
@@ -34,7 +34,7 @@ export const getUTCDateES: (date: string) => string = (date: string) => {
     };
     return new Date(date).toLocaleDateString(
         'es',
-        <DateTimeFormatOptions>options
+        <DateTimeFormatOptions>options,
     );
 };
 
@@ -53,7 +53,7 @@ export const bsConfig: any = {
 
 export const fieldError: (form: FormGroup, control: string) => boolean = (
     form: FormGroup,
-    control: string
+    control: string,
 ) => {
     return form.controls[control].invalid && form.controls[control].dirty;
 };
@@ -62,44 +62,44 @@ export const addParam: (
     params: HttpParams,
     paramName: string,
     paramValue: any,
-    igcte?: boolean
+    igcte?: boolean,
 ) => HttpParams = (
     params: HttpParams,
     paramName: string,
     paramValue: any,
-    igcte: boolean = false
+    igcte: boolean = false,
 ) => {
-        if (paramValue) {
-            return params.append(
-                paramName,
-                igcte ? paramValue.toISOString().substring(0, 10) : paramValue + ''
-            );
-        }
-        return params;
-    };
+    if (paramValue) {
+        return params.append(
+            paramName,
+            igcte ? paramValue.toISOString().substring(0, 10) : paramValue + '',
+        );
+    }
+    return params;
+};
 
 export const getValor: (
     form: FormGroup,
-    controlName: string
+    controlName: string,
 ) => number | undefined = (
     form: FormGroup,
-    controlName: string
+    controlName: string,
 ): number | undefined => {
-        let valor: number | undefined = parseFloat(
-            (form.get(controlName)?.value + '')
-                .split('.')
-                .map((aux) => aux.split(',').join('.'))
-                .join('')
-        );
-        if (isNaN(valor)) {
-            valor = undefined;
-        }
-        return valor;
-    };
+    let valor: number | undefined = parseFloat(
+        (form.get(controlName)?.value + '')
+            .split('.')
+            .map((aux) => aux.split(',').join('.'))
+            .join(''),
+    );
+    if (isNaN(valor)) {
+        valor = undefined;
+    }
+    return valor;
+};
 
 export const removeCommas: (form: FormGroup, controlName: string) => void = (
     form: FormGroup,
-    controlName: string
+    controlName: string,
 ): void => {
     let valor: string = (form.get(controlName)?.value + '')
         .split('.')
@@ -113,16 +113,16 @@ export const removeCommas: (form: FormGroup, controlName: string) => void = (
 
 export const addCommas: (form: FormGroup, controlName: string) => void = (
     form: FormGroup,
-    controlName: string
+    controlName: string,
 ): void => {
     form.controls[controlName].setValue(
         getValor(form, controlName)?.toLocaleString('de-DE', {
             minimumFractionDigits: 2,
-        })
+        }),
     );
 };
 export const addCommasString: (value: number) => string = (
-    value: number
+    value: number,
 ): string => {
     return value.toLocaleString('de-DE', {
         minimumFractionDigits: 2,
@@ -130,7 +130,7 @@ export const addCommasString: (value: number) => string = (
 };
 export const numberOnly: (event: any, maxLength: number) => boolean = (
     event: any,
-    maxLength: number
+    maxLength: number,
 ): boolean => {
     let charCode = event.which ?? event.keyCode;
 
@@ -162,7 +162,7 @@ export const numberOnly: (event: any, maxLength: number) => boolean = (
 
 export const compararIguales: (
     valor1: string | number,
-    valor2: number | string
+    valor2: number | string,
 ) => boolean = (valor1: string | number, valor2: number | string): boolean => {
     if (valor1 == valor2) {
         return true;
@@ -172,7 +172,7 @@ export const compararIguales: (
 
 export const compararDistintos: (
     valor1: string | number,
-    valor2: number | string
+    valor2: number | string,
 ) => boolean = (valor1: string | number, valor2: number | string): boolean => {
     if (valor1 != valor2) {
         return true;
@@ -182,7 +182,7 @@ export const compararDistintos: (
 
 export const compararMayor: (
     valor1: string | number,
-    valor2: number | string
+    valor2: number | string,
 ) => boolean = (valor1: string | number, valor2: number | string): boolean => {
     if (valor1 > valor2) {
         return true;
@@ -192,7 +192,7 @@ export const compararMayor: (
 
 export const compararMenor: (
     valor1: string | number,
-    valor2: number | string
+    valor2: number | string,
 ) => boolean = (valor1: string | number, valor2: number | string): boolean => {
     if (valor1 < valor2) {
         return true;
@@ -202,7 +202,7 @@ export const compararMenor: (
 
 export const compararMayorIgual: (
     valor1: string | number,
-    valor2: number | string
+    valor2: number | string,
 ) => boolean = (valor1: string | number, valor2: number | string): boolean => {
     if (valor1 >= valor2) {
         return true;
@@ -212,7 +212,7 @@ export const compararMayorIgual: (
 
 export const compararMenorIgual: (
     valor1: string | number,
-    valor2: number | string
+    valor2: number | string,
 ) => boolean = (valor1: string | number, valor2: number | string): boolean => {
     if (valor1 <= valor2) {
         return true;
@@ -221,13 +221,13 @@ export const compararMenorIgual: (
 };
 
 export const getValorControl: (form: FormControl) => number | undefined = (
-    form: FormControl
+    form: FormControl,
 ): number | undefined => {
     let valor: number | undefined = parseFloat(
         (form?.value + '')
             .split('.')
             .map((aux) => aux.split(',').join('.'))
-            .join('')
+            .join(''),
     );
     if (isNaN(valor)) {
         valor = undefined;
@@ -236,7 +236,7 @@ export const getValorControl: (form: FormControl) => number | undefined = (
 };
 
 export const removeCommasControl: (form: FormControl) => void = (
-    form: FormControl
+    form: FormControl,
 ): void => {
     let valor: string = (form?.value + '')
         .split('.')
@@ -249,20 +249,18 @@ export const removeCommasControl: (form: FormControl) => void = (
 };
 
 export const addCommasControl: (form: FormControl) => void = (
-    form: FormControl
+    form: FormControl,
 ): void => {
     form.setValue(
         getValorControl(form)?.toLocaleString('de-DE', {
             minimumFractionDigits: 2,
-        })
+        }),
     );
 };
 
-
-export const localDateToDate: (
-    valor: string
-
-) => Date = (valor: string): Date => {
+export const localDateToDate: (valor: string) => Date = (
+    valor: string,
+): Date => {
     // Cadena de fecha original en formato 'YYYY-MM-DD'
     const localDateString = valor;
 
@@ -275,9 +273,10 @@ export const localDateToDate: (
 };
 
 export function formatearCI(raw: NumeroStringNulo | undefined): string {
-
     const digits = String(raw ?? '').replace(/\D/g, '');
-    if (digits.length <= 1) { return String(raw ?? ''); }
+    if (digits.length <= 1) {
+        return String(raw ?? '');
+    }
 
     const verificador = digits.slice(-1);
     const cuerpo = digits.slice(0, -1);
@@ -287,7 +286,6 @@ export function formatearCI(raw: NumeroStringNulo | undefined): string {
     const cuerpoFormateado = cuerpo.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); //NOSONAR
     return `${cuerpoFormateado}-${verificador}`;
 }
-
 
 export function transformarNroDocumento(nroDocumento: string): string {
     if (!nroDocumento || nroDocumento.trim() === '') {
@@ -305,9 +303,14 @@ export function campoVacio(control: string, form: FormGroup): boolean {
     return ctrl ? ctrl.invalid && (ctrl.dirty || ctrl.touched) : false;
 }
 
-export function dividirNroAnioCompra(nroAnioCompraStr: string): { numCompra?: number, anioCompra?: number } {
+export function dividirNroAnioCompra(nroAnioCompraStr: string): {
+    numCompra?: number;
+    anioCompra?: number;
+} {
     if (nroAnioCompraStr?.includes('/')) {
-        const [numCompraStr, anioCompraStr] = nroAnioCompraStr.split('/').map((s: string) => s.trim());
+        const [numCompraStr, anioCompraStr] = nroAnioCompraStr
+            .split('/')
+            .map((s: string) => s.trim());
         const numCompra = Number(numCompraStr);
         const anioCompra = Number(anioCompraStr);
         if (!isNaN(numCompra) && !isNaN(anioCompra)) {
@@ -322,17 +325,14 @@ export function volverConConfirmacion(
     actualizarService: any,
     accion: () => void,
     form: any,
-    mensaje: string = '¿Desea salir sin guardar los cambios?'
+    mensaje: string = '¿Desea salir sin guardar los cambios?',
 ): void {
     const formularioTocado = form?.dirty ?? false;
 
     if (formularioTocado) {
-        actualizarService.confirmar(
-            mensaje,
-            () => {
-                accion();
-            }
-        );
+        actualizarService.confirmar(mensaje, () => {
+            accion();
+        });
     } else {
         accion();
     }
@@ -343,36 +343,36 @@ export function formularioTocado(form: any): boolean {
 }
 
 //Volver con confirmacion pero con un callback como "volver"
-export function volverConConfirmacionCustom(actualizarService: any, form: any, callbackFn: () => void,
-    mensaje: string = '¿Desea salir sin guardar los cambios?'): void {
-
+export function volverConConfirmacionCustom(
+    actualizarService: any,
+    form: any,
+    callbackFn: () => void,
+    mensaje: string = '¿Desea salir sin guardar los cambios?',
+): void {
     if (formularioTocado(form)) {
-        actualizarService.confirmar(
-            mensaje,
-            callbackFn
-        );
+        actualizarService.confirmar(mensaje, callbackFn);
     } else {
         callbackFn();
     }
 }
 
 export function formatearBytes(bytes: number, decimals: number = 2): string {
-    if (!+bytes) return '0 Bytes'
+    if (!+bytes) return '0 Bytes';
 
-    const k = 1024
-    const dm = decimals < 0 ? 0 : decimals
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }
 
 export function uuidv4() {
-  return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
-    (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
-  );
+    return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) =>
+        (
+            +c ^
+            (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))
+        ).toString(16),
+    );
 }
-
-
-

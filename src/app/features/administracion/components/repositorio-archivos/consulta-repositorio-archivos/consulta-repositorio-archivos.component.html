@@ -1,38 +1,76 @@
 <div class="row">
     <div [ngClass]="colFiltro" class="sidebar p-0">
-        <app-filtro titleBtn="Buscar" (evFilter)="actualizarFiltrosYBuscar()" (evCollapse)="aplicarColapso()" class="filter" claseCabezal="ml-2 pl-2 mr-2 pr-2">
+        <app-filtro
+            titleBtn="Buscar"
+            (evFilter)="actualizarFiltrosYBuscar()"
+            (evCollapse)="aplicarColapso()"
+            class="filter"
+            claseCabezal="ml-2 pl-2 mr-2 pr-2"
+        >
             <div [formGroup]="form">
-                <app-grupo-colapsable class="pl-0 borde-inferior" classTitulo="pl-3"  classContenido="ml-2 pl-2 pr-2 mr-2" 
-                  titulo="Filtro por organismo" ariaLabel="Expandir o colapsar filtro por organismo">
-
-                    <app-filtro-organismo formControlName="organismo"
+                <app-grupo-colapsable
+                    class="pl-0 borde-inferior"
+                    classTitulo="pl-3"
+                    classContenido="ml-2 pl-2 pr-2 mr-2"
+                    titulo="Filtro por organismo"
+                    ariaLabel="Expandir o colapsar filtro por organismo"
+                >
+                    <app-filtro-organismo
+                        formControlName="organismo"
                         (cambioFiltro)="onFiltroOrganismo($event)"
                         (limpiarFiltro)="onFiltroOrganismo(null)"
-                        [requeridoUC]="false">
+                        [requeridoUC]="false"
+                    >
                     </app-filtro-organismo>
                 </app-grupo-colapsable>
 
                 <div class="row pr-3 pl-3">
                     <div class="form-group form-row col-12">
-                        <label for="nombreDocumento" class="col-form-label col-12 pl-0">Nombre documento</label>
-                        <input id="nombreDocumento" class="form-control col-12" type="text"
+                        <label
+                            for="nombreDocumento"
+                            class="col-form-label col-12 pl-0"
+                            >Nombre documento</label
+                        >
+                        <input
+                            id="nombreDocumento"
+                            class="form-control col-12"
+                            type="text"
                             formControlName="nombreDocumento"
-                            placeholder="Buscar por nombre" />
+                            placeholder="Buscar por nombre"
+                        />
                     </div>
                 </div>
-                
-               <div class="row pr-3 pl-3">
+
+                <div class="row pr-3 pl-3">
                     <div class="form-group form-row col-12">
-                        <label for="tipoArchivo" class="col-form-label col-12 pl-0">Tipo archivo</label>
-                        <select id="tipoArchivo" class="form-control col-12" formControlName="tipoArchivo">
-                            <option *ngFor="let tipo of tiposArchivo" [value]="tipo.id">{{ tipo.nombre }}</option>
+                        <label
+                            for="tipoArchivo"
+                            class="col-form-label col-12 pl-0"
+                            >Tipo archivo</label
+                        >
+                        <select
+                            id="tipoArchivo"
+                            class="form-control col-12"
+                            formControlName="tipoArchivo"
+                        >
+                            <option
+                                *ngFor="let tipo of tiposArchivo"
+                                [value]="tipo.id"
+                            >
+                                {{ tipo.nombre }}
+                            </option>
                         </select>
                     </div>
                 </div>
 
-                 <div class="row p-3">
+                <div class="row p-3">
                     <div class="clean-filter col-12">
-                        <button type="button" class="btn btn-link" id="cleanFilterBtn" (click)="nuevaConsulta()">
+                        <button
+                            type="button"
+                            class="btn btn-link"
+                            id="cleanFilterBtn"
+                            (click)="nuevaConsulta()"
+                        >
                             Nueva consulta
                         </button>
                     </div>
@@ -43,64 +81,105 @@
 
     <div [ngClass]="colTabla">
         <div class="row justify-content-end pr-2 mb-2">
-            <button class="btn btn-primary mr-2" (click)="abrirAgregarDocumento()">
+            <button
+                class="btn btn-primary mr-2"
+                (click)="abrirAgregarDocumento()"
+            >
                 <em class="fa fa-plus mr-1"></em>
                 Agregar archivo
             </button>
         </div>
 
-         <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total===-1">
-            <div class="card-body py-sm-2 mb-sm-2 col-12 text-center  pt-sm-4 pb-sm-4" >
-            <em class=" fa fa-search  fa-2x  d-block mb-4"></em>
-                <h6>Ingresa las opciones de búsqueda y presiona buscar para consultar archivos</h6>
+        <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total === -1">
+            <div
+                class="card-body py-sm-2 mb-sm-2 col-12 text-center pt-sm-4 pb-sm-4"
+            >
+                <em class="fa fa-search fa-2x d-block mb-4"></em>
+                <h6>
+                    Ingresa las opciones de búsqueda y presiona buscar para
+                    consultar archivos
+                </h6>
             </div>
         </div>
 
-        <app-cabezal-consulta [totalItems]="total"
+        <app-cabezal-consulta
+            [totalItems]="total"
             [listaOrden]="listaOrden"
             [columnaOrden]="parametros.sort"
             [orden]="parametros.order"
             (orderChange)="cambioOrden($event)"
-            (sortChange)="cambioColumnaOrden($event)">
+            (sortChange)="cambioColumnaOrden($event)"
+        >
         </app-cabezal-consulta>
 
-        <div *ngFor="let doc of documentos; let i = index" [style.position]="'relative'" [style.z-index]="8000-i">
+        <div
+            *ngFor="let doc of documentos; let i = index"
+            [style.position]="'relative'"
+            [style.z-index]="8000 - i"
+        >
             <div class="card mb-2">
-                    <div class="row">
-                        <div class="col-12 py-2 px-4">
-                            <div class="row g-0 py-1 px-3">
-                                <div class="col-3 col-xl-3 fw-semibold etiqueta">Nombre</div>
-                                <div class="col-7 col-xl-7 font-weight-bold">{{ doc.nombreDocumento }}</div>
-                                <div class="col-2 d-flex justify-content-end align-items-start">
-                                    <app-boton-accion [acciones]="obtenerAcciones(doc)"
-                                        [ariaLabelMasOpciones]="'Mas opciones del documento ' + doc.nombreDocumento"
-                                        (accionEjecutada)="ejecutarAccion($event)">
-                                    </app-boton-accion>
-                                 </div>   
+                <div class="row">
+                    <div class="col-12 py-2 px-4">
+                        <div class="row g-0 py-1 px-3">
+                            <div class="col-3 col-xl-3 fw-semibold etiqueta">
+                                Nombre
                             </div>
-                             <div class="row g-0 py-1 px-3">
-                                <div class="col-3 col-xl-3 fw-semibold etiqueta">Descripción</div>
-                                <div class="col-7 col-xl-7 font-weight-bold">{{ doc.descripcionDocumento }}</div>
+                            <div class="col-7 col-xl-7 font-weight-bold">
+                                {{ doc.nombreDocumento }}
                             </div>
-                             <div class="row g-0 py-1 px-3">
-                                <div class="col-3 col-xl-3 fw-semibold etiqueta">Tipo archivo</div>
-                                <div class="col-7 col-xl-7 font-weight-bold">{{ obtenerEtiquetaTipoArchivo(doc.tipoArchivo) }}</div>
-                            </div>
-                            <div class="row g-0 py-1 px-3">
-                                <div class="col-3 col-xl-3 fw-semibold etiqueta">Organismo</div>
-                                <div class="col-7 col-xl-7 font-weight-bold">{{ doc.nombreInciso }} | {{ doc.nombreUnidadEjecutora }}</div>
+                            <div
+                                class="col-2 d-flex justify-content-end align-items-start"
+                            >
+                                <app-boton-accion
+                                    [acciones]="obtenerAcciones(doc)"
+                                    [ariaLabelMasOpciones]="
+                                        'Mas opciones del documento ' +
+                                        doc.nombreDocumento
+                                    "
+                                    (accionEjecutada)="ejecutarAccion($event)"
+                                >
+                                </app-boton-accion>
                             </div>
                         </div>
-                        
+                        <div class="row g-0 py-1 px-3">
+                            <div class="col-3 col-xl-3 fw-semibold etiqueta">
+                                Descripción
+                            </div>
+                            <div class="col-7 col-xl-7 font-weight-bold">
+                                {{ doc.descripcionDocumento }}
+                            </div>
+                        </div>
+                        <div class="row g-0 py-1 px-3">
+                            <div class="col-3 col-xl-3 fw-semibold etiqueta">
+                                Tipo archivo
+                            </div>
+                            <div class="col-7 col-xl-7 font-weight-bold">
+                                {{
+                                    obtenerEtiquetaTipoArchivo(doc.tipoArchivo)
+                                }}
+                            </div>
+                        </div>
+                        <div class="row g-0 py-1 px-3">
+                            <div class="col-3 col-xl-3 fw-semibold etiqueta">
+                                Organismo
+                            </div>
+                            <div class="col-7 col-xl-7 font-weight-bold">
+                                {{ doc.nombreInciso }} |
+                                {{ doc.nombreUnidadEjecutora }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <app-paginado [totalItems]="total"
-                [itemsPorPagina]="parametros.tamanoPagina"
-                [paginaActual]="parametros.pagina + 1"
-                (cambioPagina)="cambioPagina($event)"
-                (cambioItemsPorPagina)="cambioPorPagina($event)">
-            </app-paginado>
+        <app-paginado
+            [totalItems]="total"
+            [itemsPorPagina]="parametros.tamanoPagina"
+            [paginaActual]="parametros.pagina + 1"
+            (cambioPagina)="cambioPagina($event)"
+            (cambioItemsPorPagina)="cambioPorPagina($event)"
+        >
+        </app-paginado>
     </div>
 </div>

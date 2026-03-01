@@ -1,5 +1,5 @@
-@use '../portal-tipo/variables.scss';
-@use 'vars';
+@use "../portal-tipo/variables.scss";
+@use "vars";
 
 #wrapper {
     display: flex;
@@ -107,9 +107,15 @@ ul.navigation {
             span {
                 visibility: visible;
                 opacity: 1;
-                -webkit-transition: opacity 0.2s, visibility 0.2s;
-                transition: opacity 0.2s, visibility 0.2s;
-                -ms-transition: opacity 0.2s, visibility 0.2s;
+                -webkit-transition:
+                    opacity 0.2s,
+                    visibility 0.2s;
+                transition:
+                    opacity 0.2s,
+                    visibility 0.2s;
+                -ms-transition:
+                    opacity 0.2s,
+                    visibility 0.2s;
             }
         }
     }
@@ -126,7 +132,7 @@ ul.navigation {
     padding-left: 40px;
     margin-left: 40px;
     flex-flow: row-reverse;
-    
+
     float: right;
     align-self: flex-end;
     display: flex;
@@ -162,9 +168,15 @@ ul.navigation {
                 visibility: hidden;
                 opacity: 0;
                 position: absolute;
-                -webkit-transition: opacity 0.2s, visibility 0.2s;
-                transition: opacity 0.2s, visibility 0.2s;
-                -ms-transition: opacity 0.2s, visibility 0.2s;
+                -webkit-transition:
+                    opacity 0.2s,
+                    visibility 0.2s;
+                transition:
+                    opacity 0.2s,
+                    visibility 0.2s;
+                -ms-transition:
+                    opacity 0.2s,
+                    visibility 0.2s;
             }
         }
     }

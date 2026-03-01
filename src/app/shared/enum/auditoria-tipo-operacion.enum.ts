@@ -1,4 +1,4 @@
 export enum AuditoriaTipoOperacionEnum {
-    ingreso = "INGRESO",
-    aprobacion = "APROBACION",
+    ingreso = 'INGRESO',
+    aprobacion = 'APROBACION',
 }

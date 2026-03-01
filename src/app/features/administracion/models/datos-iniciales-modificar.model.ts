@@ -1,5 +1,3 @@
-
-
 export interface DatosInicialesModificarDTO {
     idUsuario: string;
     nombre: string;

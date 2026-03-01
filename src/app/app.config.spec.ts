@@ -1,5 +1,8 @@
 import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import {
+    HttpTestingController,
+    provideHttpClientTesting,
+} from '@angular/common/http/testing';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { environment } from '@env/gc/environment';
@@ -15,7 +18,7 @@ const mockConfig: IAppConfig = {
     loggingLevel: 'Debug',
     archivosCantidadMax: 10,
     archivosTamanoMaxBytes: 1000000,
-    contenidoInicio: ''
+    contenidoInicio: '',
 };
 
 describe('AppConfig', () => {
@@ -25,9 +28,12 @@ describe('AppConfig', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [],
-            providers: [AppConfig, provideRouter([]),
-            provideHttpClient(),
-            provideHttpClientTesting(),]
+            providers: [
+                AppConfig,
+                provideRouter([]),
+                provideHttpClient(),
+                provideHttpClientTesting(),
+            ],
         });
         service = TestBed.inject(AppConfig);
         http = TestBed.inject(HttpTestingController);
@@ -40,7 +46,9 @@ describe('AppConfig', () => {
     it('carga el archivo de configuración por defecto', fakeAsync(() => {
         environment.nombre = '';
         let done = false;
-        service.load().then(() => { done = true; });
+        service.load().then(() => {
+            done = true;
+        });
 
         const req = http.expectOne('./assets/config.json');
         expect(req.request.method).toBe('GET');
@@ -64,7 +72,7 @@ describe('AppConfig', () => {
     it('rechaza cuando la solicitud falla', fakeAsync(() => {
         environment.nombre = '';
         let error: any;
-        service.load().catch(e => error = e);
+        service.load().catch((e) => (error = e));
         const req = http.expectOne('./assets/config.json');
         req.error(new ProgressEvent('error'));
         tick();

@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { AppConfig } from "src/app/app.config";
+import { Injectable } from '@angular/core';
+import { AppConfig } from 'src/app/app.config';
 
 export class LoggingLevel {
     public static readonly None = 'None';
@@ -19,15 +19,16 @@ export interface ILogger {
 }
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class LoggerService implements ILogger {
-
     private _level: LoggingLevel = LoggingLevel.None;
     public _name?: any;
     constructor() {
         if (AppConfig.settings?.loggingLevel) {
-            this._level = this.determinarLoggingLevel(AppConfig.settings.loggingLevel);
+            this._level = this.determinarLoggingLevel(
+                AppConfig.settings.loggingLevel,
+            );
         }
     }
 
@@ -36,7 +37,6 @@ export class LoggerService implements ILogger {
     }
 
     determinarLoggingLevel(loggingLevel: string | LoggingLevel) {
-
         if (loggingLevel === undefined || loggingLevel === null) {
             return LoggingLevel.None;
         }
@@ -45,13 +45,21 @@ export class LoggerService implements ILogger {
         }
         if (loggingLevel.toLowerCase() === LoggingLevel.None.toLowerCase()) {
             return LoggingLevel.None;
-        } else if (loggingLevel.toLowerCase() === LoggingLevel.Error.toLowerCase()) {
+        } else if (
+            loggingLevel.toLowerCase() === LoggingLevel.Error.toLowerCase()
+        ) {
             return LoggingLevel.Error;
-        } else if (loggingLevel.toLowerCase() === LoggingLevel.Warning.toLowerCase()) {
+        } else if (
+            loggingLevel.toLowerCase() === LoggingLevel.Warning.toLowerCase()
+        ) {
             return LoggingLevel.Warning;
-        } else if (loggingLevel.toLowerCase() === LoggingLevel.Info.toLowerCase()) {
+        } else if (
+            loggingLevel.toLowerCase() === LoggingLevel.Info.toLowerCase()
+        ) {
             return LoggingLevel.Info;
-        } else if (loggingLevel.toLowerCase() === LoggingLevel.Debug.toLowerCase()) {
+        } else if (
+            loggingLevel.toLowerCase() === LoggingLevel.Debug.toLowerCase()
+        ) {
             return LoggingLevel.Debug;
         } else {
             return LoggingLevel.Verbose;
@@ -79,11 +87,23 @@ export class LoggerService implements ILogger {
         if (this._level === LoggingLevel.None) {
             return false;
         } else if (this._level === LoggingLevel.Error) {
-            return level === LoggingLevel.Error || this._level === LoggingLevel.Debug;
+            return (
+                level === LoggingLevel.Error ||
+                this._level === LoggingLevel.Debug
+            );
         } else if (this._level === LoggingLevel.Warning) {
-            return level === LoggingLevel.Error || level === LoggingLevel.Warning || this._level === LoggingLevel.Debug;
+            return (
+                level === LoggingLevel.Error ||
+                level === LoggingLevel.Warning ||
+                this._level === LoggingLevel.Debug
+            );
         } else if (this._level === LoggingLevel.Info) {
-            return level === LoggingLevel.Error || level === LoggingLevel.Warning || level === LoggingLevel.Info || this._level === LoggingLevel.Debug;
+            return (
+                level === LoggingLevel.Error ||
+                level === LoggingLevel.Warning ||
+                level === LoggingLevel.Info ||
+                this._level === LoggingLevel.Debug
+            );
         } else {
             return true;
         }

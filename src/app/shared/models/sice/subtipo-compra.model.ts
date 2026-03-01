@@ -14,6 +14,6 @@ export class SubtipoCompraDTO implements ISubtipoCompraDTO {
         public descSubtipoCompra?: string,
         public descTipoCompra?: string,
         public indicadorComprasCentralizadas?: boolean,
-        public indicadorFondosRotatorios?: boolean
+        public indicadorFondosRotatorios?: boolean,
     ) {}
 }

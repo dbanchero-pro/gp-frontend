@@ -9,59 +9,64 @@ import { AgregarModificarModeloComponent } from './agregar-modificar-modelo.comp
 import { ModeloService } from '../../../services/modelo.service';
 
 describe('AgregarModificarModeloComponent', () => {
-  let component: AgregarModificarModeloComponent;
-  let fixture: ComponentFixture<AgregarModificarModeloComponent>;
+    let component: AgregarModificarModeloComponent;
+    let fixture: ComponentFixture<AgregarModificarModeloComponent>;
 
-  const activatedRouteStub = {
-    params: of({}),
-    snapshot: {
-      params: {},
-      paramMap: { get: (_key: string) => null },
-      queryParamMap: { get: (_key: string) => null }
-    }
-  };
-  const routerStub = {
-    navigate: jasmine.createSpy('navigate')
-  };
-  const bsModalServiceStub = {
-    show: jasmine.createSpy('show').and.returnValue({ content: {}, hide: jasmine.createSpy('hide') })
-  };
-  const snapshotServiceStub = {
-    load: jasmine.createSpy('load').and.returnValue(null),
-    save: jasmine.createSpy('save'),
-    clear: jasmine.createSpy('clear')
-  };
-  const modeloServiceStub = jasmine.createSpyObj('ModeloService', ['obtenerModeloPorId', 'crearModelo', 'actualizarModelo']);
-  modeloServiceStub.obtenerModeloPorId.and.returnValue(of(undefined));
-  modeloServiceStub.crearModelo.and.returnValue(of({}));
-  modeloServiceStub.actualizarModelo.and.returnValue(of({}));
+    const activatedRouteStub = {
+        params: of({}),
+        snapshot: {
+            params: {},
+            paramMap: { get: (_key: string) => null },
+            queryParamMap: { get: (_key: string) => null },
+        },
+    };
+    const routerStub = {
+        navigate: jasmine.createSpy('navigate'),
+    };
+    const bsModalServiceStub = {
+        show: jasmine
+            .createSpy('show')
+            .and.returnValue({ content: {}, hide: jasmine.createSpy('hide') }),
+    };
+    const snapshotServiceStub = {
+        load: jasmine.createSpy('load').and.returnValue(null),
+        save: jasmine.createSpy('save'),
+        clear: jasmine.createSpy('clear'),
+    };
+    const modeloServiceStub = jasmine.createSpyObj('ModeloService', [
+        'obtenerModeloPorId',
+        'crearModelo',
+        'actualizarModelo',
+    ]);
+    modeloServiceStub.obtenerModeloPorId.and.returnValue(of(undefined));
+    modeloServiceStub.crearModelo.and.returnValue(of({}));
+    modeloServiceStub.actualizarModelo.and.returnValue(of({}));
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [],
-      imports: [
-        ReactiveFormsModule,
-        AgregarModificarModeloComponent,
-      ],
-      providers: [
-        { provide: ActivatedRoute, useValue: activatedRouteStub },
-        { provide: Router, useValue: routerStub },
-        { provide: BsModalService, useValue: bsModalServiceStub },
-        { provide: SnapshotGenericService, useValue: snapshotServiceStub },
-        { provide: ModeloService, useValue: modeloServiceStub }
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
-  });
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [],
+            imports: [ReactiveFormsModule, AgregarModificarModeloComponent],
+            providers: [
+                { provide: ActivatedRoute, useValue: activatedRouteStub },
+                { provide: Router, useValue: routerStub },
+                { provide: BsModalService, useValue: bsModalServiceStub },
+                {
+                    provide: SnapshotGenericService,
+                    useValue: snapshotServiceStub,
+                },
+                { provide: ModeloService, useValue: modeloServiceStub },
+            ],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        }).compileComponents();
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(AgregarModificarModeloComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(AgregarModificarModeloComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('debería crearse', () => {
-    expect(component).toBeTruthy();
-  });
+    it('debería crearse', () => {
+        expect(component).toBeTruthy();
+    });
 });

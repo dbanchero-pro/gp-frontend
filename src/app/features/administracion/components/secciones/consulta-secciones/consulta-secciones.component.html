@@ -1,195 +1,407 @@
 <div class="row">
-  <div [ngClass]="colFiltro" class="sidebar">
-    <app-filtro title="Búsqueda" titleBtn="Buscar" iconTitle="fa fa-search"
-      (evFilter)="actualizarFiltrosYBuscar()">
-      <div [formGroup]="formularioFiltro" class="col-12 ml-0 pl-0 mr-0 pr-0">
-        <div class="row">
-          <div class="form-group form-row col-12 m-0 pb-0">
-            <label for="denominacion" class="col-form-label col-12">Denominación sección</label>
-            <input type="text" class="form-control col-12" id="denominacion"
-              formControlName="denominacion" placeholder="Ingrese denominación">
-          </div>
-        </div>
+    <div [ngClass]="colFiltro" class="sidebar">
+        <app-filtro
+            title="Búsqueda"
+            titleBtn="Buscar"
+            iconTitle="fa fa-search"
+            (evFilter)="actualizarFiltrosYBuscar()"
+        >
+            <div
+                [formGroup]="formularioFiltro"
+                class="col-12 ml-0 pl-0 mr-0 pr-0"
+            >
+                <div class="row">
+                    <div class="form-group form-row col-12 m-0 pb-0">
+                        <label for="denominacion" class="col-form-label col-12"
+                            >Denominación sección</label
+                        >
+                        <input
+                            type="text"
+                            class="form-control col-12"
+                            id="denominacion"
+                            formControlName="denominacion"
+                            placeholder="Ingrese denominación"
+                        />
+                    </div>
+                </div>
 
-        <div class="row">
-          <div class="form-group form-row col-12 m-0 pb-0">
-            <label for="estado" class="col-form-label col-12">Estado</label>
-            <select id="estado" class="form-control col-12">
-              <option value="null">Todos los estados</option>
-              <option value="V"> Vigente</option>
-              <option value="N"> No vigente</option>
-              <option value="B"> Borrador</option>
-            </select>
-          </div>
-        </div>
+                <div class="row">
+                    <div class="form-group form-row col-12 m-0 pb-0">
+                        <label for="estado" class="col-form-label col-12"
+                            >Estado</label
+                        >
+                        <select id="estado" class="form-control col-12">
+                            <option value="null">Todos los estados</option>
+                            <option value="V">Vigente</option>
+                            <option value="N">No vigente</option>
+                            <option value="B">Borrador</option>
+                        </select>
+                    </div>
+                </div>
 
-        <div class="row">
-          <div class="clean-filter col-12">
-            <button type="button" class="btn btn-link" (click)="nuevaConsulta()">
-              Nueva consulta
+                <div class="row">
+                    <div class="clean-filter col-12">
+                        <button
+                            type="button"
+                            class="btn btn-link"
+                            (click)="nuevaConsulta()"
+                        >
+                            Nueva consulta
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </app-filtro>
+    </div>
+
+    <div [ngClass]="colTabla">
+        <div
+            class="row justify-content-end pr-2 mb-2"
+            *ngIf="!mostrarSoloSeleccion"
+        >
+            <button class="btn btn-primary mr-2" (click)="agregarSeccion()">
+                <em class="fa fa-plus mr-1"></em>
+                Agregar sección
             </button>
-          </div>
         </div>
-      </div>
-    </app-filtro>
-  </div>
 
-  <div [ngClass]="colTabla">
-
-      <div class="row justify-content-end pr-2 mb-2" *ngIf="!mostrarSoloSeleccion">
-          <button class="btn btn-primary mr-2" (click)="agregarSeccion()">
-              <em class="fa fa-plus mr-1"></em>
-              Agregar sección
-          </button>
-      </div>
-
-      <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total===-1">
-          <div class="card-body py-sm-2 mb-sm-2 col-12 text-center  pt-sm-4 pb-sm-4" >
-          <em class=" fa fa-search  fa-2x  d-block mb-4"></em>
-              <h6>Ingresa las opciones de búsqueda y presiona buscar para consultar secciones</h6>
-          </div>
-      </div>
-
-    <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden"
-      [columnaOrden]="parametros.sort" [orden]="parametros.order"
-      (orderChange)="cambioOrden($event)" (sortChange)="cambioColumnaOrden($event)">
-    </app-cabezal-consulta>
-
-    <div *ngFor="let seccion of secciones" class="row">
-      <div class="col-12 my-1">
-        <div class="card">
-          <div class="d-flex justify-content-between align-items-center border-bottom px-3 py-2">
-            <div>
-              <span class="font-weight-bold"><em class="fa fa-caret-right m-2"></em> {{ seccion.denominacion }}</span>
-              <span class="badge ml-2" *ngIf="!esBorrador(seccion)" [ngClass]="{
-                'badge-success': obtenerEstadoVigencia(seccion) === 'VIGENTE',
-                'badge-cancel': obtenerEstadoVigencia(seccion) === 'NO_VIGENTE'
-              }">
-                {{ obtenerTextoEstadoVigencia(seccion) }}
-              </span>
-              <span *ngIf="esBorrador(seccion)" class="badge badge-info ml-1">
-                Borrador
-              </span>
+        <div class="card row ml-lg-1 aviso-info-busqueda" *ngIf="total === -1">
+            <div
+                class="card-body py-sm-2 mb-sm-2 col-12 text-center pt-sm-4 pb-sm-4"
+            >
+                <em class="fa fa-search fa-2x d-block mb-4"></em>
+                <h6>
+                    Ingresa las opciones de búsqueda y presiona buscar para
+                    consultar secciones
+                </h6>
             </div>
-            <div class="d-flex" *ngIf="!mostrarSoloSeleccion">
-              <div class="z-index-10">
-                <app-boton-accion [acciones]="obtenerAccionesSeccion(seccion)"
-                  [ariaLabelMasOpciones]="'Mas opciones de la sección ' + seccion.denominacion">
-                </app-boton-accion>
-              </div>
-            </div>
-            <div *ngIf="mostrarSoloSeleccion">
-              <button type="button" class="btn btn-primary btn-sm" (click)="seleccionarSeccion(seccion)">
-                <em class="fa fa-check mr-1"></em> Seleccionar
-              </button>
-            </div>
-          </div>
+        </div>
 
-          <div class="px-3 py-2">
-            <div class="row g-0 py-1 px-3">
-              <div class="col-md-2 col-lg-2 etiqueta">Vigencia</div>
-              <div class="col-md-8 col-lg-8 font-weight-bold">{{ obtenerTextoVigencia(seccion) }}</div>
-              <div class="col-md-2 col-lg-2 font-weight-bold text-right" *ngIf="!esBorrador(seccion)">Version: {{ seccion.version }}</div>
-            </div>
+        <app-cabezal-consulta
+            [totalItems]="total"
+            [listaOrden]="listaOrden"
+            [columnaOrden]="parametros.sort"
+            [orden]="parametros.order"
+            (orderChange)="cambioOrden($event)"
+            (sortChange)="cambioColumnaOrden($event)"
+        >
+        </app-cabezal-consulta>
 
-            <div *ngIf="seccion.capitulos.length > 0" class="row g-0 py-2">
-              <div class="col-12">
-                <app-grupo-colapsable
-                  [colapsado]="true"
-                  class="w-100"
-                  classContenido="p-0"
-                  [ariaLabel]="'Mostrar u ocultar capítulos de la sección ' + seccion.denominacion">
-                  <titulo>Capítulos ({{ seccion.capitulos.length }})</titulo>
-                  <contenido>
-                    <div class="px-3 py-2">
-                      <div *ngFor="let capitulo of seccion.capitulos" class="card mb-2">
-                        <div class="card-body py-2">
-                          <div class="row g-0 mb-2">
-                            <div class="col-md-9">
-                              <span class="font-weight-bold"><em class="fa fa-angle-right m-2"></em>{{ capitulo.capitulo.denominacion }}</span>
-                            </div>
-                            <div class="col-md-3 text-right">
-                              <span>Versión: {{ capitulo.capitulo.version }}</span>
-                            </div>
-                          </div>
-                          <div *ngIf="capitulo.capitulo.clausulas && (capitulo.capitulo.clausulas.length || 0) > 0" class="pl-3">
-                            <div *ngFor="let clausula of capitulo.capitulo.clausulas" class="card mb-1">
-                              <div class="card-body py-1 px-2">
-                                <div class="row g-0">
-                                   <div class="col-md-1 text-center">
-                                    <button title="Menú de acciones"
-                                      *ngFor="let accion of obtenerAccionesClausula(clausula.clausula)"
-                                      type="button"
-                                      [class]="accion.clase"
-                                      [attr.aria-label]="accion.ariaLabel"
-                                      (click)="accion.accion && accion.accion()">
-                                      <em [class]="accion.icono"></em>
-                                    </button>
-                                  </div>
-                                  <div class="col-md-8"> {{ clausula.clausula.denominacion }}</div>
-                                  <div class="col-md-3 text-right">Versión: {{ clausula.clausula.version }}</div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+        <div *ngFor="let seccion of secciones" class="row">
+            <div class="col-12 my-1">
+                <div class="card">
+                    <div
+                        class="d-flex justify-content-between align-items-center border-bottom px-3 py-2"
+                    >
+                        <div>
+                            <span class="font-weight-bold"
+                                ><em class="fa fa-caret-right m-2"></em>
+                                {{ seccion.denominacion }}</span
+                            >
+                            <span
+                                class="badge ml-2"
+                                *ngIf="!esBorrador(seccion)"
+                                [ngClass]="{
+                                    'badge-success':
+                                        obtenerEstadoVigencia(seccion) ===
+                                        'VIGENTE',
+                                    'badge-cancel':
+                                        obtenerEstadoVigencia(seccion) ===
+                                        'NO_VIGENTE',
+                                }"
+                            >
+                                {{ obtenerTextoEstadoVigencia(seccion) }}
+                            </span>
+                            <span
+                                *ngIf="esBorrador(seccion)"
+                                class="badge badge-info ml-1"
+                            >
+                                Borrador
+                            </span>
                         </div>
-                      </div>
-                    </div>
-                  </contenido>
-                </app-grupo-colapsable>
-              </div>
-            </div>
-
-            <div *ngIf="seccion.clausulas.length > 0" class="row g-0 py-2">
-              <div class="col-12">
-                <app-grupo-colapsable
-                  [colapsado]="true"
-                  class="w-100"
-                  classContenido="p-0"
-                  [ariaLabel]="'Mostrar u ocultar cláusulas de la sección ' + seccion.denominacion">
-                  <titulo>Cláusulas ({{ seccion.clausulas.length }})</titulo>
-                  <contenido>
-                    <div class="px-3 py-2">
-                      <div *ngFor="let clausula of seccion.clausulas" class="card mb-2">
-                        <div class="card-body py-2">
-                          <div class="row g-0">
-                            <div class="col-md-1 font-weight-bold">
-                              <button title="Menú de acciones"
-                                *ngFor="let accion of obtenerAccionesClausula(clausula.clausula)"
+                        <div class="d-flex" *ngIf="!mostrarSoloSeleccion">
+                            <div class="z-index-10">
+                                <app-boton-accion
+                                    [acciones]="obtenerAccionesSeccion(seccion)"
+                                    [ariaLabelMasOpciones]="
+                                        'Mas opciones de la sección ' +
+                                        seccion.denominacion
+                                    "
+                                >
+                                </app-boton-accion>
+                            </div>
+                        </div>
+                        <div *ngIf="mostrarSoloSeleccion">
+                            <button
                                 type="button"
-                                [class]="accion.clase"
-                                [attr.aria-label]="accion.ariaLabel"
-                                (click)="accion.accion && accion.accion()">
-                                <em [class]="accion.icono"></em>
-                              </button>
-                            </div>
-                            <div class="col-md-8">{{ clausula.clausula.denominacion }}</div>
-                            <div class="col-md-3 text-right">Versión: {{ clausula.clausula.version }}</div>
-                          </div>
+                                class="btn btn-primary btn-sm"
+                                (click)="seleccionarSeccion(seccion)"
+                            >
+                                <em class="fa fa-check mr-1"></em> Seleccionar
+                            </button>
                         </div>
-                      </div>
                     </div>
-                  </contenido>
-                </app-grupo-colapsable>
-              </div>
+
+                    <div class="px-3 py-2">
+                        <div class="row g-0 py-1 px-3">
+                            <div class="col-md-2 col-lg-2 etiqueta">
+                                Vigencia
+                            </div>
+                            <div class="col-md-8 col-lg-8 font-weight-bold">
+                                {{ obtenerTextoVigencia(seccion) }}
+                            </div>
+                            <div
+                                class="col-md-2 col-lg-2 font-weight-bold text-right"
+                                *ngIf="!esBorrador(seccion)"
+                            >
+                                Version: {{ seccion.version }}
+                            </div>
+                        </div>
+
+                        <div
+                            *ngIf="seccion.capitulos.length > 0"
+                            class="row g-0 py-2"
+                        >
+                            <div class="col-12">
+                                <app-grupo-colapsable
+                                    [colapsado]="true"
+                                    class="w-100"
+                                    classContenido="p-0"
+                                    [ariaLabel]="
+                                        'Mostrar u ocultar capítulos de la sección ' +
+                                        seccion.denominacion
+                                    "
+                                >
+                                    <titulo
+                                        >Capítulos ({{
+                                            seccion.capitulos.length
+                                        }})</titulo
+                                    >
+                                    <contenido>
+                                        <div class="px-3 py-2">
+                                            <div
+                                                *ngFor="
+                                                    let capitulo of seccion.capitulos
+                                                "
+                                                class="card mb-2"
+                                            >
+                                                <div class="card-body py-2">
+                                                    <div class="row g-0 mb-2">
+                                                        <div class="col-md-9">
+                                                            <span
+                                                                class="font-weight-bold"
+                                                                ><em
+                                                                    class="fa fa-angle-right m-2"
+                                                                ></em
+                                                                >{{
+                                                                    capitulo
+                                                                        .capitulo
+                                                                        .denominacion
+                                                                }}</span
+                                                            >
+                                                        </div>
+                                                        <div
+                                                            class="col-md-3 text-right"
+                                                        >
+                                                            <span
+                                                                >Versión:
+                                                                {{
+                                                                    capitulo
+                                                                        .capitulo
+                                                                        .version
+                                                                }}</span
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        *ngIf="
+                                                            capitulo.capitulo
+                                                                .clausulas &&
+                                                            (capitulo.capitulo
+                                                                .clausulas
+                                                                .length || 0) >
+                                                                0
+                                                        "
+                                                        class="pl-3"
+                                                    >
+                                                        <div
+                                                            *ngFor="
+                                                                let clausula of capitulo
+                                                                    .capitulo
+                                                                    .clausulas
+                                                            "
+                                                            class="card mb-1"
+                                                        >
+                                                            <div
+                                                                class="card-body py-1 px-2"
+                                                            >
+                                                                <div
+                                                                    class="row g-0"
+                                                                >
+                                                                    <div
+                                                                        class="col-md-1 text-center"
+                                                                    >
+                                                                        <button
+                                                                            title="Menú de acciones"
+                                                                            *ngFor="
+                                                                                let accion of obtenerAccionesClausula(
+                                                                                    clausula.clausula
+                                                                                )
+                                                                            "
+                                                                            type="button"
+                                                                            [class]="
+                                                                                accion.clase
+                                                                            "
+                                                                            [attr.aria-label]="
+                                                                                accion.ariaLabel
+                                                                            "
+                                                                            (click)="
+                                                                                accion.accion &&
+                                                                                    accion.accion()
+                                                                            "
+                                                                        >
+                                                                            <em
+                                                                                [class]="
+                                                                                    accion.icono
+                                                                                "
+                                                                            ></em>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div
+                                                                        class="col-md-8"
+                                                                    >
+                                                                        {{
+                                                                            clausula
+                                                                                .clausula
+                                                                                .denominacion
+                                                                        }}
+                                                                    </div>
+                                                                    <div
+                                                                        class="col-md-3 text-right"
+                                                                    >
+                                                                        Versión:
+                                                                        {{
+                                                                            clausula
+                                                                                .clausula
+                                                                                .version
+                                                                        }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </contenido>
+                                </app-grupo-colapsable>
+                            </div>
+                        </div>
+
+                        <div
+                            *ngIf="seccion.clausulas.length > 0"
+                            class="row g-0 py-2"
+                        >
+                            <div class="col-12">
+                                <app-grupo-colapsable
+                                    [colapsado]="true"
+                                    class="w-100"
+                                    classContenido="p-0"
+                                    [ariaLabel]="
+                                        'Mostrar u ocultar cláusulas de la sección ' +
+                                        seccion.denominacion
+                                    "
+                                >
+                                    <titulo
+                                        >Cláusulas ({{
+                                            seccion.clausulas.length
+                                        }})</titulo
+                                    >
+                                    <contenido>
+                                        <div class="px-3 py-2">
+                                            <div
+                                                *ngFor="
+                                                    let clausula of seccion.clausulas
+                                                "
+                                                class="card mb-2"
+                                            >
+                                                <div class="card-body py-2">
+                                                    <div class="row g-0">
+                                                        <div
+                                                            class="col-md-1 font-weight-bold"
+                                                        >
+                                                            <button
+                                                                title="Menú de acciones"
+                                                                *ngFor="
+                                                                    let accion of obtenerAccionesClausula(
+                                                                        clausula.clausula
+                                                                    )
+                                                                "
+                                                                type="button"
+                                                                [class]="
+                                                                    accion.clase
+                                                                "
+                                                                [attr.aria-label]="
+                                                                    accion.ariaLabel
+                                                                "
+                                                                (click)="
+                                                                    accion.accion &&
+                                                                        accion.accion()
+                                                                "
+                                                            >
+                                                                <em
+                                                                    [class]="
+                                                                        accion.icono
+                                                                    "
+                                                                ></em>
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            {{
+                                                                clausula
+                                                                    .clausula
+                                                                    .denominacion
+                                                            }}
+                                                        </div>
+                                                        <div
+                                                            class="col-md-3 text-right"
+                                                        >
+                                                            Versión:
+                                                            {{
+                                                                clausula
+                                                                    .clausula
+                                                                    .version
+                                                            }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </contenido>
+                                </app-grupo-colapsable>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
 
-    <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina"
-      [paginaActual]="parametros.pagina + 1" (cambioPagina)="cambioPagina($event)"
-      (cambioItemsPorPagina)="cambioPorPagina($event)">
-    </app-paginado>
+        <app-paginado
+            [totalItems]="total"
+            [itemsPorPagina]="parametros.tamanoPagina"
+            [paginaActual]="parametros.pagina + 1"
+            (cambioPagina)="cambioPagina($event)"
+            (cambioItemsPorPagina)="cambioPorPagina($event)"
+        >
+        </app-paginado>
 
-    <div class="btn-back d-flex justify-content-end" *ngIf="mostrarSoloSeleccion">
-      <button class="btn btn-link" type="button" (click)="volver()">
-        <em class="fa fa-arrow-left mr-1"></em>Volver
-      </button>
+        <div
+            class="btn-back d-flex justify-content-end"
+            *ngIf="mostrarSoloSeleccion"
+        >
+            <button class="btn btn-link" type="button" (click)="volver()">
+                <em class="fa fa-arrow-left mr-1"></em>Volver
+            </button>
+        </div>
     </div>
-  </div>
 </div>
-
-
-

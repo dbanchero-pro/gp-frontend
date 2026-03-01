@@ -4,7 +4,9 @@
             <h4>{{ titulo }}</h4>
         </div>
         <div class="col-md-4">
-            <span class="float-right text-muted">Los campos con * son obligatorios</span>
+            <span class="float-right text-muted"
+                >Los campos con * son obligatorios</span
+            >
         </div>
     </div>
     <div class="row">
@@ -13,102 +15,215 @@
                 <div class="card mb-2">
                     <div class="card-body">
                         <h5 class="card-title mb-3">Datos generales</h5>
-                            <div class="row mb-3">
-                                <div class="form-row col-12">
-                                    <div class="form-group col-md-6" [class.field-error]="form.get('nombreDocumento')?.invalid && form.get('nombreDocumento')?.touched">
-                                        <label for="nombreDocumento">* Nombre documento</label>
-                                        <input id="nombreDocumento" type="text" class="form-control" formControlName="nombreDocumento"
-                                            maxlength="200" />
-                                        <span class="texto-error m-0 position-absolute"
-                                            *ngIf="form.get('nombreDocumento')?.hasError('required') && form.get('nombreDocumento')?.touched">
-                                            El nombre del documento no puede estar vacío
-                                        </span>
-                                    </div>
-
-                                    <div class="form-group col-md-6" [class.field-error]="form.get('tipoArchivo')?.invalid && form.get('tipoArchivo')?.touched">
-                                        <label for="tipoArchivo">* Tipo archivo</label>
-                                        <select id="tipoArchivo" class="form-control" formControlName="tipoArchivo" [disabled]="esModificacion">
-                                            <option value="">Seleccione un tipo</option>
-                                            <option *ngFor="let tipo of tiposArchivo" [value]="tipo.id">{{ tipo.nombre }}</option>
-                                        </select>
-                                        <span class="texto-error m-0 position-absolute"
-                                            *ngIf="form.get('tipoArchivo')?.hasError('required') && form.get('tipoArchivo')?.touched">
-                                            El tipo de archivo no puede estar vacío
-                                        </span>
-                                    </div>
+                        <div class="row mb-3">
+                            <div class="form-row col-12">
+                                <div
+                                    class="form-group col-md-6"
+                                    [class.field-error]="
+                                        form.get('nombreDocumento')?.invalid &&
+                                        form.get('nombreDocumento')?.touched
+                                    "
+                                >
+                                    <label for="nombreDocumento"
+                                        >* Nombre documento</label
+                                    >
+                                    <input
+                                        id="nombreDocumento"
+                                        type="text"
+                                        class="form-control"
+                                        formControlName="nombreDocumento"
+                                        maxlength="200"
+                                    />
+                                    <span
+                                        class="texto-error m-0 position-absolute"
+                                        *ngIf="
+                                            form
+                                                .get('nombreDocumento')
+                                                ?.hasError('required') &&
+                                            form.get('nombreDocumento')?.touched
+                                        "
+                                    >
+                                        El nombre del documento no puede estar
+                                        vacío
+                                    </span>
                                 </div>
-                            </div>
 
-                            <div class="row mb-3">
-                                <div class="form-row col-12">
-                                    <div class="form-group col-12">
-                                        <label for="descripcionDocumento">Descripción documento</label>
-                                        <textarea id="descripcionDocumento" class="form-control" formControlName="descripcionDocumento"
-                                            rows="3" maxlength="500"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="form-row col-12">
-                                    <div class="form-group col-12" [class.field-error]="form.get('archivo')?.invalid && form.get('archivo')?.touched">
-                                        <label for="archivo">* Archivo (máximo {{ MAX_FILE_SIZE_KB }} KB)</label>
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="archivo" [disabled]="esModificacion"
-                                                accept=".pdf,.doc,.docx,.xls,.xlsx"
-                                                (change)="onFileSelected($event)" />
-                                            <label class="custom-file-label" for="archivo">
-                                                {{ nombreArchivoMostrar || 'Seleccionar archivo...' }}
-                                            </label>
-                                        </div>
-                                        <small class="form-text text-muted">Tipos permitidos: PDF, Word, Excel.</small>
-                                        <span class="texto-error m-0 position-absolute"
-                                            *ngIf="form.get('archivo')?.hasError('required') && form.get('archivo')?.touched">
-                                            Debe seleccionar un archivo
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card mb-2">
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">Organismos compradores</h5>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                    <label for="incisoId">Inciso</label>
-                                    <select class="form-control" id="incisoId" [disabled]="esModificacion">
-                                        <option [ngValue]="null">Seleccionar inciso</option>
+                                <div
+                                    class="form-group col-md-6"
+                                    [class.field-error]="
+                                        form.get('tipoArchivo')?.invalid &&
+                                        form.get('tipoArchivo')?.touched
+                                    "
+                                >
+                                    <label for="tipoArchivo"
+                                        >* Tipo archivo</label
+                                    >
+                                    <select
+                                        id="tipoArchivo"
+                                        class="form-control"
+                                        formControlName="tipoArchivo"
+                                        [disabled]="esModificacion"
+                                    >
+                                        <option value="">
+                                            Seleccione un tipo
+                                        </option>
+                                        <option
+                                            *ngFor="let tipo of tiposArchivo"
+                                            [value]="tipo.id"
+                                        >
+                                            {{ tipo.nombre }}
+                                        </option>
                                     </select>
-                                    </div>
+                                    <span
+                                        class="texto-error m-0 position-absolute"
+                                        *ngIf="
+                                            form
+                                                .get('tipoArchivo')
+                                                ?.hasError('required') &&
+                                            form.get('tipoArchivo')?.touched
+                                        "
+                                    >
+                                        El tipo de archivo no puede estar vacío
+                                    </span>
                                 </div>
+                            </div>
+                        </div>
 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="unidadEjecutoraId">Unidad ejecutora</label>
-                                        <select class="form-control" id="unidadEjecutoraId" [disabled]="esModificacion">
-                                            <option [ngValue]="null">Seleccionar unidad ejecutora</option>
-                                        </select>
+                        <div class="row mb-3">
+                            <div class="form-row col-12">
+                                <div class="form-group col-12">
+                                    <label for="descripcionDocumento"
+                                        >Descripción documento</label
+                                    >
+                                    <textarea
+                                        id="descripcionDocumento"
+                                        class="form-control"
+                                        formControlName="descripcionDocumento"
+                                        rows="3"
+                                        maxlength="500"
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="form-row col-12">
+                                <div
+                                    class="form-group col-12"
+                                    [class.field-error]="
+                                        form.get('archivo')?.invalid &&
+                                        form.get('archivo')?.touched
+                                    "
+                                >
+                                    <label for="archivo"
+                                        >* Archivo (máximo
+                                        {{ MAX_FILE_SIZE_KB }} KB)</label
+                                    >
+                                    <div class="custom-file">
+                                        <input
+                                            type="file"
+                                            class="custom-file-input"
+                                            id="archivo"
+                                            [disabled]="esModificacion"
+                                            accept=".pdf,.doc,.docx,.xls,.xlsx"
+                                            (change)="onFileSelected($event)"
+                                        />
+                                        <label
+                                            class="custom-file-label"
+                                            for="archivo"
+                                        >
+                                            {{
+                                                nombreArchivoMostrar ||
+                                                    "Seleccionar archivo..."
+                                            }}
+                                        </label>
                                     </div>
+                                    <small class="form-text text-muted"
+                                        >Tipos permitidos: PDF, Word,
+                                        Excel.</small
+                                    >
+                                    <span
+                                        class="texto-error m-0 position-absolute"
+                                        *ngIf="
+                                            form
+                                                .get('archivo')
+                                                ?.hasError('required') &&
+                                            form.get('archivo')?.touched
+                                        "
+                                    >
+                                        Debe seleccionar un archivo
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="card mb-2">
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">Tipos y subtipos de compra</h5>
-                            <div class="row align-items-end mb-3">
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Organismos compradores</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="incisoId">Inciso</label>
+                                    <select
+                                        class="form-control"
+                                        id="incisoId"
+                                        [disabled]="esModificacion"
+                                    >
+                                        <option [ngValue]="null">
+                                            Seleccionar inciso
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="unidadEjecutoraId"
+                                        >Unidad ejecutora</label
+                                    >
+                                    <select
+                                        class="form-control"
+                                        id="unidadEjecutoraId"
+                                        [disabled]="esModificacion"
+                                    >
+                                        <option [ngValue]="null">
+                                            Seleccionar unidad ejecutora
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">
+                            Tipos y subtipos de compra
+                        </h5>
+                        <div class="row align-items-end mb-3">
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <!-- TODO esto esta dando error Component update failed: Cannot find control with name: 'tipoCompraId'-->
-                                    <label for="tipoCompraId">* Tipo de compra</label>
-                                    <select class="form-control" id="tipoCompraId" formControlName="tipoCompraId" [disabled]="esModificacion">
-                                        <option [ngValue]="null">Seleccionar tipo de compra</option>
-                                        <option *ngFor="let tipo of tiposCompra" [ngValue]="tipo.id">
-                                        {{ tipo.descTipoCompra }}
+                                    <label for="tipoCompraId"
+                                        >* Tipo de compra</label
+                                    >
+                                    <select
+                                        class="form-control"
+                                        id="tipoCompraId"
+                                        formControlName="tipoCompraId"
+                                        [disabled]="esModificacion"
+                                    >
+                                        <option [ngValue]="null">
+                                            Seleccionar tipo de compra
+                                        </option>
+                                        <option
+                                            *ngFor="let tipo of tiposCompra"
+                                            [ngValue]="tipo.id"
+                                        >
+                                            {{ tipo.descTipoCompra }}
                                         </option>
                                     </select>
                                 </div>
@@ -116,79 +231,137 @@
 
                             <div class="col-md-5">
                                 <div class="form-group">
-                                <label for="subtipoCompraId">* Subtipo de compra</label>
-                                <select class="form-control" id="subtipoCompraId" formControlName="subtipoCompraId" [disabled]="esModificacion">
-                                    <option [ngValue]="null">Seleccionar subtipo de compra</option>
-                                    <option *ngFor="let subtipo of subtiposCompra" [ngValue]="subtipo.idSubtipoCompra">
-                                    {{ subtipo.descSubtipoCompra }}
-                                    </option>
-                                </select>
+                                    <label for="subtipoCompraId"
+                                        >* Subtipo de compra</label
+                                    >
+                                    <select
+                                        class="form-control"
+                                        id="subtipoCompraId"
+                                        formControlName="subtipoCompraId"
+                                        [disabled]="esModificacion"
+                                    >
+                                        <option [ngValue]="null">
+                                            Seleccionar subtipo de compra
+                                        </option>
+                                        <option
+                                            *ngFor="
+                                                let subtipo of subtiposCompra
+                                            "
+                                            [ngValue]="subtipo.idSubtipoCompra"
+                                        >
+                                            {{ subtipo.descSubtipoCompra }}
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
 
                             <div class="col-md-2">
-                                <button type="button" class="btn btn-primary" [disabled]="esModificacion">
-                                <em class="fa fa-plus mr-1"></em> Agregar
+                                <button
+                                    type="button"
+                                    class="btn btn-primary"
+                                    [disabled]="esModificacion"
+                                >
+                                    <em class="fa fa-plus mr-1"></em> Agregar
                                 </button>
                             </div>
                         </div>
-                        <div *ngIf="tiposCompraAgregados.length > 0" class="table-responsive">
-                          <table class="table table-bordered table-hover">
-                            <thead>
-                              <tr>
-                                <th class="text-center" style="width: 100px;">Acciones</th>
-                                <th>Descripción tipo de compra</th>
-                                <th>Descripción subtipo de compra</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr *ngFor="let tipoCompra of tiposCompraAgregados">
-                                <td class="text-center">
-                                  <button type="button" class="btn btn-sm">
-                                    <em class="fa fa-trash"></em>
-                                  </button>
-                                </td>
-                                <td>{{ tipoCompra.tipoCompra.descTipoCompra }}</td>
-                                <td>{{ tipoCompra.subtipoCompra?.descSubtipoCompra || 'Todos los subtipos' }}</td>
-                              </tr>
-                            </tbody>
-                          </table>
+                        <div
+                            *ngIf="tiposCompraAgregados.length > 0"
+                            class="table-responsive"
+                        >
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th
+                                            class="text-center"
+                                            style="width: 100px"
+                                        >
+                                            Acciones
+                                        </th>
+                                        <th>Descripción tipo de compra</th>
+                                        <th>Descripción subtipo de compra</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="
+                                            let tipoCompra of tiposCompraAgregados
+                                        "
+                                    >
+                                        <td class="text-center">
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm"
+                                            >
+                                                <em class="fa fa-trash"></em>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            {{
+                                                tipoCompra.tipoCompra
+                                                    .descTipoCompra
+                                            }}
+                                        </td>
+                                        <td>
+                                            {{
+                                                tipoCompra.subtipoCompra
+                                                    ?.descSubtipoCompra ||
+                                                    "Todos los subtipos"
+                                            }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
 
-                        <div *ngIf="tiposCompraAgregados.length === 0" class="alert alert-info">
-                        No hay tipos de compra agregados
+                        <div
+                            *ngIf="tiposCompraAgregados.length === 0"
+                            class="alert alert-info"
+                        >
+                            No hay tipos de compra agregados
                         </div>
                     </div>
-  </div>
+                </div>
 
-                    <div class="card mb-2">
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">Formulario</h5>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Formulario</h5>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
                                     <label for="incisoId">Inciso</label>
                                     <app-text-editor></app-text-editor>
-                                        <div>
-                                            <small>La redacción es obligatoria</small>
-                                        </div>
-                                        <small class="form-text text-muted">
-                                            Para incluir campos personalizados en la redacción, use la sintaxis [[ETIQUETA_CAMPO]]
-                                        </small>
+                                    <div>
+                                        <small
+                                            >La redacción es obligatoria</small
+                                        >
                                     </div>
+                                    <small class="form-text text-muted">
+                                        Para incluir campos personalizados en la
+                                        redacción, use la sintaxis
+                                        [[ETIQUETA_CAMPO]]
+                                    </small>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
                 <div class="d-flex justify-content-end mb-4">
-                    <button class="btn btn-primary" type="button">Guardar</button>
+                    <button class="btn btn-primary" type="button">
+                        Guardar
+                    </button>
                     <div class="btn-back d-flex justify-content-end">
-                        <button class="btn btn-link" type="button" (click)="cancelar()">Cancelar</button>
+                        <button
+                            class="btn btn-link"
+                            type="button"
+                            (click)="cancelar()"
+                        >
+                            Cancelar
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-

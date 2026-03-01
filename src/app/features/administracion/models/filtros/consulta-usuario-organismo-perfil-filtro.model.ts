@@ -1,4 +1,4 @@
-import { TipoPerfil } from "src/app/shared/enum/tipo-perfil.enum";
+import { TipoPerfil } from 'src/app/shared/enum/tipo-perfil.enum';
 
 export interface IConsultaUsuarioOrganismoPerfilFiltroDTO {
     tipoCompra?: string;

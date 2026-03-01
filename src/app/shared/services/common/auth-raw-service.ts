@@ -6,9 +6,8 @@ import { KeycloakLoginOptions, KeycloakProfile } from 'keycloak-js';
 
 @Injectable({ providedIn: 'root' })
 export class AuthRawService {
-
-    constructor(private readonly keycloakService: KeycloakService) { //NOSONAR
-
+    constructor(private readonly keycloakService: KeycloakService) {
+        //NOSONAR
     }
 
     clearToken(): any {

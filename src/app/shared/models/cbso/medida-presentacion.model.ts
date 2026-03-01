@@ -5,6 +5,9 @@ export interface IMedidaPresentacionDTO {
 }
 
 export class MedidaPresentacionDTO implements IMedidaPresentacionDTO {
-    constructor(public id?: number, public codMedida?: number, public descMedida?: string) {
-    }
+    constructor(
+        public id?: number,
+        public codMedida?: number,
+        public descMedida?: string,
+    ) {}
 }

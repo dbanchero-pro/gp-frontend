@@ -1,55 +1,141 @@
-<div class="btn-group boton-accion" [ngClass]="{'single-action': !tieneOpcionesMenu()}"
-     dropdown [dropup]="false">
-    <button *ngIf="accionPrincipal" type="button" 
-    title="{{accionPrincipal.nombre}}"
-    [attr.aria-label]="accionPrincipal.ariaLabel ?? accionPrincipal.nombre +' id '+ uuid"
-        [class]="'btn ' + (tieneOpcionesMenu() ? 'btn-split' : 'btn-block') + ' ' + accionPrincipal.clase  + ' ' + (accionPrincipal.claseEtiqueta?? '')"
-        (click)="ejecutarAccion(accionPrincipal, $event)"><em *ngIf="accionPrincipal.icono"
+<div
+    class="btn-group boton-accion"
+    [ngClass]="{ 'single-action': !tieneOpcionesMenu() }"
+    dropdown
+    [dropup]="false"
+>
+    <button
+        *ngIf="accionPrincipal"
+        type="button"
+        title="{{ accionPrincipal.nombre }}"
+        [attr.aria-label]="
+            accionPrincipal.ariaLabel ?? accionPrincipal.nombre + ' id ' + uuid
+        "
+        [class]="
+            'btn ' +
+            (tieneOpcionesMenu() ? 'btn-split' : 'btn-block') +
+            ' ' +
+            accionPrincipal.clase +
+            ' ' +
+            (accionPrincipal.claseEtiqueta ?? '')
+        "
+        (click)="ejecutarAccion(accionPrincipal, $event)"
+    >
+        <em
+            *ngIf="accionPrincipal.icono"
             [class]="'fa icon-margin ' + accionPrincipal.icono"
-            ></em>
-        <span aria-hidden="true">{{accionPrincipal.nombre}}</span></button>
-    <button title="Mas opciones" *ngIf="tieneOpcionesMenu()" [attr.id]="'button-split-'+uuid" #buttonSplit type="button"
-        dropdownToggle class="btn dropdown-toggle dropdown-toggle-split"
+        ></em>
+        <span aria-hidden="true">{{ accionPrincipal.nombre }}</span>
+    </button>
+    <button
+        title="Mas opciones"
+        *ngIf="tieneOpcionesMenu()"
+        [attr.id]="'button-split-' + uuid"
+        #buttonSplit
+        type="button"
+        dropdownToggle
+        class="btn dropdown-toggle dropdown-toggle-split"
         [attr.aria-label]="ariaLabelMasOpciones"
-        [ngClass]="accionPrincipal?.clase">
+        [ngClass]="accionPrincipal?.clase"
+    >
         <span class="caret"></span>
-        <span class="sr-only visually-hidden" aria-hidden="true">Más opciones</span>
+        <span class="sr-only visually-hidden" aria-hidden="true"
+            >Más opciones</span
+        >
     </button>
     <div *ngIf="opcionesMenu && opcionesMenu.length > 0">
-        <ul  *dropdownMenu [ngClass]="'dropdown-menu dropdown-split '+ accionPrincipal?.claseEtiqueta"  style="width: 100%;"
-        [attr.aria-labelledby]="'button-split-'+uuid">
+        <ul
+            *dropdownMenu
+            [ngClass]="
+                'dropdown-menu dropdown-split ' + accionPrincipal?.claseEtiqueta
+            "
+            style="width: 100%"
+            [attr.aria-labelledby]="'button-split-' + uuid"
+        >
             <ng-container *ngFor="let opcion of opcionesMenu">
                 <!-- con subacciones -->
-                <li *ngIf="opcion.acciones && filtrarAccionesPorPermiso(opcion.acciones).length > 0" 
-                    class="dropdown-item-submenu">
+                <li
+                    *ngIf="
+                        opcion.acciones &&
+                        filtrarAccionesPorPermiso(opcion.acciones).length > 0
+                    "
+                    class="dropdown-item-submenu"
+                >
                     <div class="dropdown-submenu">
-                        <a class="dropdown-item d-flex justify-content-between align-items-center cursor-pointer" 
-                        [attr.aria-label]="opcion.nombre"
-                        (click)="$event.stopPropagation()"><span><em *ngIf="opcion.icono" [class]="'fa ' + opcion.icono"
-                                ></em>{{opcion.nombre}}</span><em class="fa fa-angle-right ml-2"></em></a>
-                        
-                        <ul class="dropdown-menu submenu-level-1" >
-                            <ng-container *ngFor="let subaccion of filtrarAccionesPorPermiso(opcion.acciones)">
+                        <a
+                            class="dropdown-item d-flex justify-content-between align-items-center cursor-pointer"
+                            [attr.aria-label]="opcion.nombre"
+                            (click)="$event.stopPropagation()"
+                            ><span
+                                ><em
+                                    *ngIf="opcion.icono"
+                                    [class]="'fa ' + opcion.icono"
+                                ></em
+                                >{{ opcion.nombre }}</span
+                            ><em class="fa fa-angle-right ml-2"></em
+                        ></a>
+
+                        <ul class="dropdown-menu submenu-level-1">
+                            <ng-container
+                                *ngFor="
+                                    let subaccion of filtrarAccionesPorPermiso(
+                                        opcion.acciones
+                                    )
+                                "
+                            >
                                 <li>
-                                    <a [attr.aria-label]="subaccion.nombre" class="dropdown-item cursor-pointer"  
-                                    (click)="ejecutarAccion(subaccion, $event)"><em *ngIf="subaccion.icono" [class]="'fa ' + subaccion.icono"
-                                        ></em>{{subaccion.nombre}}<span *ngIf="subaccion.etiquetas" class="ml-2">
-                                            <span *ngFor="let etiqueta of subaccion.etiquetas" 
-                                                class="badge badge-secondary mr-1">{{etiqueta}}</span></span></a>
+                                    <a
+                                        [attr.aria-label]="subaccion.nombre"
+                                        class="dropdown-item cursor-pointer"
+                                        (click)="
+                                            ejecutarAccion(subaccion, $event)
+                                        "
+                                        ><em
+                                            *ngIf="subaccion.icono"
+                                            [class]="'fa ' + subaccion.icono"
+                                        ></em
+                                        >{{ subaccion.nombre
+                                        }}<span
+                                            *ngIf="subaccion.etiquetas"
+                                            class="ml-2"
+                                        >
+                                            <span
+                                                *ngFor="
+                                                    let etiqueta of subaccion.etiquetas
+                                                "
+                                                class="badge badge-secondary mr-1"
+                                                >{{ etiqueta }}</span
+                                            ></span
+                                        ></a
+                                    >
                                 </li>
                             </ng-container>
                         </ul>
                     </div>
                 </li>
-                
+
                 <!-- sin subacciones -->
-                <li *ngIf="!opcion.acciones || filtrarAccionesPorPermiso(opcion.acciones).length === 0">
-                    <a class="dropdown-item cursor-pointer" 
-                    (click)="ejecutarAccion(opcion, $event);">
-                        <em *ngIf="opcion.icono" [class]="'fa ' + opcion.icono"
-                        ></em>{{opcion.nombre}}<span *ngIf="opcion.etiquetas" class="ml-2">
-                            <span *ngFor="let etiqueta of opcion.etiquetas" 
-                                class="badge badge-secondary mr-1">{{etiqueta}}</span>
+                <li
+                    *ngIf="
+                        !opcion.acciones ||
+                        filtrarAccionesPorPermiso(opcion.acciones).length === 0
+                    "
+                >
+                    <a
+                        class="dropdown-item cursor-pointer"
+                        (click)="ejecutarAccion(opcion, $event)"
+                    >
+                        <em
+                            *ngIf="opcion.icono"
+                            [class]="'fa ' + opcion.icono"
+                        ></em
+                        >{{ opcion.nombre
+                        }}<span *ngIf="opcion.etiquetas" class="ml-2">
+                            <span
+                                *ngFor="let etiqueta of opcion.etiquetas"
+                                class="badge badge-secondary mr-1"
+                                >{{ etiqueta }}</span
+                            >
                         </span>
                     </a>
                 </li>

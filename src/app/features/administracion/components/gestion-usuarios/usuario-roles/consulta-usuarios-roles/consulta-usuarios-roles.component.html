@@ -1,56 +1,108 @@
 <div class="row">
     <div [ngClass]="colFiltro" class="sidebar">
-        <app-filtro titleBtn="Buscar" (evFilter)="actualizarFiltrosYBuscar()" (evCollapse)="aplicarColapso()"
-            class="filter">
+        <app-filtro
+            titleBtn="Buscar"
+            (evFilter)="actualizarFiltrosYBuscar()"
+            (evCollapse)="aplicarColapso()"
+            class="filter"
+        >
             <div [formGroup]="form">
                 <div class="form-group">
                     <div class="form-check">
-                        <input type="radio" id="modoFiltros" class="form-check-input" formControlName="modoBusqueda"
-                            [value]="MODO_FILTROS">
+                        <input
+                            type="radio"
+                            id="modoFiltros"
+                            class="form-check-input"
+                            formControlName="modoBusqueda"
+                            [value]="MODO_FILTROS"
+                        />
                         <label class="form-check-label" for="modoFiltros">
                             Buscar por cualquier filtro
                         </label>
                     </div>
 
                     <div class="form-check">
-                        <input type="radio" id="modoTodasUc" class="form-check-input" formControlName="modoBusqueda"
-                            [value]="MODO_TODAS_UC">
+                        <input
+                            type="radio"
+                            id="modoTodasUc"
+                            class="form-check-input"
+                            formControlName="modoBusqueda"
+                            [value]="MODO_TODAS_UC"
+                        />
                         <label class="form-check-label" for="modoTodasUc">
                             Buscar solo con permiso todas las UC
                         </label>
                     </div>
                 </div>
 
-                <app-filtro-organismo formControlName="organismo" (cambioFiltro)="onFiltroOrganismo($event)"
-                    (limpiarFiltro)="onFiltroOrganismo(null)"></app-filtro-organismo>
+                <app-filtro-organismo
+                    formControlName="organismo"
+                    (cambioFiltro)="onFiltroOrganismo($event)"
+                    (limpiarFiltro)="onFiltroOrganismo(null)"
+                ></app-filtro-organismo>
 
                 <div class="row">
                     <div class="form-group form-row col-12 m-0 pb-0 pt-0 mb-4">
-                        <label for="idTipoCompra" class="col-form-label col-12 pl-0">Tipo de compra</label>
-                        <select id="idTipoCompra" class="form-control col-12" formControlName="idTipoCompra">
+                        <label
+                            for="idTipoCompra"
+                            class="col-form-label col-12 pl-0"
+                            >Tipo de compra</label
+                        >
+                        <select
+                            id="idTipoCompra"
+                            class="form-control col-12"
+                            formControlName="idTipoCompra"
+                        >
                             <option value="">Todos los tipos de compra</option>
-                            <option *ngFor="let t of tiposCompra" [value]="t.id">{{ t.id }} - {{ t.descTipoCompra }}
+                            <option
+                                *ngFor="let t of tiposCompra"
+                                [value]="t.id"
+                            >
+                                {{ t.id }} - {{ t.descTipoCompra }}
                             </option>
                         </select>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="form-group form-row col-12 m-0 pb-0 pt-0" [class.field-error]="!nroCompraValido">
-                        <label for="nroAnioCompra" class="col-form-label">N°/año compra</label>
-                        <input id="nroAnioCompra" class="form-control" type="text" formControlName="nroAnioCompra"
-                            (blur)=validarNroAnioCompra() />
-                        <span class="texto-error" [style.visibility]="nroCompraValido ? 'hidden' : 'visible'">El valor
-                            es incorrecto.</span>
+                    <div
+                        class="form-group form-row col-12 m-0 pb-0 pt-0"
+                        [class.field-error]="!nroCompraValido"
+                    >
+                        <label for="nroAnioCompra" class="col-form-label"
+                            >N°/año compra</label
+                        >
+                        <input
+                            id="nroAnioCompra"
+                            class="form-control"
+                            type="text"
+                            formControlName="nroAnioCompra"
+                            (blur)="validarNroAnioCompra()"
+                        />
+                        <span
+                            class="texto-error"
+                            [style.visibility]="
+                                nroCompraValido ? 'hidden' : 'visible'
+                            "
+                            >El valor es incorrecto.</span
+                        >
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="form-group form-row col-12 m-0 pb-0 pt-0 mb-4">
-                        <label for="rol" class="col-form-label col-12 pl-0">Rol</label>
-                        <select id="rol" class="form-control col-12" formControlName="rol">
+                        <label for="rol" class="col-form-label col-12 pl-0"
+                            >Rol</label
+                        >
+                        <select
+                            id="rol"
+                            class="form-control col-12"
+                            formControlName="rol"
+                        >
                             <option value="">Todos los roles</option>
-                            <option value="EDITOR_PRINCIPAL">Editor principal</option>
+                            <option value="EDITOR_PRINCIPAL">
+                                Editor principal
+                            </option>
                             <option value="EDITOR">Editor</option>
                             <option value="VALIDADOR">Validador</option>
                             <option value="APROBADOR">Aprobador</option>
@@ -59,25 +111,45 @@
                 </div>
 
                 <div class="row">
-                    <div class="form-group form-row col-12 m-0 pb-0 pt-0 mt-4 mb-2">
-                        <app-input-documento formControlName="nroDocumento" [esCedula]="true"
-                            label="Cédula de identidad">
+                    <div
+                        class="form-group form-row col-12 m-0 pb-0 pt-0 mt-4 mb-2"
+                    >
+                        <app-input-documento
+                            formControlName="nroDocumento"
+                            [esCedula]="true"
+                            label="Cédula de identidad"
+                        >
                         </app-input-documento>
                     </div>
-
                 </div>
 
                 <div class="row">
                     <div class="clean-filter col-12">
-                        <button type="button" class="btn btn-link" id="cleanFilterBtn" (click)="nuevaConsulta()"> Nueva
-                            consulta </button>
+                        <button
+                            type="button"
+                            class="btn btn-link"
+                            id="cleanFilterBtn"
+                            (click)="nuevaConsulta()"
+                        >
+                            Nueva consulta
+                        </button>
                     </div>
                 </div>
                 <div class="row">
-                    <div class=" descargar-resultado  col-12">
-                        <button type="button" class="btn btn-link " id="exportarExcel" (click)="descargarExcel()"
-                            *ngIf="seguridad.tienePermiso('GC_GESTION_USU.IMPRESION')">
-                            <span class="fa fa-file-excel-o"></span> Descargar Excel
+                    <div class="descargar-resultado col-12">
+                        <button
+                            type="button"
+                            class="btn btn-link"
+                            id="exportarExcel"
+                            (click)="descargarExcel()"
+                            *ngIf="
+                                seguridad.tienePermiso(
+                                    'GC_GESTION_USU.IMPRESION'
+                                )
+                            "
+                        >
+                            <span class="fa fa-file-excel-o"></span> Descargar
+                            Excel
                         </button>
                     </div>
                 </div>
@@ -87,56 +159,88 @@
 
     <div [ngClass]="colTabla">
         <div class="row justify-content-end pr-2 mb-2">
-            <button class="btn btn-primary mr-2" *ngIf="seguridad.tienePermiso('GC_GESTION_USU.ALTA')"
-                (click)="abrirAgregarPermisoPorCompra()">
-                <em class="fa fa-user-plus mr-1">
-                </em>
+            <button
+                class="btn btn-primary mr-2"
+                *ngIf="seguridad.tienePermiso('GC_GESTION_USU.ALTA')"
+                (click)="abrirAgregarPermisoPorCompra()"
+            >
+                <em class="fa fa-user-plus mr-1"> </em>
                 Asignar por compra
             </button>
-            <button class="btn btn-primary mr-2" *ngIf="seguridad.tienePermiso('GC_GESTION_USU.ALTA')"
-                (click)="abrirNuevoUsuarioUcPopup()">
-                <em class="fa fa-user-plus mr-1">
-                </em>
+            <button
+                class="btn btn-primary mr-2"
+                *ngIf="seguridad.tienePermiso('GC_GESTION_USU.ALTA')"
+                (click)="abrirNuevoUsuarioUcPopup()"
+            >
+                <em class="fa fa-user-plus mr-1"> </em>
                 Asignar por UC
             </button>
-            <button class="btn btn-primary mr-2" *ngIf="seguridad.tienePermiso('GC_GESTION_USU.ALTA')"
-                (click)="abrirAgregarPermisoTodasUcPopup()">
-                <em class="fa fa-user-plus mr-1">
-                </em>
+            <button
+                class="btn btn-primary mr-2"
+                *ngIf="seguridad.tienePermiso('GC_GESTION_USU.ALTA')"
+                (click)="abrirAgregarPermisoTodasUcPopup()"
+            >
+                <em class="fa fa-user-plus mr-1"> </em>
                 Asignar todas las UC
             </button>
-            <button class="btn btn-primary mr-2" *ngIf="seguridad.tienePermiso('GC_GESTION_USU.ALTA')"
-                (click)="abrirAgregarPermisoPorTipoCompra()">
-                <em class="fa fa-user-plus mr-1">
-                </em>
+            <button
+                class="btn btn-primary mr-2"
+                *ngIf="seguridad.tienePermiso('GC_GESTION_USU.ALTA')"
+                (click)="abrirAgregarPermisoPorTipoCompra()"
+            >
+                <em class="fa fa-user-plus mr-1"> </em>
                 Asignar por TC
             </button>
         </div>
-        <app-cabezal-consulta [totalItems]="total" [listaOrden]="listaOrden" [columnaOrden]="parametros.sort"
-            [orden]="parametros.order" (orderChange)="cambioOrden($event)"
-            (sortChange)="cambioColumnaOrden($event)"></app-cabezal-consulta>
-        <div *ngFor="let usr of usuariosAgrupados; let i = index" [style.position]="'relative'"
-            [style.z-index]="8000-i">
-
+        <app-cabezal-consulta
+            [totalItems]="total"
+            [listaOrden]="listaOrden"
+            [columnaOrden]="parametros.sort"
+            [orden]="parametros.order"
+            (orderChange)="cambioOrden($event)"
+            (sortChange)="cambioColumnaOrden($event)"
+        ></app-cabezal-consulta>
+        <div
+            *ngFor="let usr of usuariosAgrupados; let i = index"
+            [style.position]="'relative'"
+            [style.z-index]="8000 - i"
+        >
             <div class="card mb-2 bg-transparent">
                 <div class="border-bottom d-flex py-2 bg-transparent pb-2">
                     <div class="col-8 font-weight-bold py-1 pl-4 subtitle">
-                        <div class="float-left pr-3">CI {{ usr.id | formatoCi }}</div>
+                        <div class="float-left pr-3">
+                            CI {{ usr.id | formatoCi }}
+                        </div>
                         <div class="float-left">{{ usr.nombre }}</div>
                     </div>
-                    <div class="col-4 d-flex justify-content-end align-items-center">
-                        <app-boton-accion [acciones]="usr.acciones ?? []"
-                        [ariaLabelMasOpciones]="'Mas opciones del usuario '+ usr.id"
-                            (accionEjecutada)="ejecutarAccion($event)"></app-boton-accion>
+                    <div
+                        class="col-4 d-flex justify-content-end align-items-center"
+                    >
+                        <app-boton-accion
+                            [acciones]="usr.acciones ?? []"
+                            [ariaLabelMasOpciones]="
+                                'Mas opciones del usuario ' + usr.id
+                            "
+                            (accionEjecutada)="ejecutarAccion($event)"
+                        ></app-boton-accion>
                     </div>
                 </div>
 
-                <div class="table-responsive m-0" *ngIf="usr.permisos.length > 0">
-                    <table class="table table-striped table-hover mb-0 align-middle"
-                        [attr.aria-label]="'Tabla de roles del usuario ' + usr.nombre">
+                <div
+                    class="table-responsive m-0"
+                    *ngIf="usr.permisos.length > 0"
+                >
+                    <table
+                        class="table table-striped table-hover mb-0 align-middle"
+                        [attr.aria-label]="
+                            'Tabla de roles del usuario ' + usr.nombre
+                        "
+                    >
                         <thead class="table-light sticky-top">
                             <tr>
-                                <th class="text-center" style="width: 6%">Acciones</th>
+                                <th class="text-center" style="width: 6%">
+                                    Acciones
+                                </th>
                                 <th>Inciso</th>
                                 <th>Unidad ejecutora</th>
                                 <th>Unidad compra</th>
@@ -149,24 +253,40 @@
 
                         <tbody>
                             <tr *ngFor="let permiso of usr.permisos">
-                                 <td class="text-center align-middle">
-                                      <button
-                                        *ngFor="let accion of obtenerAccionesPermiso(permiso)"
+                                <td class="text-center align-middle">
+                                    <button
+                                        *ngFor="
+                                            let accion of obtenerAccionesPermiso(
+                                                permiso
+                                            )
+                                        "
                                         type="button"
                                         [class]="accion.clase"
                                         [attr.aria-label]="accion.ariaLabel"
-                                        (click)="accion.accion && accion.accion()">
+                                        (click)="
+                                            accion.accion && accion.accion()
+                                        "
+                                    >
                                         <em [class]="accion.icono"></em>
                                     </button>
                                 </td>
                                 <td>{{ obtenerInciso(permiso) }}</td>
                                 <td>{{ obtenerUnidadEjecutora(permiso) }}</td>
                                 <td>{{ obtenerUnidadCompra(permiso) }}</td>
-                                <td>{{ permiso.compra?.subtipoCompra?.descTipoCompra }}</td>
-                                <td>{{ permiso.compra?.subtipoCompra?.descSubtipoCompra || '' }}</td>
+                                <td>
+                                    {{
+                                        permiso.compra?.subtipoCompra
+                                            ?.descTipoCompra
+                                    }}
+                                </td>
+                                <td>
+                                    {{
+                                        permiso.compra?.subtipoCompra
+                                            ?.descSubtipoCompra || ""
+                                    }}
+                                </td>
                                 <td>{{ permiso.compra | nroCompra }}</td>
                                 <td>{{ obtenerRolesAsignados(permiso) }}</td>
-                               
                             </tr>
                         </tbody>
                     </table>
@@ -174,9 +294,12 @@
             </div>
         </div>
 
-        <app-paginado [totalItems]="total" [itemsPorPagina]="parametros.tamanoPagina"
-            [paginaActual]="parametros.pagina + 1" (cambioPagina)="cambioPagina($event)"
-            (cambioItemsPorPagina)="cambioPorPagina($event)"></app-paginado>
-
+        <app-paginado
+            [totalItems]="total"
+            [itemsPorPagina]="parametros.tamanoPagina"
+            [paginaActual]="parametros.pagina + 1"
+            (cambioPagina)="cambioPagina($event)"
+            (cambioItemsPorPagina)="cambioPorPagina($event)"
+        ></app-paginado>
     </div>
 </div>

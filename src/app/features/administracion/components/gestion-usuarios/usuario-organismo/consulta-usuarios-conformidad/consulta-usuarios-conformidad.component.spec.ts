@@ -33,8 +33,11 @@ export const mockUsuarioService = {
                 nombre: 'Test User',
                 pais: { id: Pais.URUGUAY },
                 nroDocumento: '12345678',
-                tipoDocumento: { idTipoDocumento: TipoDocumentoUsuario.CEDULA_IDENTIDAD, idPais: Pais.URUGUAY },
-            })
+                tipoDocumento: {
+                    idTipoDocumento: TipoDocumentoUsuario.CEDULA_IDENTIDAD,
+                    idPais: Pais.URUGUAY,
+                },
+            }),
         ),
 };
 export const mockTipoCompraService = {
@@ -44,15 +47,9 @@ export const mockTipoCompraService = {
 };
 
 export const mockOrganismoService = {
-    obtenerIncisos: jasmine
-        .createSpy('obtenerIncisos')
-        .and.returnValue(of([])),
-    obtenerUE: jasmine
-        .createSpy('obtenerUE')
-        .and.returnValue(of([])),
-    obtenerUC: jasmine
-        .createSpy('obtenerUC')
-        .and.returnValue(of([])),
+    obtenerIncisos: jasmine.createSpy('obtenerIncisos').and.returnValue(of([])),
+    obtenerUE: jasmine.createSpy('obtenerUE').and.returnValue(of([])),
+    obtenerUC: jasmine.createSpy('obtenerUC').and.returnValue(of([])),
     obtenerOpcionesTiposCompra: jasmine
         .createSpy('obtenerOpcionesTiposCompra')
         .and.returnValue(of([])),
@@ -99,7 +96,7 @@ describe('ConsultaUsuariosConformidadComponent', () => {
         };
         snapshotGenericService = jasmine.createSpyObj(
             'SnapshotGenericService',
-            ['load', 'save', 'clear']
+            ['load', 'save', 'clear'],
         );
         usuarioOrganismoPerfilService = jasmine.createSpyObj(
             'UsuarioOrganismoPerfilService',
@@ -109,23 +106,23 @@ describe('ConsultaUsuariosConformidadComponent', () => {
                 'agregarConformidadTodasUc',
                 'agregarConformidadUC',
                 'exportarUsuariosPerfil',
-            ]
+            ],
         );
 
         await TestBed.configureTestingModule({
             declarations: [],
             imports: [
-              ReactiveFormsModule,
-              ConsultaUsuariosConformidadComponent,
-              FiltroComponent,
-              FiltroOrganismoComponent,
-              InputDocumentoComponent,
-              PaginadoComponent,
-              CabezalConsultaComponent,
-              FiltroItemsArticulosComponent,
+                ReactiveFormsModule,
+                ConsultaUsuariosConformidadComponent,
+                FiltroComponent,
+                FiltroOrganismoComponent,
+                InputDocumentoComponent,
+                PaginadoComponent,
+                CabezalConsultaComponent,
+                FiltroItemsArticulosComponent,
             ],
             providers: [
-                { provide: SeguridadService,  useClass: MockSeguridadService },
+                { provide: SeguridadService, useClass: MockSeguridadService },
                 {
                     provide: HttpClient,
                     useValue: jasmine.createSpyObj('HttpClient', [
@@ -154,7 +151,7 @@ describe('ConsultaUsuariosConformidadComponent', () => {
         }).compileComponents();
 
         const fixture = TestBed.createComponent(
-            ConsultaUsuariosConformidadComponent
+            ConsultaUsuariosConformidadComponent,
         );
         component = fixture.componentInstance;
         component.filtroItemsComponent = {
@@ -184,7 +181,7 @@ describe('ConsultaUsuariosConformidadComponent', () => {
                     unpaged: false,
                 },
                 empty: true,
-            })
+            }),
         );
         fixture.detectChanges();
 
@@ -225,7 +222,7 @@ describe('ConsultaUsuariosConformidadComponent', () => {
                     unpaged: false,
                 },
                 empty: true,
-            })
+            }),
         );
 
         component.onFiltroItemsCambio({
@@ -281,7 +278,10 @@ describe('ConsultaUsuariosConformidadComponent', () => {
             nomEntregable: 'N',
         });
         component.form.get('organismo')?.setValue({ idInciso: 1 });
-        component.filtroItem = { tipoBusqueda: TipoBusqueda.NROITEM, item: '2' } as any;
+        component.filtroItem = {
+            tipoBusqueda: TipoBusqueda.NROITEM,
+            item: '2',
+        } as any;
         (component as any).actualizarFiltro();
         expect(component.parametros.filtro.idTipoCompra).toBeUndefined();
         expect(component.parametros.filtro.idInciso).toBeUndefined();
@@ -293,11 +293,15 @@ describe('ConsultaUsuariosConformidadComponent', () => {
         component.form.get('modoBusqueda')?.setValue(component.MODO_FILTROS);
         component.form.setErrors({ invalid: true } as any);
         component.buscar();
-        expect(usuarioOrganismoPerfilService.obtenerTodos).not.toHaveBeenCalled();
+        expect(
+            usuarioOrganismoPerfilService.obtenerTodos,
+        ).not.toHaveBeenCalled();
 
         component.form.setErrors({ invalid: true } as any);
         component.form.get('modoBusqueda')?.setValue(component.MODO_TODAS_UC);
-        usuarioOrganismoPerfilService.obtenerTodos.and.returnValue(of({ content: [], page: { totalElements: 0 } } as any));
+        usuarioOrganismoPerfilService.obtenerTodos.and.returnValue(
+            of({ content: [], page: { totalElements: 0 } } as any),
+        );
         component.buscar();
         expect(usuarioOrganismoPerfilService.obtenerTodos).toHaveBeenCalled();
     });
@@ -313,27 +317,37 @@ describe('ConsultaUsuariosConformidadComponent', () => {
 
     it('obtenerAcciones devuelve opciones segun modo', () => {
         component.form.get('modoBusqueda')?.setValue(component.MODO_TODAS_UC);
-        const accionesTodos = component.obtenerAcciones({ id: '1', permisos: [], tienePermisoTodas: true } as any, component.MODO_TODAS_UC);
+        const accionesTodos = component.obtenerAcciones(
+            { id: '1', permisos: [], tienePermisoTodas: true } as any,
+            component.MODO_TODAS_UC,
+        );
         expect(accionesTodos.length).toBe(2);
 
         component.form.get('modoBusqueda')?.setValue(component.MODO_FILTROS);
-        const acciones = component.obtenerAcciones({ id: '1', permisos: [], tienePermisoTodas: false } as any, component.MODO_FILTROS);
+        const acciones = component.obtenerAcciones(
+            { id: '1', permisos: [], tienePermisoTodas: false } as any,
+            component.MODO_FILTROS,
+        );
         expect(acciones.length).toBe(3);
     });
 
     it('guardarPerfilUsuarioParaTodasUc llama al servicio', () => {
         actualizarService.confirmar.and.callFake((_m, cb) => cb());
-        usuarioOrganismoPerfilService.agregarConformidadTodasUc.and.returnValue(of(true));
+        usuarioOrganismoPerfilService.agregarConformidadTodasUc.and.returnValue(
+            of(true),
+        );
         const usuario = { id: '7' } as any;
         component.guardarPerfilUsuarioParaTodasUc(usuario);
-        expect(usuarioOrganismoPerfilService.agregarConformidadTodasUc).toHaveBeenCalledWith('7');
+        expect(
+            usuarioOrganismoPerfilService.agregarConformidadTodasUc,
+        ).toHaveBeenCalledWith('7');
         expect(actualizarService.mensajeCorrecto).toHaveBeenCalled();
     });
 
     it('obtenerTiposCompra asigna el resultado', () => {
-        (mockTipoCompraService.obtenerTiposCompraSinPaginado as jasmine.Spy).and.returnValue(
-            of([{ id: '1' } as any])
-        );
+        (
+            mockTipoCompraService.obtenerTiposCompraSinPaginado as jasmine.Spy
+        ).and.returnValue(of([{ id: '1' } as any]));
         component.obtenerTiposCompra();
         expect(component.tiposCompra.length).toBe(1);
         expect(component.tiposCompra[0].id).toBe('1');
@@ -378,7 +392,7 @@ describe('ConsultaUsuariosConformidadComponent', () => {
         expect(component['abrirPopup']).toHaveBeenCalled();
         expect(component.guardarPerfilUsuarioPorUc).toHaveBeenCalledWith(
             { idInciso: 1 },
-            usuario
+            usuario,
         );
     });
 
@@ -407,7 +421,9 @@ describe('ConsultaUsuariosConformidadComponent', () => {
         usuarioOrganismoPerfilService.eliminarPerfil.and.returnValue(of(true));
         spyOn(component, 'buscar');
         component.eliminarPerfilUsuarioEspecifico({ id: 1 } as any);
-        expect(usuarioOrganismoPerfilService.eliminarPerfil).toHaveBeenCalledWith(1);
+        expect(
+            usuarioOrganismoPerfilService.eliminarPerfil,
+        ).toHaveBeenCalledWith(1);
         expect(component.buscar).toHaveBeenCalled();
     });
 
@@ -418,8 +434,10 @@ describe('ConsultaUsuariosConformidadComponent', () => {
         });
         (component as any).actualizarFiltro();
         component.descargarExcel();
-        expect(usuarioOrganismoPerfilService.exportarUsuariosPerfil).toHaveBeenCalledWith(
-            jasmine.objectContaining({ permisoTodas: true, nroDocumento: '1' })
+        expect(
+            usuarioOrganismoPerfilService.exportarUsuariosPerfil,
+        ).toHaveBeenCalledWith(
+            jasmine.objectContaining({ permisoTodas: true, nroDocumento: '1' }),
         );
     });
 
@@ -433,16 +451,22 @@ describe('ConsultaUsuariosConformidadComponent', () => {
             'organismo',
         ];
         (component as any).toggleCamposPorModo(component.MODO_TODAS_UC);
-        campos.forEach(c => expect(component.form.get(c)?.disabled).toBeTrue());
+        campos.forEach((c) =>
+            expect(component.form.get(c)?.disabled).toBeTrue(),
+        );
         (component as any).toggleCamposPorModo(component.MODO_FILTROS);
-        campos.forEach(c => expect(component.form.get(c)?.disabled).toBeFalse());
+        campos.forEach((c) =>
+            expect(component.form.get(c)?.disabled).toBeFalse(),
+        );
     });
 
     it('eliminarPerfilTodos con permiso faltante registra error', () => {
         spyOn(Logger, 'logError');
         component.eliminarPerfilTodos({ permisoTodasUc: undefined } as any);
         expect(Logger.logError).toHaveBeenCalled();
-        expect(usuarioOrganismoPerfilService.eliminarPerfil).not.toHaveBeenCalled();
+        expect(
+            usuarioOrganismoPerfilService.eliminarPerfil,
+        ).not.toHaveBeenCalled();
     });
 
     it('abrirAgregarPermisoTodasUcPopup invoca popup y guarda datos', () => {
@@ -452,26 +476,43 @@ describe('ConsultaUsuariosConformidadComponent', () => {
         spyOn(component, 'guardarPerfilNuevoUsuarioParaTodasUc');
         component.abrirAgregarPermisoTodasUcPopup();
         expect((component as any).abrirPopup).toHaveBeenCalled();
-        expect(component.guardarPerfilNuevoUsuarioParaTodasUc).toHaveBeenCalledWith({ idUsuario: '9' });
+        expect(
+            component.guardarPerfilNuevoUsuarioParaTodasUc,
+        ).toHaveBeenCalledWith({ idUsuario: '9' });
     });
 
     it('abrirNuevoUsuarioUcPopup lanza popup y guarda usuario', () => {
         spyOn(component as any, 'abrirPopup').and.returnValue({
-            guardarEvento: of({ idUsuario: '1', unidadCompra: { idInciso: 1 } }),
+            guardarEvento: of({
+                idUsuario: '1',
+                unidadCompra: { idInciso: 1 },
+            }),
         });
         spyOn(component, 'guardarPerfilNuevoUsuarioPorUc');
         component.abrirNuevoUsuarioUcPopup();
         expect((component as any).abrirPopup).toHaveBeenCalled();
-        expect(component.guardarPerfilNuevoUsuarioPorUc).toHaveBeenCalledWith({ idUsuario: '1', unidadCompra: { idInciso: 1 } });
+        expect(component.guardarPerfilNuevoUsuarioPorUc).toHaveBeenCalledWith({
+            idUsuario: '1',
+            unidadCompra: { idInciso: 1 },
+        });
     });
 
     it('guardarPerfilNuevoUsuarioPorUc oculta modal y guarda', () => {
-        component['modalService'] = { getModalsCount: () => 1, hide: jasmine.createSpy('hide') } as any;
+        component['modalService'] = {
+            getModalsCount: () => 1,
+            hide: jasmine.createSpy('hide'),
+        } as any;
         spyOn(component, 'buscar');
-        usuarioOrganismoPerfilService.agregarConformidadUC.and.returnValue(of(true));
+        usuarioOrganismoPerfilService.agregarConformidadUC.and.returnValue(
+            of(true),
+        );
         component.guardarPerfilNuevoUsuarioPorUc({
             idUsuario: '3',
-            unidadCompra: { idInciso: 1, idUnidadEjecutora: 2, idUnidadCompra: 3 },
+            unidadCompra: {
+                idInciso: 1,
+                idUnidadEjecutora: 2,
+                idUnidadCompra: 3,
+            },
         });
         expect(component['modalService'].hide).toHaveBeenCalled();
         expect(actualizarService.mensajeCorrecto).toHaveBeenCalled();
@@ -483,20 +524,30 @@ describe('ConsultaUsuariosConformidadComponent', () => {
         usuarioOrganismoPerfilService.eliminarPerfil.and.returnValue(of(true));
         spyOn(component, 'buscar');
         component.eliminarPerfilTodos({ permisoTodasUc: { id: 9 } } as any);
-        expect(usuarioOrganismoPerfilService.eliminarPerfil).toHaveBeenCalledWith(9);
+        expect(
+            usuarioOrganismoPerfilService.eliminarPerfil,
+        ).toHaveBeenCalledWith(9);
         expect(component.buscar).toHaveBeenCalled();
     });
 
     it('toggleCamposPorModo informa al filtro de items', () => {
-        component.filtroItemsComponent.setDisabledState = jasmine.createSpy('setDisabledState');
+        component.filtroItemsComponent.setDisabledState =
+            jasmine.createSpy('setDisabledState');
         (component as any).toggleCamposPorModo(component.MODO_TODAS_UC);
-        expect(component.filtroItemsComponent.setDisabledState).toHaveBeenCalledWith(true);
+        expect(
+            component.filtroItemsComponent.setDisabledState,
+        ).toHaveBeenCalledWith(true);
         (component as any).toggleCamposPorModo(component.MODO_FILTROS);
-        expect(component.filtroItemsComponent.setDisabledState).toHaveBeenCalledWith(false);
+        expect(
+            component.filtroItemsComponent.setDisabledState,
+        ).toHaveBeenCalledWith(false);
     });
 
     it('actualizarFiltro asigna descArticulo cuando se busca por artículo', () => {
-        component.filtroItem = { tipoBusqueda: TipoBusqueda.ARTICULO, item: 'desc' } as any;
+        component.filtroItem = {
+            tipoBusqueda: TipoBusqueda.ARTICULO,
+            item: 'desc',
+        } as any;
         component.form.patchValue({ modoBusqueda: component.MODO_FILTROS });
         (component as any).actualizarFiltro();
         expect(component.parametros.filtro.descArticulo).toBe('desc');
@@ -516,11 +567,13 @@ describe('ConsultaUsuariosConformidadComponent', () => {
             content: [
                 { idUsuario: '1', nombre: 'X' },
                 { idUsuario: '1', nombre: 'X', unidadCompra: { id: 1 } },
-                { idUsuario: '2', nombre: 'Y', unidadCompra: { id: 2 } }
+                { idUsuario: '2', nombre: 'Y', unidadCompra: { id: 2 } },
             ],
-            page: { totalElements: 2 }
+            page: { totalElements: 2 },
         };
-        usuarioOrganismoPerfilService.obtenerTodos.and.returnValue(of(respuesta));
+        usuarioOrganismoPerfilService.obtenerTodos.and.returnValue(
+            of(respuesta),
+        );
         component.form.get('modoBusqueda')?.setValue(component.MODO_TODAS_UC);
         component.buscar();
         expect(component.usuariosAgrupados.length).toBe(2);
@@ -528,10 +581,15 @@ describe('ConsultaUsuariosConformidadComponent', () => {
     });
 
     it('guardarPerfilNuevoUsuarioParaTodasUc confirma y guarda', fakeAsync(() => {
-        component['modalService'] = { getModalsCount: () => 1, hide: jasmine.createSpy('hide') } as any;
+        component['modalService'] = {
+            getModalsCount: () => 1,
+            hide: jasmine.createSpy('hide'),
+        } as any;
         spyOn(component, 'buscar');
         actualizarService.confirmar.and.callFake((_m, cb) => cb());
-        usuarioOrganismoPerfilService.agregarConformidadTodasUc.and.returnValue(of(true));
+        usuarioOrganismoPerfilService.agregarConformidadTodasUc.and.returnValue(
+            of(true),
+        );
         component.guardarPerfilNuevoUsuarioParaTodasUc({ idUsuario: '4' });
         tick(150);
         expect(component['modalService'].hide).toHaveBeenCalled();
@@ -542,9 +600,16 @@ describe('ConsultaUsuariosConformidadComponent', () => {
 
     it('guardarPerfilUsuarioPorUc agrega permiso y busca', () => {
         spyOn(component, 'buscar');
-        usuarioOrganismoPerfilService.agregarConformidadUC.and.returnValue(of(true));
-        component.guardarPerfilUsuarioPorUc({ idInciso: 1, idUnidadEjecutora: 2, idUnidadCompra: 3 }, { id: '5' } as any);
-        expect(usuarioOrganismoPerfilService.agregarConformidadUC).toHaveBeenCalledWith(1, 2, 3, '5');
+        usuarioOrganismoPerfilService.agregarConformidadUC.and.returnValue(
+            of(true),
+        );
+        component.guardarPerfilUsuarioPorUc(
+            { idInciso: 1, idUnidadEjecutora: 2, idUnidadCompra: 3 },
+            { id: '5' } as any,
+        );
+        expect(
+            usuarioOrganismoPerfilService.agregarConformidadUC,
+        ).toHaveBeenCalledWith(1, 2, 3, '5');
         expect(actualizarService.mensajeCorrecto).toHaveBeenCalled();
         expect(component.buscar).toHaveBeenCalled();
     });
@@ -552,9 +617,13 @@ describe('ConsultaUsuariosConformidadComponent', () => {
     it('guardarPerfilUsuarioParaTodasUc confirma y guarda', () => {
         spyOn(component, 'buscar');
         actualizarService.confirmar.and.callFake((_m, cb) => cb());
-        usuarioOrganismoPerfilService.agregarConformidadTodasUc.and.returnValue(of(true));
+        usuarioOrganismoPerfilService.agregarConformidadTodasUc.and.returnValue(
+            of(true),
+        );
         component.guardarPerfilUsuarioParaTodasUc({ id: '7' } as any);
-        expect(usuarioOrganismoPerfilService.agregarConformidadTodasUc).toHaveBeenCalledWith('7');
+        expect(
+            usuarioOrganismoPerfilService.agregarConformidadTodasUc,
+        ).toHaveBeenCalledWith('7');
         expect(actualizarService.mensajeCorrecto).toHaveBeenCalled();
         expect(component.buscar).toHaveBeenCalled();
     });

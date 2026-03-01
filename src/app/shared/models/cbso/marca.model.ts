@@ -4,6 +4,8 @@ export interface IMarcaDTO {
 }
 
 export class MarcaDTO {
-    constructor(public descMarca?: string, public id?: number) {
-    }
+    constructor(
+        public descMarca?: string,
+        public id?: number,
+    ) {}
 }

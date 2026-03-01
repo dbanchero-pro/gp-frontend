@@ -1,5 +1,5 @@
-import { HttpParams } from "@angular/common/http";
-import { FormBuilder, FormControl } from "@angular/forms";
+import { HttpParams } from '@angular/common/http';
+import { FormBuilder, FormControl } from '@angular/forms';
 import {
     addCommas,
     addCommasControl,
@@ -28,10 +28,9 @@ import {
     removeCommasControl,
     transformarNroDocumento,
     volverConConfirmacion,
-    volverConConfirmacionCustom
+    volverConConfirmacionCustom,
 } from './functions';
 describe('Test Suite for Functions', () => {
-
     let formBuilder: FormBuilder;
 
     beforeEach(() => {
@@ -61,7 +60,7 @@ describe('Test Suite for Functions', () => {
 
     it('getValor debe devolver un número válido del formulario', () => {
         const form = formBuilder.group({
-            testControl: '123,45'
+            testControl: '123,45',
         });
         const result = getValor(form, 'testControl');
         expect(result).toBe(123.45);
@@ -69,7 +68,7 @@ describe('Test Suite for Functions', () => {
 
     it('removeCommas debe quitar las comas del valor del control', () => {
         const form = formBuilder.group({
-            testControl: '1234'
+            testControl: '1234',
         });
         removeCommas(form, 'testControl');
         expect(form.get('testControl')?.value).toBe('1234');
@@ -77,28 +76,50 @@ describe('Test Suite for Functions', () => {
 
     it('addCommas debe agregar comas al valor del control', () => {
         const form = formBuilder.group({
-            testControl: '1234,56'
+            testControl: '1234,56',
         });
         addCommas(form, 'testControl');
         expect(form.get('testControl')?.value).toBe('1.234,56');
     });
 
     it('numberOnly debe permitir solo números y comas válidas', () => {
-        const event = { key: '5', which: 53, keyCode: 53, srcElement: { value: '123.45' } };
+        const event = {
+            key: '5',
+            which: 53,
+            keyCode: 53,
+            srcElement: { value: '123.45' },
+        };
         const result = numberOnly(event, 5);
         expect(result).toBe(false);
     });
 
     it('numberOnly debe permitir solo números y comas válidas', () => {
-        let event = { key: '5', which: 53, keyCode: 53, srcElement: { value: '123.45' } };
+        let event = {
+            key: '5',
+            which: 53,
+            keyCode: 53,
+            srcElement: { value: '123.45' },
+        };
         numberOnly(event, 5);
-        let event2 = { key: 'Decimal', code: 'NumpadDecimal', which: 44, keyCode: 44, srcElement: { value: '123.45' }, target: { value: 5 } };
+        let event2 = {
+            key: 'Decimal',
+            code: 'NumpadDecimal',
+            which: 44,
+            keyCode: 44,
+            srcElement: { value: '123.45' },
+            target: { value: 5 },
+        };
         let result = numberOnly(event2, 5);
         expect(result).toBe(false);
     });
 
     it('numberOnly debe permitir solo números y comas válidas', () => {
-        let event = { key: '5', which: 32, keyCode: 32, srcElement: { value: '123.45' } };
+        let event = {
+            key: '5',
+            which: 32,
+            keyCode: 32,
+            srcElement: { value: '123.45' },
+        };
         let result = numberOnly(event, 5);
 
         expect(result).toBe(false);
@@ -158,7 +179,6 @@ describe('Test Suite for Functions', () => {
         expect(res).toEqual({});
     });
 
-
     it('dividirNroAnioCompra debe parsear el valor', () => {
         const res = dividirNroAnioCompra('10/2025');
         expect(res).toEqual({ numCompra: 10, anioCompra: 2025 });
@@ -206,7 +226,12 @@ describe('Test Suite for Functions', () => {
     });
 
     it('addParam formatea fechas cuando igcte es true', () => {
-        const params = addParam(new HttpParams(), 'd', new Date('2020-01-01'), true);
+        const params = addParam(
+            new HttpParams(),
+            'd',
+            new Date('2020-01-01'),
+            true,
+        );
         expect(params.get('d')).toBe('2020-01-01');
     });
 

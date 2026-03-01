@@ -9,55 +9,58 @@ import { AgregarModificarCapituloComponent } from './agregar-modificar-capitulo.
 import { CapituloService } from '../../../services/capitulo.service';
 
 describe('AgregarModificarCapituloComponent', () => {
-  let component: AgregarModificarCapituloComponent;
-  let fixture: ComponentFixture<AgregarModificarCapituloComponent>;
+    let component: AgregarModificarCapituloComponent;
+    let fixture: ComponentFixture<AgregarModificarCapituloComponent>;
 
-  const activatedRouteStub = {
-    params: of({}),
-    snapshot: {
-      params: {},
-      paramMap: { get: (_key: string) => null },
-      queryParamMap: { get: (_key: string) => null }
-    }
-  };
-  const routerStub = {
-    navigate: jasmine.createSpy('navigate'),
-    getCurrentNavigation: () => null
-  };
-  const bsModalServiceStub = {
-    show: jasmine.createSpy('show').and.returnValue({ content: {}, hide: jasmine.createSpy('hide') })
-  };
-  const capituloServiceStub = jasmine.createSpyObj('CapituloService', ['obtenerCapituloPorId', 'crearCapitulo', 'actualizarCapitulo', 'aprobarCapitulo']);
-  capituloServiceStub.obtenerCapituloPorId.and.returnValue(of(undefined));
-  capituloServiceStub.crearCapitulo.and.returnValue(of({}));
-  capituloServiceStub.actualizarCapitulo.and.returnValue(of({}));
-  capituloServiceStub.aprobarCapitulo.and.returnValue(of({}));
+    const activatedRouteStub = {
+        params: of({}),
+        snapshot: {
+            params: {},
+            paramMap: { get: (_key: string) => null },
+            queryParamMap: { get: (_key: string) => null },
+        },
+    };
+    const routerStub = {
+        navigate: jasmine.createSpy('navigate'),
+        getCurrentNavigation: () => null,
+    };
+    const bsModalServiceStub = {
+        show: jasmine
+            .createSpy('show')
+            .and.returnValue({ content: {}, hide: jasmine.createSpy('hide') }),
+    };
+    const capituloServiceStub = jasmine.createSpyObj('CapituloService', [
+        'obtenerCapituloPorId',
+        'crearCapitulo',
+        'actualizarCapitulo',
+        'aprobarCapitulo',
+    ]);
+    capituloServiceStub.obtenerCapituloPorId.and.returnValue(of(undefined));
+    capituloServiceStub.crearCapitulo.and.returnValue(of({}));
+    capituloServiceStub.actualizarCapitulo.and.returnValue(of({}));
+    capituloServiceStub.aprobarCapitulo.and.returnValue(of({}));
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [],
-      imports: [
-        ReactiveFormsModule,
-        AgregarModificarCapituloComponent,
-      ],
-      providers: [
-        { provide: ActivatedRoute, useValue: activatedRouteStub },
-        { provide: Router, useValue: routerStub },
-        { provide: BsModalService, useValue: bsModalServiceStub },
-        { provide: CapituloService, useValue: capituloServiceStub }
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
-  });
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [],
+            imports: [ReactiveFormsModule, AgregarModificarCapituloComponent],
+            providers: [
+                { provide: ActivatedRoute, useValue: activatedRouteStub },
+                { provide: Router, useValue: routerStub },
+                { provide: BsModalService, useValue: bsModalServiceStub },
+                { provide: CapituloService, useValue: capituloServiceStub },
+            ],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        }).compileComponents();
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(AgregarModificarCapituloComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(AgregarModificarCapituloComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('debería crearse', () => {
-    expect(component).toBeTruthy();
-  });
+    it('debería crearse', () => {
+        expect(component).toBeTruthy();
+    });
 });

@@ -1,4 +1,3 @@
-
 export interface ITipoDocumentoUsuarioDTO {
     id?: number;
     idPais?: string;
@@ -7,6 +6,10 @@ export interface ITipoDocumentoUsuarioDTO {
 }
 
 export class TipoDocumentoUsuarioDTO implements ITipoDocumentoUsuarioDTO {
-    constructor(public id?: number, public idPais?: string, public idTipoDocumento?: string, public descripcion?: string) {
-    }
+    constructor(
+        public id?: number,
+        public idPais?: string,
+        public idTipoDocumento?: string,
+        public descripcion?: string,
+    ) {}
 }

@@ -1,21 +1,40 @@
 <ng-template #modalMensaje let-modal>
-  <div class="modal-header">
-    <h1 class="modal-title">
-      <span>Confirmación</span>
-    </h1>
-    <button type="button" class="close" aria-label="Cerrar" (click)="cerrar()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <p> <span class="flex-wrap">
-        <div *ngFor="let message of messages">{{message}}</div>
-      </span></p>
-  </div>
-  <div class="modal-footer place-content-center">
-    <button class="Button btn btn-primary btn-confirmar" aria-label="Si" (click)="confirmar()">Sí</button>
-    <button autofocus="true" class="Button btn-link btn-default btn-cancelar" aria-label="No" [disabled]="procesando"
-      (click)="cerrar()">No</button>
-
-  </div>
+    <div class="modal-header">
+        <h1 class="modal-title">
+            <span>Confirmación</span>
+        </h1>
+        <button
+            type="button"
+            class="close"
+            aria-label="Cerrar"
+            (click)="cerrar()"
+        >
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>
+            <span class="flex-wrap">
+                <div *ngFor="let message of messages">{{ message }}</div>
+            </span>
+        </p>
+    </div>
+    <div class="modal-footer place-content-center">
+        <button
+            class="Button btn btn-primary btn-confirmar"
+            aria-label="Si"
+            (click)="confirmar()"
+        >
+            Sí
+        </button>
+        <button
+            autofocus="true"
+            class="Button btn-link btn-default btn-cancelar"
+            aria-label="No"
+            [disabled]="procesando"
+            (click)="cerrar()"
+        >
+            No
+        </button>
+    </div>
 </ng-template>

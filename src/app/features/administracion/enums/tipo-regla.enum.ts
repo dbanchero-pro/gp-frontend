@@ -1,4 +1,4 @@
 export enum TipoRegla {
     VALOR = 'VALOR',
-    CAMPO = 'CAMPO'
+    CAMPO = 'CAMPO',
 }

@@ -1,20 +1,19 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
-import { of, Subject } from "rxjs";
-import { MenuService } from "src/app/shared/services/common/menu.service";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { of, Subject } from 'rxjs';
+import { MenuService } from 'src/app/shared/services/common/menu.service';
 
-import { IMenuItem } from "src/app/shared/models/common/menu-item.model";
-import { BreadcrumbsComponent } from "./breadcrumbs.component";
+import { IMenuItem } from 'src/app/shared/models/common/menu-item.model';
+import { BreadcrumbsComponent } from './breadcrumbs.component';
 
 class MenuServiceMock {
-
     obtenerItem(): IMenuItem | undefined {
         return {
-            nombre: "item",
-            titulo: "Item Title",
-            subtitulo: "Item Subtitle",
+            nombre: 'item',
+            titulo: 'Item Title',
+            subtitulo: 'Item Subtitle',
             permisos: [],
-            padre: undefined
+            padre: undefined,
         };
     }
 }
@@ -31,7 +30,7 @@ class ActivatedRouteStub {
     }
 }
 
-describe("BreadcrumbsComponent", () => {
+describe('BreadcrumbsComponent', () => {
     let component: BreadcrumbsComponent;
     let fixture: ComponentFixture<BreadcrumbsComponent>;
 
@@ -44,16 +43,14 @@ describe("BreadcrumbsComponent", () => {
                 {
                     provide: Router,
                     useValue: {
-                        url: "/test",
+                        url: '/test',
                         // events:  of(new NavigationEnd(0, 'test', 'test')),
-                        events: of(new NavigationEnd(0, "/test", "/test")),
-                        navigate: jasmine.createSpy("navigate")
-                    }
-                }
+                        events: of(new NavigationEnd(0, '/test', '/test')),
+                        navigate: jasmine.createSpy('navigate'),
+                    },
+                },
             ],
-          imports: [
-            BreadcrumbsComponent,
-          ],
+            imports: [BreadcrumbsComponent],
         }).compileComponents();
     });
 
@@ -66,12 +63,15 @@ describe("BreadcrumbsComponent", () => {
         expect(component).toBeTruthy();
     });
 
-    it("se setean los campos item, subitem, y subitem2 con los valores obtenidos del MenuService", () => {
+    it('se setean los campos item, subitem, y subitem2 con los valores obtenidos del MenuService', () => {
         expect(component.item).toBe(undefined);
     });
 
     it('obtenerPadre devuelve el padre cuando existe', () => {
-        const hijo: IMenuItem = { nombre: 'hijo', padre: { nombre: 'padre' } as any } as any;
+        const hijo: IMenuItem = {
+            nombre: 'hijo',
+            padre: { nombre: 'padre' } as any,
+        } as any;
         component.item = { padre: { nombre: 'padre' } } as any;
         const res = component.obtenerPadre(hijo);
         expect(res).toEqual(hijo.padre);
@@ -80,7 +80,9 @@ describe("BreadcrumbsComponent", () => {
     it('ir navega con query volver', () => {
         const router = TestBed.inject(Router);
         component.ir('/ruta');
-        expect(router.navigate).toHaveBeenCalledWith(['/ruta'], { queryParams: { volver: 1 } });
+        expect(router.navigate).toHaveBeenCalledWith(['/ruta'], {
+            queryParams: { volver: 1 },
+        });
     });
 
     it('debería renderizar una navegación accesible', () => {
@@ -89,7 +91,9 @@ describe("BreadcrumbsComponent", () => {
         fixture.detectChanges();
         const nav: HTMLElement = fixture.nativeElement.querySelector('nav');
         expect(nav.getAttribute('aria-label')).toBe('ruta de navegación');
-        const current = fixture.nativeElement.querySelector('li[aria-current="page"]');
+        const current = fixture.nativeElement.querySelector(
+            'li[aria-current="page"]',
+        );
         expect(current.textContent.trim()).toBe('Actual');
         const button = fixture.nativeElement.querySelector('button');
         expect(button.getAttribute('type')).toBe('button');

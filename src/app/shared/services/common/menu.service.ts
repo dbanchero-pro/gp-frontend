@@ -13,21 +13,31 @@ export interface SubItem {
     providedIn: 'root',
 })
 export class MenuService {
-    constructor(private readonly router: Router, private readonly seguridad: SeguridadService) { }
+    constructor(
+        private readonly router: Router,
+        private readonly seguridad: SeguridadService,
+    ) {}
 
-    public obtenerMenu(permisos: string[], ignorarPermisos: boolean = false): IMenuItem[] {
+    public obtenerMenu(
+        permisos: string[],
+        ignorarPermisos: boolean = false,
+    ): IMenuItem[] {
         const items: IMenuItem[] = this.obtenerMenuItems();
         return this.filtrarMenu(items, permisos, ignorarPermisos);
     }
 
-    public filtrarMenu(items: IMenuItem[], permisos: string[], ignorarPermisos: boolean = false): IMenuItem[] {
+    public filtrarMenu(
+        items: IMenuItem[],
+        permisos: string[],
+        ignorarPermisos: boolean = false,
+    ): IMenuItem[] {
         const retorno: IMenuItem[] = [];
         items.forEach((item) => {
             if (item.items) {
                 const subItems: IMenuItem[] = this.filtrarMenu(
                     item.items,
                     permisos,
-                    ignorarPermisos
+                    ignorarPermisos,
                 );
                 if (subItems.length !== 0) {
                     item.items = subItems;
@@ -35,16 +45,16 @@ export class MenuService {
                 }
             } else if (
                 item.permisos === undefined ||
-                item.permisos.length === 0 || ignorarPermisos
+                item.permisos.length === 0 ||
+                ignorarPermisos
             ) {
                 retorno.push(item);
             } else if (
                 ignorarPermisos ||
                 item.permisos.filter(
                     (permisoItem) =>
-                        permisos.filter(
-                            (permiso) => permiso === permisoItem
-                        ).length > 0
+                        permisos.filter((permiso) => permiso === permisoItem)
+                            .length > 0,
                 ).length > 0
             ) {
                 retorno.push(item);
@@ -57,19 +67,15 @@ export class MenuService {
         return this.filtrarItemsMenu([
             this.menuBandejaEntrada(),
             this.menuAdministracion(),
-          //  this.menuEntregas(tipoUsuario),
+            //  this.menuEntregas(tipoUsuario),
         ]);
     }
-
 
     private menuAdministracion(): IMenuItem {
         return {
             nombre: 'Administración',
             visible: true,
-            items: [
-                this.menuPliegos(),
-                this.menuRoles(),
-            ],
+            items: [this.menuPliegos(), this.menuRoles()],
         };
     }
 
@@ -80,8 +86,9 @@ export class MenuService {
             items: [
                 {
                     nombre: 'Gestión',
-                    titulo: "Gestión Puntos Recepción",
-                    subtitulo: "Ingresa las opciones de búsqueda y presiona buscar para filtrar los puntos de recepción",
+                    titulo: 'Gestión Puntos Recepción',
+                    subtitulo:
+                        'Ingresa las opciones de búsqueda y presiona buscar para filtrar los puntos de recepción',
                     visible: true,
                     permisos: [
                         'GC_GESTION_PUNTOS.ALTA',
@@ -94,28 +101,27 @@ export class MenuService {
                     items: [
                         {
                             nombre: 'Agregar Punto Recepción',
-                            titulo: "Gestión Puntos Recepción",
-                            subtitulo: "Completa el formulario con los datos del nuevo punto de recepción y presiona guardar",
+                            titulo: 'Gestión Puntos Recepción',
+                            subtitulo:
+                                'Completa el formulario con los datos del nuevo punto de recepción y presiona guardar',
                             visible: false,
-                            permisos: [
-                                'GC_GESTION_PUNTOS.ALTA',
-                            ],
+                            permisos: ['GC_GESTION_PUNTOS.ALTA'],
                             url: '/administracion/puntos-recepcion/agregar',
                         },
                         {
                             nombre: 'Modificar Punto Recepción',
-                            titulo: "Gestión Puntos Recepción",
-                            subtitulo: "Modifica la información del punto de recepción y presiona guardar",
+                            titulo: 'Gestión Puntos Recepción',
+                            subtitulo:
+                                'Modifica la información del punto de recepción y presiona guardar',
                             visible: false,
-                            permisos: [
-                                'GC_GESTION_PUNTOS.MODIFICACION',
-                            ],
+                            permisos: ['GC_GESTION_PUNTOS.MODIFICACION'],
                             url: '/administracion/puntos-recepcion/modificar',
                         },
                         {
                             nombre: 'Responsables Punto',
-                            titulo: "Gestión Puntos Recepción",
-                            subtitulo: "Se visualizan los funcionarios asginados al punto o unidad de compra del punto en la gestión de usuarios",
+                            titulo: 'Gestión Puntos Recepción',
+                            subtitulo:
+                                'Se visualizan los funcionarios asginados al punto o unidad de compra del punto en la gestión de usuarios',
                             visible: false,
                             permisos: [
                                 'GC_GESTION_PUNTOS.ALTA',
@@ -125,17 +131,16 @@ export class MenuService {
                                 'GC_GESTION_PUNTOS.IMPRESION',
                             ],
                             url: '/administracion/puntos-recepcion/responsables',
-                        }
+                        },
                     ],
                 },
                 {
                     nombre: 'Ver auditoría',
-                    titulo: "Auditoría Funcional Puntos Recepción",
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar las operaciones realizadas',
+                    titulo: 'Auditoría Funcional Puntos Recepción',
+                    subtitulo:
+                        'Ingresa las opciones de búsqueda y presiona buscar para filtrar las operaciones realizadas',
                     visible: true,
-                    permisos: [
-                        'GC_GESTION_PUNTOS.CONSULTA'
-                    ],
+                    permisos: ['GC_GESTION_PUNTOS.CONSULTA'],
                     url: '/administracion/auditoria/puntos-recepcion',
                 },
             ],
@@ -146,7 +151,8 @@ export class MenuService {
         return {
             nombre: 'Usuarios y roles',
             titulo: 'Gestión Usuarios Roles',
-            subtitulo: 'Asigna o elimina roles a los usuarios, a nivel de unidades de compra, compra o tipo de compra',
+            subtitulo:
+                'Asigna o elimina roles a los usuarios, a nivel de unidades de compra, compra o tipo de compra',
             visible: true,
             permisos: [
                 'GC_GESTION_USU.ALTA',
@@ -158,8 +164,7 @@ export class MenuService {
         };
     }
 
-     private menuBandejaEntrada(): IMenuItem {
-        
+    private menuBandejaEntrada(): IMenuItem {
         return {
             nombre: 'Pliegos',
             visible: true,
@@ -167,46 +172,44 @@ export class MenuService {
                 {
                     nombre: 'Bandeja de entrada',
                     titulo: 'Bandeja de entrada',
-                    subtitulo: 'Visualización de los procesos de elaboración de pliegos',
+                    subtitulo:
+                        'Visualización de los procesos de elaboración de pliegos',
                     visible: true,
-                    permisos: [
-                        'GC_GESTION_USU.CONSULTA'
-                    ],
-                    url: '/pliegos/bandeja-entrada'
+                    permisos: ['GC_GESTION_USU.CONSULTA'],
+                    url: '/pliegos/bandeja-entrada',
                 },
                 {
                     nombre: 'Asignar usuarios',
                     titulo: 'Asignar usuarios',
-                    subtitulo: 'Seleccion agregar usuario o modificar para asignar roles a los usuarios',
+                    subtitulo:
+                        'Seleccion agregar usuario o modificar para asignar roles a los usuarios',
                     visible: false,
-                    permisos: [
-                        'GC_GESTION_USU.CONSULTA'
-                    ],
-                    url: '/pliegos/bandeja-entrada/asignar-usuarios'
+                    permisos: ['GC_GESTION_USU.CONSULTA'],
+                    url: '/pliegos/bandeja-entrada/asignar-usuarios',
                 },
                 {
                     nombre: 'Iniciar pliego',
                     titulo: 'Iniciar pliego',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar modelos o pliegos para seleccionar un modelo o pliego',
+                    subtitulo:
+                        'Ingresa las opciones de búsqueda y presiona buscar modelos o pliegos para seleccionar un modelo o pliego',
                     visible: false,
-                    permisos: [
-                        'GC_GESTION_USU.CONSULTA'
-                    ],
-                    url: '/pliegos/bandeja-entrada/iniciar-pliego'
-                }
-             ]
+                    permisos: ['GC_GESTION_USU.CONSULTA'],
+                    url: '/pliegos/bandeja-entrada/iniciar-pliego',
+                },
+            ],
         };
     }
 
-     private menuPliegos(): IMenuItem {
-         return {
+    private menuPliegos(): IMenuItem {
+        return {
             nombre: 'Pliegos',
             visible: true,
             items: [
-                 {
+                {
                     nombre: 'Campos y reglas',
                     titulo: 'Administración de campos y sus reglas',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar los campos',
+                    subtitulo:
+                        'Ingresa las opciones de búsqueda y presiona buscar para filtrar los campos',
                     visible: true,
                     permisos: [
                         'GC_GESTION_USU.ALTA',
@@ -219,37 +222,35 @@ export class MenuService {
                 {
                     nombre: 'Capítulos',
                     titulo: 'Administración de las capítulos',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar los capítulos',
+                    subtitulo:
+                        'Ingresa las opciones de búsqueda y presiona buscar para filtrar los capítulos',
                     visible: true,
-                    permisos: [
-                        'GC_GESTION_USU.CONSULTA'
-                    ],
+                    permisos: ['GC_GESTION_USU.CONSULTA'],
                     url: '/administracion/capitulos',
                 },
                 {
                     nombre: 'Cláusulas',
                     titulo: 'Administración de las cláusulas',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar las cláusulas',
+                    subtitulo:
+                        'Ingresa las opciones de búsqueda y presiona buscar para filtrar las cláusulas',
                     visible: true,
-                    permisos: [
-                        'GC_GESTION_USU.CONSULTA'
-                    ],
+                    permisos: ['GC_GESTION_USU.CONSULTA'],
                     url: '/administracion/clausulas',
                 },
                 {
                     nombre: 'Modelos',
                     titulo: 'Administración de los modelos',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar los modelos',
+                    subtitulo:
+                        'Ingresa las opciones de búsqueda y presiona buscar para filtrar los modelos',
                     visible: true,
-                    permisos: [
-                        'GC_GESTION_USU.CONSULTA'
-                    ],
+                    permisos: ['GC_GESTION_USU.CONSULTA'],
                     url: '/administracion/modelos',
                 },
                 {
                     nombre: 'Repositorio archivos',
                     titulo: 'Administración del repositorio de archivos',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar los archivos',
+                    subtitulo:
+                        'Ingresa las opciones de búsqueda y presiona buscar para filtrar los archivos',
                     visible: true,
                     permisos: [
                         'GC_GESTION_USU.ALTA',
@@ -262,15 +263,13 @@ export class MenuService {
                 {
                     nombre: 'Secciones',
                     titulo: 'Administración de las secciones',
-                    subtitulo: 'Ingresa las opciones de búsqueda y presiona buscar para filtrar las secciones',
+                    subtitulo:
+                        'Ingresa las opciones de búsqueda y presiona buscar para filtrar las secciones',
                     visible: true,
-                    permisos: [
-                        'GC_GESTION_USU.CONSULTA'
-                    ],
+                    permisos: ['GC_GESTION_USU.CONSULTA'],
                     url: '/administracion/secciones',
                 },
-                
-            ]
+            ],
         };
     }
 
@@ -281,7 +280,11 @@ export class MenuService {
         }
         const item = this.obtenerItemMasAbajo(url);
         if (item) {
-            return item.permisos === undefined || item.permisos.length === 0 || item.permisos.some(permiso => permisos.includes(permiso));
+            return (
+                item.permisos === undefined ||
+                item.permisos.length === 0 ||
+                item.permisos.some((permiso) => permisos.includes(permiso))
+            );
         } else {
             return false;
         }
@@ -294,9 +297,12 @@ export class MenuService {
                     if (item.url) {
                         return url.startsWith(item.url);
                     } else {
-                        return this.tienePermisoItemsPorUrl(item.items ?? [], url);
+                        return this.tienePermisoItemsPorUrl(
+                            item.items ?? [],
+                            url,
+                        );
                     }
-                }).length !== 0
+                }).length !== 0,
         );
         return itemsAccesibles.length !== 0;
     }
@@ -320,11 +326,10 @@ export class MenuService {
             (menu) =>
                 menu.url === url ||
                 menu.items?.some((item) => item.url === url) ||
-                this.urlEnNietos(menu, url)
+                this.urlEnNietos(menu, url),
         );
 
         return items.length !== 0 ? items[0] : null;
-
     }
     public obtenerItemMasAbajo(url: string): IMenuItem | undefined {
         const items = this.obtenerMenu([], true);
@@ -337,8 +342,11 @@ export class MenuService {
         }
         return undefined;
     }
-    private obtenerItemMasAbajoRecursivo(item: IMenuItem, url: string): IMenuItem | undefined {
-        if (item.url === url || url.startsWith(item.url + "?")) {
+    private obtenerItemMasAbajoRecursivo(
+        item: IMenuItem,
+        url: string,
+    ): IMenuItem | undefined {
+        if (item.url === url || url.startsWith(item.url + '?')) {
             return item;
         } else if (item.items && item.items.length > 0) {
             for (const subItem of item.items) {
@@ -364,7 +372,9 @@ export class MenuService {
             if (paths.length === 4 && isNaN(parseFloat(paths[3]))) {
                 url = '/' + paths[1] + '/' + paths[2] + '/' + paths[3];
             }
-            subItems = item.items.filter((subItem: any) => url.startsWith(subItem.url));
+            subItems = item.items.filter((subItem: any) =>
+                url.startsWith(subItem.url),
+            );
         }
         let item2: any = subItems.length !== 0 ? subItems[0] : null;
 
@@ -406,38 +416,54 @@ export class MenuService {
         //    Esto reemplaza por completo la cadena 'if-else if'.
         const rules: { condition: () => boolean; result: SubItem }[] = [
             {
-                condition: () => item != null && `${url}/agregar` === currentUrl,
-                result: { nombre: 'Agregar', url: null }
+                condition: () =>
+                    item != null && `${url}/agregar` === currentUrl,
+                result: { nombre: 'Agregar', url: null },
             },
             {
                 // Agrupamos las 3 condiciones 'endsWith' en una sola usando un array.
-                condition: () => [
-                    '/listar-procedimiento-compra',
-                    '/listar-procedimiento-compra-ver',
-                    '/listar-procedimiento-compra-ver-publicado'
-                ].some(suffix => currentUrl.endsWith(suffix)),
-                result: { nombre: 'Listado Procedimientos de Compra', url: null }
+                condition: () =>
+                    [
+                        '/listar-procedimiento-compra',
+                        '/listar-procedimiento-compra-ver',
+                        '/listar-procedimiento-compra-ver-publicado',
+                    ].some((suffix) => currentUrl.endsWith(suffix)),
+                result: {
+                    nombre: 'Listado Procedimientos de Compra',
+                    url: null,
+                },
             },
             {
-                condition: () => paths.length === 4 && paths[1] === 'ajuste-plan' && isNaN(Number(paths[2])),
-                result: { nombre: 'Listado Ajustes de Procedimientos de Compra', url: null }
+                condition: () =>
+                    paths.length === 4 &&
+                    paths[1] === 'ajuste-plan' &&
+                    isNaN(Number(paths[2])),
+                result: {
+                    nombre: 'Listado Ajustes de Procedimientos de Compra',
+                    url: null,
+                },
             },
             {
-                condition: () => item != null && paths.length === 3 && !isNaN(Number(paths[2])),
-                result: { nombre: 'Editar', url: null }
+                condition: () =>
+                    item != null &&
+                    paths.length === 3 &&
+                    !isNaN(Number(paths[2])),
+                result: { nombre: 'Editar', url: null },
             },
             {
-                condition: () => currentUrl.startsWith('/puntos-recepcion/responsables'),
-                result: { nombre: 'Responsables', url: null }
+                condition: () =>
+                    currentUrl.startsWith('/puntos-recepcion/responsables'),
+                result: { nombre: 'Responsables', url: null },
             },
             {
-                condition: () => item != null && `${url}/modificar` === currentUrl,
-                result: { nombre: 'Modificar', url: null }
-            }
+                condition: () =>
+                    item != null && `${url}/modificar` === currentUrl,
+                result: { nombre: 'Modificar', url: null },
+            },
         ];
 
         // 4. Buscamos la primera regla que cumpla su condición.
-        const matchingRule = rules.find(rule => rule.condition());
+        const matchingRule = rules.find((rule) => rule.condition());
 
         // 5. Retornamos el resultado de la regla encontrada, o null si ninguna coincidió.
         return matchingRule ? matchingRule.result : null;
@@ -448,13 +474,14 @@ export class MenuService {
     }
 
     private urlEnNietos(menu: IMenuItem, url: string): boolean {
-        return menu.items?.some(
-            (hijo) =>
-                hijo.items?.some((nieto) => nieto.url === url) ?? false
-        ) ?? false;
+        return (
+            menu.items?.some(
+                (hijo) =>
+                    hijo.items?.some((nieto) => nieto.url === url) ?? false,
+            ) ?? false
+        );
     }
     filtrarItemsMenu(items: IMenuItem[]): IMenuItem[] {
-
         let itemsFiltrados = items;
 
         return itemsFiltrados.map((item) => {
@@ -465,4 +492,3 @@ export class MenuService {
         });
     }
 }
-

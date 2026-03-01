@@ -1,132 +1,172 @@
 <div class="container-fluid">
-   <div class="row">
-      <div class="col-md-8 ml-0 pl-0 mr-0 pr-0">
-        <h4><em class="fa fa-user-plus mr-2"></em>Asignación de usuarios</h4>
-        <h6>Seleccione los usuarios que van a trabajar en el pliego y asigne los roles</h6>
-      </div>
-  </div>
-  <!-- Información del proceso -->
-  <div class="row" *ngIf="proceso">
-    <div class="col-12 ml-0 pl-0 mr-0 pr-0">
-      <div class="Box Box--colorInfo p-3">
-        <div class="mb-2 font-weight-bold subtitle">
-          {{ obtenerTextoOrganismo() }}
+    <div class="row">
+        <div class="col-md-8 ml-0 pl-0 mr-0 pr-0">
+            <h4>
+                <em class="fa fa-user-plus mr-2"></em>Asignación de usuarios
+            </h4>
+            <h6>
+                Seleccione los usuarios que van a trabajar en el pliego y asigne
+                los roles
+            </h6>
         </div>
-        <div class="mb-2 font-weight-bold">
-          {{ obtenerTextoTipoCompra() }}
-        </div>
-        <div class="mb-2">
-            Modelo: <strong> Denominación Modelo 1</strong>
-        </div>
-        <div class="m-0">
-          <span class="badge" [ngClass]="obtenerClaseBadgeEstado(proceso.estado)">
-                {{ obtenerNombreEstado(proceso.estado) }}
-          </span>
-        </div>
-        <div class="row">
-          <div class="col-12 ml-0 pl-0 mr-0 pr-0 mb-2">
-            <div class="text-right mr-2">
-              <button
-                class="btn btn-success"
-                type="button"
-                (click)="finalizar()"
-                [disabled]="guardando">
-                  Solicitar iniciar pliego
-              </button>
+    </div>
+    <!-- Información del proceso -->
+    <div class="row" *ngIf="proceso">
+        <div class="col-12 ml-0 pl-0 mr-0 pr-0">
+            <div class="Box Box--colorInfo p-3">
+                <div class="mb-2 font-weight-bold subtitle">
+                    {{ obtenerTextoOrganismo() }}
+                </div>
+                <div class="mb-2 font-weight-bold">
+                    {{ obtenerTextoTipoCompra() }}
+                </div>
+                <div class="mb-2">
+                    Modelo: <strong> Denominación Modelo 1</strong>
+                </div>
+                <div class="m-0">
+                    <span
+                        class="badge"
+                        [ngClass]="obtenerClaseBadgeEstado(proceso.estado)"
+                    >
+                        {{ obtenerNombreEstado(proceso.estado) }}
+                    </span>
+                </div>
+                <div class="row">
+                    <div class="col-12 ml-0 pl-0 mr-0 pr-0 mb-2">
+                        <div class="text-right mr-2">
+                            <button
+                                class="btn btn-success"
+                                type="button"
+                                (click)="finalizar()"
+                                [disabled]="guardando"
+                            >
+                                Solicitar iniciar pliego
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <!-- Lista de usuarios asignados -->
-  <div class="row justify-content-end">
-    <button class="btn btn-primary mr-2" (click)="agregarUsuario()">
-      <em class="fa fa-plus mr-1"></em>
-      Agregar usuario
-    </button>
-  </div>
+    <!-- Lista de usuarios asignados -->
+    <div class="row justify-content-end">
+        <button class="btn btn-primary mr-2" (click)="agregarUsuario()">
+            <em class="fa fa-plus mr-1"></em>
+            Agregar usuario
+        </button>
+    </div>
 
-  <app-cabezal-consulta
-    [totalItems]="usuariosAsignados.length || 0"
-    [listaOrden]="listaOrden"
-    [columnaOrden]="parametros.sort"
-    [orden]="parametros.order"
-    (orderChange)="cambioOrden($event)"
-    (sortChange)="cambioColumnaOrden($event)">
-  </app-cabezal-consulta>
+    <app-cabezal-consulta
+        [totalItems]="usuariosAsignados.length || 0"
+        [listaOrden]="listaOrden"
+        [columnaOrden]="parametros.sort"
+        [orden]="parametros.order"
+        (orderChange)="cambioOrden($event)"
+        (sortChange)="cambioColumnaOrden($event)"
+    >
+    </app-cabezal-consulta>
 
-  <!-- Cards de usuarios -->
-  <div *ngFor="let usuario of usuariosAsignados; let i = index" [style.position]="'relative'" [style.z-index]="8000-i">
-    <div class="card mb-2">
-      <div class="row">
-        <div class="col-12 py-2 px-4">
-          <div class="row g-0 py-1 px-3">
-            <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta">Cédula de identidad</div>
-            <div class="col-9 col-sm-5 col-md-6 col-lg-7 font-weight-bold">{{ usuario.numeroDocumento }}</div>
-            <div class="col-3 col-sm-3 col-md-3 col-lg-3 d-flex justify-content-end align-items-start">
-              <app-boton-accion
-                [acciones]="obtenerAcciones(usuario)"
-                [ariaLabelMasOpciones]="'Mas opciones del usuario ' + obtenerNombreCompleto(usuario)"
-                (accionEjecutada)="ejecutarAccion($event)">
-              </app-boton-accion>
+    <!-- Cards de usuarios -->
+    <div
+        *ngFor="let usuario of usuariosAsignados; let i = index"
+        [style.position]="'relative'"
+        [style.z-index]="8000 - i"
+    >
+        <div class="card mb-2">
+            <div class="row">
+                <div class="col-12 py-2 px-4">
+                    <div class="row g-0 py-1 px-3">
+                        <div
+                            class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta"
+                        >
+                            Cédula de identidad
+                        </div>
+                        <div
+                            class="col-9 col-sm-5 col-md-6 col-lg-7 font-weight-bold"
+                        >
+                            {{ usuario.numeroDocumento }}
+                        </div>
+                        <div
+                            class="col-3 col-sm-3 col-md-3 col-lg-3 d-flex justify-content-end align-items-start"
+                        >
+                            <app-boton-accion
+                                [acciones]="obtenerAcciones(usuario)"
+                                [ariaLabelMasOpciones]="
+                                    'Mas opciones del usuario ' +
+                                    obtenerNombreCompleto(usuario)
+                                "
+                                (accionEjecutada)="ejecutarAccion($event)"
+                            >
+                            </app-boton-accion>
+                        </div>
+                    </div>
+                    <div class="row g-0 py-1 px-3">
+                        <div
+                            class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta"
+                        >
+                            Nombre
+                        </div>
+                        <div
+                            class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold"
+                        >
+                            {{ obtenerNombreCompleto(usuario) }}
+                        </div>
+                    </div>
+                    <div class="row g-0 py-1 px-3">
+                        <div
+                            class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta"
+                        >
+                            Roles
+                        </div>
+                        <div
+                            class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold"
+                        >
+                            {{ obtenerRoles(usuario) }}
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="row g-0 py-1 px-3">
-            <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta">Nombre</div>
-            <div class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold">{{ obtenerNombreCompleto(usuario) }} </div>
-          </div>
-          <div class="row g-0 py-1 px-3">
-            <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta">Roles</div>
-            <div class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold">{{ obtenerRoles(usuario) }}</div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <!-- Mensaje cuando no hay usuarios -->
-  <div class="alert alert-info" *ngIf="usuariosAsignados.length === 0">
-      No hay usuarios asignados a este pliego
-  </div>
-
-  <!-- Paginado -->
-  <app-paginado
-    *ngIf="usuariosAsignados.length > 0"
-    [totalItems]="usuariosAsignados.length || 0"
-    [itemsPorPagina]="parametros.tamanoPagina"
-    [paginaActual]="parametros.pagina + 1"
-    (cambioPagina)="cambioPagina($event)"
-    (cambioItemsPorPagina)="cambioPorPagina($event)">
-  </app-paginado>
-
-  <!-- Botones de acción -->
-  <div class="row mt-4">
-    <div class="col-12 d-flex justify-content-end">
-      <button
-        class="btn btn-link"
-        type="button"
-        (click)="volver()"><em class="fa fa-arrow-left mr-1"></em> Volver
-      </button>
-
+    <!-- Mensaje cuando no hay usuarios -->
+    <div class="alert alert-info" *ngIf="usuariosAsignados.length === 0">
+        No hay usuarios asignados a este pliego
     </div>
-  </div>
+
+    <!-- Paginado -->
+    <app-paginado
+        *ngIf="usuariosAsignados.length > 0"
+        [totalItems]="usuariosAsignados.length || 0"
+        [itemsPorPagina]="parametros.tamanoPagina"
+        [paginaActual]="parametros.pagina + 1"
+        (cambioPagina)="cambioPagina($event)"
+        (cambioItemsPorPagina)="cambioPorPagina($event)"
+    >
+    </app-paginado>
+
+    <!-- Botones de acción -->
+    <div class="row mt-4">
+        <div class="col-12 d-flex justify-content-end">
+            <button class="btn btn-link" type="button" (click)="volver()">
+                <em class="fa fa-arrow-left mr-1"></em> Volver
+            </button>
+        </div>
+    </div>
 </div>
 
 <!-- Popup para agregar usuario -->
 <ng-template #agregarUsuarioTemplate>
-  <app-agregar-usuario-popup
-    (guardarEvento)="guardarNuevoUsuario($event)">
-  </app-agregar-usuario-popup>
+    <app-agregar-usuario-popup (guardarEvento)="guardarNuevoUsuario($event)">
+    </app-agregar-usuario-popup>
 </ng-template>
 
 <!-- Popup para modificar usuario -->
 <ng-template #modificarUsuarioTemplate>
-  <app-modificar-usuario-popup
-    [usuario]="usuarioAModificar!"
-    (guardarEvento)="guardarUsuarioModificado($event)">
-  </app-modificar-usuario-popup>
+    <app-modificar-usuario-popup
+        [usuario]="usuarioAModificar!"
+        (guardarEvento)="guardarUsuarioModificado($event)"
+    >
+    </app-modificar-usuario-popup>
 </ng-template>
-
-

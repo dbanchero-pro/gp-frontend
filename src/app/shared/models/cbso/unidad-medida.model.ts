@@ -5,7 +5,10 @@ export interface IUnidadMedidaDTO {
 }
 
 export class UnidadMedidaDTO implements IUnidadMedidaDTO {
-    constructor(public id?: number, public codUnidadMedida?: number, public descUnidadMedida?: string,
-        public tipoUnidadMedida?: number) {
-    }
+    constructor(
+        public id?: number,
+        public codUnidadMedida?: number,
+        public descUnidadMedida?: string,
+        public tipoUnidadMedida?: number,
+    ) {}
 }

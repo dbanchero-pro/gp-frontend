@@ -1,43 +1,75 @@
 <div class="modal-header d-flex justify-content-between align-items-center">
     <h1 class="modal-title mb-0" id="tituloPopup">Agregar usuario</h1>
-    <button type="button" aria-label="Cerrar" class="close" (click)="cancelar()">&times;</button>
+    <button
+        type="button"
+        aria-label="Cerrar"
+        class="close"
+        (click)="cancelar()"
+    >
+        &times;
+    </button>
 </div>
 
 <div class="modal-body">
-    <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
+    <app-mensaje
+        [messages]="resultMsg"
+        [showMsg]="showMsg"
+        [typeMsg]="typeMsg"
+    ></app-mensaje>
 
     <form [formGroup]="form" (submit)="guardar()">
         <!-- Búsqueda de usuario -->
         <div class="row">
             <div class="col-12">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-check d-flex align-items-center">
-                                <input class="form-check-input" type="radio" name="tipoBusqueda" id="busquedaCI"
-                                    [value]="TipoBusquedaUsuario.CI" [formControl]="tipoBusqueda"
-                                    (click)="cambioTipoBusqueda()" />
-                                <label class="form-check-label col-form-label" for="busquedaCI">
-                                    Búsqueda por cédula de identidad
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-check d-flex align-items-center">
-                                <input class="form-check-input" type="radio" name="tipoBusqueda" id="busquedaNombre"
-                                    [value]="TipoBusquedaUsuario.NOMBRE" [formControl]="tipoBusqueda"
-                                    (click)="cambioTipoBusqueda()" />
-                                <label class="form-check-label col-form-label" for="busquedaNombre">
-                                    Búsqueda por nombre
-                                </label>
-                            </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-check d-flex align-items-center">
+                            <input
+                                class="form-check-input"
+                                type="radio"
+                                name="tipoBusqueda"
+                                id="busquedaCI"
+                                [value]="TipoBusquedaUsuario.CI"
+                                [formControl]="tipoBusqueda"
+                                (click)="cambioTipoBusqueda()"
+                            />
+                            <label
+                                class="form-check-label col-form-label"
+                                for="busquedaCI"
+                            >
+                                Búsqueda por cédula de identidad
+                            </label>
                         </div>
                     </div>
+
+                    <div class="col-6">
+                        <div class="form-check d-flex align-items-center">
+                            <input
+                                class="form-check-input"
+                                type="radio"
+                                name="tipoBusqueda"
+                                id="busquedaNombre"
+                                [value]="TipoBusquedaUsuario.NOMBRE"
+                                [formControl]="tipoBusqueda"
+                                (click)="cambioTipoBusqueda()"
+                            />
+                            <label
+                                class="form-check-label col-form-label"
+                                for="busquedaNombre"
+                            >
+                                Búsqueda por nombre
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Input de búsqueda por CI -->
-        <div class="row mt-3" *ngIf="tipoBusqueda.value === TipoBusquedaUsuario.CI">
+        <div
+            class="row mt-3"
+            *ngIf="tipoBusqueda.value === TipoBusquedaUsuario.CI"
+        >
             <div class="form-group form-row col-12 m-0">
                 <app-input-documento
                     [id]="'busquedaCI'"
@@ -46,16 +78,23 @@
                     [required]="false"
                     [minLength]="7"
                     [placeholder]="'Ingrese CI para buscar'"
-                    [formControl]="busquedaCI">
+                    [formControl]="busquedaCI"
+                >
                 </app-input-documento>
 
-                <small class="form-text text-muted mt-1 col-12" *ngIf="busquedaCI.value && !cedulaValida">
+                <small
+                    class="form-text text-muted mt-1 col-12"
+                    *ngIf="busquedaCI.value && !cedulaValida"
+                >
                     Ingrese una cédula válida (7-8 dígitos) para buscar usuarios
                 </small>
             </div>
 
             <!-- Lista de usuarios encontrados para CI -->
-            <div class="form-group form-row col-12 m-0" *ngIf="cedulaValida && usuariosFiltrados.length > 0">
+            <div
+                class="form-group form-row col-12 m-0"
+                *ngIf="cedulaValida && usuariosFiltrados.length > 0"
+            >
                 <label class="col-form-label pl-0">Usuarios encontrados</label>
                 <input
                     type="text"
@@ -69,10 +108,18 @@
                     [typeaheadOptionsInScrollableView]="10"
                     [typeaheadScrollable]="true"
                     class="form-control col-12"
-                    placeholder="Seleccione un usuario de la lista" />
+                    placeholder="Seleccione un usuario de la lista"
+                />
             </div>
 
-            <div class="form-group form-row col-12 m-0" *ngIf="cedulaValida && busquedaRealizada && usuariosFiltrados.length === 0">
+            <div
+                class="form-group form-row col-12 m-0"
+                *ngIf="
+                    cedulaValida &&
+                    busquedaRealizada &&
+                    usuariosFiltrados.length === 0
+                "
+            >
                 <div class="alert alert-info col-12">
                     No se encontraron usuarios con la cédula ingresada
                 </div>
@@ -80,24 +127,36 @@
         </div>
 
         <!-- Input de búsqueda por Nombre -->
-        <div class="row mt-3" *ngIf="tipoBusqueda.value === TipoBusquedaUsuario.NOMBRE">
+        <div
+            class="row mt-3"
+            *ngIf="tipoBusqueda.value === TipoBusquedaUsuario.NOMBRE"
+        >
             <div class="form-group form-row col-12 m-0">
-                <label for="busquedaNombre" class="col-form-label pl-0">Nombre del usuario</label>
+                <label for="busquedaNombre" class="col-form-label pl-0"
+                    >Nombre del usuario</label
+                >
                 <input
                     id="busquedaNombre"
                     type="text"
                     [formControl]="busquedaNombre"
                     class="form-control col-12"
                     placeholder="Ingrese al menos 5 caracteres"
-                    maxlength="100" />
+                    maxlength="100"
+                />
 
-                <small class="form-text text-muted mt-1 col-12" *ngIf="busquedaNombre.value && !nombreValido">
+                <small
+                    class="form-text text-muted mt-1 col-12"
+                    *ngIf="busquedaNombre.value && !nombreValido"
+                >
                     Debe ingresar al menos 5 caracteres para buscar
                 </small>
             </div>
 
             <!-- Lista de usuarios encontrados para Nombre -->
-            <div class="form-group form-row col-12 m-0" *ngIf="nombreValido && usuariosFiltrados.length > 0">
+            <div
+                class="form-group form-row col-12 m-0"
+                *ngIf="nombreValido && usuariosFiltrados.length > 0"
+            >
                 <label class="col-form-label pl-0">Usuarios encontrados</label>
                 <input
                     type="text"
@@ -111,10 +170,18 @@
                     [typeaheadOptionsInScrollableView]="10"
                     [typeaheadScrollable]="true"
                     class="form-control col-12"
-                    placeholder="Seleccione un usuario de la lista" />
+                    placeholder="Seleccione un usuario de la lista"
+                />
             </div>
 
-            <div class="form-group form-row col-12 m-0" *ngIf="nombreValido && busquedaRealizada && usuariosFiltrados.length === 0">
+            <div
+                class="form-group form-row col-12 m-0"
+                *ngIf="
+                    nombreValido &&
+                    busquedaRealizada &&
+                    usuariosFiltrados.length === 0
+                "
+            >
                 <div class="alert alert-info col-12">
                     No se encontraron usuarios con el nombre ingresado
                 </div>
@@ -124,7 +191,10 @@
         <!-- Template para los items del typeahead -->
         <ng-template #customItemTemplate let-model="item" let-index="index">
             <div class="d-flex justify-content-between w-100">
-                <span><strong>{{ model.numeroDocumento }}</strong> - {{ model.nombre }} {{ model.apellido }}</span>
+                <span
+                    ><strong>{{ model.numeroDocumento }}</strong> -
+                    {{ model.nombre }} {{ model.apellido }}</span
+                >
             </div>
         </ng-template>
 
@@ -133,8 +203,12 @@
             <div class="col-12">
                 <div class="Box Box--colorInfo">
                     <span class="subtitle">
-                        <strong>CI {{ usuarioSeleccionado.numeroDocumento }}</strong> -
-                        {{ usuarioSeleccionado.nombre }} {{ usuarioSeleccionado.apellido }}
+                        <strong
+                            >CI
+                            {{ usuarioSeleccionado.numeroDocumento }}</strong
+                        >
+                        - {{ usuarioSeleccionado.nombre }}
+                        {{ usuarioSeleccionado.apellido }}
                     </span>
                 </div>
             </div>
@@ -142,37 +216,67 @@
 
         <!-- Roles -->
         <div class="row mt-4">
-            <div class="form-group form-row col-12" [class.field-error]="!alMenosUnRolSeleccionado() && intentoGuardar">
+            <div
+                class="form-group form-row col-12"
+                [class.field-error]="
+                    !alMenosUnRolSeleccionado() && intentoGuardar
+                "
+            >
                 <label for="roles">* Roles</label>
                 <div class="d-flex justify-content-center w-100 col-12 Box">
                     <div class="form-check col-3">
-                        <input type="checkbox" class="form-check-input" id="esEditorPrincipal"
-                            formControlName="esEditorPrincipal">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="esEditorPrincipal"
+                            formControlName="esEditorPrincipal"
+                        />
                         <label class="form-check-label" for="esEditorPrincipal">
                             Editor principal
                         </label>
                     </div>
                     <div class="form-check col-2">
-                        <input type="checkbox" class="form-check-input" id="esEditor" formControlName="esEditor">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="esEditor"
+                            formControlName="esEditor"
+                        />
                         <label class="form-check-label" for="esEditor">
                             Editor
                         </label>
                     </div>
                     <div class="form-check col-2">
-                        <input type="checkbox" class="form-check-input" id="esValidador" formControlName="esValidador">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="esValidador"
+                            formControlName="esValidador"
+                        />
                         <label class="form-check-label" for="esValidador">
                             Validador
                         </label>
                     </div>
                     <div class="form-check col-2">
-                        <input type="checkbox" class="form-check-input" id="esAprobador" formControlName="esAprobador">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="esAprobador"
+                            formControlName="esAprobador"
+                        />
                         <label class="form-check-label" for="esAprobador">
                             Aprobador
                         </label>
                     </div>
                 </div>
-                <span class="texto-error col-12"
-                    [style.visibility]="!alMenosUnRolSeleccionado() && intentoGuardar ? 'visible' : 'hidden'">
+                <span
+                    class="texto-error col-12"
+                    [style.visibility]="
+                        !alMenosUnRolSeleccionado() && intentoGuardar
+                            ? 'visible'
+                            : 'hidden'
+                    "
+                >
                     Debe seleccionar al menos un rol
                 </span>
             </div>
@@ -180,9 +284,16 @@
     </form>
 
     <div class="d-flex justify-content-end m-3 pe-3">
-        <button type="submit" class="btn btn-primary" (click)="guardar()" [disabled]="guardando">
+        <button
+            type="submit"
+            class="btn btn-primary"
+            (click)="guardar()"
+            [disabled]="guardando"
+        >
             Guardar
         </button>
-        <button type="button" class="btn btn-link" (click)="cancelar()">Cancelar</button>
+        <button type="button" class="btn btn-link" (click)="cancelar()">
+            Cancelar
+        </button>
     </div>
 </div>
