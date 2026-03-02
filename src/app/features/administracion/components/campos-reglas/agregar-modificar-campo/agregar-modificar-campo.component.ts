@@ -153,7 +153,7 @@ export class AgregarModificarCampoComponent
                     return;
                 }
 
-                this.esCampoProtegido = campo.protegido === SiNoValor.NO;
+                this.esCampoProtegido = campo.protegido === SiNoValor.SI;
 
                 this.form.patchValue({
                     etiqueta: campo.etiqueta || '',
