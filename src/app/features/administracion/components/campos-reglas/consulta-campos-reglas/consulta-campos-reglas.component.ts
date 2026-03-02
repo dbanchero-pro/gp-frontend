@@ -298,4 +298,8 @@ export class ConsultaCamposReglasComponent
         return !!(campo.reglas && campo.reglas.length > 0);
     }
 
+    tieneValoresPermitidos(campo: CampoDTO): boolean {
+        return !!(campo.valoresPermitidos && campo.valoresPermitidos.length > 0);
+    }
+
 }
