@@ -20,6 +20,7 @@ import { IReglaDTO, ReglaDTO } from '../../../models/regla.model';
 import { CampoService } from '../../../services/campo.service';
 import { OperadorHelperService } from '../../../services/operador-helper.service';
 import { AgregarModificarReglaPopupComponent } from '../agregar-modificar-regla-popup/agregar-modificar-regla-popup.component';
+import { AgregarValorPopupComponent } from '../agregar-valor-popup/agregar-valor-popup.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
@@ -403,15 +404,19 @@ export class AgregarModificarCampoComponent
     }
 
     abrirAgregarValor(): void {
-        const valor = prompt('Ingrese el valor permitido:');
-        if (valor && valor.trim() !== '') {
-            const valorTrim = valor.trim();
-            if (this.valoresPermitidos.includes(valorTrim)) {
-                this.actualizarService.mensajeError('Este valor ya existe en la lista');
-                return;
-            }
-            this.valoresPermitidos.push(valorTrim);
-            this.form.markAsDirty();
+        const popup = this.abrirPopup(AgregarValorPopupComponent, 'Guardar', {
+            backdrop: 'static',
+            keyboard: false,
+            initialState: {
+                valoresExistentes: this.valoresPermitidos,
+            },
+        });
+
+        if (popup.valorGuardado) {
+            popup.valorGuardado.subscribe((valor: string) => {
+                this.valoresPermitidos.push(valor);
+                this.form.markAsDirty();
+            });
         }
     }
 
