@@ -27,20 +27,14 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group" [class.field-error]="form.get('fuente')?.invalid && form.get('fuente')?.touched">
-                                    <label for="fuente">* Fuente</label>
-                                    <select id="fuente" class="form-control" formControlName="fuente">
-                                        <option value=""> Seleccione una fuente </option>
-                                        <option *ngFor="let tipo of tiposFuente" [value]="tipo.id"> {{ tipo.nombre }} </option>
-                                    </select>
-                                    <span class="texto-error m-0" [style.visibility]="form.get('fuente')?.hasError('required') && form.get('fuente')?.touched? 'visible': 'hidden'">
-                                        La fuente no puede estar vacía
-                                    </span>
+                                <div class="form-group">
+                                    <label>Fuente</label>
+                                    <p class="form-control-plaintext">{{ fuenteCampo }}</p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Segunda fila: Tipo de Dato y Se puede eliminar -->
+                        <!-- Segunda fila: Tipo de Dato y Largo Máximo -->
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group" [class.field-error]=" form.get('tipoDato')?.invalid && form.get('tipoDato')?.touched">
@@ -54,6 +48,33 @@
                                     </span>
                                 </div>
                             </div>
+                            <div class="col-md-6" *ngIf="mostrarLargoMaximo">
+                                <div class="form-group" [class.field-error]="form.get('largoMaximo')?.invalid && form.get('largoMaximo')?.touched">
+                                    <label for="largoMaximo">* Largo máximo</label>
+                                    <input id="largoMaximo" type="number" class="form-control" formControlName="largoMaximo" min="1" max="4000"/>
+                                    <span class="texto-error m-0" [style.visibility]="form.get('largoMaximo')?.hasError('required') && form.get('largoMaximo')?.touched? 'visible': 'hidden'">
+                                        El largo máximo no puede estar vacío
+                                    </span>
+                                    <span class="texto-error m-0" [style.visibility]="(form.get('largoMaximo')?.hasError('min') || form.get('largoMaximo')?.hasError('max')) && form.get('largoMaximo')?.touched? 'visible': 'hidden'">
+                                        El largo máximo debe estar entre 1 y 4000
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="!mostrarLargoMaximo">
+                                <div class="form-group" [class.field-error]="form.get('sePuedeEliminar')?.invalid && form.get('sePuedeEliminar')?.touched">
+                                    <label for="sePuedeEliminar">* Campo protegido</label>
+                                    <select id="sePuedeEliminar" class="form-control" formControlName="sePuedeEliminar">
+                                        <option *ngFor="let opcion of opcionesSiNo" [value]="opcion.id"> {{ opcion.nombre }}</option>
+                                    </select>
+                                    <span class="texto-error m-0" [style.visibility]="form.get('sePuedeEliminar')?.hasError('required') && form.get('sePuedeEliminar')?.touched? 'visible': 'hidden'">
+                                        Debe indicar si se puede modificar o eliminar el campo
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tercera fila: Campo protegido (cuando se muestra largo máximo) -->
+                        <div class="row" *ngIf="mostrarLargoMaximo">
                             <div class="col-md-6">
                                 <div class="form-group" [class.field-error]="form.get('sePuedeEliminar')?.invalid && form.get('sePuedeEliminar')?.touched">
                                     <label for="sePuedeEliminar">* Campo protegido</label>
@@ -67,7 +88,7 @@
                             </div>
                         </div>
 
-                        <!-- Tercera fila: Descripción -->
+                        <!-- Cuarta fila: Descripción -->
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group" [class.field-error]="form.get('descripcion')?.invalid && form.get('descripcion')?.touched">

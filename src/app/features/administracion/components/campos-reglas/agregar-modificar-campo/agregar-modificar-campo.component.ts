@@ -46,12 +46,12 @@ export class AgregarModificarCampoComponent
     override form!: FormGroup<{
         etiqueta: FormControl<string>;
         descripcion: FormControl<string>;
-        fuente: FormControl<string>;
         tipoDato: FormControl<string>;
+        largoMaximo: FormControl<number | null>;
         sePuedeEliminar: FormControl<string>;
     }>;
 
-    tiposFuente: { id: string; nombre: string }[] = [];
+    fuenteCampo = 'Usuario';
     tiposDato: { id: string; nombre: string }[] = [];
     opcionesSiNo: { id: string; nombre: string }[] = [
         { id: SiNoValor.SI, nombre: 'Sí' },
@@ -60,6 +60,7 @@ export class AgregarModificarCampoComponent
 
     reglas: IReglaDTO[] = [];
     siguienteIdRegla = 1;
+    mostrarLargoMaximo = false;
 
     constructor() {
         super();
@@ -70,9 +71,6 @@ export class AgregarModificarCampoComponent
     }
 
     ngOnInit(): void {
-        this.tiposFuente = this.campoService
-            .obtenerTiposFuente()
-            .filter((t) => t.id !== '');
         this.tiposDato = this.campoService.obtenerTiposDato();
 
         if (!this.modoIngreso) {
@@ -93,19 +91,39 @@ export class AgregarModificarCampoComponent
                 '',
                 Validators.required,
             ),
-            fuente: this.fb.nonNullable.control<string>(
-                '',
-                Validators.required,
-            ),
             tipoDato: this.fb.nonNullable.control<string>(
                 '',
                 Validators.required,
             ),
+            largoMaximo: this.fb.control<number | null>(null),
             sePuedeEliminar: this.fb.nonNullable.control<string>(
                 SiNoValor.SI,
                 Validators.required,
             ),
         });
+
+        this.form.get('tipoDato')?.valueChanges.subscribe((tipoDato) => {
+            this.actualizarValidacionLargoMaximo(tipoDato as TipoDatoCampo);
+        });
+    }
+
+    private actualizarValidacionLargoMaximo(tipoDato: TipoDatoCampo): void {
+        const largoMaximoControl = this.form.get('largoMaximo');
+
+        if (tipoDato === TipoDatoCampo.TEXTO) {
+            this.mostrarLargoMaximo = true;
+            largoMaximoControl?.setValidators([
+                Validators.required,
+                Validators.min(1),
+                Validators.max(4000),
+            ]);
+        } else {
+            this.mostrarLargoMaximo = false;
+            largoMaximoControl?.clearValidators();
+            largoMaximoControl?.setValue(null);
+        }
+
+        largoMaximoControl?.updateValueAndValidity();
     }
 
     private cargarDatosCampo(): void {
@@ -124,10 +142,19 @@ export class AgregarModificarCampoComponent
                 this.form.patchValue({
                     etiqueta: campo.etiqueta || '',
                     descripcion: campo.descripcion || '',
-                    fuente: campo.fuente || '',
                     tipoDato: campo.tipoDato || '',
+                    largoMaximo: campo.largoMaximo || null,
                     sePuedeEliminar: campo.sePuedeEliminar || SiNoValor.SI,
                 });
+
+                if (campo.fuente) {
+                    const nombreFuente = this.obtenerNombreFuente(campo.fuente);
+                    this.fuenteCampo = nombreFuente;
+                }
+
+                if (campo.tipoDato) {
+                    this.actualizarValidacionLargoMaximo(campo.tipoDato as TipoDatoCampo);
+                }
 
                 if (campo.reglas) {
                     this.reglas = [...campo.reglas];
@@ -263,6 +290,19 @@ export class AgregarModificarCampoComponent
             : '-';
     }
 
+    obtenerNombreFuente(fuente: TipoFuenteCampo): string {
+        switch (fuente) {
+            case TipoFuenteCampo.USUARIO:
+                return 'Usuario';
+            case TipoFuenteCampo.SICE_EDITABLE:
+                return 'SICE Editable';
+            case TipoFuenteCampo.SICE_NO_EDITABLE:
+                return 'SICE No Editable';
+            default:
+                return '';
+        }
+    }
+
     guardar(): void {
         this.form.markAllAsTouched();
 
@@ -274,8 +314,9 @@ export class AgregarModificarCampoComponent
             this.modoIngreso ? undefined : this.idCampo,
             this.form.value.etiqueta || '',
             this.form.value.descripcion || '',
-            this.form.value.fuente as TipoFuenteCampo,
+            TipoFuenteCampo.USUARIO,
             this.form.value.tipoDato as TipoDatoCampo,
+            this.form.value.largoMaximo || undefined,
             this.form.value.sePuedeEliminar as SiNoValor,
             this.reglas.map(
                 (r) =>
