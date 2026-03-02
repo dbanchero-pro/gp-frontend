@@ -264,8 +264,10 @@ export class ConsultaCamposReglasComponent
                 return 'Hora';
             case TipoDatoCampo.CORREO_ELECTRONICO:
                 return 'Correo electrónico';
-            case TipoDatoCampo.LISTA_VALORES_UNICA:
-                return 'Lista de valores (texto)';
+            case TipoDatoCampo.LISTA_UNICA_SELECCION:
+                return 'Lista única selección';
+            case TipoDatoCampo.LISTA_MULTIPLE_SELECCION:
+                return 'Lista múltiple selección';
             default:
                 return '-';
         }
