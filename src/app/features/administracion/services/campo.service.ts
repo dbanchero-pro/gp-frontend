@@ -525,10 +525,10 @@ export class CampoService {
                 nombre: 'Correo electrónico',
             },
             {
-                id: TipoDatoCampo.LISTA_VALORES_TEXTO,
+                id: TipoDatoCampo.LISTA_VALORES_UNICA,
                 nombre: 'Lista de valores (texto)',
             },
-            { id: TipoDatoCampo.LISTA_VALORES_TEXTO, nombre: 'Lista de ítems' },
+            { id: TipoDatoCampo.LISTA_VALORES_UNICA, nombre: 'Lista de ítems' },
         ];
     }
 

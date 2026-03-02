@@ -52,10 +52,6 @@ export class ConsultaCamposReglasComponent
     campos: CampoDTO[] = [];
     tiposFuente: { id: string; nombre: string }[] = [];
 
-    modoSeleccion: boolean = false;
-    idClausula: string | null = null;
-    redaccionId: string | null = null;
-
     public static readonly SNAPSHOT_KEY = 'CONSULTA_CAMPOS_REGLAS';
 
     constructor() {
@@ -70,10 +66,6 @@ export class ConsultaCamposReglasComponent
     override ngOnInit(): void {
         super.ngOnInit();
         this.tiposFuente = this.campoService.obtenerTiposFuente();
-
-        this.idClausula = this.route.snapshot.queryParamMap.get('idClausula');
-        this.redaccionId = this.route.snapshot.queryParamMap.get('idRedaccion');
-        this.modoSeleccion = !!(this.idClausula && this.redaccionId);
     }
 
     ngAfterViewInit(): void {
@@ -192,31 +184,22 @@ export class ConsultaCamposReglasComponent
     obtenerAcciones(campo: CampoDTO): AccionBoton[] {
         const acciones: AccionBoton[] = [];
 
-        if (this.modoSeleccion) {
+        if (this.campoService.puedeModificar(campo)) {
             acciones.push({
-                nombre: 'Copiar',
+                nombre: 'Modificar',
                 clase: 'btn btn-success',
-                icono: 'fa fa-copy',
-                accion: () => this.copiarCampo(campo),
+                icono: 'fa fa-edit',
+                accion: () => this.modificarCampo(campo),
             });
-        } else {
-            if (this.campoService.puedeModificar(campo)) {
-                acciones.push({
-                    nombre: 'Modificar',
-                    clase: 'btn btn-success',
-                    icono: 'fa fa-edit',
-                    accion: () => this.modificarCampo(campo),
-                });
-            }
+        }
 
-            if (this.campoService.puedeEliminar(campo)) {
-                acciones.push({
-                    nombre: 'Eliminar',
-                    clase: 'btn btn-success',
-                    icono: 'fa fa-trash',
-                    accion: () => this.eliminarCampo(campo),
-                });
-            }
+        if (this.campoService.puedeEliminar(campo)) {
+            acciones.push({
+                nombre: 'Eliminar',
+                clase: 'btn btn-success',
+                icono: 'fa fa-trash',
+                accion: () => this.eliminarCampo(campo),
+            });
         }
 
         return acciones;
@@ -236,21 +219,16 @@ export class ConsultaCamposReglasComponent
     }
 
     eliminarCampo(campo: CampoDTO): void {
-        this.actualizarServ.confirmar(
-            `¿Está seguro que desea eliminar el campo "${campo.etiqueta}"?`,
+        this.actualizarServ.confirmar(`¿Está seguro que desea eliminar el campo "${campo.etiqueta}"?`,
             () => {
                 if (campo.id) {
                     this.campoService.eliminar(campo.id, false).subscribe({
                         next: () => {
-                            this.actualizarServ.mensajeCorrecto(
-                                'Campo eliminado correctamente',
-                            );
+                            this.actualizarServ.mensajeCorrecto('Campo eliminado correctamente',);
                             this.buscar();
                         },
                         error: (err) => {
-                            this.actualizarServ.mensajeError(
-                                err.message || 'Error al eliminar el campo',
-                            );
+                            this.actualizarServ.mensajeError(err.message || 'Error al eliminar el campo',);
                             console.error('Error al eliminar campo:', err);
                         },
                     });
@@ -286,7 +264,7 @@ export class ConsultaCamposReglasComponent
                 return 'Hora';
             case TipoDatoCampo.CORREO_ELECTRONICO:
                 return 'Correo electrónico';
-            case TipoDatoCampo.LISTA_VALORES_TEXTO:
+            case TipoDatoCampo.LISTA_VALORES_UNICA:
                 return 'Lista de valores (texto)';
             default:
                 return '-';
@@ -314,45 +292,4 @@ export class ConsultaCamposReglasComponent
         return !!(campo.reglas && campo.reglas.length > 0);
     }
 
-    copiarCampo(campo: CampoDTO): void {
-        if (this.idClausula || this.redaccionId) {
-            navigator.clipboard.writeText('[[' + campo.etiqueta + ']]');
-
-            const ruta = this.redaccionId
-                ? [
-                      '/administracion/clausulas/agregar/redaccion/modificar',
-                      this.redaccionId,
-                  ]
-                : [
-                      '/administracion/clausulas/modificar',
-                      this.idClausula,
-                      'redaccion/modificar',
-                      this.redaccionId,
-                  ];
-
-            this.router.navigate(ruta, {
-                queryParams: {
-                    etiquetaCopiada: campo.etiqueta,
-                },
-            });
-        }
-    }
-
-    volverAAdministrarClausula(): void {
-        if (this.idClausula || this.redaccionId) {
-            const ruta = this.redaccionId
-                ? [
-                      '/administracion/clausulas/agregar/redaccion/modificar',
-                      this.redaccionId,
-                  ]
-                : [
-                      '/administracion/clausulas/modificar',
-                      this.idClausula,
-                      'redaccion/modificar',
-                      this.redaccionId,
-                  ];
-
-            this.router.navigate(ruta);
-        }
-    }
 }

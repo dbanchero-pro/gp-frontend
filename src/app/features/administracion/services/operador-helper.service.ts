@@ -28,7 +28,7 @@ export class OperadorHelperService {
 
             case TipoDatoCampo.TEXTO:
             case TipoDatoCampo.CORREO_ELECTRONICO:
-            case TipoDatoCampo.LISTA_VALORES_TEXTO:
+            case TipoDatoCampo.LISTA_VALORES_UNICA:
             case TipoDatoCampo.HORA:
                 return [
                     { id: OperadorRegla.IGUAL, nombre: 'Igual' },

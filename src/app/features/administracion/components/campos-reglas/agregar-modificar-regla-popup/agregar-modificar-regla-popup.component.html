@@ -5,331 +5,119 @@
     <h1 class="modal-title mb-0" id="tituloPopup">{{ titulo }}</h1>
     <div class="d-flex align-items-center">
         <small class="text-muted mr-3">Los campos con * son obligatorios</small>
-        <button
-            type="button"
-            aria-label="Cerrar"
-            class="close"
-            (click)="cancelar()"
-        >
-            &times;
-        </button>
+        <button type="button" aria-label="Cerrar" class="close" (click)="cancelar()"> &times;</button>
     </div>
 </div>
 
 <div class="modal-body">
     <div>
-        <app-mensaje
-            [messages]="resultMsg"
-            [showMsg]="showMsg"
-            [typeMsg]="typeMsg"
-        ></app-mensaje>
+        <app-mensaje [messages]="resultMsg" [showMsg]="showMsg" [typeMsg]="typeMsg"></app-mensaje>
     </div>
 
     <form [formGroup]="form" (submit)="guardar()">
         <div class="form-row">
-            <div
-                class="form-group col-md-6"
-                [class.field-error]="
-                    form.get('codigo')?.invalid && form.get('codigo')?.touched
-                "
-            >
+            <div class="form-group col-md-6" [class.field-error]="form.get('codigo')?.invalid && form.get('codigo')?.touched">
                 <label for="codigo">* Código</label>
-                <input
-                    id="codigo"
-                    type="text"
-                    class="form-control"
-                    formControlName="codigo"
-                />
-                <span
-                    class="texto-error m-0 position-absolute"
-                    *ngIf="
-                        form.get('codigo')?.hasError('required') &&
-                        form.get('codigo')?.touched
-                    "
-                >
+                <input id="codigo" type="text" class="form-control" formControlName="codigo"/>
+                <span class="texto-error m-0 position-absolute" *ngIf="form.get('codigo')?.hasError('required') && form.get('codigo')?.touched">
                     El código no puede estar vacío
                 </span>
             </div>
 
-            <div
-                class="form-group col-md-6"
-                [class.field-error]="
-                    form.get('nombre')?.invalid && form.get('nombre')?.touched
-                "
-            >
+            <div class="form-group col-md-6" [class.field-error]=" form.get('nombre')?.invalid && form.get('nombre')?.touched">
                 <label for="nombre">* Nombre</label>
-                <input
-                    id="nombre"
-                    type="text"
-                    class="form-control"
-                    formControlName="nombre"
-                />
-                <span
-                    class="texto-error m-0 position-absolute"
-                    *ngIf="
-                        form.get('nombre')?.hasError('required') &&
-                        form.get('nombre')?.touched
-                    "
-                >
+                <input id="nombre" type="text" class="form-control" formControlName="nombre"/>
+                <span class="texto-error m-0 position-absolute" *ngIf="form.get('nombre')?.hasError('required') && form.get('nombre')?.touched">
                     El nombre no puede estar vacío
                 </span>
             </div>
         </div>
 
         <div class="form-row">
-            <div
-                class="form-group col-md-6"
-                [class.field-error]="
-                    form.get('tipoRegla')?.invalid &&
-                    form.get('tipoRegla')?.touched
-                "
-            >
+            <div class="form-group col-md-6" [class.field-error]="form.get('tipoRegla')?.invalid && form.get('tipoRegla')?.touched">
                 <label for="tipoRegla">* Tipo regla</label>
-                <select
-                    id="tipoRegla"
-                    class="form-control"
-                    formControlName="tipoRegla"
-                >
+                <select id="tipoRegla" class="form-control" formControlName="tipoRegla">
                     <option value="">Seleccione un tipo de regla</option>
-                    <option *ngFor="let tipo of tiposRegla" [value]="tipo.id">
-                        {{ tipo.nombre }}
-                    </option>
+                    <option *ngFor="let tipo of tiposRegla" [value]="tipo.id"> {{ tipo.nombre }}</option>
                 </select>
-                <span
-                    class="texto-error m-0 position-absolute"
-                    *ngIf="
-                        form.get('tipoRegla')?.hasError('required') &&
-                        form.get('tipoRegla')?.touched
-                    "
-                >
+                <span class="texto-error m-0 position-absolute" *ngIf="form.get('tipoRegla')?.hasError('required') && form.get('tipoRegla')?.touched">
                     El tipo de regla no puede estar vacío
                 </span>
             </div>
 
-            <div
-                class="form-group col-md-6"
-                [class.field-error]="
-                    form.get('operador')?.invalid &&
-                    form.get('operador')?.touched
-                "
-            >
+            <div class="form-group col-md-6" [class.field-error]=" form.get('operador')?.invalid && form.get('operador')?.touched">
                 <label for="operador">* Operador</label>
-                <select
-                    id="operador"
-                    class="form-control"
-                    formControlName="operador"
-                >
+                <select id="operador" class="form-control" formControlName="operador">
                     <option value="">Seleccione un operador</option>
-                    <option *ngFor="let op of operadores" [value]="op.id">
-                        {{ op.nombre }}
-                    </option>
+                    <option *ngFor="let op of operadores" [value]="op.id"> {{ op.nombre }} </option>
                 </select>
-                <span
-                    class="texto-error m-0 position-absolute"
-                    *ngIf="
-                        form.get('operador')?.hasError('required') &&
-                        form.get('operador')?.touched
-                    "
-                >
+                <span class="texto-error m-0 position-absolute" *ngIf="form.get('operador')?.hasError('required') && form.get('operador')?.touched">
                     El operador no puede estar vacío
                 </span>
             </div>
         </div>
 
         <div class="form-row" *ngIf="esTipoValor()">
-            <div
-                class="form-group col-12"
-                *ngIf="esOperadorSimple()"
-                [class.field-error]="
-                    form.get('valor')?.invalid && form.get('valor')?.touched
-                "
-            >
+            <div class="form-group col-12" *ngIf="esOperadorSimple()" [class.field-error]="form.get('valor')?.invalid && form.get('valor')?.touched">
                 <label for="valor">* Valor</label>
-                <input
-                    id="valor"
-                    [type]="
-                        tipoDatoCampo === TipoDatoCampo.NUMERO
-                            ? 'number'
-                            : 'text'
-                    "
-                    class="form-control"
-                    formControlName="valor"
-                />
-                <span
-                    class="texto-error m-0 position-absolute"
-                    *ngIf="
-                        form.get('valor')?.hasError('required') &&
-                        form.get('valor')?.touched
-                    "
-                >
+                <input id="valor" [type]=" tipoDatoCampo === TipoDatoCampo.NUMERO? 'number': 'text'" class="form-control" formControlName="valor"/>
+                <span class="texto-error m-0 position-absolute" *ngIf="form.get('valor')?.hasError('required') && form.get('valor')?.touched">
                     El valor no puede estar vacío
                 </span>
             </div>
 
-            <div
-                class="form-group col-md-6"
-                *ngIf="esOperadorRango()"
-                [class.field-error]="
-                    form.get('valorRangoInicio')?.invalid &&
-                    form.get('valorRangoInicio')?.touched
-                "
-            >
+            <div class="form-group col-md-6" *ngIf="esOperadorRango()" [class.field-error]="form.get('valorRangoInicio')?.invalid && form.get('valorRangoInicio')?.touched">
                 <label for="valorRangoInicio">* Valor inicio rango</label>
-                <input
-                    id="valorRangoInicio"
-                    [type]="
-                        tipoDatoCampo === TipoDatoCampo.NUMERO
-                            ? 'number'
-                            : 'text'
-                    "
-                    class="form-control"
-                    formControlName="valorRangoInicio"
-                />
-                <span
-                    class="texto-error m-0 position-absolute"
-                    *ngIf="
-                        form.get('valorRangoInicio')?.hasError('required') &&
-                        form.get('valorRangoInicio')?.touched
-                    "
-                >
+                <input id="valorRangoInicio" [type]="tipoDatoCampo === TipoDatoCampo.NUMERO? 'number': 'text'" class="form-control"formControlName="valorRangoInicio"/>
+                <span class="texto-error m-0 position-absolute" *ngIf="form.get('valorRangoInicio')?.hasError('required') && form.get('valorRangoInicio')?.touched">
                     El valor de inicio no puede estar vacío
                 </span>
             </div>
 
-            <div
-                class="form-group col-md-6"
-                *ngIf="esOperadorRango()"
-                [class.field-error]="
-                    form.get('valorRangoFin')?.invalid &&
-                    form.get('valorRangoFin')?.touched
-                "
-            >
+            <div class="form-group col-md-6" *ngIf="esOperadorRango()" [class.field-error]="form.get('valorRangoFin')?.invalid && form.get('valorRangoFin')?.touched">
                 <label for="valorRangoFin">* Valor fin rango</label>
-                <input
-                    id="valorRangoFin"
-                    [type]="
-                        tipoDatoCampo === TipoDatoCampo.NUMERO
-                            ? 'number'
-                            : 'text'
-                    "
-                    class="form-control"
-                    formControlName="valorRangoFin"
-                />
-                <span
-                    class="texto-error m-0 position-absolute"
-                    *ngIf="
-                        form.get('valorRangoFin')?.hasError('required') &&
-                        form.get('valorRangoFin')?.touched
-                    "
-                >
+                <input id="valorRangoFin" [type]="tipoDatoCampo === TipoDatoCampo.NUMERO? 'number': 'text'" class="form-control" formControlName="valorRangoFin"/>
+                <span class="texto-error m-0 position-absolute" *ngIf="form.get('valorRangoFin')?.hasError('required') && form.get('valorRangoFin')?.touched">
                     El valor de fin no puede estar vacío
                 </span>
             </div>
 
-            <div
-                class="form-group col-12"
-                *ngIf="esOperadorLista()"
-                [class.field-error]="
-                    form.get('valorLista')?.invalid &&
-                    form.get('valorLista')?.touched
-                "
-            >
+            <div class="form-group col-12" *ngIf="esOperadorLista()" [class.field-error]="form.get('valorLista')?.invalid && form.get('valorLista')?.touched">
                 <label for="valorLista">* Lista de valores</label>
-                <input
-                    id="valorLista"
-                    type="text"
-                    class="form-control"
-                    formControlName="valorLista"
-                    placeholder="Ingrese valores separados por punto y coma (;)"
-                />
-                <small class="form-text text-muted">
-                    Separe los valores con punto y coma (;). Ejemplo:
-                    valor1;valor2;valor3
-                </small>
-                <span
-                    class="texto-error m-0 position-absolute"
-                    *ngIf="
-                        form.get('valorLista')?.hasError('required') &&
-                        form.get('valorLista')?.touched
-                    "
-                >
+                <input id="valorLista" type="text" class="form-control" formControlName="valorLista" placeholder="Ingrese valores separados por punto y coma (;)"/>
+                <small class="form-text text-muted"> Separe los valores con punto y coma (;). Ejemplo:valor1;valor2;valor3</small>
+                <span class="texto-error m-0 position-absolute" *ngIf="form.get('valorLista')?.hasError('required') && form.get('valorLista')?.touched">
                     La lista de valores no puede estar vacía
                 </span>
             </div>
         </div>
 
         <div class="form-row" *ngIf="esTipoCampo()">
-            <div
-                class="form-group col-12"
-                [class.field-error]="
-                    form.get('idCampoComparar')?.invalid &&
-                    form.get('idCampoComparar')?.touched
-                "
-            >
+            <div class="form-group col-12" [class.field-error]="form.get('idCampoComparar')?.invalid && form.get('idCampoComparar')?.touched">
                 <label for="idCampoComparar">* Campo a comparar</label>
-                <select
-                    id="idCampoComparar"
-                    class="form-control"
-                    formControlName="idCampoComparar"
-                >
+                <select id="idCampoComparar" class="form-control" formControlName="idCampoComparar">
                     <option value="">Seleccione un campo</option>
-                    <option
-                        *ngFor="let campo of camposDisponibles"
-                        [value]="campo.id"
-                    >
-                        {{ campo.etiqueta }}
-                    </option>
+                    <option *ngFor="let campo of camposDisponibles" [value]="campo.id"> {{ campo.etiqueta }}</option>
                 </select>
-                <span
-                    class="texto-error m-0 position-absolute"
-                    *ngIf="
-                        form.get('idCampoComparar')?.hasError('required') &&
-                        form.get('idCampoComparar')?.touched
-                    "
-                >
+                <span class="texto-error m-0 position-absolute" *ngIf="form.get('idCampoComparar')?.hasError('required') && form.get('idCampoComparar')?.touched">
                     Debe seleccionar un campo
                 </span>
             </div>
         </div>
 
         <div class="form-row">
-            <div
-                class="form-group col-12"
-                [class.field-error]="
-                    form.get('mensajeError')?.invalid &&
-                    form.get('mensajeError')?.touched
-                "
-            >
+            <div class="form-group col-12" [class.field-error]="form.get('mensajeError')?.invalid && form.get('mensajeError')?.touched">
                 <label for="mensajeError">* Mensaje de error</label>
-                <textarea
-                    id="mensajeError"
-                    class="form-control"
-                    formControlName="mensajeError"
-                    rows="3"
-                ></textarea>
-                <span
-                    class="texto-error m-0 position-absolute"
-                    *ngIf="
-                        form.get('mensajeError')?.hasError('required') &&
-                        form.get('mensajeError')?.touched
-                    "
-                >
+                <textarea id="mensajeError" class="form-control" formControlName="mensajeError" rows="3"></textarea>
+                <span class="texto-error m-0 position-absolute" *ngIf="form.get('mensajeError')?.hasError('required') && form.get('mensajeError')?.touched">
                     El mensaje de error no puede estar vacío
                 </span>
             </div>
         </div>
 
         <div class="d-flex justify-content-end mt-3 pe-3">
-            <button class="btn btn-primary" type="submit" (click)="guardar()">
-                Aceptar
-            </button>
-            <button
-                class="btn btn-link ml-3"
-                type="button"
-                (click)="cancelar()"
-            >
-                Cancelar
-            </button>
+            <button class="btn btn-primary" type="submit" (click)="guardar()"> Aceptar </button>
+            <button class="btn btn-link ml-3" type="button" (click)="cancelar()"> Cancelar</button>
         </div>
     </form>
 </div>
