@@ -89,7 +89,7 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h5 class="card-title mb-0">Valores permitidos</h5>
-                                    <button class="btn btn-primary" type="button" (click)="abrirAgregarValor()">
+                                    <button class="btn btn-primary" type="button" (click)="abrirAgregarValor()" [disabled]="esCampoProtegido">
                                         <em class="fa fa-plus mr-1"></em>Agregar valor
                                     </button>
                                 </div>
@@ -100,13 +100,13 @@
                                     <table class="table table-hover mb-0 align-middle" aria-label="Tabla de valores permitidos del campo">
                                         <thead class="table-light sticky-top">
                                             <tr>
-                                                <th style="width: 100px"> Acciones </th>
+                                                <th style="width: 100px" *ngIf="!esCampoProtegido"> Acciones </th>
                                                 <th>Valor</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let valor of valoresPermitidos; let i = index">
-                                                <td class="text-center align-middle">
+                                                <td class="text-center align-middle" *ngIf="!esCampoProtegido">
                                                     <button *ngFor="let accion of obtenerAccionesValor(i)"
                                                         type="button" [class]="accion.clase" [attr.aria-label]="accion.ariaLabel"
                                                         (click)="accion.accion && accion.accion()">

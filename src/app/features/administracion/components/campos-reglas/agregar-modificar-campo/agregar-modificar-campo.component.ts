@@ -43,6 +43,7 @@ export class AgregarModificarCampoComponent
     idCampo!: number;
     modoIngreso = false;
     titulo = 'Agregar campo';
+    esCampoProtegido = false;
 
     override form!: FormGroup<{
         etiqueta: FormControl<string>;
@@ -152,6 +153,8 @@ export class AgregarModificarCampoComponent
                     return;
                 }
 
+                this.esCampoProtegido = campo.sePuedeEliminar === SiNoValor.NO;
+
                 this.form.patchValue({
                     etiqueta: campo.etiqueta || '',
                     descripcion: campo.descripcion || '',
@@ -183,6 +186,11 @@ export class AgregarModificarCampoComponent
                         ...this.reglas.map((r) => r.id || 0),
                     );
                     this.siguienteIdRegla = maxId + 1;
+                }
+
+                if (this.esCampoProtegido) {
+                    this.form.get('etiqueta')?.disable();
+                    this.form.get('tipoDato')?.disable();
                 }
 
                 setTimeout(() => {
@@ -337,15 +345,17 @@ export class AgregarModificarCampoComponent
             return;
         }
 
+        const formRawValue = this.form.getRawValue();
+
         const campo = new CampoDTO(
             this.modoIngreso ? undefined : this.idCampo,
-            this.form.value.etiqueta || '',
-            this.form.value.descripcion || '',
+            formRawValue.etiqueta || '',
+            formRawValue.descripcion || '',
             TipoFuenteCampo.USUARIO,
-            this.form.value.tipoDato as TipoDatoCampo,
-            this.form.value.largoMaximo || undefined,
+            formRawValue.tipoDato as TipoDatoCampo,
+            formRawValue.largoMaximo || undefined,
             this.mostrarValoresPermitidos ? this.valoresPermitidos : undefined,
-            this.form.value.sePuedeEliminar as SiNoValor,
+            formRawValue.sePuedeEliminar as SiNoValor,
             'Global',
             this.reglas.map(
                 (r) =>

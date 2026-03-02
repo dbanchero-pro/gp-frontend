@@ -184,14 +184,12 @@ export class ConsultaCamposReglasComponent
     obtenerAcciones(campo: CampoDTO): AccionBoton[] {
         const acciones: AccionBoton[] = [];
 
-        if (this.campoService.puedeModificar(campo)) {
-            acciones.push({
-                nombre: 'Modificar',
-                clase: 'btn btn-success',
-                icono: 'fa fa-edit',
-                accion: () => this.modificarCampo(campo),
-            });
-        }
+        acciones.push({
+            nombre: 'Modificar',
+            clase: 'btn btn-success',
+            icono: 'fa fa-edit',
+            accion: () => this.modificarCampo(campo),
+        });
 
         if (this.campoService.puedeEliminar(campo)) {
             acciones.push({
