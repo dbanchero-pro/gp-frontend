@@ -264,11 +264,17 @@ export class ConsultaCamposReglasComponent
                 return 'Hora';
             case TipoDatoCampo.CORREO_ELECTRONICO:
                 return 'Correo electrónico';
-            case TipoDatoCampo.LISTA_VALORES_UNICA:
-                return 'Lista de valores (texto)';
+            case TipoDatoCampo.LISTA_UNICA_SELECCION:
+                return 'Lista única selección';
+            case TipoDatoCampo.LISTA_MULTIPLE_SELECCION:
+                return 'Lista múltiple selección';
             default:
                 return '-';
         }
+    }
+
+    obtenerEtiquetaCampoProtegido(sePuedeEliminar: any): string {
+        return sePuedeEliminar === 'SI' ? 'Sí' : 'No';
     }
 
     obtenerEtiquetaTipoRegla(tipoRegla: TipoRegla | undefined): string {
@@ -290,6 +296,10 @@ export class ConsultaCamposReglasComponent
 
     tieneReglas(campo: CampoDTO): boolean {
         return !!(campo.reglas && campo.reglas.length > 0);
+    }
+
+    tieneValoresPermitidos(campo: CampoDTO): boolean {
+        return !!(campo.valoresPermitidos && campo.valoresPermitidos.length > 0);
     }
 
 }

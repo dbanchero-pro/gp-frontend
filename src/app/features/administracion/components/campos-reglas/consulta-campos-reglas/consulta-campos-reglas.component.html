@@ -83,11 +83,47 @@
                         </div>
                         <div class="row g-0 py-1 px-3">
                             <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta"> Fuente </div>
-                            <div class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold"> {{ obtenerEtiquetaFuente(campo.fuente) }} </div>
+                            <div class="col-12 col-sm-2 col-md-2 col-lg-2 font-weight-bold"> {{ obtenerEtiquetaFuente(campo.fuente) }} </div>
+                            <div class="col-12 col-sm-3 col-md-2 col-lg-2 fw-semibold etiqueta"> Campo protegido </div>
+                            <div class="col-12 col-sm-3 col-md-2 col-lg-2 font-weight-bold"> {{ obtenerEtiquetaCampoProtegido(campo.sePuedeEliminar) }} </div>
+                            <div class="col-6 col-sm-6 col-md-2 col-lg-2 fw-semibold etiqueta"> Alcance </div>
+                            <div class="col-6 col-sm-6 col-md-1 col-lg-2 font-weight-bold"> {{ campo.alcance || 'Global' }} </div>
                         </div>
                         <div class="row g-0 py-1 px-3">
                             <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta"> Tipo de dato </div>
                             <div class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold"> {{ obtenerEtiquetaTipoDato(campo.tipoDato) }} </div>
+                        </div>
+                        <div *ngIf="campo.largoMaximo" class="row g-0 py-1 px-3">
+                            <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta"> Largo máximo </div>
+                            <div class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold"> {{ campo.largoMaximo }} </div>
+                        </div>
+
+                        <div *ngIf="tieneValoresPermitidos(campo)" class="row g-0 py-2">
+                            <div class="col-12">
+                                <app-grupo-colapsable [colapsado]="true" class="w-100" classContenido="p-0" [ariaLabel]="
+                                        'Mostrar u ocultar valores permitidos del campo ' +
+                                        campo.etiqueta">
+                                    <titulo>Valores permitidos ({{ campo.valoresPermitidos?.length || 0 }})</titulo>
+                                    <contenido>
+                                        <div class="table-responsive w-100">
+                                            <table class="table table-sm table-bordered mb-0">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Valor</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let valor of campo.valoresPermitidos; let idx = index">
+                                                        <td>{{ idx + 1 }}</td>
+                                                        <td>{{ valor }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </contenido>
+                                </app-grupo-colapsable>
+                            </div>
                         </div>
 
                         <div *ngIf="tieneReglas(campo)" class="row g-0 py-2">

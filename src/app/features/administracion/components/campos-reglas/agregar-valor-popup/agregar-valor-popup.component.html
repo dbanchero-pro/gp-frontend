@@ -1,0 +1,47 @@
+<div class="modal-header">
+    <h5 class="modal-title">{{ titulo }}</h5>
+    <button type="button" class="close" aria-label="Cerrar" (click)="cancelar()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <form [formGroup]="form">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="valor" class="form-label required">
+                        Valor
+                        <span class="text-danger">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="valor"
+                        class="form-control"
+                        formControlName="valor"
+                        placeholder="Ingrese el valor permitido"
+                        maxlength="200"
+                    />
+                    <span
+                        *ngIf="
+                            form.get('valor')?.invalid &&
+                            (form.get('valor')?.dirty || form.get('valor')?.touched)
+                        "
+                        class="text-danger small"
+                    >
+                        <span *ngIf="form.get('valor')?.hasError('required')">
+                            El valor es obligatorio
+                        </span>
+                        <span *ngIf="form.get('valor')?.hasError('maxlength')">
+                            El valor no puede exceder 200 caracteres
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end mt-3 pe-3">
+            <button class="btn btn-primary" type="submit" (click)="guardar()"> Aceptar </button>
+            <button class="btn btn-link ml-3" type="button" (click)="cancelar()"> Cancelar</button>
+        </div>
+    </form>
+</div>

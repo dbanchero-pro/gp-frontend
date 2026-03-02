@@ -20,6 +20,7 @@ import { IReglaDTO, ReglaDTO } from '../../../models/regla.model';
 import { CampoService } from '../../../services/campo.service';
 import { OperadorHelperService } from '../../../services/operador-helper.service';
 import { AgregarModificarReglaPopupComponent } from '../agregar-modificar-regla-popup/agregar-modificar-regla-popup.component';
+import { AgregarValorPopupComponent } from '../agregar-valor-popup/agregar-valor-popup.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
@@ -46,20 +47,20 @@ export class AgregarModificarCampoComponent
     override form!: FormGroup<{
         etiqueta: FormControl<string>;
         descripcion: FormControl<string>;
-        fuente: FormControl<string>;
         tipoDato: FormControl<string>;
+        largoMaximo: FormControl<number | null>;
         sePuedeEliminar: FormControl<string>;
     }>;
 
-    tiposFuente: { id: string; nombre: string }[] = [];
+    fuenteCampo = 'Usuario';
+    campoProtegido = 'Sí';
     tiposDato: { id: string; nombre: string }[] = [];
-    opcionesSiNo: { id: string; nombre: string }[] = [
-        { id: SiNoValor.SI, nombre: 'Sí' },
-        { id: SiNoValor.NO, nombre: 'No' },
-    ];
 
     reglas: IReglaDTO[] = [];
     siguienteIdRegla = 1;
+    mostrarLargoMaximo = false;
+    mostrarValoresPermitidos = false;
+    valoresPermitidos: string[] = [];
 
     constructor() {
         super();
@@ -70,9 +71,6 @@ export class AgregarModificarCampoComponent
     }
 
     ngOnInit(): void {
-        this.tiposFuente = this.campoService
-            .obtenerTiposFuente()
-            .filter((t) => t.id !== '');
         this.tiposDato = this.campoService.obtenerTiposDato();
 
         if (!this.modoIngreso) {
@@ -93,19 +91,52 @@ export class AgregarModificarCampoComponent
                 '',
                 Validators.required,
             ),
-            fuente: this.fb.nonNullable.control<string>(
-                '',
-                Validators.required,
-            ),
             tipoDato: this.fb.nonNullable.control<string>(
                 '',
                 Validators.required,
             ),
+            largoMaximo: this.fb.control<number | null>(null),
             sePuedeEliminar: this.fb.nonNullable.control<string>(
                 SiNoValor.SI,
                 Validators.required,
             ),
         });
+
+        this.form.get('tipoDato')?.valueChanges.subscribe((tipoDato) => {
+            this.actualizarValidacionLargoMaximo(tipoDato as TipoDatoCampo);
+            this.actualizarVisibilidadValoresPermitidos(tipoDato as TipoDatoCampo);
+        });
+    }
+
+    private actualizarValidacionLargoMaximo(tipoDato: TipoDatoCampo): void {
+        const largoMaximoControl = this.form.get('largoMaximo');
+
+        if (tipoDato === TipoDatoCampo.TEXTO) {
+            this.mostrarLargoMaximo = true;
+            largoMaximoControl?.setValidators([
+                Validators.required,
+                Validators.min(1),
+                Validators.max(4000),
+            ]);
+        } else {
+            this.mostrarLargoMaximo = false;
+            largoMaximoControl?.clearValidators();
+            largoMaximoControl?.setValue(null);
+        }
+
+        largoMaximoControl?.updateValueAndValidity();
+    }
+
+    private actualizarVisibilidadValoresPermitidos(tipoDato: TipoDatoCampo): void {
+        if (
+            tipoDato === TipoDatoCampo.LISTA_UNICA_SELECCION ||
+            tipoDato === TipoDatoCampo.LISTA_MULTIPLE_SELECCION
+        ) {
+            this.mostrarValoresPermitidos = true;
+        } else {
+            this.mostrarValoresPermitidos = false;
+            this.valoresPermitidos = [];
+        }
     }
 
     private cargarDatosCampo(): void {
@@ -124,10 +155,26 @@ export class AgregarModificarCampoComponent
                 this.form.patchValue({
                     etiqueta: campo.etiqueta || '',
                     descripcion: campo.descripcion || '',
-                    fuente: campo.fuente || '',
                     tipoDato: campo.tipoDato || '',
+                    largoMaximo: campo.largoMaximo || null,
                     sePuedeEliminar: campo.sePuedeEliminar || SiNoValor.SI,
                 });
+
+                if (campo.fuente) {
+                    const nombreFuente = this.obtenerNombreFuente(campo.fuente);
+                    this.fuenteCampo = nombreFuente;
+                }
+
+                this.campoProtegido = campo.sePuedeEliminar === SiNoValor.SI ? 'Sí' : 'No';
+
+                if (campo.tipoDato) {
+                    this.actualizarValidacionLargoMaximo(campo.tipoDato as TipoDatoCampo);
+                    this.actualizarVisibilidadValoresPermitidos(campo.tipoDato as TipoDatoCampo);
+                }
+
+                if (campo.valoresPermitidos) {
+                    this.valoresPermitidos = [...campo.valoresPermitidos];
+                }
 
                 if (campo.reglas) {
                     this.reglas = [...campo.reglas];
@@ -263,6 +310,19 @@ export class AgregarModificarCampoComponent
             : '-';
     }
 
+    obtenerNombreFuente(fuente: TipoFuenteCampo): string {
+        switch (fuente) {
+            case TipoFuenteCampo.USUARIO:
+                return 'Usuario';
+            case TipoFuenteCampo.SICE_EDITABLE:
+                return 'SICE Editable';
+            case TipoFuenteCampo.SICE_NO_EDITABLE:
+                return 'SICE No Editable';
+            default:
+                return '';
+        }
+    }
+
     guardar(): void {
         this.form.markAllAsTouched();
 
@@ -270,13 +330,23 @@ export class AgregarModificarCampoComponent
             return;
         }
 
+        if (this.mostrarValoresPermitidos && this.valoresPermitidos.length === 0) {
+            this.actualizarService.mensajeError(
+                'Debe agregar al menos un valor permitido para las listas de selección',
+            );
+            return;
+        }
+
         const campo = new CampoDTO(
             this.modoIngreso ? undefined : this.idCampo,
             this.form.value.etiqueta || '',
             this.form.value.descripcion || '',
-            this.form.value.fuente as TipoFuenteCampo,
+            TipoFuenteCampo.USUARIO,
             this.form.value.tipoDato as TipoDatoCampo,
+            this.form.value.largoMaximo || undefined,
+            this.mostrarValoresPermitidos ? this.valoresPermitidos : undefined,
             this.form.value.sePuedeEliminar as SiNoValor,
+            'Global',
             this.reglas.map(
                 (r) =>
                     new ReglaDTO(
@@ -331,6 +401,40 @@ export class AgregarModificarCampoComponent
         this.router.navigate(['/administracion/campos-reglas'], {
             queryParams: { volver: 1 },
         });
+    }
+
+    abrirAgregarValor(): void {
+        const popup = this.abrirPopup(AgregarValorPopupComponent, 'Guardar', {
+            backdrop: 'static',
+            keyboard: false,
+            initialState: {
+                valoresExistentes: this.valoresPermitidos,
+            },
+        });
+
+        if (popup.valorGuardado) {
+            popup.valorGuardado.subscribe((valor: string) => {
+                this.valoresPermitidos.push(valor);
+                this.form.markAsDirty();
+            });
+        }
+    }
+
+    eliminarValor(index: number): void {
+        this.valoresPermitidos.splice(index, 1);
+        this.form.markAsDirty();
+    }
+
+    obtenerAccionesValor(index: number): AccionBoton[] {
+        return [
+            {
+                nombre: 'Eliminar',
+                icono: 'fa fa-trash',
+                clase: 'btn btn-sm',
+                ariaLabel: 'Eliminar valor',
+                accion: () => this.eliminarValor(index),
+            },
+        ];
     }
 
     canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {

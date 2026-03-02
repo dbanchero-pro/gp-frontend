@@ -9,7 +9,10 @@ export interface ICampoDTO {
     descripcion?: string;
     fuente?: TipoFuenteCampo;
     tipoDato?: TipoDatoCampo;
+    largoMaximo?: number;
+    valoresPermitidos?: string[];
     sePuedeEliminar?: SiNoValor;
+    alcance?: string;
     reglas?: IReglaDTO[];
     fechaCreacion?: Date;
     fechaModificacion?: Date;
@@ -23,7 +26,10 @@ export class CampoDTO implements ICampoDTO {
         public descripcion?: string,
         public fuente?: TipoFuenteCampo,
         public tipoDato?: TipoDatoCampo,
+        public largoMaximo?: number,
+        public valoresPermitidos?: string[],
         public sePuedeEliminar?: SiNoValor,
+        public alcance?: string,
         public reglas?: IReglaDTO[],
         public fechaCreacion?: Date,
         public fechaModificacion?: Date,
