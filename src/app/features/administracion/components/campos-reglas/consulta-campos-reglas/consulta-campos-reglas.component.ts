@@ -273,6 +273,10 @@ export class ConsultaCamposReglasComponent
         }
     }
 
+    obtenerEtiquetaCampoProtegido(sePuedeEliminar: any): string {
+        return sePuedeEliminar === 'SI' ? 'Sí' : 'No';
+    }
+
     obtenerEtiquetaTipoRegla(tipoRegla: TipoRegla | undefined): string {
         switch (tipoRegla) {
             case TipoRegla.VALOR:

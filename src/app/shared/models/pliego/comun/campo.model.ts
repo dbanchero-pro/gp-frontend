@@ -12,6 +12,7 @@ export interface ICampoDTO {
     largoMaximo?: number;
     valoresPermitidos?: string[];
     sePuedeEliminar?: SiNoValor;
+    alcance?: string;
     reglas?: IReglaDTO[];
     fechaCreacion?: Date;
     fechaModificacion?: Date;
@@ -28,6 +29,7 @@ export class CampoDTO implements ICampoDTO {
         public largoMaximo?: number,
         public valoresPermitidos?: string[],
         public sePuedeEliminar?: SiNoValor,
+        public alcance?: string,
         public reglas?: IReglaDTO[],
         public fechaCreacion?: Date,
         public fechaModificacion?: Date,

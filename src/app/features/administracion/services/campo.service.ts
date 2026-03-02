@@ -29,6 +29,7 @@ export class CampoService {
                 fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
                 tipoDato: TipoDatoCampo.TEXTO,
                 sePuedeEliminar: SiNoValor.NO,
+                alcance: 'Global',
                 reglas: [
                     {
                         id: 1,
@@ -52,6 +53,7 @@ export class CampoService {
                 fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
                 tipoDato: TipoDatoCampo.TEXTO,
                 sePuedeEliminar: SiNoValor.NO,
+                alcance: 'Global',
                 reglas: [],
                 fechaCreacion: new Date('2024-01-01'),
                 fechaModificacion: new Date('2024-01-01'),
@@ -65,6 +67,7 @@ export class CampoService {
                 fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
                 tipoDato: TipoDatoCampo.TEXTO,
                 sePuedeEliminar: SiNoValor.NO,
+                alcance: 'Global',
                 reglas: [],
                 fechaCreacion: new Date('2024-01-01'),
                 fechaModificacion: new Date('2024-01-01'),
@@ -78,6 +81,7 @@ export class CampoService {
                 fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
                 tipoDato: TipoDatoCampo.NUMERO,
                 sePuedeEliminar: SiNoValor.NO,
+                alcance: 'Global',
                 reglas: [],
                 fechaCreacion: new Date('2024-01-01'),
                 fechaModificacion: new Date('2024-01-01'),
@@ -91,6 +95,7 @@ export class CampoService {
                 fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
                 tipoDato: TipoDatoCampo.NUMERO,
                 sePuedeEliminar: SiNoValor.NO,
+                alcance: 'Global',
                 reglas: [],
                 fechaCreacion: new Date('2024-01-01'),
                 fechaModificacion: new Date('2024-01-01'),
@@ -104,6 +109,7 @@ export class CampoService {
                 fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
                 tipoDato: TipoDatoCampo.TEXTO,
                 sePuedeEliminar: SiNoValor.NO,
+                alcance: 'Global',
                 reglas: [],
                 fechaCreacion: new Date('2024-01-01'),
                 fechaModificacion: new Date('2024-01-01'),
@@ -117,6 +123,7 @@ export class CampoService {
                 fuente: TipoFuenteCampo.SICE_EDITABLE,
                 tipoDato: TipoDatoCampo.NUMERO,
                 sePuedeEliminar: SiNoValor.NO,
+                alcance: 'Global',
                 reglas: [
                     {
                         id: 2,
@@ -150,6 +157,7 @@ export class CampoService {
                 fuente: TipoFuenteCampo.SICE_EDITABLE,
                 tipoDato: TipoDatoCampo.CORREO_ELECTRONICO,
                 sePuedeEliminar: SiNoValor.NO,
+                alcance: 'Global',
                 reglas: [
                     {
                         id: 4,
@@ -172,6 +180,7 @@ export class CampoService {
                 fuente: TipoFuenteCampo.USUARIO,
                 tipoDato: TipoDatoCampo.TEXTO,
                 sePuedeEliminar: SiNoValor.NO,
+                alcance: 'Global',
                 reglas: [],
                 fechaCreacion: new Date('2024-01-01'),
                 fechaModificacion: new Date('2024-01-01'),
@@ -184,6 +193,7 @@ export class CampoService {
                 fuente: TipoFuenteCampo.USUARIO,
                 tipoDato: TipoDatoCampo.FECHA,
                 sePuedeEliminar: SiNoValor.SI,
+                alcance: 'Global',
                 reglas: [],
                 fechaCreacion: new Date('2024-01-01'),
                 fechaModificacion: new Date('2024-01-01'),
@@ -196,6 +206,7 @@ export class CampoService {
                 fuente: TipoFuenteCampo.USUARIO,
                 tipoDato: TipoDatoCampo.FECHA,
                 sePuedeEliminar: SiNoValor.SI,
+                alcance: 'Global',
                 reglas: [
                     {
                         id: 5,
@@ -220,6 +231,7 @@ export class CampoService {
                 fuente: TipoFuenteCampo.USUARIO,
                 tipoDato: TipoDatoCampo.NUMERO,
                 sePuedeEliminar: SiNoValor.SI,
+                alcance: 'Global',
                 reglas: [
                     {
                         id: 6,
@@ -384,6 +396,7 @@ export class CampoService {
             campo.largoMaximo,
             campo.valoresPermitidos,
             campo.sePuedeEliminar,
+            campo.alcance || 'Global',
             campo.reglas || [],
             new Date(),
             new Date(),
@@ -437,6 +450,7 @@ export class CampoService {
             campo.largoMaximo,
             campo.valoresPermitidos,
             campo.sePuedeEliminar,
+            campo.alcance || campoExistente.alcance || 'Global',
             campo.reglas || [],
             campoExistente.fechaCreacion,
             new Date(),

@@ -346,6 +346,7 @@ export class AgregarModificarCampoComponent
             this.form.value.largoMaximo || undefined,
             this.mostrarValoresPermitidos ? this.valoresPermitidos : undefined,
             this.form.value.sePuedeEliminar as SiNoValor,
+            'Global',
             this.reglas.map(
                 (r) =>
                     new ReglaDTO(
