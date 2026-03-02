@@ -53,11 +53,8 @@ export class AgregarModificarCampoComponent
     }>;
 
     fuenteCampo = 'Usuario';
+    campoProtegido = 'Sí';
     tiposDato: { id: string; nombre: string }[] = [];
-    opcionesSiNo: { id: string; nombre: string }[] = [
-        { id: SiNoValor.SI, nombre: 'Sí' },
-        { id: SiNoValor.NO, nombre: 'No' },
-    ];
 
     reglas: IReglaDTO[] = [];
     siguienteIdRegla = 1;
@@ -167,6 +164,8 @@ export class AgregarModificarCampoComponent
                     const nombreFuente = this.obtenerNombreFuente(campo.fuente);
                     this.fuenteCampo = nombreFuente;
                 }
+
+                this.campoProtegido = campo.sePuedeEliminar === SiNoValor.SI ? 'Sí' : 'No';
 
                 if (campo.tipoDato) {
                     this.actualizarValidacionLargoMaximo(campo.tipoDato as TipoDatoCampo);
