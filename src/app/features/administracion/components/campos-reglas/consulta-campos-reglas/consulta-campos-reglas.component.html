@@ -93,6 +93,10 @@
                             <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta"> Largo máximo </div>
                             <div class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold"> {{ campo.largoMaximo }} </div>
                         </div>
+                        <div *ngIf="campo.valoresPermitidos && campo.valoresPermitidos.length > 0" class="row g-0 py-1 px-3">
+                            <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta"> Valores permitidos </div>
+                            <div class="col-12 col-sm-8 col-md-9 col-lg-10 font-weight-bold"> {{ campo.valoresPermitidos.join(', ') }} </div>
+                        </div>
 
                         <div *ngIf="tieneReglas(campo)" class="row g-0 py-2">
                             <div class="col-12">

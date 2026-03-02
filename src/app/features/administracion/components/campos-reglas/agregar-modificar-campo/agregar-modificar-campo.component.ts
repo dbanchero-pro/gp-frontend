@@ -61,6 +61,8 @@ export class AgregarModificarCampoComponent
     reglas: IReglaDTO[] = [];
     siguienteIdRegla = 1;
     mostrarLargoMaximo = false;
+    mostrarValoresPermitidos = false;
+    valoresPermitidos: string[] = [];
 
     constructor() {
         super();
@@ -104,6 +106,7 @@ export class AgregarModificarCampoComponent
 
         this.form.get('tipoDato')?.valueChanges.subscribe((tipoDato) => {
             this.actualizarValidacionLargoMaximo(tipoDato as TipoDatoCampo);
+            this.actualizarVisibilidadValoresPermitidos(tipoDato as TipoDatoCampo);
         });
     }
 
@@ -124,6 +127,18 @@ export class AgregarModificarCampoComponent
         }
 
         largoMaximoControl?.updateValueAndValidity();
+    }
+
+    private actualizarVisibilidadValoresPermitidos(tipoDato: TipoDatoCampo): void {
+        if (
+            tipoDato === TipoDatoCampo.LISTA_UNICA_SELECCION ||
+            tipoDato === TipoDatoCampo.LISTA_MULTIPLE_SELECCION
+        ) {
+            this.mostrarValoresPermitidos = true;
+        } else {
+            this.mostrarValoresPermitidos = false;
+            this.valoresPermitidos = [];
+        }
     }
 
     private cargarDatosCampo(): void {
@@ -154,6 +169,11 @@ export class AgregarModificarCampoComponent
 
                 if (campo.tipoDato) {
                     this.actualizarValidacionLargoMaximo(campo.tipoDato as TipoDatoCampo);
+                    this.actualizarVisibilidadValoresPermitidos(campo.tipoDato as TipoDatoCampo);
+                }
+
+                if (campo.valoresPermitidos) {
+                    this.valoresPermitidos = [...campo.valoresPermitidos];
                 }
 
                 if (campo.reglas) {
@@ -310,6 +330,13 @@ export class AgregarModificarCampoComponent
             return;
         }
 
+        if (this.mostrarValoresPermitidos && this.valoresPermitidos.length === 0) {
+            this.actualizarService.mensajeError(
+                'Debe agregar al menos un valor permitido para las listas de selección',
+            );
+            return;
+        }
+
         const campo = new CampoDTO(
             this.modoIngreso ? undefined : this.idCampo,
             this.form.value.etiqueta || '',
@@ -317,6 +344,7 @@ export class AgregarModificarCampoComponent
             TipoFuenteCampo.USUARIO,
             this.form.value.tipoDato as TipoDatoCampo,
             this.form.value.largoMaximo || undefined,
+            this.mostrarValoresPermitidos ? this.valoresPermitidos : undefined,
             this.form.value.sePuedeEliminar as SiNoValor,
             this.reglas.map(
                 (r) =>
@@ -372,6 +400,36 @@ export class AgregarModificarCampoComponent
         this.router.navigate(['/administracion/campos-reglas'], {
             queryParams: { volver: 1 },
         });
+    }
+
+    abrirAgregarValor(): void {
+        const valor = prompt('Ingrese el valor permitido:');
+        if (valor && valor.trim() !== '') {
+            const valorTrim = valor.trim();
+            if (this.valoresPermitidos.includes(valorTrim)) {
+                this.actualizarService.mensajeError('Este valor ya existe en la lista');
+                return;
+            }
+            this.valoresPermitidos.push(valorTrim);
+            this.form.markAsDirty();
+        }
+    }
+
+    eliminarValor(index: number): void {
+        this.valoresPermitidos.splice(index, 1);
+        this.form.markAsDirty();
+    }
+
+    obtenerAccionesValor(index: number): AccionBoton[] {
+        return [
+            {
+                nombre: 'Eliminar',
+                icono: 'fa fa-trash',
+                clase: 'btn btn-sm',
+                ariaLabel: 'Eliminar valor',
+                accion: () => this.eliminarValor(index),
+            },
+        ];
     }
 
     canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
