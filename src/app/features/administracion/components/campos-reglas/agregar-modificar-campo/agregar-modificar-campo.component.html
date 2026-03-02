@@ -17,7 +17,7 @@
 
                         <!-- Primera fila: Etiqueta, Fuente y Campo protegido -->
                         <div class="row">
-                            <div [ngClass]="modoIngreso ? 'col-md-12' : 'col-md-4'">
+                            <div class="col-md-4">
                                 <div class="form-group" [class.field-error]=" form.get('etiqueta')?.invalid && form.get('etiqueta')?.touched">
                                     <label for="etiqueta" class="etiqueta">* Etiqueta</label>
                                     <input id="etiqueta" type="text" class="form-control" formControlName="etiqueta" maxlength="50"/>

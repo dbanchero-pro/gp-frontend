@@ -28,7 +28,7 @@ export class CampoService {
                     'Corresponde a la descripción del inciso y descripción de la unidad ejecutora, tomados de las codigueras, correspondientes al ID de inciso e ID de unidad ejecutora de la compra proveniente de SICE.',
                 fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
                 tipoDato: TipoDatoCampo.TEXTO,
-                sePuedeEliminar: SiNoValor.NO,
+                protegido: SiNoValor.SI,
                 alcance: 'Global',
                 reglas: [
                     {
@@ -41,9 +41,6 @@ export class CampoService {
                         mensajeError: 'El campo Organismo es obligatorio',
                     },
                 ],
-                fechaCreacion: new Date('2024-01-01'),
-                fechaModificacion: new Date('2024-01-01'),
-                activo: true,
             },
             {
                 id: this.nextId++,
@@ -52,12 +49,9 @@ export class CampoService {
                     'Corresponde a la descripción del tipo de compra, tomado de la codiguera correspondiente al ID de compra proveniente de SICE.',
                 fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
                 tipoDato: TipoDatoCampo.TEXTO,
-                sePuedeEliminar: SiNoValor.NO,
+                protegido: SiNoValor.SI,
                 alcance: 'Global',
                 reglas: [],
-                fechaCreacion: new Date('2024-01-01'),
-                fechaModificacion: new Date('2024-01-01'),
-                activo: true,
             },
             {
                 id: this.nextId++,
@@ -66,12 +60,9 @@ export class CampoService {
                     'Corresponde a la descripción del sub-tipo de compra, tomado de la codiguera correspondiente al ID de sub-tipo de compra proveniente de SICE.',
                 fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
                 tipoDato: TipoDatoCampo.TEXTO,
-                sePuedeEliminar: SiNoValor.NO,
+                protegido: SiNoValor.SI,
                 alcance: 'Global',
                 reglas: [],
-                fechaCreacion: new Date('2024-01-01'),
-                fechaModificacion: new Date('2024-01-01'),
-                activo: true,
             },
             {
                 id: this.nextId++,
@@ -80,12 +71,9 @@ export class CampoService {
                     'Es el número del procedimiento de la compra proveniente de SICE',
                 fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
                 tipoDato: TipoDatoCampo.NUMERO,
-                sePuedeEliminar: SiNoValor.NO,
+                 protegido: SiNoValor.SI,
                 alcance: 'Global',
                 reglas: [],
-                fechaCreacion: new Date('2024-01-01'),
-                fechaModificacion: new Date('2024-01-01'),
-                activo: true,
             },
             {
                 id: this.nextId++,
@@ -94,12 +82,9 @@ export class CampoService {
                     'Corresponde al año del procedimiento de la compra proveniente de SICE',
                 fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
                 tipoDato: TipoDatoCampo.NUMERO,
-                sePuedeEliminar: SiNoValor.NO,
+                 protegido: SiNoValor.SI,
                 alcance: 'Global',
                 reglas: [],
-                fechaCreacion: new Date('2024-01-01'),
-                fechaModificacion: new Date('2024-01-01'),
-                activo: true,
             },
             {
                 id: this.nextId++,
@@ -108,12 +93,9 @@ export class CampoService {
                     'Corresponde a la lista de ítems de la compra en formato: descripción artículo + (código artículo)',
                 fuente: TipoFuenteCampo.SICE_NO_EDITABLE,
                 tipoDato: TipoDatoCampo.TEXTO,
-                sePuedeEliminar: SiNoValor.NO,
+                protegido: SiNoValor.SI,
                 alcance: 'Global',
                 reglas: [],
-                fechaCreacion: new Date('2024-01-01'),
-                fechaModificacion: new Date('2024-01-01'),
-                activo: true,
             },
             {
                 id: this.nextId++,
@@ -122,7 +104,7 @@ export class CampoService {
                     'Número que indica el presupuesto asignado a la contratación',
                 fuente: TipoFuenteCampo.SICE_EDITABLE,
                 tipoDato: TipoDatoCampo.NUMERO,
-                sePuedeEliminar: SiNoValor.NO,
+                 protegido: SiNoValor.SI,
                 alcance: 'Global',
                 reglas: [
                     {
@@ -145,9 +127,6 @@ export class CampoService {
                             'El presupuesto no puede superar los 10.000.000',
                     },
                 ],
-                fechaCreacion: new Date('2024-01-01'),
-                fechaModificacion: new Date('2024-01-01'),
-                activo: true,
             },
             {
                 id: this.nextId++,
@@ -156,7 +135,7 @@ export class CampoService {
                     'Corresponde al correo de comunicaciones, asociado a la Unidad de compra, obtenido de la codiguera de Comunicaciones para Unidades de Compra en SICE.',
                 fuente: TipoFuenteCampo.SICE_EDITABLE,
                 tipoDato: TipoDatoCampo.CORREO_ELECTRONICO,
-                sePuedeEliminar: SiNoValor.NO,
+                protegido: SiNoValor.SI,
                 alcance: 'Global',
                 reglas: [
                     {
@@ -169,9 +148,6 @@ export class CampoService {
                         mensajeError: 'Debe ingresar un correo electrónico',
                     },
                 ],
-                fechaCreacion: new Date('2024-01-01'),
-                fechaModificacion: new Date('2024-01-01'),
-                activo: true,
             },
             {
                 id: this.nextId++,
@@ -179,12 +155,9 @@ export class CampoService {
                 descripcion: 'Campo predefinido para el objeto de la compra',
                 fuente: TipoFuenteCampo.USUARIO,
                 tipoDato: TipoDatoCampo.TEXTO,
-                sePuedeEliminar: SiNoValor.NO,
+                protegido: SiNoValor.NO,
                 alcance: 'Global',
                 reglas: [],
-                fechaCreacion: new Date('2024-01-01'),
-                fechaModificacion: new Date('2024-01-01'),
-                activo: true,
             },
             {
                 id: this.nextId++,
@@ -192,12 +165,9 @@ export class CampoService {
                 descripcion: 'Fecha de inicio del contrato',
                 fuente: TipoFuenteCampo.USUARIO,
                 tipoDato: TipoDatoCampo.FECHA,
-                sePuedeEliminar: SiNoValor.SI,
+                protegido: SiNoValor.NO,
                 alcance: 'Global',
                 reglas: [],
-                fechaCreacion: new Date('2024-01-01'),
-                fechaModificacion: new Date('2024-01-01'),
-                activo: true,
             },
             {
                 id: this.nextId++,
@@ -205,7 +175,7 @@ export class CampoService {
                 descripcion: 'Fecha de finalización del contrato',
                 fuente: TipoFuenteCampo.USUARIO,
                 tipoDato: TipoDatoCampo.FECHA,
-                sePuedeEliminar: SiNoValor.SI,
+                protegido: SiNoValor.NO,
                 alcance: 'Global',
                 reglas: [
                     {
@@ -220,9 +190,6 @@ export class CampoService {
                             'La fecha de fin debe ser posterior a la fecha de inicio',
                     },
                 ],
-                fechaCreacion: new Date('2024-01-01'),
-                fechaModificacion: new Date('2024-01-01'),
-                activo: true,
             },
             {
                 id: this.nextId++,
@@ -230,7 +197,7 @@ export class CampoService {
                 descripcion: 'Cantidad de días para la entrega',
                 fuente: TipoFuenteCampo.USUARIO,
                 tipoDato: TipoDatoCampo.NUMERO,
-                sePuedeEliminar: SiNoValor.SI,
+                protegido: SiNoValor.NO,
                 alcance: 'Global',
                 reglas: [
                     {
@@ -252,9 +219,6 @@ export class CampoService {
                         mensajeError: 'El plazo no puede superar los 365 días',
                     },
                 ],
-                fechaCreacion: new Date('2024-01-01'),
-                fechaModificacion: new Date('2024-01-01'),
-                activo: true,
             },
             {
                 id: this.nextId++,
@@ -262,7 +226,7 @@ export class CampoService {
                 descripcion: 'Tipos de garantía aceptables para la contratación',
                 fuente: TipoFuenteCampo.USUARIO,
                 tipoDato: TipoDatoCampo.LISTA_MULTIPLE_SELECCION,
-                sePuedeEliminar: SiNoValor.SI,
+                protegido: SiNoValor.NO,
                 alcance: 'Global',
                 valoresPermitidos: [
                     'Boleta de garantía bancaria',
@@ -272,9 +236,6 @@ export class CampoService {
                     'Depósito en efectivo',
                 ],
                 reglas: [],
-                fechaCreacion: new Date('2024-01-01'),
-                fechaModificacion: new Date('2024-01-01'),
-                activo: true,
             },
             {
                 id: this.nextId++,
@@ -282,7 +243,7 @@ export class CampoService {
                 descripcion: 'Categorías aplicables al suministro de bienes o servicios',
                 fuente: TipoFuenteCampo.USUARIO,
                 tipoDato: TipoDatoCampo.LISTA_MULTIPLE_SELECCION,
-                sePuedeEliminar: SiNoValor.SI,
+                protegido: SiNoValor.NO,
                 alcance: 'Global',
                 valoresPermitidos: [
                     'Bienes de consumo',
@@ -305,9 +266,6 @@ export class CampoService {
                         mensajeError: 'Debe seleccionar al menos una categoría',
                     },
                 ],
-                fechaCreacion: new Date('2024-01-01'),
-                fechaModificacion: new Date('2024-01-01'),
-                activo: true,
             },
         ];
 
@@ -315,7 +273,7 @@ export class CampoService {
     }
 
     obtenerTodos(filtro?: FiltroCampoDTO): Observable<CampoDTO[]> {
-        let camposFiltrados = this.campos.filter((c) => c.activo);
+        let camposFiltrados = this.campos;
 
         if (filtro) {
             if (filtro.etiqueta) {
@@ -355,7 +313,7 @@ export class CampoService {
         sort: string = 'etiqueta',
         order: 'asc' | 'desc' = 'asc',
     ): Observable<PageModel<CampoDTO>> {
-        let camposFiltrados = this.campos.filter((c) => c.activo);
+        let camposFiltrados = this.campos;
 
         if (filtro) {
             if (filtro.etiqueta) {
@@ -432,8 +390,7 @@ export class CampoService {
     crear(campo: CampoDTO): Observable<CampoDTO> {
         const etiquetaExiste = this.campos.some(
             (c) =>
-                c.etiqueta?.toLowerCase() === campo.etiqueta?.toLowerCase() &&
-                c.activo,
+                c.etiqueta?.toLowerCase() === campo.etiqueta?.toLowerCase(),
         );
 
         if (etiquetaExiste) {
@@ -448,12 +405,9 @@ export class CampoService {
             campo.tipoDato,
             campo.largoMaximo,
             campo.valoresPermitidos,
-            campo.sePuedeEliminar,
+            campo.protegido,
             campo.alcance || 'Global',
             campo.reglas || [],
-            new Date(),
-            new Date(),
-            true,
         );
 
         this.campos.push(nuevoCampo);
@@ -472,22 +426,10 @@ export class CampoService {
 
         const campoExistente = this.campos[index];
 
-        if (
-            campoExistente.fuente === TipoFuenteCampo.SICE_EDITABLE ||
-            campoExistente.fuente === TipoFuenteCampo.SICE_NO_EDITABLE
-        ) {
-            throw new Error('Los campos SICE no se pueden modificar');
-        }
-
-        if (campoExistente.etiqueta === 'OBJETO_COMPRA') {
-            throw new Error('El campo OBJETO_COMPRA no se puede modificar');
-        }
-
         const etiquetaExiste = this.campos.some(
             (c) =>
                 c.id !== campo.id &&
-                c.etiqueta?.toLowerCase() === campo.etiqueta?.toLowerCase() &&
-                c.activo,
+                c.etiqueta?.toLowerCase() === campo.etiqueta?.toLowerCase(),
         );
 
         if (etiquetaExiste) {
@@ -502,12 +444,9 @@ export class CampoService {
             campo.tipoDato,
             campo.largoMaximo,
             campo.valoresPermitidos,
-            campo.sePuedeEliminar,
+            campo.protegido,
             campo.alcance || campoExistente.alcance || 'Global',
-            campo.reglas || [],
-            campoExistente.fechaCreacion,
-            new Date(),
-            true,
+            campo.reglas || []
         );
 
         this.campos[index] = campoActualizado;
@@ -515,11 +454,11 @@ export class CampoService {
     }
 
     obtenerPorId(id: number): Observable<CampoDTO | undefined> {
-        const campo = this.campos.find((c) => c.id === id && c.activo);
+        const campo = this.campos.find((c) => c.id === id);
         return of(campo).pipe(delay(300));
     }
 
-    eliminar(id: number, bajaLogica: boolean = false): Observable<void> {
+    eliminar(id: number): Observable<void> {
         const index = this.campos.findIndex((c) => c.id === id);
         if (index === -1) {
             throw new Error('Campo no encontrado');
@@ -527,26 +466,11 @@ export class CampoService {
 
         const campo = this.campos[index];
 
-        if (
-            campo.fuente === TipoFuenteCampo.SICE_EDITABLE ||
-            campo.fuente === TipoFuenteCampo.SICE_NO_EDITABLE
-        ) {
-            throw new Error('Los campos SICE no se pueden eliminar');
-        }
-
-        if (campo.etiqueta === 'OBJETO_COMPRA') {
-            throw new Error('El campo OBJETO_COMPRA no se puede eliminar');
-        }
-
-        if (campo.sePuedeEliminar === SiNoValor.NO) {
+        if (campo.protegido === SiNoValor.SI) {
             throw new Error('Este campo no se puede eliminar');
         }
 
-        if (bajaLogica) {
-            this.campos[index].activo = false;
-        } else {
-            this.campos.splice(index, 1);
-        }
+        this.campos.splice(index, 1);
 
         return of(void 0).pipe(delay(300));
     }
@@ -556,7 +480,7 @@ export class CampoService {
         excluirId?: number,
     ): Observable<CampoDTO[]> {
         let camposFiltrados = this.campos.filter(
-            (c) => c.activo && c.tipoDato === tipoDato,
+            (c) => c.tipoDato === tipoDato,
         );
 
         if (excluirId) {
@@ -591,53 +515,19 @@ export class CampoService {
             { id: TipoDatoCampo.BOOLEANO, nombre: 'Booleano' },
             { id: TipoDatoCampo.FECHA, nombre: 'Fecha' },
             { id: TipoDatoCampo.HORA, nombre: 'Hora' },
-            {
-                id: TipoDatoCampo.CORREO_ELECTRONICO,
-                nombre: 'Correo electrónico',
-            },
-            {
-                id: TipoDatoCampo.LISTA_UNICA_SELECCION,
-                nombre: 'Lista única selección',
-            },
+            { id: TipoDatoCampo.CORREO_ELECTRONICO, nombre: 'Correo electrónico'},
+            { id: TipoDatoCampo.LISTA_UNICA_SELECCION, nombre: 'Lista única selección'},
             { id: TipoDatoCampo.LISTA_MULTIPLE_SELECCION, nombre: 'Lista múltiple selección' },
         ];
-    }
-
-    puedeModificar(campo: CampoDTO): boolean {
-        if (!campo) return false;
-
-        if (
-            campo.fuente === TipoFuenteCampo.SICE_EDITABLE ||
-            campo.fuente === TipoFuenteCampo.SICE_NO_EDITABLE
-        ) {
-            return false;
-        }
-
-        if (campo.etiqueta === 'OBJETO_COMPRA') {
-            return false;
-        }
-
-        return true;
     }
 
     puedeEliminar(campo: CampoDTO): boolean {
         if (!campo) return false;
 
-        if (
-            campo.fuente === TipoFuenteCampo.SICE_EDITABLE ||
-            campo.fuente === TipoFuenteCampo.SICE_NO_EDITABLE
-        ) {
-            return false;
+        if (campo.protegido === SiNoValor.NO) {
+            return true;
         }
 
-        if (campo.etiqueta === 'OBJETO_COMPRA') {
-            return false;
-        }
-
-        if (campo.sePuedeEliminar === SiNoValor.NO) {
-            return false;
-        }
-
-        return true;
+        return false;
     }
 }

@@ -220,7 +220,7 @@ export class ConsultaCamposReglasComponent
         this.actualizarServ.confirmar(`¿Está seguro que desea eliminar el campo "${campo.etiqueta}"?`,
             () => {
                 if (campo.id) {
-                    this.campoService.eliminar(campo.id, false).subscribe({
+                    this.campoService.eliminar(campo.id).subscribe({
                         next: () => {
                             this.actualizarServ.mensajeCorrecto('Campo eliminado correctamente',);
                             this.buscar();
@@ -271,8 +271,8 @@ export class ConsultaCamposReglasComponent
         }
     }
 
-    obtenerEtiquetaCampoProtegido(sePuedeEliminar: any): string {
-        return sePuedeEliminar === 'SI' ? 'Sí' : 'No';
+    obtenerEtiquetaCampoProtegido(protegido: any): string {
+        return protegido === 'S' ? 'Sí' : 'No';
     }
 
     obtenerEtiquetaTipoRegla(tipoRegla: TipoRegla | undefined): string {
@@ -281,6 +281,8 @@ export class ConsultaCamposReglasComponent
                 return 'Valor';
             case TipoRegla.CAMPO:
                 return 'Campo';
+            case TipoRegla.PROGRAMADA:
+                return 'Programada';
             default:
                 return '-';
         }

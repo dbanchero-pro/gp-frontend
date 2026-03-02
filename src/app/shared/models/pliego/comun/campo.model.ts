@@ -11,12 +11,9 @@ export interface ICampoDTO {
     tipoDato?: TipoDatoCampo;
     largoMaximo?: number;
     valoresPermitidos?: string[];
-    sePuedeEliminar?: SiNoValor;
+    protegido?: SiNoValor;
     alcance?: string;
     reglas?: IReglaDTO[];
-    fechaCreacion?: Date;
-    fechaModificacion?: Date;
-    activo?: boolean;
 }
 
 export class CampoDTO implements ICampoDTO {
@@ -28,11 +25,8 @@ export class CampoDTO implements ICampoDTO {
         public tipoDato?: TipoDatoCampo,
         public largoMaximo?: number,
         public valoresPermitidos?: string[],
-        public sePuedeEliminar?: SiNoValor,
+        public protegido?: SiNoValor,
         public alcance?: string,
         public reglas?: IReglaDTO[],
-        public fechaCreacion?: Date,
-        public fechaModificacion?: Date,
-        public activo: boolean = true,
     ) {}
 }

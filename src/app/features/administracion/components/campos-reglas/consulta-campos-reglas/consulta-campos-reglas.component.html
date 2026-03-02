@@ -69,10 +69,7 @@
                             <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta">Etiqueta</div>
                             <div class="col-9 col-sm-5 col-md-6 col-lg-7 font-weight-bold">{{ campo.etiqueta }}</div>
                             <div class="col-3 col-sm-3 col-md-3 col-lg-3 d-flex justify-content-end align-items-start">
-                                <app-boton-accion [acciones]="obtenerAcciones(campo)" [ariaLabelMasOpciones]="
-                                        'Mas opciones del campo ' +
-                                        campo.etiqueta
-                                    "
+                                <app-boton-accion [acciones]="obtenerAcciones(campo)" [ariaLabelMasOpciones]="'Mas opciones del campo ' + campo.etiqueta"
                                     (accionEjecutada)="ejecutarAccion($event)">
                                 </app-boton-accion>
                             </div>
@@ -84,8 +81,8 @@
                         <div class="row g-0 py-1 px-3">
                             <div class="col-12 col-sm-4 col-md-3 col-lg-2 fw-semibold etiqueta"> Fuente </div>
                             <div class="col-12 col-sm-2 col-md-2 col-lg-2 font-weight-bold"> {{ obtenerEtiquetaFuente(campo.fuente) }} </div>
-                            <div class="col-12 col-sm-3 col-md-2 col-lg-2 fw-semibold etiqueta"> Campo protegido </div>
-                            <div class="col-12 col-sm-3 col-md-2 col-lg-2 font-weight-bold"> {{ obtenerEtiquetaCampoProtegido(campo.sePuedeEliminar) }} </div>
+                            <div class="col-12 col-sm-3 col-md-2 col-lg-2 fw-semibold etiqueta"> Protegido </div>
+                            <div class="col-12 col-sm-3 col-md-2 col-lg-2 font-weight-bold"> {{ obtenerEtiquetaCampoProtegido(campo.protegido) }} </div>
                             <div class="col-6 col-sm-6 col-md-2 col-lg-2 fw-semibold etiqueta"> Alcance </div>
                             <div class="col-6 col-sm-6 col-md-1 col-lg-2 font-weight-bold"> {{ campo.alcance || 'Global' }} </div>
                         </div>

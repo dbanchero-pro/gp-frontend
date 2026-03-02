@@ -153,14 +153,14 @@ export class AgregarModificarCampoComponent
                     return;
                 }
 
-                this.esCampoProtegido = campo.sePuedeEliminar === SiNoValor.NO;
+                this.esCampoProtegido = campo.protegido === SiNoValor.NO;
 
                 this.form.patchValue({
                     etiqueta: campo.etiqueta || '',
                     descripcion: campo.descripcion || '',
                     tipoDato: campo.tipoDato || '',
                     largoMaximo: campo.largoMaximo || null,
-                    sePuedeEliminar: campo.sePuedeEliminar || SiNoValor.SI,
+                    sePuedeEliminar: campo.protegido || SiNoValor.SI,
                 });
 
                 if (campo.fuente) {
@@ -168,7 +168,7 @@ export class AgregarModificarCampoComponent
                     this.fuenteCampo = nombreFuente;
                 }
 
-                this.campoProtegido = campo.sePuedeEliminar === SiNoValor.SI ? 'Sí' : 'No';
+                this.campoProtegido = campo.protegido === SiNoValor.SI ? 'Sí' : 'No';
 
                 if (campo.tipoDato) {
                     this.actualizarValidacionLargoMaximo(campo.tipoDato as TipoDatoCampo);
@@ -371,9 +371,6 @@ export class AgregarModificarCampoComponent
                         r.mensajeError,
                     ),
             ),
-            new Date(),
-            new Date(),
-            true,
         );
 
         try {
