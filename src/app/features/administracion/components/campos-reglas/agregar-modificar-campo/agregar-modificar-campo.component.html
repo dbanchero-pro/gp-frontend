@@ -17,7 +17,7 @@
 
                         <!-- Primera fila: Etiqueta, Fuente y Campo protegido -->
                         <div class="row">
-                            <div class="col-md-4">
+                            <div [ngClass]="modoIngreso ? 'col-md-12' : 'col-md-4'">
                                 <div class="form-group" [class.field-error]=" form.get('etiqueta')?.invalid && form.get('etiqueta')?.touched">
                                     <label for="etiqueta" class="etiqueta">* Etiqueta</label>
                                     <input id="etiqueta" type="text" class="form-control" formControlName="etiqueta" maxlength="50"/>
@@ -26,13 +26,13 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" *ngIf="!modoIngreso">
                                 <div class="form-group">
                                     <label>Fuente</label>
                                     <p class="form-control-plaintext">{{ fuenteCampo }}</p>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" *ngIf="!modoIngreso">
                                 <div class="form-group">
                                     <label>Campo protegido</label>
                                     <p class="form-control-plaintext">{{ campoProtegido }}</p>
