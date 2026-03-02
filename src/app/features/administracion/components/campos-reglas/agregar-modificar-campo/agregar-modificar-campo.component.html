@@ -15,9 +15,9 @@
                     <div class="card-body">
                         <h5 class="card-title mb-3">Datos generales</h5>
 
-                        <!-- Primera fila: Etiqueta y Fuente -->
+                        <!-- Primera fila: Etiqueta, Fuente y Campo protegido -->
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group" [class.field-error]=" form.get('etiqueta')?.invalid && form.get('etiqueta')?.touched">
                                     <label for="etiqueta" class="etiqueta">* Etiqueta</label>
                                     <input id="etiqueta" type="text" class="form-control" formControlName="etiqueta" maxlength="50"/>
@@ -26,10 +26,21 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Fuente</label>
                                     <p class="form-control-plaintext">{{ fuenteCampo }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" [class.field-error]="form.get('sePuedeEliminar')?.invalid && form.get('sePuedeEliminar')?.touched">
+                                    <label for="sePuedeEliminar">* Campo protegido</label>
+                                    <select id="sePuedeEliminar" class="form-control" formControlName="sePuedeEliminar">
+                                        <option *ngFor="let opcion of opcionesSiNo" [value]="opcion.id"> {{ opcion.nombre }}</option>
+                                    </select>
+                                    <span class="texto-error m-0" [style.visibility]="form.get('sePuedeEliminar')?.hasError('required') && form.get('sePuedeEliminar')?.touched? 'visible': 'hidden'">
+                                        Debe indicar si se puede modificar o eliminar el campo
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -60,35 +71,9 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-md-6" *ngIf="!mostrarLargoMaximo">
-                                <div class="form-group" [class.field-error]="form.get('sePuedeEliminar')?.invalid && form.get('sePuedeEliminar')?.touched">
-                                    <label for="sePuedeEliminar">* Campo protegido</label>
-                                    <select id="sePuedeEliminar" class="form-control" formControlName="sePuedeEliminar">
-                                        <option *ngFor="let opcion of opcionesSiNo" [value]="opcion.id"> {{ opcion.nombre }}</option>
-                                    </select>
-                                    <span class="texto-error m-0" [style.visibility]="form.get('sePuedeEliminar')?.hasError('required') && form.get('sePuedeEliminar')?.touched? 'visible': 'hidden'">
-                                        Debe indicar si se puede modificar o eliminar el campo
-                                    </span>
-                                </div>
-                            </div>
                         </div>
 
-                        <!-- Tercera fila: Campo protegido (cuando se muestra largo máximo) -->
-                        <div class="row" *ngIf="mostrarLargoMaximo">
-                            <div class="col-md-6">
-                                <div class="form-group" [class.field-error]="form.get('sePuedeEliminar')?.invalid && form.get('sePuedeEliminar')?.touched">
-                                    <label for="sePuedeEliminar">* Campo protegido</label>
-                                    <select id="sePuedeEliminar" class="form-control" formControlName="sePuedeEliminar">
-                                        <option *ngFor="let opcion of opcionesSiNo" [value]="opcion.id"> {{ opcion.nombre }}</option>
-                                    </select>
-                                    <span class="texto-error m-0" [style.visibility]="form.get('sePuedeEliminar')?.hasError('required') && form.get('sePuedeEliminar')?.touched? 'visible': 'hidden'">
-                                        Debe indicar si se puede modificar o eliminar el campo
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Cuarta fila: Descripción -->
+                        <!-- Tercera fila: Descripción -->
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group" [class.field-error]="form.get('descripcion')?.invalid && form.get('descripcion')?.touched">
