@@ -47,7 +47,7 @@
 
                         <!-- Segunda fila: Tipo de Dato y Largo Máximo -->
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group" [class.field-error]=" form.get('tipoDato')?.invalid && form.get('tipoDato')?.touched">
                                     <label for="tipoDato">* Tipo de dato</label>
                                     <select id="tipoDato" class="form-control" formControlName="tipoDato">
@@ -59,7 +59,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-md-6" *ngIf="mostrarLargoMaximo">
+                            <div class="col-md-4" *ngIf="mostrarLargoMaximo">
                                 <div class="form-group" [class.field-error]="form.get('largoMaximo')?.invalid && form.get('largoMaximo')?.touched">
                                     <label for="largoMaximo">* Largo máximo</label>
                                     <input id="largoMaximo" type="number" class="form-control" formControlName="largoMaximo" min="1" max="4000"/>
